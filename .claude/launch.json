@@ -12,6 +12,12 @@
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "tools/serve.cs", "--", ".", "5009"],
       "port": 5009
+    },
+    {
+      "name": "catriona-dev",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5011", "--overlay", "CatrionaAgg=CatrionaAgg", "--reload"],
+      "port": 5011
     }
   ]
 }

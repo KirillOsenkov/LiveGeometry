@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.228" Top="5.428" Right="10.628" Bottom="-1.228" />
+  <Scene Left="-1.228" Top="5.428" Right="10.628" Bottom="-1.228" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFEB14D" />
+          <GradientStop Color="#FFFE9001" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="Handle" X="0" Y="0" />
+    <FreePoint Name="T" Style="Handle" X="5.25" Y="4.2" />
+    <FreePoint Name="C" Style="Handle" X="9.4" Y="0" />
+    <Polygon Name="poly1" Style="Paper">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PointByCoordinates Name="p2" Visible="false" X="(A.X + T.X) / 2" Y="(A.Y + T.Y) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M" Style="Dot" X="p2.X" Y="p2.Y">
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1" Style="Dot" X="(T.X + 0.3333333333 * (C.X - T.X))" Y="(T.Y + 0.3333333333 * (C.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2" Style="Dot" X="(T.X + 0.6666666667 * (C.X - T.X))" Y="(T.Y + 0.6666666667 * (C.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Polygon Name="poly3" Style="Orange">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+    </Polygon>
+    <Segment Name="s4" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="s5" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s6" Style="Ink" Decoration="OneTick">
+      <Dependency Name="T" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Segment Name="s7" Style="Ink" Decoration="OneTick">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Segment Name="s8" Style="Ink" Decoration="OneTick">
+      <Dependency Name="P2" />
+      <Dependency Name="C" />
+    </Segment>
+  </Figures>
+</Drawing>

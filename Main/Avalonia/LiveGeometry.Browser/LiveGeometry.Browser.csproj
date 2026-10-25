@@ -74,6 +74,9 @@
     <!-- the gallery and its drawings played by the player, no .NET: /web and /web/<slug>
          (web.config routes every extensionless path under /web to the page) -->
     <Content Include="..\..\..\web\**" Link="wwwroot\web\%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- Catriona Agg's puzzles, played by the player: /CatrionaAgg and /CatrionaAgg/<slug>
+         (web.config routes them; each puzzle's own page is written by WriteGalleryIndex below) -->
+    <Content Include="..\..\..\CatrionaAgg\**" Link="wwwroot\CatrionaAgg\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -81,12 +84,14 @@
     <GalleryIndexOutput>$(MSBuildProjectDirectory)\obj\gallery\index.json</GalleryIndexOutput>
     <GalleryPagesOutput>$(MSBuildProjectDirectory)\obj\gallery\pages</GalleryPagesOutput>
     <SitemapOutput>$(MSBuildProjectDirectory)\obj\gallery\sitemap.xml</SitemapOutput>
+    <CatrionaFolder>$(MSBuildProjectDirectory)\..\..\..\CatrionaAgg</CatrionaFolder>
+    <CatrionaPagesOutput>$(MSBuildProjectDirectory)\obj\catriona\pages</CatrionaPagesOutput>
     <!-- where the site is, for the absolute addresses link previews and the sitemap need -->
     <SiteUrl Condition="'$(SiteUrl)' == ''">https://livegeometry.com</SiteUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf" />
+    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\index.html;$(CatrionaFolder)\puzzles.json" />
   </ItemGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
@@ -98,7 +103,11 @@
        made after the publish by tools/previews.cs) in the head and on the splash. Sites that
        show a link's preview read only the page's HTML, never what its script draws, and
        every /gallery/<slug> was the same page (web.config serves these in its place).
-       /sitemap.xml: the site's pages, the drawings among them. -->
+       /sitemap.xml: the site's pages, the drawings among them.
+       /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
+       (CatrionaAgg/puzzles.json): the library's index.html with the puzzle's title, its question
+       and its preview picture (/CatrionaAgg/previews/<slug>.png) in the head, and the question
+       and the credits in the text a search engine reads. -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Source ParameterType="System.String" Required="true" />
@@ -108,6 +117,8 @@
       <PagesFolder ParameterType="System.String" Required="true" />
       <SitemapFile ParameterType="System.String" Required="true" />
       <SiteUrl ParameterType="System.String" Required="true" />
+      <CatrionaFolder ParameterType="System.String" Required="true" />
+      <CatrionaPagesFolder ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Using Namespace="System" />
@@ -196,16 +207,30 @@
 
         // index.html changed so that a pattern no longer finds its one place: say so, rather
         // than give the drawings pages without their own tags
-        string ReplaceOnce(string text, string pattern, Func<Match, string> replacement)
+        string ReplaceOnce(string text, string pattern, Func<Match, string> replacement, string template = null)
         {
             var regex = new Regex(pattern, RegexOptions.Singleline);
             if (regex.Matches(text).Count != 1)
             {
-                throw new InvalidOperationException(Template + " no longer has exactly one match of " + pattern + ": update the WriteGalleryIndex task in LiveGeometry.Browser.csproj.");
+                throw new InvalidOperationException((template ?? Template) + " no longer has exactly one match of " + pattern + ": update the WriteGalleryIndex task in LiveGeometry.Browser.csproj.");
             }
 
             return regex.Replace(text, match => replacement(match), 1);
         }
+
+        // a question as the catalog has it, with the wiki's TeX ($6$, $x^2$, $\sqrt{2}$), as
+        // plainQuestion in CatrionaAgg/index.html writes it (the dollar in brackets: MSBuild
+        // takes a dollar and a parenthesis for a property, here too)
+        string PlainQuestion(string text) => Regex.Replace(text ?? "", "[$]([^$]*)[$]", m =>
+        {
+            string tex = m.Groups[1].Value;
+            tex = Regex.Replace(tex, "\\\\frac\\{([^}]*)\\}\\{([^}]*)\\}", "$1/$2");
+            tex = Regex.Replace(tex, "\\\\sqrt\\{([^}]*)\\}", "√$1");
+            tex = tex.Replace("\\pi", "π").Replace("\\times", "×").Replace("\\circ", "°");
+            tex = Regex.Replace(tex, "\\^\\{?2\\}?", "²");
+            tex = Regex.Replace(tex, "\\^\\{?3\\}?", "³");
+            return Regex.Replace(tex, "[{}\\\\]", "");
+        });
 
         string template = File.ReadAllText(Template);
         Directory.CreateDirectory(PagesFolder);
@@ -274,6 +299,65 @@
         items.Append("\n]\n");
         Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
         File.WriteAllText(OutputFile, items.ToString(), new UTF8Encoding(false));
+
+        // Catriona Agg's puzzles: a page for each one that has a drawing
+        string catrionaTemplatePath = Path.Combine(CatrionaFolder, "index.html");
+        string catrionaTemplate = File.ReadAllText(catrionaTemplatePath);
+        Directory.CreateDirectory(CatrionaPagesFolder);
+        foreach (string stale in Directory.GetFiles(CatrionaPagesFolder, "*.html"))
+        {
+            File.Delete(stale);
+        }
+
+        sitemap.Append("  <url><loc>").Append(SiteUrl).Append("/CatrionaAgg</loc></url>\n");
+        // the catalog is tools/catriona.cs's JSON: an object per puzzle with nothing nested in
+        // braces, its strings with JSON's escapes (an inline task has no JSON library to hand)
+        string catalogText = File.ReadAllText(Path.Combine(CatrionaFolder, "puzzles.json"));
+        Func<string, string, string> field = (entry, name) =>
+        {
+            var found = Regex.Match(entry, "\"" + name + "\":\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+            return found.Success ? Regex.Unescape(found.Groups[1].Value) : null;
+        };
+        {
+            foreach (Match entry in Regex.Matches(catalogText, "\\{[^{}]*\"slug\"[^{}]*\\}"))
+            {
+                if (field(entry.Value, "drawing") == null)
+                {
+                    continue;
+                }
+
+                string slug = field(entry.Value, "slug");
+                string title = field(entry.Value, "title");
+                string question = PlainQuestion(field(entry.Value, "statement") ?? "");
+                string url = SiteUrl + "/CatrionaAgg/" + slug;
+                string escapedTitle = Escape(title);
+                string description = Escape("Catriona Agg's puzzle: “" + question + "” Her diagram redrawn as live geometry you can drag, with Andrew Stacey's techniques and solution at Mathforge Notes.");
+                string html = catrionaTemplate;
+                try
+                {
+                    html = ReplaceOnce(html, "<title>[^<]*</title>", m => "<title>" + escapedTitle + " · Catriona Agg · Live Geometry</title>", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta name=\"description\" content=\"[^\"]*\">", m => "<meta name=\"description\" content=\"" + description + "\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:title\" content=\"[^\"]*\">", m => "<meta property=\"og:title\" content=\"" + escapedTitle + " · Catriona Agg\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:description\" content=\"[^\"]*\">", m => "<meta property=\"og:description\" content=\"" + description + "\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:url\" content=\"[^\"]*\">", m => "<meta property=\"og:url\" content=\"" + url + "\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:type\" content=\"[^\"]*\">", m => "<meta property=\"og:type\" content=\"article\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/CatrionaAgg/previews/" + slug + ".png\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "(<div id=\"seo\" class=\"visually-hidden\">).*?(</div>)", m => m.Groups[1].Value
+                        + "\n  <h1>" + escapedTitle + "</h1>\n  <p>“" + Escape(question) + "” A geometry puzzle by Catriona Agg, redrawn as a live construction you can drag. Its techniques and a full solution are on Andrew Stacey's Mathforge Notes.</p>\n"
+                        + m.Groups[2].Value, catrionaTemplatePath);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Log.LogError(ex.Message);
+                    return false;
+                }
+
+                File.WriteAllText(Path.Combine(CatrionaPagesFolder, slug + ".html"), html, new UTF8Encoding(false));
+                sitemap.Append("  <url><loc>").Append(url).Append("</loc></url>\n");
+            }
+        }
+
         sitemap.Append("</urlset>\n");
         File.WriteAllText(SitemapFile, sitemap.ToString(), new UTF8Encoding(false));
       ]]></Code>
@@ -288,7 +372,9 @@
       DrawingsFolder="$(MSBuildProjectDirectory)\..\LiveGeometry.App\Gallery\Drawings"
       PagesFolder="$(GalleryPagesOutput)"
       SitemapFile="$(SitemapOutput)"
-      SiteUrl="$(SiteUrl)" />
+      SiteUrl="$(SiteUrl)"
+      CatrionaFolder="$(CatrionaFolder)"
+      CatrionaPagesFolder="$(CatrionaPagesOutput)" />
   </Target>
 
   <!-- the pages are known only once they are written, so they are taken in here and not with
@@ -297,6 +383,8 @@
     <ItemGroup>
       <GalleryPage Include="$(GalleryPagesOutput)\*.html" />
       <Content Include="@(GalleryPage)" Link="wwwroot\gallery\%(GalleryPage.Filename)%(GalleryPage.Extension)" />
+      <CatrionaPage Include="$(CatrionaPagesOutput)\*.html" />
+      <Content Include="@(CatrionaPage)" Link="wwwroot\CatrionaAgg\%(CatrionaPage.Filename)%(CatrionaPage.Extension)" />
     </ItemGroup>
   </Target>
 

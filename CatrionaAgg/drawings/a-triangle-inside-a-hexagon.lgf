@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.016" Top="4.516" Right="5.016" Bottom="-4.516" />
+  <Scene Left="-5.016" Top="4.516" Right="5.016" Bottom="-4.516" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFE0F9C1" />
+          <GradientStop Color="#FFD3F7A6" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFA5E4CC" />
+          <GradientStop Color="#FF7FD8B6" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFD4B9F4" />
+          <GradientStop Color="#FFC29BF0" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Blue" Color="#FF1D3C99" StrokeWidth="2.5">
+      <Dark Color="#FF778AC2" />
+    </LineStyle>
+    <TextStyle Name="BlueMark" FontSize="24" Color="#FF1D3C99" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF778AC2" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="D" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="p3" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p5" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="-0.8" Y="0" />
+    <Segment Name="track8" Visible="false">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Segment>
+    <PointOnFigure Name="H" Style="Handle" X="-2.4" Y="0" Parameter="0.5">
+      <Dependency Name="track8" />
+    </PointOnFigure>
+    <PointByCoordinates Name="I" Visible="false" X="(D.X + (0.5 * (H.X - D.X) - 1 * 0.8660254038 * (H.Y - D.Y)))" Y="(D.Y + (0.8660254038 * (H.X - D.X) + 0.5 * (H.Y - D.Y)))">
+      <Dependency Name="D" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Polygon Name="poly9" Style="LightGreen">
+      <Dependency Name="p3" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Green">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Purple">
+      <Dependency Name="D" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Polygon>
+    <Segment Name="s12" Style="Blue">
+      <Dependency Name="I" />
+      <Dependency Name="p2" />
+    </Segment>
+    <AngleArc Name="angle13" Style="Blue" Radius="30">
+      <Dependency Name="p2" />
+      <Dependency Name="I" />
+      <Dependency Name="p1" />
+    </AngleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(p2.X + 0.15)" Y="(p2.Y - 1.25)">
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="BlueMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

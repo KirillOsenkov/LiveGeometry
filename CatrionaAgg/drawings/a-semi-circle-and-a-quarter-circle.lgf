@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.762" Top="4.762" Right="2.762" Bottom="-0.762" />
+  <Scene Left="-4.762" Top="4.762" Right="2.762" Bottom="-0.762" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFBCA97" />
+          <GradientStop Color="#FFF9B46A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFEF78C" />
+          <GradientStop Color="#FFFDF35A" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFE8402A" StrokeWidth="2.5">
+      <Dark Color="#FFF18C7F" />
+    </LineStyle>
+    <ShapeStyle Name="BlueWedge" Color="#FF1414D2" StrokeWidth="1" Fill="#FF1414D2">
+      <Dark Color="#FF6666E2" Fill="#FF6666E2" />
+    </ShapeStyle>
+    <LineStyle Name="OrangeLine" Color="#FFF07A12" StrokeWidth="3">
+      <Dark Color="#FFF6AF71" />
+    </LineStyle>
+    <TextStyle Name="OrangeMark" FontSize="24" Color="#FFE8710E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF1AA6E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Q" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="M" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="K" Visible="false" X="-2" Y="2" />
+    <PointByCoordinates Name="p1" Visible="false" X="(Q.X - 2.9725793019)" Y="(Q.Y + 2.6765224254)">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(Q.X - 3.994518139)" Y="(Q.Y + 0.209343825)">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="-3.6820194138" Y="1.562924514" Parameter="2.7401669256">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="kp" Formula="distance(K, P)">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+    </Number>
+    <Number Name="dx" Formula="(K.X - P.X) / kp">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+      <Dependency Name="kp" />
+    </Number>
+    <Number Name="dy" Formula="(K.Y - P.Y) / kp">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+      <Dependency Name="kp" />
+    </Number>
+    <PointByCoordinates Name="S" Visible="false" X="K.X + 4 * dx ^ 2" Y="K.Y + 4 * dx * dy">
+      <Dependency Name="K" />
+      <Dependency Name="dx" />
+      <Dependency Name="dy" />
+    </PointByCoordinates>
+    <CircleSector Name="a4" Style="Orange">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+    </CircleSector>
+    <CircleSector Name="a5" Style="Yellow">
+      <Dependency Name="M" />
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </CircleSector>
+    <Segment Name="s6" Style="Red">
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="s7" Style="Red">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s8" Style="Red">
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="s9" Style="Red">
+      <Dependency Name="T" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="s10" Style="Red">
+      <Dependency Name="S" />
+      <Dependency Name="Q" />
+    </Segment>
+    <AngleArc Name="angle11" Style="BlueWedge" Radius="22">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+      <Dependency Name="S" />
+    </AngleArc>
+    <AngleArc Name="angle12" Style="BlueWedge" Radius="22">
+      <Dependency Name="T" />
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+    </AngleArc>
+    <AngleArc Name="angle13" Style="OrangeLine" Radius="26">
+      <Dependency Name="S" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </AngleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(S.X - 1.05)" Y="(S.Y - 0.6)">
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="OrangeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

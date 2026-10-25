@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-8.561" Top="11.561" Right="5.461" Bottom="-1.261" />
+  <Scene Left="-8.561" Top="11.561" Right="5.461" Bottom="-1.261" />
+  <Styles>
+    <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FF51D2FA" />
+          <GradientStop Color="#FF06BEF8" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFDF862" />
+          <GradientStop Color="#FFFCF51E" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3" Y="7.2426406871" />
+    <PointByCoordinates Name="p3" Visible="false" X="-4.2426406871" Y="10.2426406871" />
+    <PointByCoordinates Name="p4" Visible="false" X="-7.2426406871" Y="3" />
+    <Polygon Name="poly5" Style="Paper">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="4.2426406871" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="4.2426406871" Y="4.2426406871" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4.2426406871" />
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="0" Y="4.2426406871" />
+    <PointByCoordinates Name="p12" Visible="false" X="3" Y="4.2426406871" />
+    <PointByCoordinates Name="p13" Visible="false" X="3" Y="7.2426406871" />
+    <PointByCoordinates Name="p14" Visible="false" X="0" Y="7.2426406871" />
+    <Polygon Name="poly15" Style="Yellow">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="-3" Y="1.2426406871" />
+    <PointByCoordinates Name="p17" Visible="false" X="0" Y="1.2426406871" />
+    <PointByCoordinates Name="p18" Visible="false" X="0" Y="4.2426406871" />
+    <PointByCoordinates Name="p19" Visible="false" X="-3" Y="4.2426406871" />
+    <Polygon Name="poly20" Style="Yellow">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Polygon>
+    <Segment Name="s21" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointByCoordinates Name="at22" Style="Anchor" X="1.5" Y="5.7426406871" />
+    <AttachedLabel Name="t23" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="9">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at24" Style="Anchor" X="-1.5" Y="2.7426406871" />
+    <AttachedLabel Name="t25" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="9">
+      <Dependency Name="at24" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at26" Style="Anchor" X="2.8849956672" Y="1.7819090886" />
+    <AttachedLabel Name="t27" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at26" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

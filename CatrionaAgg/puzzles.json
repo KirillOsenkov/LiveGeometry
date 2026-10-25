@@ -1,0 +1,5042 @@
+{
+  "source": "https://notes.mathforge.org/notes/published/HomePage",
+  "puzzles": [
+    {
+      "slug": "three-hexagons-on-a-circle",
+      "name": "three hexagons on a circle",
+      "title": "Three Hexagons on a Circle",
+      "date": "2026-07-04",
+      "statement": "Three regular hexagons. The smallest has area $6$. What’s the pink area?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mpsmxuhho222",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "hexagon",
+        "angles in the same segment",
+        "symmetry",
+        "invariance principle"
+      ],
+      "drawing": "three-hexagons-on-a-circle.lgf",
+      "play": "Drag the white point around the circle: all three hexagons change size. Keep an eye on the pink one next to the orange one."
+    },
+    {
+      "slug": "a-triangle-inside-a-hexagon",
+      "name": "a triangle inside a hexagon",
+      "title": "A Triangle Inside a Hexagon",
+      "date": "2026-05-30",
+      "statement": "An equilateral triangle inside a regular hexagon. What’s the angle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mn2spzcdmk25",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "hexagon",
+        "transformation",
+        "invariance principle"
+      ],
+      "drawing": "a-triangle-inside-a-hexagon.lgf",
+      "play": "Slide the triangle's corner along the diagonal. The triangle turns and grows. What does the angle do?"
+    },
+    {
+      "slug": "a-semi-circle-and-a-quarter-circle",
+      "name": "a semi-circle and a quarter circle",
+      "title": "A Semi-Circle and a Quarter Circle",
+      "date": "2026-03-29",
+      "statement": "The two blue angles are equal. What’s the size of the orange angle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mi772wdces2h",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [],
+      "drawing": "a-semi-circle-and-a-quarter-circle.lgf",
+      "play": "Move the point on the quarter circle. The point on the semicircle follows so that the blue angles stay equal. Watch the orange angle."
+    },
+    {
+      "slug": "seven-squares",
+      "name": "seven squares",
+      "title": "Seven Squares",
+      "date": "2026-02-28",
+      "statement": "Seven squares. What’s the angle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mfvvp2krs22g",
+      "categories": [
+        "Shapes",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ],
+      "drawing": "seven-squares.lgf",
+      "play": "Turn the big square by its white corner: its far side always passes the top of the cross. Does the angle notice?"
+    },
+    {
+      "slug": "six-squares-and-a-quarter-circle",
+      "name": "six squares and a quarter circle",
+      "title": "Six Squares and a Quarter Circle",
+      "date": "2026-02-16",
+      "statement": "Six squares and a quarter circle. The blue square has area $2$. What’s the yellow area?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mextvtqacc2b",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [],
+      "drawing": "six-squares-and-a-quarter-circle.lgf",
+      "play": "Slide the purple square's corner along the arc and the squares resize to stay in the quarter circle. Compare the yellow square with the blue one."
+    },
+    {
+      "slug": "two-hexagons-in-a-rectangle-ii",
+      "name": "two hexagons in a rectangle ii",
+      "title": "Two Hexagons in a Rectangle II",
+      "date": "2026-02-07",
+      "statement": "Two regular hexagons inside a rectangle. What fraction of the rectangle is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3meb7kxny2k2j",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [],
+      "drawing": "two-hexagons-in-a-rectangle-ii.lgf",
+      "play": "Nothing to drag in this one: the conditions fix every line of it."
+    },
+    {
+      "slug": "three-congruent-rectangles-vi",
+      "name": "three congruent rectangles vi",
+      "title": "Three Congruent Rectangles VI",
+      "date": "2025-07-05",
+      "statement": "The three rectangles are congruent. What fraction of the design is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lt7mbgldxs2s",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [],
+      "drawing": "three-congruent-rectangles-vi.lgf",
+      "play": "Slide the blue rectangle along the top of the green one, or drag the green one's corner to reshape all three. Watch the white triangles."
+    },
+    {
+      "slug": "four-quarter-circles-iii",
+      "name": "four quarter circles iii",
+      "title": "Four Quarter Circles III",
+      "date": "2025-06-28",
+      "statement": "Four quarter circles. What’s the area of the orange one?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lsnhbfsjrk2d",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent"
+      ],
+      "drawing": "four-quarter-circles-iii.lgf",
+      "play": "Slide the point where the quarter circles meet along the diagonal. The red and the orange quarter circles grow and shrink together."
+    },
+    {
+      "slug": "two-triangles-in-a-semi-circle",
+      "name": "two triangles in a semi-circle",
+      "title": "Two Triangles in a Semi-Circle",
+      "date": "2025-06-21",
+      "statement": "These triangles are congruent and isosceles. What’s the area of the semicircle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3ls4cjjrvuk2f",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [],
+      "drawing": "two-triangles-in-a-semi-circle.lgf",
+      "play": "Drag the blue triangle's corner around the arc. The triangles stay congruent and isosceles. What about their legs?"
+    },
+    {
+      "slug": "four-squares-x",
+      "name": "four squares x",
+      "title": "Four Squares X",
+      "date": "2025-06-14",
+      "statement": "Four squares. What’s the blue square’s area?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lrknviguck2i",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [],
+      "drawing": "four-squares-x.lgf",
+      "play": "Nothing to drag in this one: the conditions fix every line of it."
+    },
+    {
+      "slug": "four-squares-ix",
+      "name": "four squares ix",
+      "title": "Four Squares IX",
+      "date": "2025-06-07",
+      "statement": "Four Squares. What's the angle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lqywcmno6s2a",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [],
+      "drawing": "four-squares-ix.lgf",
+      "play": "Nothing to drag in this one: the conditions fix every line of it."
+    },
+    {
+      "slug": "three-regular-hexagons-and-a-semi-circle",
+      "name": "three regular hexagons and a semi-circle",
+      "title": "Three Regular Hexagons and a Semi-Circle",
+      "date": "2025-05-31",
+      "statement": "Three regular hexagons. What’s the diameter of the semicircle?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lqhnq7njg22r",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [],
+      "drawing": "three-regular-hexagons-and-a-semi-circle.lgf",
+      "play": "Slide the blue hexagon's corner along the arc: the red and the yellow hexagons trade sizes while the blue one keeps its side of 2."
+    },
+    {
+      "slug": "four-quarter-circles-ii",
+      "name": "four quarter circles ii",
+      "title": "Four Quarter Circles II",
+      "date": "2025-05-30",
+      "statement": "Four quarter circles. What fraction is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lqewsscomk2g",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ],
+      "drawing": "four-quarter-circles-ii.lgf",
+      "play": "Slide the white quarter circle's corner along the arc. The two pink pieces change shape. How much do they cover together?"
+    },
+    {
+      "slug": "subdivided-triangle-ii",
+      "name": "subdivided triangle ii",
+      "title": "Subdivided Triangle II",
+      "date": "2025-05-29",
+      "statement": "What fraction of the triangle is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3lqcsphprac2d",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [],
+      "drawing": "subdivided-triangle-ii.lgf",
+      "play": "Drag any corner of the triangle. A different triangle every time, the same question."
+    },
+    {
+      "slug": "four-squares-xii",
+      "name": "four squares xii",
+      "title": "Four Squares XII",
+      "date": "2024-02-25",
+      "statement": "The three smaller squares are the same size. What’s the angle?",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "isosceles triangle",
+        "invariance principle"
+      ],
+      "drawing": "four-squares-xii.lgf",
+      "play": "Drag the corner of the left purple square to resize all three. What happens to the angle at the top corner?"
+    },
+    {
+      "slug": "four-squares-xi",
+      "name": "four squares xi",
+      "title": "Four Squares XI",
+      "date": "2024-02-24",
+      "statement": "Four squares. What’s the green area?",
+      "categories": [
+        "Measures",
+        "Transformations and Symmetry",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "similarity",
+        "transformation",
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ],
+      "drawing": "four-squares-xi.lgf",
+      "play": "Slide the foot of the blue rectangle along the bottom: it tilts and grows, and the green square follows."
+    },
+    {
+      "slug": "four-squares-and-an-isosceles-triangle",
+      "name": "four squares and an isosceles triangle",
+      "title": "Four Squares and an Isosceles Triangle",
+      "date": "2023-08-13",
+      "statement": "Four squares and an isosceles triangle. What’s the blue area?",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ],
+      "drawing": "four-squares-and-an-isosceles-triangle.lgf",
+      "play": "Nothing to drag in this one: the conditions fix every line of it."
+    },
+    {
+      "slug": "two-triangles-and-a-quarter-circle",
+      "name": "two triangles and a quarter circle",
+      "title": "Two Triangles and a Quarter Circle",
+      "date": "2023-08-12",
+      "statement": "The green triangles are congruent. What’s the angle?",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle in a semi-circle"
+      ],
+      "drawing": "two-triangles-and-a-quarter-circle.lgf",
+      "play": "Slide the corner the two triangles share: they get wider or narrower. Does the angle move?"
+    },
+    {
+      "slug": "two-squares-and-a-quarter-circle",
+      "name": "two squares and a quarter circle",
+      "title": "Two Squares and a Quarter Circle",
+      "date": "2023-08-11",
+      "statement": "The area of the red square is 12. What’s the total yellow area?",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [],
+      "drawing": "two-squares-and-a-quarter-circle.lgf",
+      "play": "Drag the red square's corner along the diagonal. The yellow strips get thinner as the red square shrinks."
+    },
+    {
+      "slug": "five-squares-ii",
+      "name": "five squares ii",
+      "title": "Five Squares II",
+      "date": "2023-04-14",
+      "statement": "What fraction of the total area is shaded?",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "triangle",
+        "transformation"
+      ],
+      "drawing": "five-squares-ii.lgf",
+      "play": "Every square can be resized by its white corner. However you size them, what fraction is shaded?"
+    },
+    {
+      "slug": "four-rectangles-and-a-hexagon",
+      "name": "four rectangles and a hexagon",
+      "title": "Four Rectangles and a Hexagon",
+      "date": "2023-03-12",
+      "categories": [
+        "Shapes",
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles-and-a-circle",
+      "name": "two quarter circles and a circle",
+      "title": "Two Quarter Circles and a Circle",
+      "date": "2023-02-25",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "subdivided-hexagon-iv",
+      "name": "subdivided hexagon iv",
+      "title": "Subdivided Hexagon IV",
+      "date": "2023-02-17",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-semi-circle-and-a-quarter-circle-in-a-rectangle",
+      "name": "a semi-circle and a quarter circle in a rectangle",
+      "title": "A Semi-Circle and a Quarter Circle in a Rectangle",
+      "date": "2023-02-16",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-viii",
+      "name": "three squares viii",
+      "title": "Three Squares VIII",
+      "date": "2023-02-15",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-lengths-in-a-semi-circle",
+      "name": "three lengths in a semi-circle",
+      "title": "Three Lengths in a Semi-Circle",
+      "date": "2023-02-14",
+      "categories": [
+        "Measures",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "three-squares-vii",
+      "name": "three squares vii",
+      "title": "Three Squares VII",
+      "date": "2023-01-07",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-semi-circle",
+      "name": "subdivided semi-circle",
+      "title": "Subdivided Semi-Circle",
+      "date": "2022-10-26",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-vi",
+      "name": "three squares vi",
+      "title": "Three Squares VI",
+      "date": "2022-10-24",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-and-a-triangle-ii",
+      "name": "four squares and a triangle ii",
+      "title": "Four Squares and a Triangle II",
+      "date": "2022-08-26",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-equilateral-triangles-ii",
+      "name": "five equilateral triangles ii",
+      "title": "Five Equilateral Triangles II",
+      "date": "2022-08-23",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-semi-circles-in-a-rectangle",
+      "name": "three semi-circles in a rectangle",
+      "title": "Three Semi-Circles in a Rectangle",
+      "date": "2022-08-19",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-circle-in-a-rectangle",
+      "name": "a circle in a rectangle",
+      "title": "A Circle in a Rectangle",
+      "date": "2022-08-17",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-iii",
+      "name": "two squares iii",
+      "title": "Two Squares III",
+      "date": "2022-08-16",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "six-rectangles",
+      "name": "six rectangles",
+      "title": "Six Rectangles",
+      "date": "2022-04-19",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-houses-in-a-semi-circle",
+      "name": "four houses in a semi-circle",
+      "title": "Four Houses in a Semi-Circle",
+      "date": "2022-04-14",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-triangles-in-a-square",
+      "name": "two triangles in a square",
+      "title": "Two Triangles in a Square",
+      "date": "2022-04-12",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-hexagon-iii",
+      "name": "subdivided hexagon iii",
+      "title": "Subdivided Hexagon III",
+      "date": "2022-04-04",
+      "categories": [
+        "Shapes",
+        "Algebra"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-and-two-triangles",
+      "name": "three squares and two triangles",
+      "title": "Three Squares and Two Triangles",
+      "date": "2022-03-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-quarter-circle-and-a-semi-circle-in-a-triangle",
+      "name": "a quarter circle and a semi-circle in a triangle",
+      "title": "A Quarter Circle and a Semi-Circle in a Triangle",
+      "date": "2022-02-22",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-and-a-triangle",
+      "name": "four squares and a triangle",
+      "title": "Four Squares and a Triangle",
+      "date": "2022-02-20",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-equilateral-triangles-iii",
+      "name": "two equilateral triangles iii",
+      "title": "Two Equilateral Triangles III",
+      "date": "2022-02-19",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-squares-ii",
+      "name": "two squares ii",
+      "title": "Two Squares II",
+      "date": "2022-02-18",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-squares-and-a-triangle",
+      "name": "three squares and a triangle",
+      "title": "Three Squares and a Triangle",
+      "date": "2022-02-17",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles",
+      "name": "two quarter circles",
+      "title": "Two Quarter Circles",
+      "date": "2022-02-16",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-square-and-a-triangle",
+      "name": "a square and a triangle",
+      "title": "A Square and a Triangle",
+      "date": "2022-02-14",
+      "categories": [
+        "Transformations and Symmetry",
+        "Trigonometry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "a-square-in-a-square",
+      "name": "a square in a square",
+      "title": "A Square in a Square",
+      "date": "2021-12-20",
+      "categories": [
+        "Shapes",
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles",
+      "name": "two rectangles",
+      "title": "Two Rectangles",
+      "date": "2021-11-10",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-triangle-iii",
+      "name": "subdivided triangle iii",
+      "title": "Subdivided Triangle III",
+      "date": "2021-10-23",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-v",
+      "name": "three squares v",
+      "title": "Three Squares V",
+      "date": "2021-09-04",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-semi-circles-in-an-equilateral-triangle",
+      "name": "two semi-circles in an equilateral triangle",
+      "title": "Two Semi-Circles in an Equilateral Triangle",
+      "date": "2021-08-11",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-regular-hexagons-iv",
+      "name": "three regular hexagons iv",
+      "title": "Three Regular Hexagons IV",
+      "date": "2021-08-10",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-regular-polygons",
+      "name": "five regular polygons",
+      "title": "Five Regular Polygons",
+      "date": "2021-08-08",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-squares-and-a-rectangle",
+      "name": "three squares and a rectangle",
+      "title": "Three Squares and a Rectangle",
+      "date": "2021-07-30",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-quarter-circles-ii",
+      "name": "three quarter circles ii",
+      "title": "Three Quarter Circles II",
+      "date": "2021-07-29",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-equilateral-triangles-ii",
+      "name": "two equilateral triangles ii",
+      "title": "Two Equilateral Triangles II",
+      "date": "2021-07-28",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-semi-circles-and-two-quarter-circles",
+      "name": "two semi-circles and two quarter circles",
+      "title": "Two Semi-Circles and Two Quarter Circles",
+      "date": "2021-07-26",
+      "categories": [
+        "Measures",
+        "Trigonometry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "five-squares",
+      "name": "five squares",
+      "title": "Five Squares",
+      "date": "2021-07-25",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "five-rectangles-in-a-semi-circle",
+      "name": "five rectangles in a semi-circle",
+      "title": "Five Rectangles in a Semi-Circle",
+      "date": "2021-07-23",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-and-an-equilateral-triangle-ii",
+      "name": "two squares and an equilateral triangle ii",
+      "title": "Two Squares and an Equilateral Triangle II",
+      "date": "2021-07-18",
+      "categories": [
+        "Shapes",
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles-and-a-square-ii",
+      "name": "two rectangles and a square ii",
+      "title": "Two Rectangles and a Square II",
+      "date": "2021-07-18",
+      "categories": [],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-hexagon-ii",
+      "name": "subdivided hexagon ii",
+      "title": "Subdivided Hexagon II",
+      "date": "2021-07-15",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-congruent-triangles",
+      "name": "four congruent triangles",
+      "title": "Four Congruent Triangles",
+      "date": "2021-07-11",
+      "categories": [
+        "Transformations and Symmetry",
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles",
+      "name": "two circles",
+      "title": "Two Circles",
+      "date": "2021-07-03",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-congruent-rectangles-v",
+      "name": "three congruent rectangles v",
+      "title": "Three Congruent Rectangles V",
+      "date": "2021-05-23",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles-and-a-square",
+      "name": "two rectangles and a square",
+      "title": "Two Rectangles and a Square",
+      "date": "2021-05-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-ii",
+      "name": "three squares ii",
+      "title": "Three Squares II",
+      "date": "2021-05-02",
+      "categories": [
+        "Shapes",
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-overlapping-triangles-ii",
+      "name": "two overlapping triangles ii",
+      "title": "Two Overlapping Triangles II",
+      "date": "2021-04-11",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "symmetry",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-regular-hexagons-iii",
+      "name": "two regular hexagons iii",
+      "title": "Two Regular Hexagons III",
+      "date": "2021-04-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "isosceles-and-equilateral-triangles",
+      "name": "isosceles and equilateral triangles",
+      "title": "Isosceles and Equilateral Triangles",
+      "date": "2021-04-10",
+      "categories": [
+        "Shapes",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "two-concentric-circles",
+      "name": "two concentric circles",
+      "title": "Two Concentric Circles",
+      "date": "2021-04-10",
+      "categories": [
+        "Measures",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "four-squares-and-a-quarter-circle",
+      "name": "four squares and a quarter circle",
+      "title": "Four Squares and a Quarter Circle",
+      "date": "2021-04-09",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "hexagon-and-a-square",
+      "name": "hexagon and a square",
+      "title": "Hexagon and a Square",
+      "date": "2021-04-06",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-quarter-circles-in-a-rectangle",
+      "name": "two quarter circles in a rectangle",
+      "title": "Two Quarter Circles in a Rectangle",
+      "date": "2021-04-05",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-in-a-semi-circle",
+      "name": "four squares in a semi-circle",
+      "title": "Four Squares in a Semi-Circle",
+      "date": "2021-04-04",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "triangle-in-two-tilted-squares",
+      "name": "triangle in two tilted squares",
+      "title": "Triangle in Two Tilted Squares",
+      "date": "2021-04-03",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "quarter-circle-overlapping-a-circle",
+      "name": "quarter circle overlapping a circle",
+      "title": "Quarter Circle Overlapping a Circle",
+      "date": "2021-04-02",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angles in the same segment",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "five-equilateral-triangles",
+      "name": "five equilateral triangles",
+      "title": "Five Equilateral Triangles",
+      "date": "2021-04-01",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-equilateral-triangles-inside-a-hexagon",
+      "name": "four equilateral triangles inside a hexagon",
+      "title": "Four Equilateral Triangles inside a Hexagon",
+      "date": "2021-03-31",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "symmetry"
+      ]
+    },
+    {
+      "slug": "two-quarter-circles-in-a-semi-circle-ii",
+      "name": "two quarter circles in a semi-circle ii",
+      "title": "Two Quarter Circles in a Semi-Circle II",
+      "date": "2021-03-30",
+      "categories": [
+        "Transformations and Symmetry",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "symmetry",
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "three-squares-iii",
+      "name": "three squares iii",
+      "title": "Three Squares III",
+      "date": "2021-03-29",
+      "categories": [
+        "Shapes",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "four-squares-viii",
+      "name": "four squares viii",
+      "title": "Four Squares VIII",
+      "date": "2021-03-28",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "seven-quarter-circles-inside-a-semi-circle",
+      "name": "seven quarter circles inside a semi-circle",
+      "title": "Seven Quarter Circles inside a Semi-Circle",
+      "date": "2021-03-27",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-hexagons-and-a-triangle",
+      "name": "two hexagons and a triangle",
+      "title": "Two Hexagons and a Triangle",
+      "date": "2021-03-26",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "two-squares-inside-a-semi-circle",
+      "name": "two squares inside a semi-circle",
+      "title": "Two Squares inside a Semi-Circle",
+      "date": "2021-03-23",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle in a semi-circle"
+      ]
+    },
+    {
+      "slug": "five-semi-circles",
+      "name": "five semi-circles",
+      "title": "Five Semi-Circles",
+      "date": "2021-03-22",
+      "categories": [
+        "Measures",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "parallelogram law",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-squares-vii",
+      "name": "four squares vii",
+      "title": "Four Squares VII",
+      "date": "2021-03-21",
+      "categories": [
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-parallel-semi-circles",
+      "name": "four parallel semi-circles",
+      "title": "Four Parallel Semi-Circles",
+      "date": "2021-03-20",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-overlapping-hexagons",
+      "name": "three overlapping hexagons",
+      "title": "Three Overlapping Hexagons",
+      "date": "2021-03-19",
+      "categories": [
+        "Shapes",
+        "Measures"
+      ],
+      "techniques": [
+        "hexagon",
+        "dissection"
+      ]
+    },
+    {
+      "slug": "four-squares-vi",
+      "name": "four squares vi",
+      "title": "Four Squares VI",
+      "date": "2021-03-18",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-squares-on-a-hexagon",
+      "name": "two squares on a hexagon",
+      "title": "Two Squares on a Hexagon",
+      "date": "2021-03-17",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "semi-circles-in-a-rectangle",
+      "name": "semi-circles in a rectangle",
+      "title": "Semi-Circles in a Rectangle",
+      "date": "2021-03-16",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-triangles-in-a-hexagon",
+      "name": "three triangles in a hexagon",
+      "title": "Three Triangles in a Hexagon",
+      "date": "2021-03-15",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "striped-semi-circle",
+      "name": "striped semi-circle",
+      "title": "Striped Semi-Circle",
+      "date": "2021-03-14",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles-and-a-semi-circle-ii",
+      "name": "two quarter circles and a semi-circle ii",
+      "title": "Two Quarter Circles and a Semi-Circle II",
+      "date": "2021-03-13",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-quarter-circles",
+      "name": "five quarter circles",
+      "title": "Five Quarter Circles",
+      "date": "2021-03-12",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-hexagon",
+      "name": "subdivided hexagon",
+      "title": "Subdivided Hexagon",
+      "date": "2021-03-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "multiple-semi-circles-iii",
+      "name": "multiple semi-circles iii",
+      "title": "Multiple Semi-Circles III",
+      "date": "2021-03-07",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-overlapping-semi-circles",
+      "name": "three overlapping semi-circles",
+      "title": "Three Overlapping Semi-Circles",
+      "date": "2021-03-06",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-quarter-circles",
+      "name": "three quarter circles",
+      "title": "Three Quarter Circles",
+      "date": "2021-03-02",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-on-a-diameter-of-a-circle",
+      "name": "two squares on a diameter of a circle",
+      "title": "Two Squares on a Diameter of a Circle",
+      "date": "2021-03-01",
+      "categories": [],
+      "techniques": []
+    },
+    {
+      "slug": "a-hexagon-and-a-nonagon",
+      "name": "a hexagon and a nonagon",
+      "title": "A Hexagon and a Nonagon",
+      "date": "2021-02-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-quarter-circles-in-a-circle",
+      "name": "four quarter circles in a circle",
+      "title": "Four Quarter Circles in a Circle",
+      "date": "2021-02-27",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-regular-hexagons-iii",
+      "name": "three regular hexagons iii",
+      "title": "Three Regular Hexagons III",
+      "date": "2021-02-26",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-squares-overlapping-a-square-ii",
+      "name": "two squares overlapping a square ii",
+      "title": "Two Squares Overlapping a Square II",
+      "date": "2021-02-23",
+      "categories": [
+        "Transformations and Symmetry",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "similarity",
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "three-congruent-triangles-ii",
+      "name": "three congruent triangles ii",
+      "title": "Three Congruent Triangles II",
+      "date": "2021-02-21",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-triangles-overlapping-a-quarter-circle",
+      "name": "two triangles overlapping a quarter circle",
+      "title": "Two Triangles Overlapping a Quarter Circle",
+      "date": "2021-02-20",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-congruent-rectangles-iv",
+      "name": "three congruent rectangles iv",
+      "title": "Three Congruent Rectangles IV",
+      "date": "2021-02-19",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "symmetry"
+      ]
+    },
+    {
+      "slug": "three-congruent-triangles-in-a-semi-circle",
+      "name": "three congruent triangles in a semi-circle",
+      "title": "Three Congruent Triangles in a Semi-Circle",
+      "date": "2021-02-18",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "circle"
+      ]
+    },
+    {
+      "slug": "triangle-over-a-circle",
+      "name": "triangle over a circle",
+      "title": "Triangle Over a Circle",
+      "date": "2021-02-17",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "multiple-semi-circles-iv",
+      "name": "multiple semi-circles iv",
+      "title": "Multiple Semi-Circles IV",
+      "date": "2021-02-16",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-v",
+      "name": "four squares v",
+      "title": "Four Squares V",
+      "date": "2021-02-15",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-squares-overlapping-a-square",
+      "name": "two squares overlapping a square",
+      "title": "Two Squares Overlapping a Square",
+      "date": "2021-02-14",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent"
+      ]
+    },
+    {
+      "slug": "zig-zag-inside-a-square",
+      "name": "zig-zag inside a square",
+      "title": "Zig-Zag inside a Square",
+      "date": "2021-02-13",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-in-a-semi-circle",
+      "name": "two semi-circles in a semi-circle",
+      "title": "Two Semi-Circles in a Semi-Circle",
+      "date": "2021-02-11",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "six-triangles-in-a-hexagon",
+      "name": "six triangles in a hexagon",
+      "title": "Six Triangles in a Hexagon",
+      "date": "2021-02-09",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "area"
+      ]
+    },
+    {
+      "slug": "two-overlapping-triangles",
+      "name": "two overlapping triangles",
+      "title": "Two Overlapping Triangles",
+      "date": "2021-02-07",
+      "categories": [
+        "Transformations and Symmetry",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "similarity",
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-squares-inside-a-rectangle",
+      "name": "four squares inside a rectangle",
+      "title": "Four Squares inside a Rectangle",
+      "date": "2021-01-31",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-triangles-in-a-circle-and-semi-circle",
+      "name": "two triangles in a circle and semi-circle",
+      "title": "Two Triangles in a Circle and Semi-Circle",
+      "date": "2021-01-30",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-in-a-rectangle",
+      "name": "triangle in a rectangle",
+      "title": "Triangle in a Rectangle",
+      "date": "2021-01-29",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "multiple-semi-circles-ii",
+      "name": "multiple semi-circles ii",
+      "title": "Multiple Semi-Circles II",
+      "date": "2021-01-27",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "lune"
+      ]
+    },
+    {
+      "slug": "square-overlapping-a-square-and-a-rectangle",
+      "name": "square overlapping a square and a rectangle",
+      "title": "Square Overlapping a Square and a Rectangle",
+      "date": "2021-01-24",
+      "categories": [
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "chord-splitting-a-square-in-half",
+      "name": "chord splitting a square in half",
+      "title": "Chord Splitting a Square in Half",
+      "date": "2021-01-23",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "rectangle-tilted-over-a-square",
+      "name": "rectangle tilted over a square",
+      "title": "Rectangle Tilted Over a Square",
+      "date": "2021-01-16",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "similarity",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "multiple-angles",
+      "name": "multiple angles",
+      "title": "Multiple Angles",
+      "date": "2021-01-10",
+      "categories": [
+        "Shapes",
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-circles-and-two-semi-circles-in-a-circle",
+      "name": "three circles and two semi-circles in a circle",
+      "title": "Three Circles and Two Semi-Circles in a Circle",
+      "date": "2021-01-09",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "four-triangles-in-a-square",
+      "name": "four triangles in a square",
+      "title": "Four Triangles in a Square",
+      "date": "2020-12-31",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "zig-zag-inside-a-rectangle",
+      "name": "zig-zag inside a rectangle",
+      "title": "Zig-Zag inside a Rectangle",
+      "date": "2020-12-30",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-squares-across-a-square",
+      "name": "five squares across a square",
+      "title": "Five Squares across a Square",
+      "date": "2020-12-23",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-and-a-semi-circle",
+      "name": "two squares and a semi-circle",
+      "title": "Two Squares and a Semi-Circle",
+      "date": "2020-12-13",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles-in-a-square-ii",
+      "name": "two circles in a square ii",
+      "title": "Two Circles in a Square II",
+      "date": "2020-10-31",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangles-formed-from-rectangles",
+      "name": "triangles formed from rectangles",
+      "title": "Triangles Formed from Rectangles",
+      "date": "2020-10-29",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "trapezium"
+      ]
+    },
+    {
+      "slug": "three-triangles-in-a-circle-in-a-triangle",
+      "name": "three triangles in a circle in a triangle",
+      "title": "Three Triangles in a Circle in a Triangle",
+      "date": "2020-10-24",
+      "categories": [
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles-in-a-semi-circle",
+      "name": "two quarter circles in a semi-circle",
+      "title": "Two Quarter Circles in a Semi-Circle",
+      "date": "2020-08-31",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-inside-a-triangle",
+      "name": "circle inside a triangle",
+      "title": "Circle inside a Triangle",
+      "date": "2020-08-28",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "similar-rectangles",
+      "name": "similar rectangles",
+      "title": "Similar Rectangles",
+      "date": "2020-08-26",
+      "categories": [
+        "Algebra"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-in-a-circle",
+      "name": "two semi-circles in a circle",
+      "title": "Two Semi-Circles in a Circle",
+      "date": "2020-08-21",
+      "categories": [
+        "Transformations and Symmetry",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "semi-circle-and-quarter-circle-in-a-square",
+      "name": "semi-circle and quarter circle in a square",
+      "title": "Semi-Circle and Quarter Circle in a Square",
+      "date": "2020-08-17",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "multiple-semi-circles-in-a-circle",
+      "name": "multiple semi-circles in a circle",
+      "title": "Multiple Semi-Circles in a Circle",
+      "date": "2020-08-15",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "circle"
+      ]
+    },
+    {
+      "slug": "four-squares-iv",
+      "name": "four squares iv",
+      "title": "Four Squares IV",
+      "date": "2020-08-14",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "triangle-over-two-rectangles",
+      "name": "triangle over two rectangles",
+      "title": "Triangle Over Two Rectangles",
+      "date": "2020-08-07",
+      "categories": [
+        "Shapes",
+        "Measures"
+      ],
+      "techniques": [
+        "triangle",
+        "dissection"
+      ]
+    },
+    {
+      "slug": "subdivided-decagon",
+      "name": "subdivided decagon",
+      "title": "Subdivided Decagon",
+      "date": "2020-07-30",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-congruent-rectangles-and-a-semi-circle",
+      "name": "two congruent rectangles and a semi-circle",
+      "title": "Two Congruent Rectangles and a Semi-Circle",
+      "date": "2020-07-29",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-rectangle-in-a-square",
+      "name": "a rectangle in a square",
+      "title": "A Rectangle in a Square",
+      "date": "2020-07-26",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-half-squares-and-a-circle",
+      "name": "two half-squares and a circle",
+      "title": "Two Half-Squares and a Circle",
+      "date": "2020-07-25",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-congruent-rectangles-iii",
+      "name": "three congruent rectangles iii",
+      "title": "Three Congruent Rectangles III",
+      "date": "2020-07-23",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "squares-and-a-semi-circle",
+      "name": "Squares and a Semi-Circle",
+      "title": "Squares and a Semi-Circle",
+      "date": "2020-07-22",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "circle"
+      ]
+    },
+    {
+      "slug": "semi-circle-in-a-square-in-a-quarter-circle",
+      "name": "semi-circle in a square in a quarter circle",
+      "title": "Semi-Circle in a Square in a Quarter Circle",
+      "date": "2020-07-19",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-triangles-and-three-concentric-semi-circles",
+      "name": "two triangles and three concentric semi-circles",
+      "title": "Two Triangles and Three Concentric Semi-Circles",
+      "date": "2020-07-18",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "equilateral triangle",
+        "similarity"
+      ]
+    },
+    {
+      "slug": "five-congruent-rectangles",
+      "name": "five congruent rectangles",
+      "title": "Five Congruent Rectangles",
+      "date": "2020-07-15",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent"
+      ]
+    },
+    {
+      "slug": "five-rectangles-tiling-a-square",
+      "name": "five rectangles tiling a square",
+      "title": "Five Rectangles Tiling a Square",
+      "date": "2020-07-11",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "rectangle"
+      ]
+    },
+    {
+      "slug": "rectangle-overlapping-a-circle",
+      "name": "rectangle overlapping a circle",
+      "title": "Rectangle Overlapping a Circle",
+      "date": "2020-07-05",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "swirling-semi-circles",
+      "name": "swirling semi-circles",
+      "title": "Swirling Semi-Circles",
+      "date": "2020-06-14",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "hexagon-in-a-quarter-circle",
+      "name": "hexagon in a quarter circle",
+      "title": "Hexagon in a Quarter Circle",
+      "date": "2020-05-31",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "six-semi-circles-inside-a-hexagon",
+      "name": "six semi-circles inside a hexagon",
+      "title": "Six Semi-Circles inside a Hexagon",
+      "date": "2020-05-30",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "four-quarter-circles",
+      "name": "four quarter circles",
+      "title": "Four Quarter Circles",
+      "date": "2020-05-29",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-overlapping-triangles-and-a-circle",
+      "name": "two overlapping triangles and a circle",
+      "title": "Two Overlapping Triangles and a Circle",
+      "date": "2020-05-28",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-squares-diagonally-inside-a-rectangle",
+      "name": "two squares diagonally inside a rectangle",
+      "title": "Two Squares Diagonally inside a Rectangle",
+      "date": "2020-05-26",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "two-circles-and-two-semi-circles",
+      "name": "two circles and two semi-circles",
+      "title": "Two Circles and Two Semi-Circles",
+      "date": "2020-05-25",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-tilted-squares",
+      "name": "two tilted squares",
+      "title": "Two Tilted Squares",
+      "date": "2020-05-23",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "a-circle-and-two-semi-circles-in-two-hexagons",
+      "name": "a circle and two semi-circles in two hexagons",
+      "title": "A Circle and Two Semi-Circles in Two Hexagons",
+      "date": "2020-05-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-overlapping-a-rectangle",
+      "name": "four squares overlapping a rectangle",
+      "title": "Four Squares Overlapping a Rectangle",
+      "date": "2020-05-09",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "tessellation"
+      ]
+    },
+    {
+      "slug": "two-semi-circles-and-a-triangle",
+      "name": "two semi-circles and a triangle",
+      "title": "Two Semi-Circles and a Triangle",
+      "date": "2020-05-08",
+      "categories": [],
+      "techniques": []
+    },
+    {
+      "slug": "a-square-and-a-hexagon",
+      "name": "a square and a hexagon",
+      "title": "A Square and a Hexagon",
+      "date": "2020-05-05",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-circles-in-a-square",
+      "name": "five circles in a square",
+      "title": "Five Circles in a Square",
+      "date": "2020-05-02",
+      "categories": [
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles-in-a-rectangle-in-a-semi-circle",
+      "name": "two quarter circles in a rectangle in a semi-circle",
+      "title": "Two Quarter Circles in a Rectangle in a Semi-Circle",
+      "date": "2020-04-30",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-squares-iii",
+      "name": "four squares iii",
+      "title": "Four Squares III",
+      "date": "2020-04-28",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-squares-ii",
+      "name": "four squares ii",
+      "title": "Four Squares II",
+      "date": "2020-04-26",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles-inside-an-equilateral-triangle",
+      "name": "two circles inside an equilateral triangle",
+      "title": "Two Circles inside an Equilateral Triangle",
+      "date": "2020-04-25",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-congruent-rectangles-ii",
+      "name": "three congruent rectangles ii",
+      "title": "Three Congruent Rectangles II",
+      "date": "2020-04-24",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-congruent-squares-inside-a-larger-square",
+      "name": "four congruent squares inside a larger square",
+      "title": "Four Congruent Squares inside a Larger Square",
+      "date": "2020-04-23",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-and-an-equilateral-triangle",
+      "name": "two semi-circles and an equilateral triangle",
+      "title": "Two Semi-Circles and an Equilateral Triangle",
+      "date": "2020-04-22",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-quarter-circles-and-a-semi-circle",
+      "name": "two quarter circles and a semi-circle",
+      "title": "Two Quarter Circles and a Semi-Circle",
+      "date": "2020-04-21",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "circle",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-stacked-squares",
+      "name": "three stacked squares",
+      "title": "Three Stacked Squares",
+      "date": "2020-04-19",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-circles-in-a-square",
+      "name": "two circles in a square",
+      "title": "Two Circles in a Square",
+      "date": "2020-04-18",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-overlapping-rectangles-ii",
+      "name": "three overlapping rectangles ii",
+      "title": "Three Overlapping Rectangles II",
+      "date": "2020-04-17",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "similarity",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "semi-circle-splitting-a-triangle",
+      "name": "semi-circle splitting a triangle",
+      "title": "Semi-Circle Splitting a Triangle",
+      "date": "2020-04-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-diagonally-across-a-square",
+      "name": "two semi-circles diagonally across a square",
+      "title": "Two Semi-Circles Diagonally across a Square",
+      "date": "2020-04-15",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-neighbouring-rectangles",
+      "name": "two neighbouring rectangles",
+      "title": "Two Neighbouring Rectangles",
+      "date": "2020-04-13",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-overlapping-semi-circles",
+      "name": "two overlapping semi-circles",
+      "title": "Two Overlapping Semi-Circles",
+      "date": "2020-04-12",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "nested-semi-circles",
+      "name": "nested semi-circles",
+      "title": "Nested Semi-Circles",
+      "date": "2020-04-11",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles-in-a-triangle-ii",
+      "name": "two circles in a triangle ii",
+      "title": "Two Circles in a Triangle II",
+      "date": "2020-04-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "tangential-hexagon-and-circle",
+      "name": "tangential hexagon and circle",
+      "title": "Tangential Hexagon and Circle",
+      "date": "2020-04-09",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-overlapping-rectangles",
+      "name": "three overlapping rectangles",
+      "title": "Three Overlapping Rectangles",
+      "date": "2020-04-08",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "tessellation"
+      ]
+    },
+    {
+      "slug": "three-circles-forming-a-triangle",
+      "name": "three circles forming a triangle",
+      "title": "Three Circles Forming a Triangle",
+      "date": "2020-04-07",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "four-squares-in-a-circle",
+      "name": "four squares in a circle",
+      "title": "Four Squares in a Circle",
+      "date": "2020-04-06",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-equal-area-rectangles",
+      "name": "three equal area rectangles",
+      "title": "Three Equal Area Rectangles",
+      "date": "2020-04-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "six-equal-area-rectangles",
+      "name": "six equal area rectangles",
+      "title": "Six Equal Area Rectangles",
+      "date": "2020-04-04",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "angle-formed-by-three-squares",
+      "name": "angle formed by three squares",
+      "title": "Angle Formed by Three Squares",
+      "date": "2020-04-02",
+      "categories": [
+        "Trigonometry"
+      ],
+      "techniques": [
+        "trigonometry"
+      ]
+    },
+    {
+      "slug": "quadrilateral-splitting-a-semi-circle",
+      "name": "quadrilateral splitting a semi-circle",
+      "title": "Quadrilateral Splitting a Semi-Circle",
+      "date": "2020-04-01",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-regular-hexagons-ii",
+      "name": "two regular hexagons ii",
+      "title": "Two Regular Hexagons II",
+      "date": "2020-03-28",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-squares-in-a-circle-ii",
+      "name": "three squares in a circle ii",
+      "title": "Three Squares in a Circle II",
+      "date": "2020-03-21",
+      "categories": [
+        "Algebra"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "rectangle-across-a-rectangle",
+      "name": "rectangle across a rectangle",
+      "title": "Rectangle across a Rectangle",
+      "date": "2020-03-16",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "two-squares-and-an-equilateral-triangle",
+      "name": "two squares and an equilateral triangle",
+      "title": "Two Squares and an Equilateral Triangle",
+      "date": "2020-03-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equation of a shape"
+      ]
+    },
+    {
+      "slug": "quarter-circles-in-a-rectangle-in-a-circle",
+      "name": "quarter circles in a rectangle in a circle",
+      "title": "Quarter Circles in a Rectangle in a Circle",
+      "date": "2020-03-07",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "nested-isosceles-triangles",
+      "name": "nested isosceles triangles",
+      "title": "Nested Isosceles Triangles",
+      "date": "2020-03-05",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-circles-in-a-rectangle-in-a-semi-circle",
+      "name": "five circles in a rectangle in a semi-circle",
+      "title": "Five Circles in a Rectangle in a Semi-Circle",
+      "date": "2020-02-29",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-inside-a-rectangle",
+      "name": "two semi-circles inside a rectangle",
+      "title": "Two Semi-Circles inside a Rectangle",
+      "date": "2020-02-23",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "circle"
+      ]
+    },
+    {
+      "slug": "two-squares-inside-an-equilateral-triangle",
+      "name": "two squares inside an equilateral triangle",
+      "title": "Two Squares inside an Equilateral Triangle",
+      "date": "2020-02-22",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "regular polygon"
+      ]
+    },
+    {
+      "slug": "tilted-rectangle-in-a-square",
+      "name": "tilted rectangle in a square",
+      "title": "Tilted Rectangle in a Square",
+      "date": "2020-02-20",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "symmetry"
+      ]
+    },
+    {
+      "slug": "circle-in-a-quarter-circle",
+      "name": "circle in a quarter circle",
+      "title": "Circle in a Quarter Circle",
+      "date": "2020-02-18",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-semi-circles",
+      "name": "three semi-circles",
+      "title": "Three Semi-Circles",
+      "date": "2020-02-16",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-square-and-a-rectangle-overlapping",
+      "name": "a square and a rectangle overlapping",
+      "title": "A Square and a Rectangle Overlapping",
+      "date": "2020-02-14",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-circles-in-a-hexagon-in-a-circle",
+      "name": "three circles in a hexagon in a circle",
+      "title": "Three Circles in a Hexagon in a Circle",
+      "date": "2020-02-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "three-circles",
+      "name": "three circles",
+      "title": "Three Circles",
+      "date": "2020-02-08",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-in-a-triangle",
+      "name": "three squares in a triangle",
+      "title": "Three Squares in a Triangle",
+      "date": "2020-02-04",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "four-squares",
+      "name": "four squares",
+      "title": "Four Squares",
+      "date": "2020-02-01",
+      "categories": [
+        "Measures",
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "dissection",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "arcs-in-a-semi-circle",
+      "name": "arcs in a semi-circle",
+      "title": "Arcs in a Semi-Circle",
+      "date": "2020-01-30",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-isoscelese-triangles-inside-a-triangle",
+      "name": "three isoscelese triangles inside a triangle",
+      "title": "Three Isoscelese Triangles inside a Triangle",
+      "date": "2020-01-23",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "square-and-rectangle-overlapping-in-a-semi-circle",
+      "name": "square and rectangle overlapping in a semi-circle",
+      "title": "Square and Rectangle Overlapping in a Semi-Circle",
+      "date": "2020-01-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-stacked-squares-and-a-fourth-square",
+      "name": "three stacked squares and a fourth square",
+      "title": "Three Stacked Squares and a Fourth Square",
+      "date": "2020-01-12",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent"
+      ]
+    },
+    {
+      "slug": "parallelogram-area",
+      "name": "parallelogram area",
+      "title": "Parallelogram Area",
+      "date": "2020-01-07",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares",
+      "name": "three squares",
+      "title": "Three Squares",
+      "date": "2020-01-04",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-iv",
+      "name": "three squares iv",
+      "title": "Three Squares IV",
+      "date": "2020-01-01",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "parallelogram-in-a-rectangle",
+      "name": "parallelogram in a rectangle",
+      "title": "Parallelogram in a Rectangle",
+      "date": "2020-01-01",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-circles-in-a-rectangle",
+      "name": "three circles in a rectangle",
+      "title": "Three Circles in a Rectangle",
+      "date": "2019-12-31",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "two-semi-circles-inside-a-semi-circle",
+      "name": "two semi-circles inside a semi-circle",
+      "title": "Two Semi-Circles inside a Semi-Circle",
+      "date": "2019-12-29",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares",
+      "name": "two squares",
+      "title": "Two Squares",
+      "date": "2019-12-28",
+      "categories": [
+        "Shapes",
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-and-an-equilateral-triangle",
+      "name": "three squares and an equilateral triangle",
+      "title": "Three Squares and an Equilateral Triangle",
+      "date": "2019-12-26",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "pentagram-in-a-circle",
+      "name": "pentagram in a circle",
+      "title": "Pentagram in a Circle",
+      "date": "2019-12-24",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "rectangle-quartered-by-semi-circles",
+      "name": "rectangle quartered by semi-circles",
+      "title": "Rectangle Quartered by Semi-Circles",
+      "date": "2019-12-23",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "chord-dividing-a-triangle-into-two",
+      "name": "chord dividing a triangle into two",
+      "title": "Chord Dividing a Triangle Into Two",
+      "date": "2019-12-22",
+      "categories": [],
+      "techniques": []
+    },
+    {
+      "slug": "two-pentagons",
+      "name": "two pentagons",
+      "title": "Two Pentagons",
+      "date": "2019-12-20",
+      "categories": [
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-circles-in-a-rectangle",
+      "name": "two circles in a rectangle",
+      "title": "Two Circles in a Rectangle",
+      "date": "2019-12-17",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "angle-formed-by-three-rectangles",
+      "name": "angle formed by three rectangles",
+      "title": "Angle Formed by Three Rectangles",
+      "date": "2019-12-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-rectangles-in-a-square",
+      "name": "two rectangles in a square",
+      "title": "Two Rectangles in a Square",
+      "date": "2019-12-12",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "area"
+      ]
+    },
+    {
+      "slug": "five-semi-circles-around-a-rectangle",
+      "name": "five semi-circles around a rectangle",
+      "title": "Five Semi-Circles Around a Rectangle",
+      "date": "2019-12-11",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-equal-angles-in-a-rectangle",
+      "name": "three equal angles in a rectangle",
+      "title": "Three Equal Angles in a Rectangle",
+      "date": "2019-12-07",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-square-a-circle-and-a-rectangle",
+      "name": "a square, a circle, and a rectangle",
+      "title": "A Square, a Circle, and a Rectangle",
+      "date": "2019-12-04",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-right-angled-triangles",
+      "name": "three right-angled triangles",
+      "title": "Three Right-Angled Triangles",
+      "date": "2019-11-30",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles-overlapping-a-square",
+      "name": "two rectangles overlapping a square",
+      "title": "Two Rectangles Overlapping a Square",
+      "date": "2019-11-24",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "areas-in-a-crossed-trapezium",
+      "name": "areas in a crossed trapezium",
+      "title": "Areas in a Crossed Trapezium",
+      "date": "2019-11-20",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "trapezium"
+      ]
+    },
+    {
+      "slug": "seven-hexagons",
+      "name": "seven hexagons",
+      "title": "Seven Hexagons",
+      "date": "2019-11-18",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-pattern-of-squares",
+      "name": "a pattern of squares",
+      "title": "A Pattern of Squares",
+      "date": "2019-11-17",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-hexagons-and-a-rectangle",
+      "name": "three hexagons and a rectangle",
+      "title": "Three Hexagons and a Rectangle",
+      "date": "2019-11-15",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "six-circles-inside-a-circle-inside-a-square",
+      "name": "six circles inside a circle inside a square",
+      "title": "Six Circles inside a Circle inside a Square",
+      "date": "2019-11-09",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "stacked-squares-inside-two-squares",
+      "name": "stacked squares inside two squares",
+      "title": "Stacked Squares inside Two Squares",
+      "date": "2019-11-07",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "three-squares-inside-a-triangle",
+      "name": "three squares inside a triangle",
+      "title": "Three Squares inside a Triangle",
+      "date": "2019-10-30",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-congruent-triangles",
+      "name": "three congruent triangles",
+      "title": "Three Congruent Triangles",
+      "date": "2019-10-29",
+      "categories": [
+        "Transformations and Symmetry",
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-inside-a-semi-circle-ii",
+      "name": "two semi-circles inside a semi-circle ii",
+      "title": "Two Semi-Circles inside a Semi-Circle II",
+      "date": "2019-10-27",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "multiple-semi-circles",
+      "name": "multiple semi-circles",
+      "title": "Multiple Semi-Circles",
+      "date": "2019-10-25",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "circle"
+      ]
+    },
+    {
+      "slug": "two-congruent-rectangles-in-a-square",
+      "name": "two congruent rectangles in a square",
+      "title": "Two Congruent Rectangles in a Square",
+      "date": "2019-10-24",
+      "categories": [
+        "Shapes",
+        "Algebra"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-circles-in-a-rectangle-ii",
+      "name": "three circles in a rectangle ii",
+      "title": "Three Circles in a Rectangle II",
+      "date": "2019-10-19",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "overlapping-triangles-in-a-circle",
+      "name": "overlapping triangles in a circle",
+      "title": "Overlapping Triangles in a Circle",
+      "date": "2019-10-13",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "diagonal-in-a-square",
+      "name": "diagonal in a square",
+      "title": "Diagonal in a Square",
+      "date": "2019-10-11",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "seven-circles",
+      "name": "seven circles",
+      "title": "Seven Circles",
+      "date": "2019-10-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "angles-in-two-hexagons",
+      "name": "angles in two hexagons",
+      "title": "Angles in Two Hexagons",
+      "date": "2019-09-28",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-overlapping-squares",
+      "name": "three overlapping squares",
+      "title": "Three Overlapping Squares",
+      "date": "2019-09-19",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "four-squares-and-a-semi-circle",
+      "name": "four squares and a semi-circle",
+      "title": "Four Squares and a Semi-Circle",
+      "date": "2019-09-07",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "two-overlapping-hexagons-and-a-rectangle",
+      "name": "two overlapping hexagons and a rectangle",
+      "title": "Two Overlapping Hexagons and a Rectangle",
+      "date": "2019-09-02",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles-of-equal-area",
+      "name": "two rectangles of equal area",
+      "title": "Two Rectangles of Equal Area",
+      "date": "2019-08-31",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-overlapping-a-semi-circle",
+      "name": "three squares overlapping a semi-circle",
+      "title": "Three Squares Overlapping a Semi-Circle",
+      "date": "2019-08-29",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "two-hexagons-and-a-square",
+      "name": "two hexagons and a square",
+      "title": "Two Hexagons and a Square",
+      "date": "2019-08-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "four-hexagons",
+      "name": "four hexagons",
+      "title": "Four Hexagons",
+      "date": "2019-08-26",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "transformation"
+      ]
+    },
+    {
+      "slug": "two-squares-in-a-semi-circle",
+      "name": "two squares in a semi-circle",
+      "title": "Two Squares in a Semi-Circle",
+      "date": "2019-08-24",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-squares-in-a-semi-circle",
+      "name": "three squares in a semi-circle",
+      "title": "Three Squares in a Semi-Circle",
+      "date": "2019-08-23",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "three-congruent-squares-overlapping-a-square",
+      "name": "three congruent squares overlapping a square",
+      "title": "Three Congruent Squares Overlapping a Square",
+      "date": "2019-08-22",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-triangles-in-a-square",
+      "name": "three triangles in a square",
+      "title": "Three Triangles in a Square",
+      "date": "2019-08-20",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "trisected-hexagon",
+      "name": "trisected hexagon",
+      "title": "Trisected Hexagon",
+      "date": "2019-08-19",
+      "categories": [
+        "Trigonometry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-congruent-quadrilaterals-and-a-rectangle",
+      "name": "two congruent quadrilaterals and a rectangle",
+      "title": "Two Congruent Quadrilaterals and a Rectangle",
+      "date": "2019-08-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circle-in-a-square-ii",
+      "name": "semi-circle in a square ii",
+      "title": "Semi-Circle in a Square II",
+      "date": "2019-08-14",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-in-pentagon-in-semi-circle",
+      "name": "circle in pentagon in semi-circle",
+      "title": "Circle in Pentagon in Semi-Circle",
+      "date": "2019-08-11",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "pentagon"
+      ]
+    },
+    {
+      "slug": "rectangles-in-concentric-rings",
+      "name": "rectangles in concentric rings",
+      "title": "Rectangles in Concentric Rings",
+      "date": "2019-08-09",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-regular-hexagons-ii",
+      "name": "three regular hexagons ii",
+      "title": "Three Regular Hexagons II",
+      "date": "2019-08-08",
+      "categories": [
+        "Shapes",
+        "Other Techniques"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "one-rectangle-inside-another-with-semi-circles",
+      "name": "one rectangle inside another with semi-circles",
+      "title": "One Rectangle inside Another with Semi-Circles",
+      "date": "2019-08-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-rectangles-and-a-semi-circle",
+      "name": "two rectangles and a semi-circle",
+      "title": "Two Rectangles and a Semi-Circle",
+      "date": "2019-08-03",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-equilateral-triangles-and-a-semi-circle",
+      "name": "three equilateral triangles and a semi-circle",
+      "title": "Three Equilateral Triangles and a Semi-Circle",
+      "date": "2019-08-02",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-circles-in-a-semi-circle",
+      "name": "three circles in a semi-circle",
+      "title": "Three Circles in a Semi-Circle",
+      "date": "2019-08-01",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "upside-down-semi-circles-in-a-semi-circle",
+      "name": "upside-down semi-circles in a semi-circle",
+      "title": "Upside-Down Semi-Circles in a Semi-Circle",
+      "date": "2019-07-30",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "stacked-triangles",
+      "name": "stacked triangles",
+      "title": "Stacked Triangles",
+      "date": "2019-07-29",
+      "categories": [
+        "Measures",
+        "Trigonometry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "triangles-in-a-dodecagon",
+      "name": "triangles in a dodecagon",
+      "title": "Triangles in a Dodecagon",
+      "date": "2019-07-27",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "angle-formed-by-two-squares-ii",
+      "name": "angle formed by two squares ii",
+      "title": "Angle Formed by Two Squares II",
+      "date": "2019-07-26",
+      "categories": [
+        "Shapes",
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "isosceles triangle",
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "three-parallel-semi-circles",
+      "name": "three parallel semi-circles",
+      "title": "Three Parallel Semi-Circles",
+      "date": "2019-07-24",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circle-in-a-right-angled-triangle",
+      "name": "semi-circle in a right-angled triangle",
+      "title": "Semi-Circle in a Right-Angled Triangle",
+      "date": "2019-07-23",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle between a radius and tangent"
+      ]
+    },
+    {
+      "slug": "three-congruent-squares-in-a-rectangle",
+      "name": "three congruent squares in a rectangle",
+      "title": "Three Congruent Squares in a Rectangle",
+      "date": "2019-07-22",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "three-hexagons-in-a-trapezium",
+      "name": "three hexagons in a trapezium",
+      "title": "Three Hexagons in a Trapezium",
+      "date": "2019-07-20",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "regular-hexagon-and-rectangle",
+      "name": "regular hexagon and rectangle",
+      "title": "Regular Hexagon and Rectangle",
+      "date": "2019-07-12",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "stack-of-congruent-rectangles",
+      "name": "stack of congruent rectangles",
+      "title": "Stack of Congruent Rectangles",
+      "date": "2019-06-28",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "angles-in-a-circle",
+      "name": "angles in a circle",
+      "title": "Angles in a Circle",
+      "date": "2019-06-27",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "striped-dodecagon",
+      "name": "striped dodecagon",
+      "title": "Striped Dodecagon",
+      "date": "2019-06-24",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-squares-overlapping-a-third-square",
+      "name": "two squares overlapping a third square",
+      "title": "Two Squares Overlapping a Third Square",
+      "date": "2019-06-15",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-and-a-semi-circle",
+      "name": "three squares and a semi-circle",
+      "title": "Three Squares and a Semi-Circle",
+      "date": "2019-06-07",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-congruent-rectangles",
+      "name": "three congruent rectangles",
+      "title": "Three Congruent Rectangles",
+      "date": "2019-06-04",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "rectangle-circle-and-triangle",
+      "name": "rectangle, circle, and triangle",
+      "title": "Rectangle, Circle, and Triangle",
+      "date": "2019-06-01",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-regular-hexagons",
+      "name": "two regular hexagons",
+      "title": "Two Regular Hexagons",
+      "date": "2019-05-30",
+      "categories": [
+        "Circle Theorems",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "angle-in-a-circle-and-semi-circle",
+      "name": "angle in a circle and semi-circle",
+      "title": "Angle in a Circle and Semi-Circle",
+      "date": "2019-05-28",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-and-two-squares",
+      "name": "circle and two squares",
+      "title": "Circle and Two Squares",
+      "date": "2019-05-26",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent"
+      ]
+    },
+    {
+      "slug": "divided-hexagon",
+      "name": "divided hexagon",
+      "title": "Divided Hexagon",
+      "date": "2019-05-25",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-overlapping-squares",
+      "name": "two overlapping squares",
+      "title": "Two Overlapping Squares",
+      "date": "2019-05-20",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-in-a-triangle",
+      "name": "two squares in a triangle",
+      "title": "Two Squares in a Triangle",
+      "date": "2019-05-19",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "a-semi-circle-and-quarter-circle-in-a-square",
+      "name": "a semi-circle and quarter circle in a square",
+      "title": "A Semi-Circle and Quarter Circle in a Square",
+      "date": "2019-05-17",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-triangle-and-hexagon",
+      "name": "overlapping triangle and hexagon",
+      "title": "Overlapping Triangle and Hexagon",
+      "date": "2019-05-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-triangle-and-rectangle",
+      "name": "overlapping triangle and rectangle",
+      "title": "Overlapping Triangle and Rectangle",
+      "date": "2019-05-10",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "divided-hexagon-ii",
+      "name": "divided hexagon ii",
+      "title": "Divided Hexagon II",
+      "date": "2019-05-08",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circle-between-two-quarter-circles",
+      "name": "semi-circle between two quarter circles",
+      "title": "Semi-Circle Between Two Quarter Circles",
+      "date": "2019-05-06",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-and-two-equilateral-triangles-iii",
+      "name": "two squares and two equilateral triangles iii",
+      "title": "Two Squares and Two Equilateral Triangles III",
+      "date": "2019-05-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-and-two-equilateral-triangles-ii",
+      "name": "two squares and two equilateral triangles ii",
+      "title": "Two Squares and Two Equilateral Triangles II",
+      "date": "2019-05-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "angles-in-two-circles",
+      "name": "angles in two circles",
+      "title": "Angles in Two Circles",
+      "date": "2019-05-03",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "square-with-midpoints",
+      "name": "square with midpoints",
+      "title": "Square with Midpoints",
+      "date": "2019-05-01",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "angle-formed-by-two-squares",
+      "name": "angle formed by two squares",
+      "title": "Angle Formed by Two Squares",
+      "date": "2019-04-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "two-circles-inside-two-polygons-inside-a-circle",
+      "name": "two circles inside two polygons inside a circle",
+      "title": "Two Circles inside Two Polygons inside a Circle",
+      "date": "2019-04-26",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "quartered-hexagon",
+      "name": "quartered hexagon",
+      "title": "Quartered Hexagon",
+      "date": "2019-04-24",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-in-a-square",
+      "name": "two semi-circles in a square",
+      "title": "Two Semi-Circles in a Square",
+      "date": "2019-04-22",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-semi-circles-around-a-triangle",
+      "name": "three semi-circles around a triangle",
+      "title": "Three Semi-Circles Around a Triangle",
+      "date": "2019-04-20",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-overlapping-squares-ii",
+      "name": "two overlapping squares ii",
+      "title": "Two Overlapping Squares II",
+      "date": "2019-04-18",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-rectangles-with-diagonals",
+      "name": "two rectangles with diagonals",
+      "title": "Two Rectangles with Diagonals",
+      "date": "2019-04-17",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-semi-circles-and-a-rectangle",
+      "name": "two semi-circles and a rectangle",
+      "title": "Two Semi-Circles and a Rectangle",
+      "date": "2019-04-16",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "semi-circle-on-a-hexagon",
+      "name": "semi-circle on a hexagon",
+      "title": "Semi-Circle on a Hexagon",
+      "date": "2019-04-14",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "divided-square",
+      "name": "divided square",
+      "title": "Divided Square",
+      "date": "2019-04-12",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-adjacent-triangles",
+      "name": "three adjacent triangles",
+      "title": "Three Adjacent Triangles",
+      "date": "2019-04-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "triangle-and-circle-inside-square",
+      "name": "triangle and circle inside square",
+      "title": "Triangle and Circle inside Square",
+      "date": "2019-04-07",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-on-a-triangle",
+      "name": "two squares on a triangle",
+      "title": "Two Squares on a Triangle",
+      "date": "2019-04-04",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "square-rectangle-and-two-semi-circles",
+      "name": "square, rectangle, and two semi-circles",
+      "title": "Square, Rectangle, and Two Semi-Circles",
+      "date": "2019-04-03",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "three-triangles-and-a-rectangle-inside-a-circle",
+      "name": "three triangles and a rectangle inside a circle",
+      "title": "Three Triangles and a Rectangle inside a Circle",
+      "date": "2019-03-30",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-inside-a-square",
+      "name": "triangle inside a square",
+      "title": "Triangle inside a Square",
+      "date": "2019-03-26",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-inside-circle-and-triangle",
+      "name": "triangle inside circle and triangle",
+      "title": "Triangle inside Circle and Triangle",
+      "date": "2019-03-20",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-in-triangle-in-square",
+      "name": "circle in triangle in square",
+      "title": "Circle in Triangle in Square",
+      "date": "2019-03-17",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "quarter-circles-in-a-square-in-a-circle",
+      "name": "quarter circles in a square in a circle",
+      "title": "Quarter Circles in a Square in a Circle",
+      "date": "2019-03-16",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "triangle-overlapping-a-hexagon",
+      "name": "triangle overlapping a hexagon",
+      "title": "Triangle Overlapping a Hexagon",
+      "date": "2019-03-13",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles-in-a-triangle",
+      "name": "two circles in a triangle",
+      "title": "Two Circles in a Triangle",
+      "date": "2019-03-10",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "inverse-star-in-a-rectangle",
+      "name": "inverse star in a rectangle",
+      "title": "Inverse Star in a Rectangle",
+      "date": "2019-03-07",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle",
+        "isosceles triangle"
+      ]
+    },
+    {
+      "slug": "three-overlapping-circles",
+      "name": "three overlapping circles",
+      "title": "Three Overlapping Circles",
+      "date": "2019-03-03",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-tilted-rectangles",
+      "name": "three tilted rectangles",
+      "title": "Three Tilted Rectangles",
+      "date": "2019-03-01",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-hexagons",
+      "name": "overlapping hexagons",
+      "title": "Overlapping Hexagons",
+      "date": "2019-02-26",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "square-overlapping-a-quarter-circle",
+      "name": "square overlapping a quarter circle",
+      "title": "Square Overlapping a Quarter Circle",
+      "date": "2019-02-24",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-hexagons-in-a-rectangle",
+      "name": "two hexagons in a rectangle",
+      "title": "Two Hexagons in a Rectangle",
+      "date": "2019-02-23",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "semi-circle-in-a-circle",
+      "name": "semi-circle in a circle",
+      "title": "Semi-Circle in a Circle",
+      "date": "2019-02-22",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "two-triangles-overlapping-a-rectangle",
+      "name": "two triangles overlapping a rectangle",
+      "title": "Two Triangles Overlapping a Rectangle",
+      "date": "2019-02-21",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "square-on-an-octagon",
+      "name": "square on an octagon",
+      "title": "Square on an Octagon",
+      "date": "2019-02-19",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-and-semi-circle-in-triangle",
+      "name": "circle and semi-circle in triangle",
+      "title": "Circle and Semi-Circle in Triangle",
+      "date": "2019-02-18",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-triangles",
+      "name": "overlapping triangles",
+      "title": "Overlapping Triangles",
+      "date": "2019-02-16",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "rectangle"
+      ]
+    },
+    {
+      "slug": "tilted-rectangles",
+      "name": "tilted rectangles",
+      "title": "Tilted Rectangles",
+      "date": "2019-02-13",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "parallelogram"
+      ]
+    },
+    {
+      "slug": "triangle-in-semi-circle-with-square",
+      "name": "triangle in semi-circle with square",
+      "title": "Triangle in Semi-Circle with Square",
+      "date": "2019-02-11",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circles-in-overlapping-triangles",
+      "name": "circles in overlapping triangles",
+      "title": "Circles in Overlapping Triangles",
+      "date": "2019-02-07",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "tilted-triangles",
+      "name": "tilted triangles",
+      "title": "Tilted Triangles",
+      "date": "2019-02-02",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "angle at the circumference is half that at the centre"
+      ]
+    },
+    {
+      "slug": "two-quarter-circles-in-a-square",
+      "name": "two quarter circles in a square",
+      "title": "Two Quarter Circles in a Square",
+      "date": "2019-01-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-and-a-rectangle-in-an-octagon",
+      "name": "two squares and a rectangle in an octagon",
+      "title": "Two Squares and a Rectangle in an Octagon",
+      "date": "2019-01-26",
+      "categories": [
+        "Shapes",
+        "Measures"
+      ],
+      "techniques": [
+        "square",
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "square-overlapping-a-circle",
+      "name": "square overlapping a circle",
+      "title": "Square Overlapping a Circle",
+      "date": "2019-01-25",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "six-semi-circles-in-a-circle",
+      "name": "six semi-circles in a circle",
+      "title": "Six Semi-Circles in a Circle",
+      "date": "2019-01-21",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "rectangle-on-a-hexagon",
+      "name": "rectangle on a hexagon",
+      "title": "Rectangle on a Hexagon",
+      "date": "2019-01-19",
+      "categories": [
+        "Measures",
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "dissection",
+        "transformation",
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-squares-on-a-circle",
+      "name": "two squares on a circle",
+      "title": "Two Squares on a Circle",
+      "date": "2019-01-16",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "pentagon-with-two-semi-circles",
+      "name": "pentagon with two semi-circles",
+      "title": "Pentagon with Two Semi-Circles",
+      "date": "2019-01-14",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "striped-hexagon",
+      "name": "striped hexagon",
+      "title": "Striped Hexagon",
+      "date": "2019-01-13",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "tessellation"
+      ]
+    },
+    {
+      "slug": "circle-in-a-hexagon-in-a-semi-circle",
+      "name": "circle in a hexagon in a semi-circle",
+      "title": "Circle in a Hexagon in a Semi-Circle",
+      "date": "2019-01-11",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-rectangle-and-semi-circle",
+      "name": "overlapping rectangle and semi-circle",
+      "title": "Overlapping Rectangle and Semi-Circle",
+      "date": "2019-01-05",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-rectangles-in-a-semi-circle",
+      "name": "two rectangles in a semi-circle",
+      "title": "Two Rectangles in a Semi-Circle",
+      "date": "2018-12-31",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "divided-hexagon-iii",
+      "name": "divided hexagon iii",
+      "title": "Divided Hexagon III",
+      "date": "2018-12-30",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circles-around-a-triangle",
+      "name": "circles around a triangle",
+      "title": "Circles Around a Triangle",
+      "date": "2018-12-16",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "rectangles-stacked-in-a-semi-circle",
+      "name": "rectangles stacked in a semi-circle",
+      "title": "Rectangles Stacked in a Semi-Circle",
+      "date": "2018-12-12",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-circles-two-squares",
+      "name": "two circles, two squares",
+      "title": "Two Circles, Two Squares",
+      "date": "2018-12-11",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "subdivided-square",
+      "name": "subdivided square",
+      "title": "Subdivided Square",
+      "date": "2018-12-05",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "chords-dividing-a-triangle-into-five",
+      "name": "chords dividing a triangle into five",
+      "title": "Chords Dividing a Triangle Into Five",
+      "date": "2018-12-03",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "three-rectangles-as-a-triangle",
+      "name": "three rectangles as a triangle",
+      "title": "Three Rectangles As a Triangle",
+      "date": "2018-12-01",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "partitioned-square",
+      "name": "partitioned square",
+      "title": "Partitioned Square",
+      "date": "2018-11-28",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-squares-overlapping-a-semi-circle",
+      "name": "two squares overlapping a semi-circle",
+      "title": "Two Squares Overlapping a Semi-Circle",
+      "date": "2018-11-26",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-triangles-in-a-rectangle",
+      "name": "five triangles in a rectangle",
+      "title": "Five Triangles in a Rectangle",
+      "date": "2018-11-25",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "nested-circles-and-a-triangle",
+      "name": "nested circles and a triangle",
+      "title": "Nested Circles and a Triangle",
+      "date": "2018-11-24",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "square-in-a-triangle-in-a-square",
+      "name": "square in a triangle in a square",
+      "title": "Square in a Triangle in a Square",
+      "date": "2018-11-23",
+      "categories": [
+        "Measures",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "quarter-circles-in-a-rectangle",
+      "name": "quarter circles in a rectangle",
+      "title": "Quarter Circles in a Rectangle",
+      "date": "2018-11-22",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circles-in-a-quarter-circle",
+      "name": "semi-circles in a quarter circle",
+      "title": "Semi-Circles in a Quarter Circle",
+      "date": "2018-11-21",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "three-squares-on-a-line",
+      "name": "three squares on a line",
+      "title": "Three Squares on a Line",
+      "date": "2018-11-19",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "nested-circles-and-polygons",
+      "name": "nested circles and polygons",
+      "title": "Nested Circles and Polygons",
+      "date": "2018-11-18",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circle-and-tangents-in-a-square",
+      "name": "semi-circle and tangents in a square",
+      "title": "Semi-Circle and Tangents in a Square",
+      "date": "2018-11-17",
+      "categories": [
+        "Measures",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "equilateral-triangle-in-a-hexagon",
+      "name": "equilateral triangle in a hexagon",
+      "title": "Equilateral Triangle in a Hexagon",
+      "date": "2018-11-17",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-regular-hexagons",
+      "name": "three regular hexagons",
+      "title": "Three Regular Hexagons",
+      "date": "2018-11-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "hexagon"
+      ]
+    },
+    {
+      "slug": "triangles-in-a-semi-circle",
+      "name": "triangles in a semi-circle",
+      "title": "Triangles in a Semi-Circle",
+      "date": "2018-11-13",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "equilateral-triangles-in-a-square",
+      "name": "equilateral triangles in a square",
+      "title": "Equilateral Triangles in a Square",
+      "date": "2018-11-12",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "three-aligned-triangles",
+      "name": "three aligned triangles",
+      "title": "Three Aligned Triangles",
+      "date": "2018-11-11",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "crossed-hexagon",
+      "name": "crossed hexagon",
+      "title": "Crossed Hexagon",
+      "date": "2018-11-10",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "trapezium"
+      ]
+    },
+    {
+      "slug": "square-in-a-semi-circle-in-a-square",
+      "name": "square in a semi-circle in a square",
+      "title": "Square in a Semi-Circle in a Square",
+      "date": "2018-11-08",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-equilateral-triangles-in-a-semi-circle",
+      "name": "two equilateral triangles in a semi-circle",
+      "title": "Two Equilateral Triangles in a Semi-Circle",
+      "date": "2018-11-07",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-in-a-circle",
+      "name": "three squares in a circle",
+      "title": "Three Squares in a Circle",
+      "date": "2018-11-05",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "square-in-a-circle-in-a-quarter-circle-in-a-square",
+      "name": "square in a circle in a quarter circle in a square",
+      "title": "Square in a Circle in a Quarter Circle in a Square",
+      "date": "2018-11-04",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "triangle-in-a-circle-in-a-quarter-circle-in-a-square",
+      "name": "triangle in a circle in a quarter circle in a square",
+      "title": "Triangle in a Circle in a Quarter Circle in a Square",
+      "date": "2018-11-04",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "arcs-inside-a-triangle",
+      "name": "arcs inside a triangle",
+      "title": "Arcs inside a Triangle",
+      "date": "2018-11-02",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "quadrilateral-from-two-squares-in-a-square",
+      "name": "quadrilateral from two squares in a square",
+      "title": "Quadrilateral from Two Squares in a Square",
+      "date": "2018-10-30",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-centres-and-square-corners",
+      "name": "triangle centres and square corners",
+      "title": "Triangle Centres and Square Corners",
+      "date": "2018-10-29",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "hexagon-and-concentric-circles",
+      "name": "hexagon and concentric circles",
+      "title": "Hexagon and Concentric Circles",
+      "date": "2018-10-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "chord-and-annulus",
+      "name": "chord and annulus",
+      "title": "Chord and Annulus",
+      "date": "2018-10-27",
+      "categories": [
+        "Measures",
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "dissected-hexagon",
+      "name": "dissected hexagon",
+      "title": "Dissected Hexagon",
+      "date": "2018-10-26",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circles-in-rhombii-sequal",
+      "name": "circles in rhombii sequal",
+      "title": "Circles in Rhombii Sequal",
+      "date": "2018-10-26",
+      "categories": [],
+      "techniques": []
+    },
+    {
+      "slug": "circles-in-triangle-and-rhombus",
+      "name": "circles in triangle and rhombus",
+      "title": "Circles in Triangle and Rhombus",
+      "date": "2018-10-25",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circles-resting-on-triangles",
+      "name": "circles resting on triangles",
+      "title": "Circles Resting on Triangles",
+      "date": "2018-10-24",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "arbelos",
+      "name": "arbelos",
+      "title": "Arbelos",
+      "date": "2018-10-23",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "four-circles-in-a-triangle-in-a-circle",
+      "name": "four circles in a triangle in a circle",
+      "title": "Four Circles in a Triangle in a Circle",
+      "date": "2018-10-22",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "triangles-with-a-parallelogram",
+      "name": "triangles with a parallelogram",
+      "title": "Triangles with a Parallelogram",
+      "date": "2018-10-21",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "three-squares-in-a-square",
+      "name": "three squares in a square",
+      "title": "Three Squares in a Square",
+      "date": "2018-10-18",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "similarity"
+      ]
+    },
+    {
+      "slug": "two-circles-in-an-equilateral-triangle",
+      "name": "two circles in an equilateral triangle",
+      "title": "Two Circles in an Equilateral Triangle",
+      "date": "2018-10-17",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "semi-circles-in-a-square",
+      "name": "semi-circles in a square",
+      "title": "Semi-Circles in a Square",
+      "date": "2018-10-15",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "dissection"
+      ]
+    },
+    {
+      "slug": "five-rectangles-in-a-square",
+      "name": "five rectangles in a square",
+      "title": "Five Rectangles in a Square",
+      "date": "2018-10-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "five-overlapping-circles",
+      "name": "five overlapping circles",
+      "title": "Five Overlapping Circles",
+      "date": "2018-10-11",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "four-regular-polygons",
+      "name": "four regular polygons",
+      "title": "Four Regular Polygons",
+      "date": "2018-10-08",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "congruent",
+        "transformation"
+      ]
+    },
+    {
+      "slug": "four-squares-around-a-quadrilateral",
+      "name": "four squares around a quadrilateral",
+      "title": "Four Squares Around a Quadrilateral",
+      "date": "2018-10-07",
+      "categories": [
+        "Shapes",
+        "Trigonometry"
+      ],
+      "techniques": [
+        "triangle",
+        "sine rule"
+      ]
+    },
+    {
+      "slug": "two-perpendicular-equilateral-triangles",
+      "name": "two perpendicular equilateral triangles",
+      "title": "Two Perpendicular Equilateral Triangles",
+      "date": "2018-10-06",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "nested-circles-and-polygons-ii",
+      "name": "nested circles and polygons ii",
+      "title": "Nested Circles and Polygons II",
+      "date": "2018-10-05",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "spiralling-semi-circles",
+      "name": "spiralling semi-circles",
+      "title": "Spiralling Semi-Circles",
+      "date": "2018-10-03",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "five-decreasing-squares",
+      "name": "five decreasing squares",
+      "title": "Five Decreasing Squares",
+      "date": "2018-10-01",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "dissection"
+      ]
+    },
+    {
+      "slug": "triangle-and-semi-circle-in-a-circle",
+      "name": "triangle and semi-circle in a circle",
+      "title": "Triangle and Semi-Circle in a Circle",
+      "date": "2018-09-29",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-parallelogram",
+      "name": "subdivided parallelogram",
+      "title": "Subdivided Parallelogram",
+      "date": "2018-09-27",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-in-four-rectangles",
+      "name": "triangle in four rectangles",
+      "title": "Triangle in Four Rectangles",
+      "date": "2018-09-26",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "circle-in-a-trapezium",
+      "name": "circle in a trapezium",
+      "title": "Circle in a Trapezium",
+      "date": "2018-09-24",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-triangle",
+      "name": "subdivided triangle",
+      "title": "Subdivided Triangle",
+      "date": "2018-09-19",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-circles-inside-a-square",
+      "name": "two circles inside a square",
+      "title": "Two Circles inside a Square",
+      "date": "2018-09-17",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "concentric-semi-circles",
+      "name": "concentric semi-circles",
+      "title": "Concentric Semi-Circles",
+      "date": "2018-09-16",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "square",
+        "similarity"
+      ]
+    },
+    {
+      "slug": "shaded-spikes-in-a-hexagon",
+      "name": "shaded spikes in a hexagon",
+      "title": "Shaded Spikes in a Hexagon",
+      "date": "2018-09-14",
+      "categories": [
+        "Shapes",
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "squares-in-an-octagon",
+      "name": "squares in an octagon",
+      "title": "Squares in an Octagon",
+      "date": "2018-09-11",
+      "categories": [
+        "Measures",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "Pythagoras",
+        "symmetry"
+      ]
+    },
+    {
+      "slug": "four-squares-in-a-big-square",
+      "name": "four squares in a big square",
+      "title": "Four Squares in a Big Square",
+      "date": "2018-09-09",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "square"
+      ]
+    },
+    {
+      "slug": "stacked-boxes-in-circles-in-squares",
+      "name": "stacked boxes in circles in squares",
+      "title": "Stacked Boxes in Circles in Squares",
+      "date": "2018-09-08",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "four-stacked-squares-in-a-circle-in-a-square",
+      "name": "four stacked squares in a circle in a square",
+      "title": "Four Stacked Squares in a Circle in a Square",
+      "date": "2018-09-08",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "overlapping-square-and-circle",
+      "name": "overlapping square and circle",
+      "title": "Overlapping Square and Circle",
+      "date": "2018-09-06",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": [
+        "intersecting chords theorem"
+      ]
+    },
+    {
+      "slug": "two-circles-inscribed-in-triangles-in-a-semi-circle",
+      "name": "two circles inscribed in triangles in a semi-circle",
+      "title": "Two Circles Inscribed in Triangles in a Semi-Circle",
+      "date": "2018-09-03",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "arcs-in-a-circle",
+      "name": "arcs in a circle",
+      "title": "Arcs in a Circle",
+      "date": "2018-09-01",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "six-squares-in-a-hexagon",
+      "name": "six squares in a hexagon",
+      "title": "Six Squares in a Hexagon",
+      "date": "2018-08-31",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-equilateral-triangles-round-a-square",
+      "name": "four equilateral triangles round a square",
+      "title": "Four Equilateral Triangles Round a Square",
+      "date": "2018-08-30",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "two-triangles-in-a-rectangle",
+      "name": "two triangles in a rectangle",
+      "title": "Two Triangles in a Rectangle",
+      "date": "2018-08-29",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "two-overlapping-squares-iii",
+      "name": "two overlapping squares iii",
+      "title": "Two Overlapping Squares III",
+      "date": "2018-08-28",
+      "categories": [
+        "Transformations and Symmetry",
+        "Other Techniques"
+      ],
+      "techniques": [
+        "invariance principle"
+      ]
+    },
+    {
+      "slug": "two-isosceles-triangles",
+      "name": "two isosceles triangles",
+      "title": "Two Isosceles Triangles",
+      "date": "2018-08-28",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-isosceles-triangles-in-a-circle",
+      "name": "four isosceles triangles in a circle",
+      "title": "Four Isosceles Triangles in a Circle",
+      "date": "2018-08-26",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "two-octagons-and-two-squares",
+      "name": "two octagons and two squares",
+      "title": "Two Octagons and Two Squares",
+      "date": "2018-08-25",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "hexagon-in-a-star-in-a-hexagon",
+      "name": "hexagon in a star in a hexagon",
+      "title": "Hexagon in a Star in a Hexagon",
+      "date": "2018-08-24",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "stacked-hexagons",
+      "name": "stacked hexagons",
+      "title": "Stacked Hexagons",
+      "date": "2018-08-23",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "a-square-triangle-and-circle-in-a-square",
+      "name": "a square, triangle, and circle in a square",
+      "title": "A Square, Triangle, and Circle in a Square",
+      "date": "2018-08-22",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "region-of-an-octagon",
+      "name": "region of an octagon",
+      "title": "Region of an Octagon",
+      "date": "2018-08-21",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "semi-circle-in-a-square",
+      "name": "semi-circle in a square",
+      "title": "Semi-Circle in a Square",
+      "date": "2018-08-20",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "polygons-with-equal-perimeter",
+      "name": "polygons with equal perimeter",
+      "title": "Polygons with Equal Perimeter",
+      "date": "2018-08-19",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "stacked-shapes",
+      "name": "stacked shapes",
+      "title": "Stacked Shapes",
+      "date": "2018-08-19",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "four-squares-overlapping-a-circle",
+      "name": "four squares overlapping a circle",
+      "title": "Four Squares Overlapping a Circle",
+      "date": "2018-08-17",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "triangle-in-circle-in-triangle-in-semi-circle",
+      "name": "triangle in circle in triangle in semi-circle",
+      "title": "Triangle in Circle in Triangle in Semi-Circle",
+      "date": "2018-08-15",
+      "categories": [
+        "Circle Theorems"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "bell-ringing-braids",
+      "name": "bell-ringing braids",
+      "title": "Bell-Ringing Braids",
+      "date": "2018-08-14",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "trapezium"
+      ]
+    },
+    {
+      "slug": "four-equilateral-triangles",
+      "name": "four equilateral triangles",
+      "title": "Four Equilateral Triangles",
+      "date": "2018-08-13",
+      "categories": [
+        "Shapes",
+        "Transformations and Symmetry"
+      ],
+      "techniques": [
+        "equilateral triangle"
+      ]
+    },
+    {
+      "slug": "three-squares-and-two-equilateral-triangles",
+      "name": "three squares and two equilateral triangles",
+      "title": "Three Squares and Two Equilateral Triangles",
+      "date": "2018-08-13",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "zig-zag-triangles",
+      "name": "zig-zag triangles",
+      "title": "Zig-Zag Triangles",
+      "date": "2018-08-12",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "squares-meeting-in-a-circle",
+      "name": "squares meeting in a circle",
+      "title": "Squares Meeting in a Circle",
+      "date": "2018-08-12",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "four-aligned-squares",
+      "name": "four aligned squares",
+      "title": "Four Aligned Squares",
+      "date": "2018-08-10",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": [
+        "triangle"
+      ]
+    },
+    {
+      "slug": "three-aligned-squares",
+      "name": "three aligned squares",
+      "title": "Three Aligned Squares",
+      "date": "2018-08-09",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "lengths-in-a-crossed-trapezium",
+      "name": "lengths in a crossed trapezium",
+      "title": "Lengths in a Crossed Trapezium",
+      "date": "2018-08-09",
+      "categories": [
+        "Transformations and Symmetry"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "overlapping-squares",
+      "name": "overlapping squares",
+      "title": "Overlapping Squares",
+      "date": "2018-08-08",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "toppled-square",
+      "name": "toppled square",
+      "title": "Toppled Square",
+      "date": "2018-08-07",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "Pythagoras"
+      ]
+    },
+    {
+      "slug": "two-rectangles-overlapping-a-circle",
+      "name": "two rectangles overlapping a circle",
+      "title": "Two Rectangles Overlapping a Circle",
+      "date": "2018-08-02",
+      "categories": [
+        "Shapes"
+      ],
+      "techniques": []
+    },
+    {
+      "slug": "subdivided-circles",
+      "name": "subdivided circles",
+      "title": "Subdivided Circles",
+      "date": "2018-05-21",
+      "categories": [
+        "Measures"
+      ],
+      "techniques": [
+        "dissection"
+      ]
+    }
+  ]
+}

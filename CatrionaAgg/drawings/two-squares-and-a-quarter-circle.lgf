@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-9.016" Top="9.016" Right="1.016" Bottom="-1.016" />
+  <Scene Left="-9.016" Top="9.016" Right="1.016" Bottom="-1.016" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF2B3FA0" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Color="#FF8A95CB" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFDFAAA" />
+          <GradientStop Color="#FFFCF886" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FF2B3FA0" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFE69AB3" />
+          <GradientStop Color="#FFDC6F93" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF8A95CB" />
+    </ShapeStyle>
+    <LineStyle Name="Line" Color="#FF2B3FA0" StrokeWidth="2.5">
+      <Dark Color="#FF808CC6" />
+    </LineStyle>
+    <LineStyle Name="Arc" Color="#FF2B3FA0" StrokeWidth="3">
+      <Dark Color="#FF808CC6" />
+    </LineStyle>
+    <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="8" />
+    <PointByCoordinates Name="p2" Visible="false" X="-8" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="-1.5" Y="1.5" />
+    <PointByCoordinates Name="p4" Visible="false" X="-5.6" Y="5.6" />
+    <Segment Name="track5" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <PointOnFigure Name="H" Style="Handle" X="-4" Y="4" Parameter="0.6097560976">
+      <Dependency Name="track5" />
+    </PointOnFigure>
+    <Number Name="k" Formula="sqrt(64 - H.Y ^ 2)">
+      <Dependency Name="H" />
+    </Number>
+    <PointByCoordinates Name="p6" Visible="false" X="-8" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="8" />
+    <PointByCoordinates Name="p9" Visible="false" X="-8" Y="8" />
+    <Polygon Name="poly10" Style="Frame">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="-8" Y="0" />
+    <PointByCoordinates Name="p12" Visible="false" X="-k" Y="0">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="-k" Y="k">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="0" Y="k">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="0" Y="8" />
+    <PointByCoordinates Name="p16" Visible="false" X="-8" Y="8" />
+    <Polygon Name="poly17" Style="Yellow">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Polygon>
+    <PointByCoordinates Name="p18" Visible="false" X="H.X" Y="0">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p20" Visible="false" X="0" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="H.X" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Polygon Name="poly22" Style="Red">
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </Polygon>
+    <PointByCoordinates Name="p23" Visible="false" X="H.X" Y="0">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="H.X" Y="8">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Segment Name="s25" Style="Line">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Segment>
+    <PointByCoordinates Name="p26" Visible="false" X="-8" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p27" Visible="false" X="0" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Segment Name="s28" Style="Line">
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+    </Segment>
+    <PointByCoordinates Name="p29" Visible="false" X="-k" Y="0">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p30" Visible="false" X="-k" Y="8">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="s31" Style="Line">
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+    </Segment>
+    <PointByCoordinates Name="p32" Visible="false" X="-8" Y="k">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p33" Visible="false" X="0" Y="k">
+      <Dependency Name="k" />
+    </PointByCoordinates>
+    <Segment Name="s34" Style="Line">
+      <Dependency Name="p32" />
+      <Dependency Name="p33" />
+    </Segment>
+    <CircleArc Name="a35" Style="Arc">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointByCoordinates Name="at36" Style="Anchor" X="H.X / 2" Y="H.Y / 2">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t37" Style="ShapeMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="12">
+      <Dependency Name="at36" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

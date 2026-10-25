@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.876" Top="4.476" Right="6.876" Bottom="-2.076" />
+  <Scene Left="-0.876" Top="4.476" Right="6.876" Bottom="-2.076" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FF91E0C7" />
+          <GradientStop Color="#FF62D3AF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Magenta" Color="#FFD0249C" StrokeWidth="2.5">
+      <Dark Color="#FFE37CC4" />
+    </LineStyle>
+    <TextStyle Name="MagentaMark" FontSize="22" Color="#FFD0249C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE37CC4" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="1.2" Y="0.4" />
+    <PointByCoordinates Name="p2" Visible="false" X="6" Y="2" />
+    <PointByCoordinates Name="p3" Visible="false" X="2.8" Y="3.6" />
+    <PointByCoordinates Name="p4" Visible="false" X="4.4" Y="-1.2" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="0" />
+    <Polygon Name="poly6" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly11" Style="Frame">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p13" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p14" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="p15" Visible="false" X="2" Y="2" />
+    <Polygon Name="poly16" Style="Frame">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <PointByCoordinates Name="p17" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p18" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p19" Visible="false" X="6" Y="2" />
+    <PointByCoordinates Name="p20" Visible="false" X="4" Y="2" />
+    <Polygon Name="poly21" Style="Frame">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <Segment Name="s22" Style="Magenta">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </Segment>
+    <AngleArc Name="angle23" Style="Magenta" Radius="22">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+      <Dependency Name="p3" />
+    </AngleArc>
+    <PointByCoordinates Name="at24" Style="Anchor" X="0.95" Y="0.95" />
+    <AttachedLabel Name="t25" Style="MagentaMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at24" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

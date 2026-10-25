@@ -8,7 +8,9 @@
 // in a headless Chrome or Edge as its gallery tile shows it - the caption left out, the
 // figure fitted - but on its paper, 1200 x 630 (600 x 315 drawn at twice the pixels, so
 // that points, lines and names are as big against the picture as on a tile), and written to
-// gallery/previews/<File>.png. Emoji are drawn in the site's own font (fonts/), not in
+// gallery/previews/<File>.png; and Catriona Agg's puzzles that have a drawing
+// (CatrionaAgg/puzzles.json) to CatrionaAgg/previews/<slug>.png, with index.png, a mosaic of
+// the newest, for the library's page. Emoji are drawn in the site's own font (fonts/), not in
 // whatever the system has. CI runs this after the publish
 // (.github/workflows/main_livegeometry.yml), on Linux with the Chrome the runner has.
 //
@@ -81,6 +83,45 @@ try
         }
 
         count++;
+    }
+
+    // Catriona Agg's puzzles (CatrionaAgg/puzzles.json, the ones with a drawing): each one's
+    // picture without its handles, as its tile shows it, and a mosaic of the newest for the
+    // library's own page
+    string catrionaFolder = Path.Combine(root, "CatrionaAgg");
+    string catrionaCatalog = Path.Combine(catrionaFolder, "puzzles.json");
+    if (File.Exists(catrionaCatalog))
+    {
+        string catrionaOutput = Path.Combine(catrionaFolder, "previews");
+        Directory.CreateDirectory(catrionaOutput);
+        var mosaic = new JsonArray();
+        foreach (var puzzle in JsonNode.Parse(File.ReadAllText(catrionaCatalog))["puzzles"].AsArray())
+        {
+            if (puzzle["drawing"] == null)
+            {
+                continue;
+            }
+
+            string slug = (string)puzzle["slug"];
+            string text = File.ReadAllText(Path.Combine(catrionaFolder, "drawings", (string)puzzle["drawing"]));
+            var result = JsonNode.Parse(await cdp.Evaluate("renderPreview(" + JsonValue.Create(text).ToJsonString() + ", true)"));
+            string png = (string)result["png"];
+            File.WriteAllBytes(Path.Combine(catrionaOutput, slug + ".png"), Convert.FromBase64String(png.Substring(png.IndexOf(',') + 1)));
+            if (result["errors"] is JsonNode errors)
+            {
+                warnings.Add($"CatrionaAgg/{slug}: {errors}");
+            }
+
+            if (mosaic.Count < 8)
+            {
+                mosaic.Add((JsonNode)JsonValue.Create(text));
+            }
+
+            count++;
+        }
+
+        string picture = await cdp.Evaluate("renderMosaic(" + mosaic.ToJsonString() + ")");
+        File.WriteAllBytes(Path.Combine(catrionaOutput, "index.png"), Convert.FromBase64String(picture.Substring(picture.IndexOf(',') + 1)));
     }
 
     foreach (var warning in warnings)
@@ -247,17 +288,19 @@ partial class Program
             const ZoomAfterFit = 1.08;
             document.body.style.margin = "0";
 
+            // 600 x 315, or the size given (set after the base constructor, which measures first)
             class PreviewPlayer extends LiveGeometry.Player {
                 measureElement() {
-                    if (this.canvas.width === Width && this.canvas.height === Height) {
+                    const [width, height] = this.size ?? [Width, Height];
+                    if (this.canvas.width === width && this.canvas.height === height) {
                         return false;
                     }
 
-                    this.canvas.width = Width;
-                    this.canvas.height = Height;
+                    this.canvas.width = width;
+                    this.canvas.height = height;
                     this.pixelRatio = Scale;
-                    this.canvasElement.width = Width * Scale;
-                    this.canvasElement.height = Height * Scale;
+                    this.canvasElement.width = width * Scale;
+                    this.canvasElement.height = height * Scale;
                     return true;
                 }
 
@@ -278,7 +321,7 @@ partial class Program
                         return;
                     }
 
-                    const scene = drawing.chooseScene(Width, Height);
+                    const scene = drawing.chooseScene(this.canvas.width, this.canvas.height);
                     if (scene != null) {
                         drawing.showScene(scene);
                     } else {
@@ -309,27 +352,72 @@ partial class Program
                 return element;
             }
 
-            window.renderPreview = text => {
+            // the points a reader drags are left out of a picture of a Catriona Agg puzzle, as
+            // on its tile (withoutHandles in CatrionaAgg/index.html)
+            function parse(text, hideHandles) {
                 const parsed = new DOMParser().parseFromString(text.replace(/^﻿/, "").trimStart(), "application/xml");
                 if (parsed.querySelector("parsererror") != null) {
                     throw new Error("not well-formed XML");
                 }
 
+                if (hideHandles) {
+                    parsed.querySelectorAll('[Style="Handle"]').forEach(figure => figure.setAttribute("Visible", "false"));
+                }
+
+                return leaveOutCaption(parsed.documentElement);
+            }
+
+            function play(element, use, size) {
                 const host = document.createElement("div");
                 host.style.width = Width + "px";
                 host.style.height = Height + "px";
                 document.body.appendChild(host);
                 const player = new PreviewPlayer(host, { theme: "light", font: font });
+                if (size != null) {
+                    player.size = size;
+                    player.measureElement();
+                }
+
                 try {
-                    player.load(leaveOutCaption(parsed.documentElement));
+                    player.load(element);
                     player.render();
-                    return JSON.stringify({ png: player.canvasElement.toDataURL("image/png"), errors: player.loadErrors ?? null });
+                    return use(player);
                 } finally {
                     // the frame the player asked for on loading comes after this
                     player.render = () => { };
                     player.dispose();
                     host.remove();
                 }
+            }
+
+            window.renderPreview = (text, hideHandles) => play(parse(text, hideHandles), player =>
+                JSON.stringify({ png: player.canvasElement.toDataURL("image/png"), errors: player.loadErrors ?? null }));
+
+            // The library's own picture: the drawings as cards on its warm paper, four by two
+            window.renderMosaic = texts => {
+                const canvas = document.createElement("canvas");
+                canvas.width = 1200;
+                canvas.height = 630;
+                const context = canvas.getContext("2d");
+                context.fillStyle = "#F7F5F0";
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                const columns = 4, gap = 24, card = (canvas.width - gap * (columns + 1)) / columns;
+                const top = (canvas.height - 2 * card - gap) / 2;
+                texts.forEach((text, index) => {
+                    const x = gap + (index % columns) * (card + gap);
+                    const y = top + Math.floor(index / columns) * (card + gap);
+                    context.save();
+                    context.shadowColor = "rgba(40, 32, 20, 0.14)";
+                    context.shadowBlur = 18;
+                    context.shadowOffsetY = 4;
+                    context.fillStyle = "#FFFFFF";
+                    context.beginPath();
+                    context.roundRect(x, y, card, card, 16);
+                    context.fill();
+                    context.restore();
+                    play(parse(text, true), player => context.drawImage(player.canvasElement, x + 8, y + 8, card - 16, card - 16), [card - 16, card - 16]);
+                });
+                return canvas.toDataURL("image/png");
             };
         })()
         """;

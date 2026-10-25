@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7.296" Top="7.296" Right="7.296" Bottom="-1.296" />
+  <Scene Left="-7.296" Top="7.296" Right="7.296" Bottom="-1.296" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFBBFF5" />
+          <GradientStop Color="#FFF9A4F1" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="6" />
+    <PointByCoordinates Name="p3" Visible="false" X="-6" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="(O.X + 4.1679502228)" Y="(O.Y + 4.316038802)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(O.X + 1.041889066)" Y="(O.Y + 5.9088465181)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track6" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointOnFigure Name="Q" Style="Handle" X="3.3551574208" Y="4.9742254353" Parameter="0.9773843811">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Pc" Visible="false" X="0" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="0" Y="Q.Y - Q.X">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W" Visible="false" X="-Q.Y" Y="0">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <CircleSector Name="a7" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSector>
+    <CircleSector Name="a8" Visible="false">
+      <Dependency Name="Pc" />
+      <Dependency Name="F" />
+      <Dependency Name="Q" />
+    </CircleSector>
+    <CircleSector Name="a9" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSector>
+    <CircleSector Name="a10" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Pc" />
+      <Dependency Name="W" />
+    </CircleSector>
+    <Region Name="r11" Style="Pink" Operation="Difference">
+      <Dependency Name="a7" />
+      <Dependency Name="a8" />
+    </Region>
+    <Region Name="r12" Style="Pink" Operation="Difference">
+      <Dependency Name="a9" />
+      <Dependency Name="a10" />
+    </Region>
+    <CircleSegment Name="a13" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <Segment Name="s14" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s15" Style="Ink">
+      <Dependency Name="Pc" />
+      <Dependency Name="Q" />
+    </Segment>
+    <CircleArc Name="a16" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="Pc" />
+      <Dependency Name="W" />
+    </CircleArc>
+    <CircleArc Name="a17" Style="Ink">
+      <Dependency Name="Pc" />
+      <Dependency Name="F" />
+      <Dependency Name="Q" />
+    </CircleArc>
+  </Figures>
+</Drawing>

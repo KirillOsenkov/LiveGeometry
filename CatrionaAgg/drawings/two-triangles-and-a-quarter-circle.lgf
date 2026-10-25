@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.057" Top="4.657" Right="0.757" Bottom="-0.657" />
+  <Scene Left="-5.057" Top="4.657" Right="0.757" Bottom="-0.657" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Teal" Color="#FF1D5458" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FF82BBBF" />
+          <GradientStop Color="#FF4C9EA3" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FF83A1A3" />
+    </ShapeStyle>
+    <LineStyle Name="Green" Color="#FF79C96A" StrokeWidth="2.5">
+      <Dark Color="#FFAFDFA6" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-0.9" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="-2.2" Y="0" />
+    <Segment Name="track4" Visible="false">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="-1.52" Y="0" Parameter="0.4769230769">
+      <Dependency Name="track4" />
+    </PointOnFigure>
+    <PointByCoordinates Name="F" Visible="false" X="2 * B.X" Y="0">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G" Visible="false" X="2 * B.X" Y="4">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Number Name="k" Formula="2 * (-B.X) ^ 2 / ((-B.X) ^ 2 + 16)">
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="G.X + k * (-B.X)" Y="4 - k * 4">
+      <Dependency Name="G" />
+      <Dependency Name="k" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="poly5" Style="Teal">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Teal">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Polygon>
+    <CircleArc Name="a7" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <Segment Name="s8" Style="Ink">
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+    </Segment>
+    <Number Name="n9" Formula="distance(X, B)">
+      <Dependency Name="X" />
+      <Dependency Name="B" />
+    </Number>
+    <Number Name="n10" Formula="distance(X, T)">
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+    </Number>
+    <PointByCoordinates Name="p11" Visible="false" X="(X.X + 0.42 * ((B.X - X.X) / n9))" Y="(X.Y + 0.42 * ((B.Y - X.Y) / n9))">
+      <Dependency Name="X" />
+      <Dependency Name="B" />
+      <Dependency Name="n9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(X.X + 0.42 * ((T.X - X.X) / n10))" Y="(X.Y + 0.42 * ((T.Y - X.Y) / n10))">
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+      <Dependency Name="n10" />
+    </PointByCoordinates>
+    <CircleArc Name="a13" Style="Ink">
+      <Dependency Name="X" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </CircleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(X.X + 0.55)" Y="(X.Y - 0.6)">
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

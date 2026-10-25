@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catriona Agg's Geometry Puzzles · Live Geometry</title>
+<meta name="description" content="Catriona Agg's geometry puzzles, redrawn as live constructions you can drag: browse them by year, topic, shape and question, with links to Andrew Stacey's techniques and solutions on Mathforge Notes.">
+<meta property="og:title" content="Catriona Agg's Geometry Puzzles, live">
+<meta property="og:description" content="Her felt-tip puzzles redrawn as live geometry: drag the figures and feel what stays the same. Catalogued and solved by Andrew Stacey at Mathforge Notes.">
+<meta property="og:url" content="https://livegeometry.com/CatrionaAgg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Live Geometry">
+<meta property="og:image" content="https://livegeometry.com/CatrionaAgg/previews/index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://livegeometry.com/CatrionaAgg">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/favicon.ico">
+<!-- Google tag (gtag.js), the same as the app's index.html. The library is one page: a move
+     between the gallery and a puzzle sends a page_view of its own (sendPageView below). -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-10ZM10J6RW');
+</script>
+<!-- The Catriona Agg library: her puzzles redrawn as drawings of the JavaScript player
+     (/player/1/player.js), a gallery at /CatrionaAgg and each puzzle at /CatrionaAgg/<slug>,
+     both this page (it reads the address; web.config answers a puzzle's address with a copy of
+     this file whose head names the puzzle, written at build). The catalog is puzzles.json
+     (tools/catriona.cs, from Andrew Stacey's index at notes.mathforge.org), the drawings are
+     drawings/<slug>.lgf (tools/catrionadrawings.cs). A page of its own beside the app, like
+     /web and /embed: everything inline but the fonts, no build step. -->
+<!-- The theme before anything paints: the choice the app stored, else the system's -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+    if (theme !== 'Light' && theme !== 'Dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    }
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #F7F5F0;
+    --surface: #FFFFFF;
+    --paper: #FFFFFF;
+    --ink: #1F2430;
+    --ink-soft: #586173;
+    --ink-faint: #8A93A3;
+    --line: #E4E0D7;
+    --line-strong: #CFCAC0;
+    --chip: #EEEBE4;
+    --chip-ink: #3A4150;
+    --accent: #2F6FDB;
+    --accent-soft: rgba(47, 111, 219, 0.1);
+    --shadow: 0 1px 2px rgba(40, 32, 20, 0.06), 0 4px 14px rgba(40, 32, 20, 0.06);
+    --shadow-lift: 0 2px 4px rgba(40, 32, 20, 0.08), 0 14px 34px rgba(40, 32, 20, 0.14);
+    --pink: #F5589B;
+    --orange: #F26313;
+    --yellow: #FFD400;
+    --green: #14B67F;
+    --blue: #1689F2;
+    --purple: #8A12B5;
+    --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    --page: #1B1E23;
+    --surface: #24282F;
+    --paper: #2B2B2B;
+    --ink: #E8EBF0;
+    --ink-soft: #A9B0BC;
+    --ink-faint: #7D8594;
+    --line: #353A43;
+    --line-strong: #474D58;
+    --chip: #2E333B;
+    --chip-ink: #D4D9E2;
+    --accent: #7FABFF;
+    --accent-soft: rgba(127, 171, 255, 0.14);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 36px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  [hidden] { display: none !important; }
+
+  a { color: inherit; }
+
+  button { font: inherit; color: inherit; }
+
+  svg { display: block; }
+
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- the bar along the top of both views ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    padding: 0 16px;
+    background: color-mix(in srgb, var(--page) 86%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .topbar.scrolled { border-bottom-color: var(--line); }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .brand svg { width: 28px; height: 28px; flex: none; }
+
+  .brand .site { font-weight: 600; font-size: 14px; color: var(--ink-soft); white-space: nowrap; }
+
+  .crumb-sep { width: 1px; height: 22px; background: var(--line-strong); flex: none; }
+
+  .crumb {
+    font-weight: 600;
+    font-size: 16px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spacer { flex: 1 1 auto; }
+
+  .icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: none;
+    flex: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .icon-button:hover { background: var(--chip); color: var(--ink); }
+  .icon-button svg { width: 20px; height: 20px; }
+  .icon-button .moon { display: none; }
+  :root[data-theme="dark"] .icon-button .sun { display: none; }
+  :root[data-theme="dark"] .icon-button .moon { display: block; }
+
+  /* ---------- the gallery ---------- */
+  .wrap {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 48px;
+    align-items: center;
+    padding: 34px 0 40px;
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    font-size: clamp(16px, 1.7vw, 21px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .hero h1 {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(44px, 6.2vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .hero h1 .sub {
+    display: block;
+    margin-top: 12px;
+    font-weight: 500;
+    font-size: 0.4em;
+    letter-spacing: -0.01em;
+    color: var(--ink-soft);
+  }
+
+  /* six felt-tip strokes, her pens */
+  .pens {
+    display: flex;
+    gap: 7px;
+    margin: 22px 0 22px 2px;
+  }
+
+  .pens span {
+    width: 34px;
+    height: 7px;
+    border-radius: 6px 3px 7px 2px;
+    transform: rotate(-4deg);
+  }
+
+  .pens span:nth-child(2n) { transform: rotate(3deg); width: 28px; }
+
+  .lede {
+    max-width: 640px;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .people {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px 10px 10px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.25s var(--ease), border-color 0.2s;
+  }
+
+  .person:hover { box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex: none;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  .person b { display: block; font-size: 15px; font-weight: 600; }
+  .person small { display: block; font-size: 13px; color: var(--ink-soft); line-height: 1.35; }
+  .person .out { width: 14px; height: 14px; color: var(--ink-faint); margin-left: 2px; }
+
+  .feature {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    max-width: 460px;
+    width: 100%;
+    justify-self: end;
+    border-radius: 22px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow 0.3s var(--ease), border-color 0.2s;
+  }
+
+  .feature:hover { box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+
+  /* square, as high as the card leaves room for, in the middle */
+  .feature .art { position: absolute; top: 18px; bottom: 62px; left: 50%; aspect-ratio: 1; transform: translateX(-50%); }
+
+  .feature .caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 14px 20px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .feature .caption .label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+  .feature .caption .name { font-weight: 600; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* the controls: search, arrangement, order */
+  .controls {
+    position: sticky;
+    top: 56px;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    padding: 12px 0;
+    background: var(--page);
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 1 240px;
+    max-width: 360px;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search svg { width: 17px; height: 17px; color: var(--ink-faint); flex: none; }
+
+  .search input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: none;
+    font: inherit;
+    color: var(--ink);
+  }
+
+  .search input::placeholder { color: var(--ink-faint); }
+
+  .segmented {
+    position: relative;
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--chip);
+  }
+
+  .segmented button {
+    position: relative;
+    z-index: 1;
+    height: 34px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 9px;
+    background: none;
+    color: var(--chip-ink);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .segmented button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+
+  /* the plate under the chosen button slides from one to the next */
+  .segmented .thumb {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 0;
+    width: 0;
+    border-radius: 9px;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.35s var(--ease), width 0.35s var(--ease);
+  }
+
+  .segmented .group-label {
+    align-self: center;
+    padding: 0 6px 0 8px;
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  .chip-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .chip-toggle:hover { border-color: var(--line-strong); }
+  .chip-toggle svg { width: 16px; height: 16px; }
+
+  .count {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 2px 0 6px;
+  }
+
+  .jump button {
+    height: 30px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 15px;
+    background: var(--chip);
+    color: var(--chip-ink);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .jump button:hover { background: var(--line-strong); }
+  .jump button span { color: var(--ink-faint); margin-left: 4px; font-weight: 400; }
+
+  .groups { padding-bottom: 30px; }
+
+  .group { padding-top: 18px; scroll-margin-top: 130px; }
+
+  .group h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 8px 2px 14px;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .group h2 .n { font-size: 14px; font-weight: 500; color: var(--ink-faint); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 22px;
+  }
+
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    transition: box-shadow 0.3s var(--ease), border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tile:hover { box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+  .tile:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  .tile .art {
+    position: relative;
+    aspect-ratio: 1;
+    margin: 8px 8px 0;
+    border-radius: 11px;
+    background: var(--paper);
+    overflow: hidden;
+  }
+
+  .tile .art img,
+  .tile .art canvas,
+  .feature .art canvas,
+  .feature .art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tile .art img { opacity: 0; transition: opacity 0.35s; }
+  .tile .art img.shown { opacity: 1; }
+
+  .tile .meta { padding: 10px 14px 13px; min-width: 0; }
+
+  .tile .title {
+    display: block;
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tile .sub { display: block; margin-top: 2px; font-size: 12.5px; color: var(--ink-faint); }
+
+  /* a puzzle with something to drag */
+  .tile .live {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--ink-soft);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+    opacity: 0.85;
+  }
+
+  .tile .live svg { width: 15px; height: 15px; }
+
+  .empty { padding: 40px 2px; color: var(--ink-soft); font-size: 16px; }
+
+  .footer {
+    margin-top: 30px;
+    padding: 30px 0 44px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .footer p { margin: 0 0 8px; max-width: 820px; }
+  .footer a { color: var(--ink); text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+  .footer a:hover { text-decoration-color: currentColor; }
+
+  /* ---------- a puzzle ---------- */
+  #puzzle-view {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    background: var(--page);
+  }
+
+  #puzzle-view .topbar { position: static; flex: none; border-bottom-color: var(--line); }
+
+  .stepper { display: flex; align-items: center; gap: 2px; }
+  .stepper .position { min-width: 54px; text-align: center; font-size: 13px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 12px 0 8px;
+    border: 0;
+    border-radius: 10px;
+    background: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .back:hover { background: var(--chip); color: var(--ink); }
+  .back svg { width: 20px; height: 20px; }
+
+  .puzzle-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+  }
+
+  .stage {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    margin: 16px 0 16px 16px;
+    border-radius: 18px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  #player { position: absolute; inset: 0; }
+
+  .stage-tools {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .stage-tools button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+  }
+
+  .stage-tools button:hover { color: var(--ink); border-color: var(--line-strong); }
+  .stage-tools svg { width: 16px; height: 16px; }
+
+  /* the first moments: where to put a finger */
+  .nudge {
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    transform: translate(-50%, 0);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: var(--ink);
+    color: var(--page);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.6s, transform 0.6s var(--ease);
+  }
+
+  .nudge.gone { opacity: 0; transform: translate(-50%, -8px); }
+  .nudge svg { width: 16px; height: 16px; }
+
+  .panel {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 26px 30px 30px 28px;
+  }
+
+  .panel .date { margin: 0 0 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+
+  .panel h1 {
+    margin: 0 0 20px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
+  .question {
+    position: relative;
+    margin: 0 0 18px;
+    padding: 20px 22px 18px 24px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .question::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 18px;
+    bottom: 18px;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(var(--pink), var(--orange), var(--yellow), var(--green), var(--blue), var(--purple));
+  }
+
+  .question p {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+
+  .question footer { margin-top: 12px; font-size: 13.5px; color: var(--ink-soft); }
+  .question footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+
+  .play {
+    display: flex;
+    gap: 12px;
+    margin: 0 0 22px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .play svg { width: 20px; height: 20px; flex: none; margin-top: 1px; color: var(--accent); }
+  .play p { margin: 0; }
+
+  /* Andrew Stacey's three pages for the puzzle, side by side */
+  .links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: box-shadow 0.25s var(--ease), border-color 0.2s;
+  }
+
+  .link-card:hover { box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+  .link-card svg { width: 17px; height: 17px; flex: none; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 24px; }
+
+  .tags button {
+    height: 28px;
+    padding: 0 11px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--chip);
+    color: var(--chip-ink);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .tags button:hover { background: var(--line-strong); }
+
+  .credit {
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--ink-faint);
+  }
+
+  .credit a { color: var(--ink-soft); text-underline-offset: 2px; }
+
+  /* the address said a puzzle the catalog doesn't have */
+  .missing { padding: 40px 28px; font-size: 16px; color: var(--ink-soft); }
+
+  /* ---------- smaller windows ---------- */
+  @media (max-width: 980px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 22px; }
+    .feature { justify-self: start; max-width: 380px; }
+    .puzzle-body { grid-template-columns: minmax(0, 1fr) 360px; }
+  }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 0 16px; }
+    .topbar { padding: 0 8px 0 12px; gap: 6px; }
+    .brand .site, .crumb-sep.optional { display: none; }
+    .hero h1 { font-size: 46px; }
+    .lede { font-size: 16px; }
+    .feature { display: none; }
+    .controls { top: 56px; gap: 8px; }
+    .search { max-width: none; flex-basis: 100%; }
+    .segmented { overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+    .segmented::-webkit-scrollbar { display: none; }
+    .stage-tools span { display: none; }
+    .stage-tools button { padding: 0 9px; }
+    .segmented .group-label { display: none; }
+    .count { margin-left: 0; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+    .tile .meta { padding: 8px 10px 10px; }
+    .tile .title { font-size: 13.5px; }
+    .tile .live { top: 13px; right: 13px; width: 22px; height: 22px; }
+    .tile .live svg { width: 13px; height: 13px; }
+    .puzzle-body { display: flex; flex-direction: column; overflow-y: auto; }
+    .stage { flex: none; height: min(62vh, 100vw); margin: 10px 10px 0; }
+    .panel { overflow: visible; padding: 20px 18px 28px; }
+    .panel h1 { font-size: 28px; }
+    .question p { font-size: 19px; }
+    #puzzle-view .back .label { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition-duration: 0.01ms !important; }
+  }
+</style>
+<script src="/player/1/player.js" defer></script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="marble" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F4F2EE"/><stop offset="0.45" stop-color="#D9D6D0"/><stop offset="1" stop-color="#9A9690"/>
+    </linearGradient>
+    <linearGradient id="yellow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF4A0"/><stop offset="0.5" stop-color="#FFE538"/><stop offset="1" stop-color="#F6CC1A"/>
+    </linearGradient>
+    <!-- the app's mark (AppIcon.cs, 64 grid): a column and a set square -->
+    <symbol id="icon-app" viewBox="0 0 64 64">
+      <path d="M30,60 L62,60 L60,63 L28,63 Z" fill="rgba(0,0,0,0.19)"/>
+      <g fill="url(#marble)" stroke="#5C5852" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M3,56 H27 V61 H3 Z"/><path d="M5,52 H25 V56 H5 Z"/><path d="M8,12 H22 V52 H8 Z"/>
+        <path d="M6,9 Q15,5 24,9 V12 H6 Z"/><path d="M3,4 H27 V9 H3 Z"/>
+      </g>
+      <path d="M11.5,13.5 V50.5 M15,13.5 V50.5 M18.5,13.5 V50.5" fill="none" stroke="rgba(92,88,82,0.38)" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M33,3 L63,60 L33,60 Z M38,24 L38,54 L54,54 Z" fill="url(#yellow)" fill-rule="evenodd" stroke="#9E8000" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+      <path d="M33,8 H34.4 M33,12.8 H35.5 M33,17.6 H35.5 M33,22.4 H35.5 M33,27.2 H35.5 M33,32 H37.5 M33,36.8 H35.5 M33,41.6 H35.5 M33,46.4 H35.5 M33,51.2 H35.5 M33,56 H37.5" fill="none" stroke="#7E6600" stroke-width="1.1" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-moon" viewBox="0 0 20 20">
+      <path d="M12.5,3.2 A7,7 0 1 0 16.8,12.6 A5.6,5.6 0 0 1 12.5,3.2 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-sun" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+      <circle cx="10" cy="10" r="3.6"/>
+      <path d="M16.2,10 L18.6,10 M14.38,14.38 L16.08,16.08 M10,16.2 L10,18.6 M5.62,14.38 L3.92,16.08 M3.8,10 L1.4,10 M5.62,5.62 L3.92,3.92 M10,3.8 L10,1.4 M14.38,5.62 L16.08,3.92"/>
+    </symbol>
+    <symbol id="icon-github" viewBox="0 0 16 16">
+      <path fill="currentColor" d="M8,0 C3.58,0 0,3.58 0,8 c0,3.54 2.29,6.53 5.47,7.59 c0.4,0.07 0.55,-0.17 0.55,-0.38 c0,-0.19 -0.01,-0.82 -0.01,-1.49 c-2.01,0.37 -2.53,-0.49 -2.69,-0.94 c-0.09,-0.23 -0.48,-0.94 -0.82,-1.13 c-0.28,-0.15 -0.68,-0.52 -0.01,-0.53 c0.63,-0.01 1.08,0.58 1.23,0.82 c0.72,1.21 1.87,0.87 2.33,0.66 c0.07,-0.52 0.28,-0.87 0.51,-1.07 c-1.78,-0.2 -3.64,-0.89 -3.64,-3.95 c0,-0.87 0.31,-1.59 0.82,-2.15 c-0.08,-0.2 -0.36,-1.02 0.08,-2.12 c0,0 0.67,-0.21 2.2,0.82 c0.64,-0.18 1.32,-0.27 2,-0.27 c0.68,0 1.36,0.09 2,0.27 c1.53,-1.04 2.2,-0.82 2.2,-0.82 c0.44,1.1 0.16,1.92 0.08,2.12 c0.51,0.56 0.82,1.27 0.82,2.15 c0,3.07 -1.87,3.75 -3.65,3.95 c0.29,0.25 0.54,0.73 0.54,1.48 c0,1.07 -0.01,1.93 -0.01,2.2 c0,0.21 0.15,0.46 0.55,0.38 A8.013,8.013 0 0 0 16,8 c0,-4.42 -3.58,-8 -8,-8 z"/>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="8.5" cy="8.5" r="5.5"/><path d="M12.6,12.6 L17,17"/>
+    </symbol>
+    <!-- a finger on a point: something to drag -->
+    <symbol id="icon-drag" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10" cy="10" r="2.6" fill="currentColor" stroke="none"/>
+      <path d="M10,2 V4.2 M10,15.8 V18 M2,10 H4.2 M15.8,10 H18"/>
+      <path d="M8.4,3.4 L10,2 L11.6,3.4 M8.4,16.6 L10,18 L11.6,16.6 M3.4,8.4 L2,10 L3.4,11.6 M16.6,8.4 L18,10 L16.6,11.6"/>
+    </symbol>
+    <symbol id="icon-back" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12.5,4.5 L7,10 L12.5,15.5"/>
+    </symbol>
+    <symbol id="icon-next" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.5,4.5 L13,10 L7.5,15.5"/>
+    </symbol>
+    <symbol id="icon-reset" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4,9.5 A6,6 0 1 1 6,14.4"/><path d="M4,4.5 V9.5 H9"/>
+    </symbol>
+    <symbol id="icon-fit" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3,7.5 V3 H7.5 M12.5,3 H17 V7.5 M17,12.5 V17 H12.5 M7.5,17 H3 V12.5"/>
+    </symbol>
+    <symbol id="icon-out" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8,4 H4 V16 H16 V12"/><path d="M11,3 H17 V9 M17,3 L9.5,10.5"/>
+    </symbol>
+    <symbol id="icon-tools" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3,17 L10,3 L17,17 Z"/><path d="M6.5,10 H13.5"/>
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="6.5" cy="10" r="3.5"/><path d="M10,10 H17.5 M15,10 V13 M17.5,10 V12.5"/>
+    </symbol>
+    <symbol id="icon-picture" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="3.5" width="15" height="13" rx="2"/><path d="M2.5,13.5 L7,9 L11,13 L13.5,10.5 L17.5,14.5"/><circle cx="13" cy="7" r="1.3"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- What a search engine reads, and a reader without script: written per puzzle at build -->
+<div id="seo" class="visually-hidden">
+  <h1>Catriona Agg's geometry puzzles, live</h1>
+  <p>Catriona Agg's geometry puzzles redrawn as live constructions you can drag, with links to Andrew Stacey's catalogue, techniques and solutions at Mathforge Notes.</p>
+</div>
+
+<!-- ======================= the gallery ======================= -->
+<div id="gallery-view">
+  <header class="topbar" id="gallery-bar">
+    <a class="brand" href="/" title="Live Geometry"><svg><use href="#icon-app"/></svg><span class="site">Live Geometry</span></a>
+    <span class="crumb-sep"></span>
+    <a class="crumb" href="/CatrionaAgg">Catriona Agg's Puzzles</a>
+    <span class="spacer"></span>
+    <button class="icon-button theme" type="button" aria-label="Light or dark"><svg class="moon"><use href="#icon-moon"/></svg><svg class="sun"><use href="#icon-sun"/></svg></button>
+    <a class="icon-button" href="https://github.com/KirillOsenkov/LiveGeometry" title="Live Geometry on GitHub" target="_blank" rel="noopener"><svg style="width: 17px; height: 17px"><use href="#icon-github"/></svg></a>
+  </header>
+
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">The geometry puzzles of</p>
+        <h1>Catriona Agg<span class="sub">made interactive</span></h1>
+        <div class="pens" aria-hidden="true">
+          <span style="background: var(--pink)"></span><span style="background: var(--orange)"></span><span style="background: var(--yellow)"></span><span style="background: var(--green)"></span><span style="background: var(--blue)"></span><span style="background: var(--purple)"></span>
+        </div>
+        <p class="lede">Since 2018 <strong>Catriona Agg</strong>, a maths teacher, has shared a geometry puzzle every few days: a diagram drawn in felt tip and a single question. Here each diagram is redrawn as a live construction. Drag the white points and watch what changes, and what doesn't. The answers aren't here: <strong>Andrew Stacey</strong> has catalogued every puzzle, and gathered the techniques and solutions, at Mathforge Notes.</p>
+        <div class="people">
+          <a class="person" href="https://bsky.app/profile/catrionaagg.bsky.social" target="_blank" rel="noopener">
+            <span class="avatar" style="background: linear-gradient(135deg, #F5589B, #F26313)">CA</span>
+            <span><b>Catriona Agg</b><small>The puzzles and the original drawings</small></span>
+            <svg class="out"><use href="#icon-out"/></svg>
+          </a>
+          <a class="person" href="https://notes.mathforge.org/notes/published/HomePage" target="_blank" rel="noopener">
+            <span class="avatar" style="background: linear-gradient(135deg, #1689F2, #8A12B5)">AS</span>
+            <span><b>Andrew Stacey</b><small>The catalogue, techniques and solutions</small></span>
+            <svg class="out"><use href="#icon-out"/></svg>
+          </a>
+        </div>
+      </div>
+      <a class="feature" id="feature" href="/CatrionaAgg" hidden>
+        <div class="art" id="feature-art"></div>
+        <div class="caption"><span class="label">Newest</span><span class="name" id="feature-name"></span></div>
+      </a>
+    </section>
+
+    <div class="controls" id="controls">
+      <label class="search">
+        <svg><use href="#icon-search"/></svg>
+        <span class="visually-hidden">Search the puzzles</span>
+        <input id="search" type="search" placeholder="Search: hexagon, semicircle, angle…" autocomplete="off" spellcheck="false">
+      </label>
+      <div class="segmented" id="arrange" role="group" aria-label="Arrange by">
+        <span class="thumb" id="arrange-thumb"></span>
+        <span class="group-label">By</span>
+        <button type="button" data-group="none">Date</button>
+        <button type="button" data-group="year">Year</button>
+        <button type="button" data-group="topic">Topic</button>
+        <button type="button" data-group="shape">Shape</button>
+        <button type="button" data-group="question">Question</button>
+      </div>
+      <button class="chip-toggle" id="order" type="button" title="Newest or oldest first">Newest first</button>
+      <span class="count" id="count"></span>
+    </div>
+    <nav class="jump" id="jump" aria-label="Sections" hidden></nav>
+
+    <main class="groups" id="groups"></main>
+    <p class="empty" id="empty" hidden></p>
+
+    <footer class="footer">
+      <p>Every puzzle here is <strong>Catriona Agg</strong>'s: her question, her diagram, her colors. Follow her on <a href="https://bsky.app/profile/catrionaagg.bsky.social" target="_blank" rel="noopener">BlueSky</a> for new ones; her puzzles of 2018 are collected in the book <em>Geometry Puzzles in Felt Tip</em>.</p>
+      <p>The catalogue, the topics and the links to techniques and solutions come from <strong>Andrew Stacey</strong>'s <a href="https://notes.mathforge.org/notes/published/HomePage" target="_blank" rel="noopener">Mathforge Notes</a>, where every puzzle has its own page with the original drawing.</p>
+      <p>The drawings are redrawn by hand for <a href="/">Live Geometry</a>, a free and open source geometry website, which is not affiliated with either of them. If a drawing is wrong, or if you are Catriona and would like anything changed, please <a href="https://github.com/KirillOsenkov/LiveGeometry/issues" target="_blank" rel="noopener">open an issue</a>.</p>
+    </footer>
+  </div>
+</div>
+
+<!-- ======================= a puzzle ======================= -->
+<div id="puzzle-view" hidden>
+  <header class="topbar">
+    <button class="back" id="back" type="button" title="All puzzles (Escape)"><svg><use href="#icon-back"/></svg><span class="label">All puzzles</span></button>
+    <span class="crumb-sep optional"></span>
+    <a class="brand" href="/" title="Live Geometry"><svg><use href="#icon-app"/></svg><span class="site">Live Geometry</span></a>
+    <span class="spacer"></span>
+    <div class="stepper">
+      <button class="icon-button" id="previous" type="button" title="Previous puzzle (←)"><svg><use href="#icon-back"/></svg></button>
+      <span class="position" id="position"></span>
+      <button class="icon-button" id="next" type="button" title="Next puzzle (→)"><svg><use href="#icon-next"/></svg></button>
+    </div>
+    <span class="spacer"></span>
+    <button class="icon-button theme" type="button" aria-label="Light or dark"><svg class="moon"><use href="#icon-moon"/></svg><svg class="sun"><use href="#icon-sun"/></svg></button>
+  </header>
+  <div class="puzzle-body" id="puzzle-body">
+    <div class="stage" id="stage">
+      <div id="player"></div>
+      <div class="nudge gone" id="nudge"><svg><use href="#icon-drag"/></svg><span>Drag the white points</span></div>
+      <div class="stage-tools">
+        <button type="button" id="fit" title="Fit the drawing to the window (Home)"><svg><use href="#icon-fit"/></svg><span>Fit</span></button>
+        <button type="button" id="reset" title="Back to the drawing as it was"><svg><use href="#icon-reset"/></svg><span>Start over</span></button>
+      </div>
+    </div>
+    <aside class="panel" id="panel">
+      <p class="date" id="p-date"></p>
+      <h1 id="p-title"></h1>
+      <blockquote class="question">
+        <p id="p-question"></p>
+        <footer id="p-asked"></footer>
+      </blockquote>
+      <div class="play" id="p-play"><svg><use href="#icon-drag"/></svg><p id="p-play-text"></p></div>
+      <div class="links" id="p-links"></div>
+      <div class="tags" id="p-tags"></div>
+      <p class="credit" id="p-credit"></p>
+    </aside>
+  </div>
+  <p class="missing" id="missing" hidden></p>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    var root = document.documentElement;
+    var Base = '/CatrionaAgg';
+    var Mathforge = 'https://notes.mathforge.org/notes/published/';
+    var SiteTitle = "Catriona Agg's Geometry Puzzles · Live Geometry";
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---------- the theme: the page, every drawing on it, and the site's own setting ----------
+
+    function systemTheme() {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function currentTheme() {
+      return root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function toggleTheme() {
+      var theme = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      // as the app does: landing on what the system says stores no choice at all
+      try {
+        if (theme === systemTheme()) {
+          localStorage.removeItem('LiveGeometry.Theme');
+        } else {
+          localStorage.setItem('LiveGeometry.Theme', theme === 'dark' ? 'Dark' : 'Light');
+        }
+      } catch (e) { }
+
+      themeChanged();
+    }
+
+    function updateThemeButtons() {
+      document.querySelectorAll('.icon-button.theme').forEach(function (button) {
+        button.title = currentTheme() === 'dark' ? 'Light theme' : 'Dark theme';
+      });
+    }
+
+    document.querySelectorAll('.icon-button.theme').forEach(function (button) {
+      button.addEventListener('click', toggleTheme);
+    });
+    updateThemeButtons();
+
+    function themeChanged() {
+      updateThemeButtons();
+      if (puzzlePlayer != null) {
+        puzzlePlayer.applyTheme(currentTheme());
+      }
+
+      if (featurePlayer != null) {
+        featurePlayer.applyTheme(currentTheme());
+      }
+
+      if (hover != null) {
+        hover.player.applyTheme(currentTheme());
+      }
+
+      // the pictures of the tiles are drawn again in the new theme, those in view first
+      Thumbs.restart();
+    }
+
+    // ---------- the catalog ----------
+
+    var everything = [];   // every puzzle of the catalog
+    var puzzles = [];      // the ones with a drawing, newest first
+    var bySlug = new Map();
+    var texts = new Map(); // by slug: a promise of the drawing's text
+
+    var Topics = ['Basic Angles', 'Angles in Parallel Lines', 'Shapes', 'Measures', 'Transformations and Symmetry', 'Circle Theorems', 'Trigonometry', 'Algebra', 'Other Techniques'];
+    var Shapes = [
+      ['Triangles', /triangle/],
+      ['Squares', /square/],
+      ['Rectangles', /rectangle/],
+      ['Other quadrilaterals', /rhomb|parallelogram|kite|trapezi|quadrilateral|dart/],
+      ['Pentagons', /pentagon/],
+      ['Hexagons', /hexagon/],
+      ['Other polygons', /octagon|dodecagon|polygon|heptagon|decagon/],
+      ['Circles', /circle|circular|arc|lune|annulus|ring/]
+    ];
+    var Questions = ['Angle', 'Area', 'Length', 'Fraction', 'Other'];
+
+    function shapesOf(puzzle) {
+      var title = puzzle.title.toLowerCase();
+      var found = Shapes.filter(function (shape) { return shape[1].test(title); }).map(function (shape) { return shape[0]; });
+      return found.length > 0 ? found : ['Other shapes'];
+    }
+
+    function questionOf(puzzle) {
+      var text = (puzzle.statement || '').toLowerCase();
+      // the question is the last sentence that asks: "The blue square has area 2. What's the yellow area?"
+      var asked = text.split(/(?<=[.?!])\s+/).filter(function (sentence) { return /\?\s*$/.test(sentence); }).pop() || text;
+      if (/fraction|proportion|percentage/.test(asked)) { return 'Fraction'; }
+      if (/angle/.test(asked)) { return 'Angle'; }
+      if (/area/.test(asked)) { return 'Area'; }
+      if (/length|diameter|radius|width|height|perimeter|distance|long|side|wide|tall/.test(asked)) { return 'Length'; }
+      return 'Other';
+    }
+
+    function topicsOf(puzzle) {
+      return puzzle.categories.length > 0 ? puzzle.categories : ['Not yet sorted'];
+    }
+
+    function parseDate(text) {
+      var parts = text.split('-');
+      return new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    }
+
+    var Months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function longDate(date) {
+      return date.getDate() + ' ' + Months[date.getMonth()] + ' ' + date.getFullYear();
+    }
+
+    function shortDate(date) {
+      return date.getDate() + ' ' + Months[date.getMonth()].substring(0, 3) + ' ' + date.getFullYear();
+    }
+
+    // a wiki page's address on Mathforge Notes: its name, spaces as +
+    function mathforge(name) {
+      return Mathforge + encodeURIComponent(name).replace(/%20/g, '+').replace(/'/g, '%27');
+    }
+
+    // The question as the catalog has it, with the TeX of the wiki: $6$, $x^2$, $\sqrt{2}$, $\frac{1}{2}$
+    function plainQuestion(text) {
+      return (text || '').replace(/\$([^$]*)\$/g, function (all, tex) {
+        return tex
+          .replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '$1/$2')
+          .replace(/\\sqrt\{([^}]*)\}/g, '√$1')
+          .replace(/\\pi/g, 'π')
+          .replace(/\\times/g, '×')
+          .replace(/\\circ/g, '°')
+          .replace(/\^\{?2\}?/g, '²')
+          .replace(/\^\{?3\}?/g, '³')
+          .replace(/[{}\\]/g, '');
+      });
+    }
+
+    function fetchText(puzzle) {
+      var promise = texts.get(puzzle.slug);
+      if (promise == null) {
+        promise = fetch(Base + '/drawings/' + puzzle.drawing).then(function (response) {
+          if (!response.ok) {
+            throw new Error('could not load ' + puzzle.drawing + ' (' + response.status + ')');
+          }
+
+          return response.text();
+        });
+        texts.set(puzzle.slug, promise);
+        promise.catch(function () { texts.delete(puzzle.slug); });
+      }
+
+      return promise;
+    }
+
+    function parseXml(text) {
+      var parsed = new DOMParser().parseFromString(text.replace(/^﻿/, '').trimStart(), 'application/xml');
+      if (parsed.querySelector('parsererror') != null) {
+        throw new Error('not well-formed XML');
+      }
+
+      return parsed.documentElement;
+    }
+
+    // what a reader drags is left out of a picture: the tile shows her diagram as she drew it
+    function withoutHandles(text) {
+      var element = parseXml(text);
+      element.querySelectorAll('[Style="Handle"]').forEach(function (figure) { figure.setAttribute('Visible', 'false'); });
+      return element;
+    }
+
+    function hasHandles(text) {
+      return /Style="Handle"/.test(text);
+    }
+
+    // ---------- the pictures of the tiles ----------
+
+    // Each drawing is played once, off screen, at 300 x 300 drawn at 2.4 times the pixels, and
+    // its picture kept as a PNG the tiles show (an image the browser can let go of when it is
+    // far out of view, and one picture for every tile of the same puzzle). Only tiles near the
+    // view are drawn, a few per frame, the closest first. A change of theme draws them again.
+    var ThumbSize = 300;
+    var ThumbScale = 2.4;
+
+    function fitScene(drawing, width, height) {
+      var scene = drawing.chooseScene(width, height);
+      if (scene != null) {
+        drawing.showScene(scene);
+      } else {
+        drawing.coordinateSystem.zoomExtend(LiveGeometry.GalleryDrawing.getPlane(drawing), 1.08);
+      }
+    }
+
+    // a player whose canvas is always ThumbSize square, drawn through a pixel ratio of its own
+    function makeSquarePlayer(Base) {
+      return class extends Base {
+        constructor(element, options, pixels) {
+          super(element, Object.assign({ theme: currentTheme() }, options));
+          this.pixels = pixels;
+          this.canvasElement.style.pointerEvents = 'none';
+        }
+
+        measureElement() {
+          var ratio = typeof this.pixels === 'function' ? this.pixels() : this.pixels;
+          if (ratio == null) {
+            // created by the base constructor before the pixels are known
+            return false;
+          }
+
+          if (this.canvas.width === ThumbSize && this.canvas.height === ThumbSize && ratio === this.pixelRatio) {
+            return false;
+          }
+
+          this.canvas.width = ThumbSize;
+          this.canvas.height = ThumbSize;
+          this.pixelRatio = ratio;
+          this.canvasElement.width = Math.max(1, Math.round(ThumbSize * ratio));
+          this.canvasElement.height = Math.max(1, Math.round(ThumbSize * ratio));
+          return true;
+        }
+
+        resize() {
+          if (this.measureElement()) {
+            this.invalidate();
+          }
+        }
+
+        show(drawing) {
+          drawing.paintsPaper = false;
+          super.show(drawing);
+        }
+
+        fitInitial() {
+          if (this.drawing != null) {
+            fitScene(this.drawing, ThumbSize, ThumbSize);
+          }
+        }
+      };
+    }
+
+    var Thumbs = {
+      pictures: new Map(),   // slug -> object URL of the picture in the theme it was drawn in
+      themeOf: new Map(),    // slug -> that theme
+      wanted: new Set(),     // tiles whose picture is wanted (near the view)
+      busy: false,
+      host: null,
+
+      want: function (tile) {
+        this.wanted.add(tile);
+        this.schedule();
+      },
+
+      unwant: function (tile) {
+        this.wanted.delete(tile);
+      },
+
+      show: function (tile) {
+        var url = this.pictures.get(tile.puzzle.slug);
+        if (url != null && this.themeOf.get(tile.puzzle.slug) === currentTheme()) {
+          if (tile.img.getAttribute('src') !== url) {
+            tile.img.onload = function () { tile.img.classList.add('shown'); };
+            tile.img.src = url;
+          }
+
+          return true;
+        }
+
+        return false;
+      },
+
+      restart: function () {
+        var self = this;
+        tilesInView().forEach(function (tile) { self.wanted.add(tile); });
+        this.schedule();
+      },
+
+      schedule: function () {
+        if (this.busy || this.wanted.size === 0 || Player == null) {
+          return;
+        }
+
+        this.busy = true;
+        var self = this;
+        requestAnimationFrame(function () {
+          setTimeout(function () { self.next(); }, 0);
+        });
+      },
+
+      next: function () {
+        var self = this;
+        // the tile nearest the middle of the view first
+        var middle = window.innerHeight / 2;
+        var best = null;
+        var bestDistance = Infinity;
+        this.wanted.forEach(function (tile) {
+          if (!tile.element.isConnected || self.show(tile)) {
+            self.wanted.delete(tile);
+            return;
+          }
+
+          var rect = tile.element.getBoundingClientRect();
+          var distance = Math.abs(rect.top + rect.height / 2 - middle);
+          if (distance < bestDistance) {
+            best = tile;
+            bestDistance = distance;
+          }
+        });
+
+        if (best == null) {
+          this.busy = false;
+          return;
+        }
+
+        var tile = best;
+        var theme = currentTheme();
+        fetchText(tile.puzzle).then(function (text) {
+          return self.draw(tile.puzzle, text, theme);
+        }).then(function () {
+          // every tile of this puzzle in view takes the picture
+          self.wanted.forEach(function (other) {
+            if (other.puzzle === tile.puzzle && self.show(other)) {
+              self.wanted.delete(other);
+            }
+          });
+        }).catch(function (error) {
+          console.error('CatrionaAgg: ' + tile.puzzle.slug + ': ' + error.message);
+          self.wanted.delete(tile);
+        }).then(function () {
+          self.busy = false;
+          self.schedule();
+        });
+      },
+
+      draw: function (puzzle, text, theme) {
+        var self = this;
+        if (this.host == null) {
+          this.host = document.createElement('div');
+          this.host.style.cssText = 'position: fixed; left: -10000px; top: 0; width: ' + ThumbSize + 'px; height: ' + ThumbSize + 'px; font-family: var(--sans);';
+          document.body.appendChild(this.host);
+        }
+
+        var player = new ThumbPlayer(this.host, { theme: theme }, ThumbScale);
+        try {
+          player.measureElement();
+          player.load(withoutHandles(text));
+          player.render();
+        } catch (error) {
+          player.render = function () { };
+          player.dispose();
+          return Promise.reject(error);
+        }
+
+        return new Promise(function (resolve) {
+          player.canvasElement.toBlob(function (blob) {
+            player.render = function () { };
+            player.dispose();
+            var old = self.pictures.get(puzzle.slug);
+            if (old != null) {
+              URL.revokeObjectURL(old);
+            }
+
+            self.pictures.set(puzzle.slug, URL.createObjectURL(blob));
+            self.themeOf.set(puzzle.slug, theme);
+            resolve();
+          }, 'image/png');
+        });
+      }
+    };
+
+    var Player = null;
+    var ThumbPlayer = null;
+    var LivePlayer = null;
+
+    // ---------- a tile ----------
+
+    var tiles = [];           // the tiles on the page now
+    var tilePool = new Map(); // slug -> every tile made for the puzzle, to be used again (a puzzle may be in several sections)
+
+    function Tile(puzzle) {
+      this.puzzle = puzzle;
+      var element = this.element = document.createElement('a');
+      element.className = 'tile';
+      element.href = Base + '/' + puzzle.slug;
+      var art = this.art = document.createElement('div');
+      art.className = 'art';
+      var img = this.img = document.createElement('img');
+      img.alt = puzzle.title + ': ' + plainQuestion(puzzle.statement);
+      img.decoding = 'async';
+      art.appendChild(img);
+      element.appendChild(art);
+      var meta = document.createElement('div');
+      meta.className = 'meta';
+      var title = document.createElement('span');
+      title.className = 'title';
+      title.textContent = puzzle.title;
+      var sub = document.createElement('span');
+      sub.className = 'sub';
+      sub.textContent = shortDate(puzzle.date) + ' · ' + puzzle.question;
+      meta.appendChild(title);
+      meta.appendChild(sub);
+      element.appendChild(meta);
+      element.title = plainQuestion(puzzle.statement);
+      var tile = this;
+      element.addEventListener('click', function (e) {
+        if (isPlainClick(e)) {
+          e.preventDefault();
+          endHover();
+          openPuzzle(puzzle, true);
+        }
+      });
+      element.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'mouse') {
+          startHover(tile);
+        }
+      });
+      element.addEventListener('pointerleave', function () {
+        if (hover != null && hover.tile === tile) {
+          endHover();
+        }
+      });
+      if (puzzle.live) {
+        this.markLive();
+      }
+    }
+
+    Tile.prototype.markLive = function () {
+      if (this.element.querySelector('.live') != null) {
+        return;
+      }
+
+      var badge = document.createElement('span');
+      badge.className = 'live';
+      badge.title = 'Something to drag';
+      badge.innerHTML = '<svg><use href="#icon-drag"/></svg>';
+      this.element.appendChild(badge);
+    };
+
+    function isPlainClick(e) {
+      return e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey;
+    }
+
+    // tiles come near the view: their pictures are wanted
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var tile = entry.target.tile;
+        if (tile == null) {
+          return;
+        }
+
+        tile.near = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          if (!Thumbs.show(tile)) {
+            Thumbs.want(tile);
+          }
+        } else {
+          Thumbs.unwant(tile);
+        }
+      });
+    }, { rootMargin: '600px 0px' });
+
+    function tilesInView() {
+      return tiles.filter(function (tile) { return tile.near; });
+    }
+
+    // ---------- the drawing under the mouse comes alive: its points drift ----------
+
+    var hover = null;
+
+    function startHover(tile) {
+      endHover();
+      if (Player == null || reduceMotion) {
+        return;
+      }
+
+      var started = { tile: tile, player: null, drifters: null, timer: 0 };
+      hover = started;
+      // a pass of the mouse across the gallery doesn't start a player per tile
+      started.timer = setTimeout(function () {
+        fetchText(tile.puzzle).then(function (text) {
+          if (hover !== started || !hasHandles(text)) {
+            return;
+          }
+
+          var art = tile.art;
+          started.player = new LivePlayer(art, {}, function () {
+            var rect = art.getBoundingClientRect();
+            return rect.width > 0 ? rect.width / ThumbSize * (window.devicePixelRatio || 1) : null;
+          });
+          var canvas = started.player.canvasElement;
+          canvas.style.position = 'absolute';
+          canvas.style.inset = '0';
+          canvas.style.width = '100%';
+          canvas.style.height = '100%';
+          started.player.measureElement();
+          started.player.load(withoutHandles(text));
+          started.player.render();
+          tile.img.style.visibility = 'hidden';
+          started.stop = drift(started.player, 22, 2.8);
+        });
+      }, 110);
+    }
+
+    function endHover() {
+      var ended = hover;
+      hover = null;
+      if (ended == null) {
+        return;
+      }
+
+      clearTimeout(ended.timer);
+      if (ended.stop != null) {
+        ended.stop();
+      }
+
+      if (ended.player != null) {
+        ended.player.render = function () { };
+        ended.player.dispose();
+      }
+
+      ended.tile.img.style.visibility = '';
+    }
+
+    // The points a reader would drag go round in small circles (in pixels of the player's
+    // canvas), out of phase, and the construction follows; stop() puts them back.
+    function drift(player, radiusInPixels, secondsPerTurn) {
+      // the handles, shown or not: in these drawings the only points that can be dragged
+      var drawing = player.drawing;
+      var drifters = drawing.figures.list.filter(function (figure) {
+        return figure.isPoint === true && figure.isMovable === true && figure.allowMove();
+      });
+      var items = drifters.map(function (point, index) {
+        return { point: point, home: point.coordinates, phase: index * 2.4, direction: index % 2 === 0 ? 1 : -1 };
+      });
+      if (items.length === 0) {
+        return function () { };
+      }
+
+      var running = true;
+      var startedAt = performance.now();
+      var frame = function () {
+        if (!running) {
+          return;
+        }
+
+        var seconds = (performance.now() - startedAt) / 1000;
+        try {
+          var radius = radiusInPixels / drawing.coordinateSystem.unitLength;
+          // eases in: no jump when the drift starts
+          var amplitude = Math.min(1, seconds / 0.6);
+          var turn = 2 * Math.PI * seconds / secondsPerTurn;
+          for (const item of items) {
+            var angle = item.direction * turn + item.phase;
+            item.point.moveTo(new LiveGeometry.Point(
+              item.home.x + amplitude * radius * (Math.cos(angle) - Math.cos(item.phase)),
+              item.home.y + amplitude * radius * (Math.sin(angle) - Math.sin(item.phase))));
+          }
+
+          drawing.recalculate();
+          player.invalidate();
+        } catch (error) {
+          console.error('CatrionaAgg: ' + error.message);
+          running = false;
+          return;
+        }
+
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+      return function () {
+        running = false;
+        try {
+          for (const item of items) {
+            item.point.moveTo(item.home);
+          }
+
+          drawing.recalculate();
+          player.invalidate();
+        } catch (error) {
+        }
+      };
+    }
+
+    // ---------- the gallery: search, arrangement, order ----------
+
+    var state = { group: 'none', query: '', oldestFirst: false };
+    var groupsHost = document.getElementById('groups');
+    var countText = document.getElementById('count');
+    var emptyText = document.getElementById('empty');
+    var jump = document.getElementById('jump');
+    var searchBox = document.getElementById('search');
+    var arrange = document.getElementById('arrange');
+    var arrangeThumb = document.getElementById('arrange-thumb');
+    var orderButton = document.getElementById('order');
+    var currentOrder = [];   // the puzzles in the order the gallery shows them, each once: the order of the puzzles' arrows
+
+    function readStateFromAddress() {
+      var query = new URLSearchParams(location.search);
+      var group = query.get('by');
+      state.group = ['none', 'year', 'topic', 'shape', 'question'].indexOf(group) >= 0 ? group : 'none';
+      state.query = query.get('q') || '';
+      state.oldestFirst = query.get('order') === 'oldest';
+    }
+
+    function galleryAddress() {
+      var query = new URLSearchParams();
+      if (state.group !== 'none') { query.set('by', state.group); }
+      if (state.query.trim() !== '') { query.set('q', state.query.trim()); }
+      if (state.oldestFirst) { query.set('order', 'oldest'); }
+      var text = query.toString();
+      return Base + (text !== '' ? '?' + text : '');
+    }
+
+    function matches(puzzle, words) {
+      return words.every(function (word) { return puzzle.searchText.indexOf(word) >= 0; });
+    }
+
+    // the sections and what is in each, in the order they show
+    function arrangement() {
+      var words = state.query.toLowerCase().split(/\s+/).filter(function (word) { return word !== ''; });
+      var shown = puzzles.filter(function (puzzle) { return matches(puzzle, words); });
+      if (state.oldestFirst) {
+        shown = shown.slice().reverse();
+      }
+
+      var sections = [];
+      var add = function (name, list) {
+        if (list.length > 0) {
+          sections.push({ name: name, puzzles: list });
+        }
+      };
+      if (state.group === 'none') {
+        add(null, shown);
+      } else if (state.group === 'year') {
+        var years = Array.from(new Set(shown.map(function (puzzle) { return puzzle.year; })));
+        years.forEach(function (year) { add(String(year), shown.filter(function (puzzle) { return puzzle.year === year; })); });
+      } else if (state.group === 'topic') {
+        Topics.concat(['Not yet sorted']).forEach(function (topic) { add(topic, shown.filter(function (puzzle) { return topicsOf(puzzle).indexOf(topic) >= 0; })); });
+      } else if (state.group === 'shape') {
+        Shapes.map(function (shape) { return shape[0]; }).concat(['Other shapes']).forEach(function (shape) {
+          add(shape, shown.filter(function (puzzle) { return puzzle.shapes.indexOf(shape) >= 0; }));
+        });
+      } else if (state.group === 'question') {
+        Questions.forEach(function (question) { add(question === 'Other' ? 'Something else' : 'What’s the ' + question.toLowerCase() + '?', shown.filter(function (puzzle) { return puzzle.question === question; })); });
+      }
+
+      return { shown: shown, sections: sections };
+    }
+
+    // Lays the gallery out for the state, the tiles that stay gliding to their new places
+    // (FLIP: where each was, where it is now, and a transform from one to the other that goes to nothing).
+    function render(animate) {
+      endHover();
+      var result = arrangement();
+      var shownCount = result.shown.length;
+      var before = new Map();
+      if (animate && !reduceMotion) {
+        tiles.forEach(function (tile) {
+          if (tile.near) {
+            var rect = tile.element.getBoundingClientRect();
+            if (!before.has(tile.puzzle.slug)) {
+              before.set(tile.puzzle.slug, rect);
+            }
+          }
+        });
+      }
+
+      // every tile made so far can be taken again for its puzzle (with its picture), each once a layout
+      var used = new Set();
+      var take = function (puzzle) {
+        var list = tilePool.get(puzzle.slug);
+        if (list == null) {
+          list = [];
+          tilePool.set(puzzle.slug, list);
+        }
+
+        var tile = list.find(function (made) { return !used.has(made); });
+        if (tile == null) {
+          tile = new Tile(puzzle);
+          list.push(tile);
+        }
+
+        used.add(tile);
+        return tile;
+      };
+
+      var nextTiles = [];
+      var fragment = document.createDocumentFragment();
+      result.sections.forEach(function (section) {
+        var group = document.createElement('section');
+        group.className = 'group';
+        if (section.name != null) {
+          group.id = 'group-' + section.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          var heading = document.createElement('h2');
+          heading.textContent = section.name;
+          var count = document.createElement('span');
+          count.className = 'n';
+          count.textContent = section.puzzles.length;
+          heading.appendChild(count);
+          group.appendChild(heading);
+        }
+
+        var grid = document.createElement('div');
+        grid.className = 'grid';
+        section.puzzles.forEach(function (puzzle) {
+          var tile = take(puzzle);
+          nextTiles.push(tile);
+          grid.appendChild(tile.element);
+        });
+        group.appendChild(grid);
+        fragment.appendChild(group);
+      });
+
+      // what was not taken stays in the pool, off the page
+      tiles.forEach(function (tile) {
+        if (!used.has(tile)) {
+          observer.unobserve(tile.element);
+          tile.near = false;
+          Thumbs.unwant(tile);
+        }
+      });
+
+      groupsHost.replaceChildren(fragment);
+      tiles = nextTiles;
+      tiles.forEach(function (tile) {
+        tile.element.tile = tile;
+        observer.observe(tile.element);
+        Thumbs.show(tile);
+      });
+
+      // the order of the arrows on a puzzle's page: as shown, each puzzle once
+      var seen = new Set();
+      currentOrder = [];
+      tiles.forEach(function (tile) {
+        if (!seen.has(tile.puzzle.slug)) {
+          seen.add(tile.puzzle.slug);
+          currentOrder.push(tile.puzzle);
+        }
+      });
+      if (currentOrder.length === 0) {
+        currentOrder = puzzles.slice();
+      }
+
+      countText.textContent = shownCount === puzzles.length
+        ? puzzles.length + ' puzzles redrawn so far, of ' + everything.length + ' in the catalogue'
+        : shownCount + ' of ' + puzzles.length + ' puzzles';
+      emptyText.hidden = shownCount > 0;
+      if (shownCount === 0) {
+        emptyText.textContent = state.query.trim() !== ''
+          ? 'Nothing here matches “' + state.query.trim() + '”.'
+          : 'Nothing here yet.';
+      }
+
+      updateJump(result.sections);
+
+      if (before.size > 0) {
+        var viewHeight = window.innerHeight;
+        var seenNow = new Set();
+        tiles.forEach(function (tile, index) {
+          var rect = tile.element.getBoundingClientRect();
+          if (rect.bottom < -200 || rect.top > viewHeight + 200) {
+            return;
+          }
+
+          var old = seenNow.has(tile.puzzle.slug) ? null : before.get(tile.puzzle.slug);
+          seenNow.add(tile.puzzle.slug);
+          if (old != null) {
+            var dx = old.left - rect.left;
+            var dy = old.top - rect.top;
+            if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+              tile.element.animate([
+                { transform: 'translate(' + dx + 'px, ' + dy + 'px)' },
+                { transform: 'translate(0, 0)' }
+              ], { duration: 560, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+            }
+          } else {
+            tile.element.animate([
+              { opacity: 0, transform: 'scale(0.92)' },
+              { opacity: 1, transform: 'scale(1)' }
+            ], { duration: 420, delay: Math.min(index, 12) * 18, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'backwards' });
+          }
+        });
+        groupsHost.querySelectorAll('.group h2').forEach(function (heading) {
+          heading.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'ease-out' });
+        });
+      }
+    }
+
+    function updateJump(sections) {
+      jump.replaceChildren();
+      jump.hidden = state.group === 'none' || sections.length < 2;
+      if (jump.hidden) {
+        return;
+      }
+
+      sections.forEach(function (section) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = section.name;
+        var count = document.createElement('span');
+        count.textContent = section.puzzles.length;
+        button.appendChild(count);
+        button.addEventListener('click', function () {
+          var target = document.getElementById('group-' + section.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+          if (target != null) {
+            target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          }
+        });
+        jump.appendChild(button);
+      });
+    }
+
+    function updateControls() {
+      searchBox.value = state.query;
+      arrange.querySelectorAll('button').forEach(function (button) {
+        button.setAttribute('aria-pressed', button.getAttribute('data-group') === state.group ? 'true' : 'false');
+      });
+      orderButton.textContent = state.oldestFirst ? 'Oldest first' : 'Newest first';
+      placeArrangeThumb();
+    }
+
+    function placeArrangeThumb() {
+      var chosen = arrange.querySelector('button[aria-pressed="true"]');
+      if (chosen == null) {
+        return;
+      }
+
+      arrangeThumb.style.width = chosen.offsetWidth + 'px';
+      arrangeThumb.style.transform = 'translateX(' + chosen.offsetLeft + 'px)';
+    }
+
+    function stateChanged(animate) {
+      updateControls();
+      history.replaceState(null, '', galleryAddress());
+      render(animate);
+    }
+
+    arrange.addEventListener('click', function (e) {
+      var button = e.target.closest('button');
+      if (button == null || button.getAttribute('data-group') === state.group) {
+        return;
+      }
+
+      state.group = button.getAttribute('data-group');
+      stateChanged(true);
+    });
+
+    orderButton.addEventListener('click', function () {
+      state.oldestFirst = !state.oldestFirst;
+      stateChanged(true);
+    });
+
+    var searchTimer = 0;
+    searchBox.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        state.query = searchBox.value;
+        history.replaceState(null, '', galleryAddress());
+        render(true);
+      }, 140);
+    });
+
+    window.addEventListener('resize', placeArrangeThumb);
+
+    var galleryBar = document.getElementById('gallery-bar');
+    window.addEventListener('scroll', function () {
+      galleryBar.classList.toggle('scrolled', window.scrollY > 4);
+    }, { passive: true });
+
+    // ---------- the newest puzzle, alive, beside the introduction ----------
+
+    var featurePlayer = null;
+
+    function showFeature() {
+      var featured = puzzles.find(function (puzzle) { return puzzle.live; }) || puzzles[0];
+      if (featured == null || Player == null) {
+        return;
+      }
+
+      var feature = document.getElementById('feature');
+      var art = document.getElementById('feature-art');
+      feature.href = Base + '/' + featured.slug;
+      document.getElementById('feature-name').textContent = featured.title;
+      feature.hidden = false;
+      if (getComputedStyle(feature).display === 'none') {
+        return;
+      }
+
+      feature.addEventListener('click', function (e) {
+        if (isPlainClick(e)) {
+          e.preventDefault();
+          openPuzzle(featured, true);
+        }
+      });
+      fetchText(featured).then(function (text) {
+        featurePlayer = new LivePlayer(art, {}, function () {
+          var rect = art.getBoundingClientRect();
+          return rect.width > 0 ? rect.width / ThumbSize * (window.devicePixelRatio || 1) : null;
+        });
+        featurePlayer.measureElement();
+        featurePlayer.load(withoutHandles(text));
+        if (!reduceMotion) {
+          drift(featurePlayer, 30, 6);
+        }
+      }).catch(function (error) {
+        console.error('CatrionaAgg: ' + error.message);
+      });
+    }
+
+    // ---------- a puzzle ----------
+
+    var galleryView = document.getElementById('gallery-view');
+    var puzzleView = document.getElementById('puzzle-view');
+    var playerElement = document.getElementById('player');
+    var nudge = document.getElementById('nudge');
+    var puzzlePlayer = null;
+    var current = null;
+    var currentText = null;
+    var galleryScroll = 0;
+
+    function openPuzzle(puzzle, push) {
+      if (current == null) {
+        galleryScroll = window.scrollY;
+      }
+
+      current = puzzle;
+      document.getElementById('missing').hidden = true;
+      document.getElementById('puzzle-body').hidden = false;
+      puzzleView.hidden = false;
+      document.body.style.overflow = 'hidden';
+      galleryView.setAttribute('aria-hidden', 'true');
+      fillPanel(puzzle);
+      var title = puzzle.title + ' · Catriona Agg · Live Geometry';
+      publish(Base + '/' + puzzle.slug, title, push);
+
+      if (puzzlePlayer != null) {
+        puzzlePlayer.render = function () { };
+        puzzlePlayer.dispose();
+        puzzlePlayer = null;
+      }
+
+      fetchText(puzzle).then(function (text) {
+        if (current !== puzzle) {
+          return;
+        }
+
+        currentText = text;
+        puzzlePlayer = new Player(playerElement, { lgf: text, theme: currentTheme(), wheel: 'zoom' });
+        // for a look from the console, as the dev page has LiveGeometry.players
+        window.catrionaPlayer = puzzlePlayer;
+        if (puzzlePlayer.loadErrors != null) {
+          console.warn('CatrionaAgg: ' + puzzle.slug + ': ' + puzzlePlayer.loadErrors);
+        }
+
+        showNudge(puzzle.live);
+
+        // the neighbors, for the next step
+        var index = currentOrder.indexOf(puzzle);
+        if (index >= 0 && currentOrder.length > 1) {
+          fetchText(currentOrder[(index + 1) % currentOrder.length]).catch(function () { });
+          fetchText(currentOrder[(index + currentOrder.length - 1) % currentOrder.length]).catch(function () { });
+        }
+      }).catch(function (error) {
+        console.error('CatrionaAgg: ' + error.message);
+      });
+    }
+
+    var nudgeTimer = 0;
+
+    function showNudge(live) {
+      clearTimeout(nudgeTimer);
+      nudge.classList.add('gone');
+      if (!live) {
+        return;
+      }
+
+      requestAnimationFrame(function () { nudge.classList.remove('gone'); });
+      nudgeTimer = setTimeout(function () { nudge.classList.add('gone'); }, 3200);
+    }
+
+    playerElement.addEventListener('pointerdown', function () {
+      clearTimeout(nudgeTimer);
+      nudge.classList.add('gone');
+    });
+
+    function element(tag, className, text) {
+      var made = document.createElement(tag);
+      if (className) {
+        made.className = className;
+      }
+
+      if (text != null) {
+        made.textContent = text;
+      }
+
+      return made;
+    }
+
+    // a button to one of Andrew Stacey's pages for the puzzle, on Mathforge Notes
+    function linkCard(href, color, icon, title, tooltip) {
+      var card = element('a', 'link-card');
+      card.href = href;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.title = tooltip;
+      card.innerHTML = '<svg style="color: ' + color + '"><use href="#' + icon + '"/></svg>';
+      card.appendChild(element('span', null, title));
+      return card;
+    }
+
+    function fillPanel(puzzle) {
+      document.getElementById('p-date').textContent = longDate(puzzle.date);
+      document.getElementById('p-title').textContent = puzzle.title;
+      document.getElementById('p-question').textContent = '“' + plainQuestion(puzzle.statement) + '”';
+      var asked = document.getElementById('p-asked');
+      asked.replaceChildren();
+      asked.append('Catriona Agg');
+      if (puzzle.thread != null) {
+        asked.append(', ');
+        var thread = element('a', null, 'on BlueSky');
+        thread.href = puzzle.thread;
+        thread.target = '_blank';
+        thread.rel = 'noopener';
+        asked.appendChild(thread);
+      }
+
+      document.getElementById('p-play-text').textContent = puzzle.play || (puzzle.live ? 'Drag the white points: what changes, and what doesn’t?' : 'Nothing to drag in this one: the conditions fix every line of it.');
+
+      var links = document.getElementById('p-links');
+      links.replaceChildren(
+        linkCard(mathforge(puzzle.name), '#14B67F', 'icon-picture', 'Original', 'Catriona’s original drawing, on Mathforge Notes'),
+        linkCard(mathforge(puzzle.name + ' techniques'), '#F26313', 'icon-tools', 'Techniques', 'The techniques a solution uses, on Mathforge Notes'),
+        linkCard(mathforge(puzzle.name + ' solution'), '#8A12B5', 'icon-key', 'Solution', 'Andrew Stacey’s solution, on Mathforge Notes'));
+
+      var tags = document.getElementById('p-tags');
+      tags.replaceChildren();
+      var addTag = function (text, group) {
+        var tag = element('button', null, text);
+        tag.type = 'button';
+        tag.title = 'Show the puzzles by ' + group;
+        tag.addEventListener('click', function () {
+          state.group = group;
+          state.query = '';
+          closePuzzle(true, text);
+        });
+        tags.appendChild(tag);
+      };
+      addTag(String(puzzle.year), 'year');
+      topicsOf(puzzle).forEach(function (topic) { addTag(topic, 'topic'); });
+      puzzle.shapes.forEach(function (shape) { addTag(shape, 'shape'); });
+
+      var credit = document.getElementById('p-credit');
+      credit.innerHTML = '';
+      credit.append('Puzzle and original drawing by Catriona Agg. Catalogue, techniques and solution by Andrew Stacey at ');
+      var notes = element('a', null, 'Mathforge Notes');
+      notes.href = Mathforge + 'HomePage';
+      notes.target = '_blank';
+      notes.rel = 'noopener';
+      credit.appendChild(notes);
+      credit.append('. Redrawn as a live construction for Live Geometry; something wrong? ');
+      var issue = element('a', null, 'Tell us');
+      issue.href = 'https://github.com/KirillOsenkov/LiveGeometry/issues';
+      issue.target = '_blank';
+      issue.rel = 'noopener';
+      credit.appendChild(issue);
+      credit.append('.');
+
+      var index = currentOrder.indexOf(puzzle);
+      document.getElementById('position').textContent = index >= 0 ? (index + 1) + ' / ' + currentOrder.length : '';
+      document.getElementById('panel').scrollTop = 0;
+    }
+
+    function closePuzzle(push, section) {
+      if (puzzlePlayer != null) {
+        puzzlePlayer.render = function () { };
+        puzzlePlayer.dispose();
+        puzzlePlayer = null;
+      }
+
+      current = null;
+      puzzleView.hidden = true;
+      document.body.style.overflow = '';
+      galleryView.removeAttribute('aria-hidden');
+      ensureGallery();
+      if (section != null) {
+        stateChanged(false);
+        var target = document.getElementById('group-' + section.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+        window.scrollTo(0, target != null ? target.getBoundingClientRect().top + window.scrollY - 120 : 0);
+      } else {
+        window.scrollTo(0, galleryScroll);
+      }
+
+      publish(galleryAddress(), SiteTitle, push);
+    }
+
+    function step(by) {
+      if (current == null || currentOrder.length === 0) {
+        return;
+      }
+
+      var index = currentOrder.indexOf(current);
+      var next = currentOrder[((index < 0 ? 0 : index) + by + currentOrder.length) % currentOrder.length];
+      openPuzzle(next, true);
+    }
+
+    document.getElementById('back').addEventListener('click', function () { closePuzzle(true); });
+    document.getElementById('previous').addEventListener('click', function () { step(-1); });
+    document.getElementById('next').addEventListener('click', function () { step(1); });
+    document.getElementById('fit').addEventListener('click', function () {
+      if (puzzlePlayer != null) {
+        puzzlePlayer.fit();
+      }
+    });
+    document.getElementById('reset').addEventListener('click', function () {
+      if (puzzlePlayer != null && currentText != null) {
+        puzzlePlayer.load(currentText);
+      }
+    });
+
+    window.addEventListener('keydown', function (e) {
+      if (current == null || e.target instanceof HTMLInputElement || e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        closePuzzle(true);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        step(-1);
+      } else if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        e.preventDefault();
+        step(1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        if (puzzlePlayer != null) {
+          puzzlePlayer.fit();
+        }
+      }
+    });
+
+    // ---------- where the page is ----------
+
+    function publish(path, title, push) {
+      document.title = title;
+      if (push) {
+        if (location.pathname + location.search !== path) {
+          history.pushState(null, '', path);
+          sendPageView(title);
+        }
+      } else {
+        history.replaceState(null, '', path);
+      }
+    }
+
+    function sendPageView(title) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'page_view', { page_title: title, page_location: location.href, page_path: location.pathname });
+      }
+    }
+
+    function slugOfPath(path) {
+      var match = /^\/CatrionaAgg\/([^/?#]+)\/?$/i.exec(path);
+      return match != null && match[1] !== 'index.html' ? decodeURIComponent(match[1]).toLowerCase() : '';
+    }
+
+    var galleryBuilt = false;
+
+    function ensureGallery() {
+      if (galleryBuilt) {
+        return;
+      }
+
+      galleryBuilt = true;
+      updateControls();
+      render(false);
+      showFeature();
+    }
+
+    function route() {
+      var slug = slugOfPath(location.pathname);
+      if (slug !== '') {
+        var puzzle = bySlug.get(slug);
+        if (puzzle != null) {
+          openPuzzle(puzzle, false);
+          return;
+        }
+
+        if (everything.some(function (other) { return other.slug === slug; })) {
+          // in the catalogue, not drawn yet: its page is Mathforge's
+          var known = everything.find(function (other) { return other.slug === slug; });
+          showMissing('“' + known.title + '” isn’t redrawn here yet. ', known);
+          return;
+        }
+
+        showMissing('There is no puzzle at this address. ', null);
+        return;
+      }
+
+      if (current != null) {
+        closePuzzle(false);
+      } else {
+        readStateFromAddress();
+        ensureGallery();
+        updateControls();
+        render(false);
+      }
+    }
+
+    function showMissing(text, known) {
+      current = null;
+      puzzleView.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('puzzle-body').hidden = true;
+      var missing = document.getElementById('missing');
+      missing.hidden = false;
+      missing.replaceChildren(text);
+      if (known != null) {
+        var link = element('a', null, 'See it on Mathforge Notes');
+        link.href = mathforge(known.name);
+        missing.appendChild(link);
+        missing.append(', or ');
+      }
+
+      var all = element('a', null, 'see all the puzzles');
+      all.href = Base;
+      missing.appendChild(all);
+      missing.append('.');
+      document.getElementById('position').textContent = '';
+    }
+
+    window.addEventListener('popstate', function () {
+      readStateFromAddress();
+      route();
+    });
+
+    // ---------- start ----------
+
+    if (typeof LiveGeometry === 'undefined') {
+      groupsHost.textContent = 'The drawings could not be loaded.';
+      return;
+    }
+
+    Player = LiveGeometry.Player;
+    ThumbPlayer = makeSquarePlayer(Player);
+    LivePlayer = makeSquarePlayer(Player);
+
+    readStateFromAddress();
+    var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    fetch(Base + '/puzzles.json').then(function (response) {
+      if (!response.ok) {
+        throw new Error('could not load the catalog (' + response.status + ')');
+      }
+
+      return response.json();
+    }).then(function (catalog) {
+      everything = catalog.puzzles.map(function (entry) {
+        var puzzle = Object.assign({}, entry);
+        puzzle.date = parseDate(entry.date);
+        puzzle.year = puzzle.date.getFullYear();
+        puzzle.categories = entry.categories || [];
+        puzzle.techniques = entry.techniques || [];
+        puzzle.shapes = shapesOf(puzzle);
+        puzzle.question = questionOf(puzzle);
+        // the puzzles with something to drag are those whose play line doesn't say there is nothing
+        puzzle.live = puzzle.play != null && !/^Nothing to drag/.test(puzzle.play);
+        puzzle.searchText = [puzzle.title, plainQuestion(puzzle.statement), puzzle.year, puzzle.categories.join(' '), puzzle.techniques.join(' '), puzzle.shapes.join(' '), puzzle.question].join(' ').toLowerCase();
+        return puzzle;
+      });
+      puzzles = everything.filter(function (puzzle) { return puzzle.drawing != null; });
+      puzzles.forEach(function (puzzle) { bySlug.set(puzzle.slug, puzzle); });
+      currentOrder = puzzles.slice();
+      return fontsReady;
+    }).then(function () {
+      route();
+      // the pictures wait for the font their numbers are in
+      Thumbs.schedule();
+    }).catch(function (error) {
+      console.error('CatrionaAgg: ' + error.message);
+      groupsHost.textContent = 'The puzzles could not be loaded.';
+    });
+  });
+</script>
+</body>
+</html>

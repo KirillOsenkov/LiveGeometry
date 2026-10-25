@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.941" Top="5.641" Right="5.241" Bottom="-0.841" />
+  <Scene Left="-1.941" Top="5.641" Right="5.241" Bottom="-0.841" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Lavender" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFD4D1F0" />
+          <GradientStop Color="#FFC2BDEA" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF9D4F1" />
+          <GradientStop Color="#FFF7C1EB" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Blue" Color="#FF2A2AB0" StrokeWidth="2.5">
+      <Dark Color="#FF7F7FD0" />
+    </LineStyle>
+    <TextStyle Name="BlueMark" FontSize="22" Color="#FF2A2AB0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF7F7FD0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="V" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="G" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="C" Visible="false" X="1" Y="2" />
+    <PointByCoordinates Name="p1" Visible="false" X="(C.X - 0.2090569265)" Y="(C.Y + 1.9890437907)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(C.X - 1.9805361375)" Y="(C.Y + 0.2783462019)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="W" Style="Handle" X="-0.3639967201" Y="3.4627074032" Parameter="2.3212879052">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p4" Visible="false" X="(V.X + (W.Y - V.Y))" Y="(V.Y - 1 * (W.X - V.X))">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(W.X + (W.Y - V.Y))" Y="(W.Y - 1 * (W.X - V.X))">
+      <Dependency Name="W" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <Polygon Name="poly6" Style="Lavender">
+      <Dependency Name="V" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="W" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="1" />
+    <Polygon Name="poly11" Style="Pink">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p13" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="p14" Visible="false" X="1" Y="2" />
+    <PointByCoordinates Name="p15" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly16" Style="Pink">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <PointByCoordinates Name="p17" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="p18" Visible="false" X="2" Y="1" />
+    <PointByCoordinates Name="p19" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p20" Visible="false" X="1" Y="2" />
+    <Polygon Name="poly21" Style="Pink">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <PointByCoordinates Name="p22" Visible="false" X="1" Y="2" />
+    <PointByCoordinates Name="p23" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p24" Visible="false" X="2" Y="3" />
+    <PointByCoordinates Name="p25" Visible="false" X="1" Y="3" />
+    <Polygon Name="poly26" Style="Pink">
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+    </Polygon>
+    <PointByCoordinates Name="p27" Visible="false" X="1" Y="3" />
+    <PointByCoordinates Name="p28" Visible="false" X="2" Y="3" />
+    <PointByCoordinates Name="p29" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="p30" Visible="false" X="1" Y="4" />
+    <Polygon Name="poly31" Style="Pink">
+      <Dependency Name="p27" />
+      <Dependency Name="p28" />
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+    </Polygon>
+    <PointByCoordinates Name="p32" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p33" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="p34" Visible="false" X="3" Y="3" />
+    <PointByCoordinates Name="p35" Visible="false" X="2" Y="3" />
+    <Polygon Name="poly36" Style="Pink">
+      <Dependency Name="p32" />
+      <Dependency Name="p33" />
+      <Dependency Name="p34" />
+      <Dependency Name="p35" />
+    </Polygon>
+    <Segment Name="s37" Style="Blue">
+      <Dependency Name="W" />
+      <Dependency Name="G" />
+    </Segment>
+    <AngleArc Name="angle38" Style="Blue" Radius="26">
+      <Dependency Name="W" />
+      <Dependency Name="V" />
+      <Dependency Name="G" />
+    </AngleArc>
+    <PointByCoordinates Name="at39" Style="Anchor" X="(W.X + 0.2)" Y="(W.Y - 0.65)">
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t40" Style="BlueMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at39" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>
