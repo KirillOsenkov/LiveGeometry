@@ -7,22 +7,36 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFCCE7A" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEBB34D" />
+            <GradientStop Color="#FFCC942E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDFD5B" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE7E749" />
+            <GradientStop Color="#FFC8C82A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Red" Color="#FFE8402A" StrokeWidth="2.5">
-      <Dark Color="#FFF18C7F" />
+      <Dark Color="#FFB0201A" />
     </LineStyle>
     <ShapeStyle Name="BlueWedge" Color="#FF1414D2" StrokeWidth="1" Fill="#FF1414D2">
-      <Dark Color="#FF6666E2" Fill="#FF6666E2" />
+      <Dark Color="#FFA2A2F6" Fill="#FFA2A2F6" />
     </ShapeStyle>
     <LineStyle Name="OrangeLine" Color="#FFF07A12" StrokeWidth="3">
-      <Dark Color="#FFF6AF71" />
+      <Dark Color="#FF9A3A00" />
     </LineStyle>
     <TextStyle Name="OrangeMark" FontSize="24" Color="#FFE8710E" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FFF1AA6E" />
+      <Dark Color="#FF8A3200" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>

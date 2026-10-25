@@ -4,16 +4,23 @@
   <Scene Left="-0.876" Top="4.476" Right="6.876" Bottom="-2.076" />
   <Styles>
     <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF71D9B8" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF48E4B2" />
+            <GradientStop Color="#FF2AC594" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <LineStyle Name="Magenta" Color="#FFD0249C" StrokeWidth="2.5">
-      <Dark Color="#FFE37CC4" />
+      <Dark Color="#FFF0A8DA" />
     </LineStyle>
     <TextStyle Name="MagentaMark" FontSize="22" Color="#FFD0249C" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FFE37CC4" />
+      <Dark Color="#FFF0A8DA" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>

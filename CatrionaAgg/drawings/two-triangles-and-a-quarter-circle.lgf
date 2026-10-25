@@ -7,10 +7,17 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Teal" Color="#FF1D5458" StrokeWidth="2.5" Fill="#FF549EA4" Texture="FeltTip">
-      <Dark Color="#FF83A1A3" />
+      <Dark Color="#FFB0E4E8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4DC0CA" />
+            <GradientStop Color="#FF2FA2AB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Green" Color="#FF79C96A" StrokeWidth="2.5">
-      <Dark Color="#FFAFDFA6" />
+      <Dark Color="#FFB9E8B0" />
     </LineStyle>
     <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Color="#FFE6E6E6" />

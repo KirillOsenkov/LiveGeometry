@@ -199,10 +199,19 @@ class Lgf
             var dark = new XElement("Dark");
             if (outline != null)
             {
-                dark.Add(new XAttribute("Color", outline == Ink ? DarkInk : Mix(outline, "#FFFFFFFF", 0.45)));
+                dark.Add(new XAttribute("Color", outline == Ink ? DarkInk : DarkLine(outline)));
             }
 
-            if (dark.HasAttributes)
+            // On the dark paper a scan of pencil or pen on white can't be faithful (its pale spots
+            // would be the dark paper): no texture there, and a gentle gradient in a tone of the
+            // same hue made for the dark paper (DarkTone) - an artistic liberty, not her colors
+            if (Texture != null)
+            {
+                var (light, deep) = DarkTone(color);
+                dark.Add(new XAttribute("Texture", "None"), new XElement("Fill", Gradient(light, deep)));
+            }
+
+            if (dark.HasAttributes || dark.HasElements)
             {
                 style.Add(dark);
             }
@@ -213,13 +222,78 @@ class Lgf
         return name;
     }
 
+    /// <summary>
+    /// A color for the dark paper, as the two ends of a diagonal gradient: the hue kept, the
+    /// lightness pulled toward the middle (a pastel becomes a mid-tone that doesn't glare, a deep
+    /// color lifts off the paper), the chroma - how far from gray, not HSL's saturation, which a
+    /// pastel has as much of as a vivid color - raised for the pastels and capped for the vivid
+    /// ones, and the ends a little lighter and a little deeper than that
+    /// </summary>
+    static (string Light, string Deep) DarkTone(string color)
+    {
+        var (hue, _, lightness, chroma) = ToHsl(color);
+        double toned = 0.36 + 0.26 * lightness;
+        double raised = Math.Min(0.62, chroma * 1.3 + 0.08);
+        double Saturation(double at) => Math.Min(1, raised / (1 - Math.Abs(2 * at - 1)));
+        return (Hsl(hue, Saturation(toned + 0.06), toned + 0.06), Hsl(hue, Saturation(toned - 0.06), toned - 0.06));
+    }
+
+    /// <summary>
+    /// A colored line, mark or text on the dark paper: the same hue, light (it crosses the dark
+    /// theme's mid-tone fills as well as the paper, and only a light color stands out on both),
+    /// saturated enough to keep its hue
+    /// </summary>
+    static string DarkLine(string color)
+    {
+        var (hue, saturation, _, _) = ToHsl(color);
+        return Hsl(hue, Math.Clamp(saturation, 0.55, 0.9), 0.8);
+    }
+
+    /// <summary>A colored text on a filled shape under the dark theme: the same hue, deep, on the mid-tone fill</summary>
+    static string DarkOnShape(string color)
+    {
+        var (hue, saturation, _, _) = ToHsl(color);
+        return Hsl(hue, Math.Min(saturation, 0.7), 0.16);
+    }
+
+    static (double Hue, double Saturation, double Lightness, double Chroma) ToHsl(string color)
+    {
+        uint argb = Convert.ToUInt32(color.TrimStart('#'), 16);
+        double r = ((argb >> 16) & 0xFF) / 255.0, g = ((argb >> 8) & 0xFF) / 255.0, b = (argb & 0xFF) / 255.0;
+        double max = Math.Max(r, Math.Max(g, b)), min = Math.Min(r, Math.Min(g, b));
+        double lightness = (max + min) / 2, hue = 0, saturation = 0;
+        if (max > min)
+        {
+            double d = max - min;
+            saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min);
+            hue = max == r ? (g - b) / d + (g < b ? 6 : 0) : max == g ? (b - r) / d + 2 : (r - g) / d + 4;
+            hue /= 6;
+        }
+
+        return (hue, saturation, lightness, max - min);
+    }
+
+    static string Hsl(double hue, double saturation, double lightness)
+    {
+        double Channel(double t)
+        {
+            t = (t % 1 + 1) % 1;
+            double q = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
+            double p = 2 * lightness - q;
+            double value = t < 1.0 / 6 ? p + (q - p) * 6 * t : t < 0.5 ? q : t < 2.0 / 3 ? p + (q - p) * (2.0 / 3 - t) * 6 : p;
+            return Math.Round(Math.Clamp(value, 0, 1) * 255);
+        }
+
+        return $"#FF{(int)Channel(hue + 1.0 / 3):X2}{(int)Channel(hue):X2}{(int)Channel(hue - 1.0 / 3):X2}";
+    }
+
     /// <summary>The paper's own color: white on the light paper, the dark paper's color on the dark one</summary>
     public string PaperFill(string name = "Paper", string outline = Ink, double width = 2.5)
     {
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", outline ?? "#00000000"), new XAttribute("StrokeWidth", N(width)), new XAttribute("Fill", Paper),
-                new XElement("Dark", outline == null ? null : new XAttribute("Color", outline == Ink ? DarkInk : Mix(outline, "#FFFFFFFF", 0.45)), new XAttribute("Fill", DarkPaper))));
+                new XElement("Dark", outline == null ? null : new XAttribute("Color", outline == Ink ? DarkInk : DarkLine(outline)), new XAttribute("Fill", DarkPaper))));
         }
 
         return name;
@@ -231,18 +305,19 @@ class Lgf
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", N(width)), new XAttribute("IsFilled", "false"),
-                new XElement("Dark", new XAttribute("Color", color == Ink ? DarkInk : Mix(color, "#FFFFFFFF", 0.45)))));
+                new XElement("Dark", new XAttribute("Color", color == Ink ? DarkInk : DarkLine(color)))));
         }
 
         return name;
     }
 
-    public string Line(string name, string color = Ink, double width = 2.5)
+    /// <param name="dark">The color on the dark paper: by default a light tint of the color (DarkLine); a line that mostly crosses fills the dark theme leaves bright (yellow, orange, green) wants a deep one</param>
+    public string Line(string name, string color = Ink, double width = 2.5, string dark = null)
     {
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("LineStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", N(width)),
-                new XElement("Dark", new XAttribute("Color", color == Ink ? DarkInk : Mix(color, "#FFFFFFFF", 0.4)))));
+                new XElement("Dark", new XAttribute("Color", dark ?? (color == Ink ? DarkInk : DarkLine(color))))));
         }
 
         return name;
@@ -254,31 +329,31 @@ class Lgf
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", "1"), new XAttribute("Fill", color),
-                new XElement("Dark", new XAttribute("Color", Mix(color, "#FFFFFFFF", 0.35)), new XAttribute("Fill", Mix(color, "#FFFFFFFF", 0.35)))));
+                new XElement("Dark", new XAttribute("Color", DarkLine(color)), new XAttribute("Fill", DarkLine(color)))));
         }
 
         return name;
     }
 
-    /// <summary>A text on the paper: lightened on the dark paper</summary>
-    public string Text(string name = "Mark", string color = Ink, double size = 26)
+    /// <summary>A text on the paper: light on the dark paper (or <paramref name="dark"/>, for one on a fill the dark theme leaves bright)</summary>
+    public string Text(string name = "Mark", string color = Ink, double size = 26, string dark = null)
     {
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("TextStyle", new XAttribute("Name", name), new XAttribute("FontSize", N(size)), new XAttribute("Color", color), new XAttribute("FontFamily", "Segoe UI"), new XAttribute("Bold", "true"),
-                new XElement("Dark", new XAttribute("Color", color == Ink ? DarkInk : Mix(color, "#FFFFFFFF", 0.4)))));
+                new XElement("Dark", new XAttribute("Color", dark ?? (color == Ink ? DarkInk : DarkLine(color))))));
         }
 
         return name;
     }
 
-    /// <summary>A text on a filled shape, whose colors are the same under both themes: the same under both too</summary>
+    /// <summary>A text on a filled shape: dark on the fill under both themes (the dark theme's fills are mid-tones, DarkTone)</summary>
     public string ShapeText(string name = "ShapeMark", string color = Ink, double size = 26)
     {
         if (styleNames.Add(name))
         {
             styles.Add(new XElement("TextStyle", new XAttribute("Name", name), new XAttribute("FontSize", N(size)), new XAttribute("Color", color), new XAttribute("FontFamily", "Segoe UI"), new XAttribute("Bold", "true"),
-                new XElement("Dark", new XAttribute("Color", color))));
+                new XElement("Dark", new XAttribute("Color", color == Ink ? Ink : DarkOnShape(color)))));
         }
 
         return name;
@@ -612,7 +687,8 @@ static class Puzzles
         const double R = 5;
         var o = d.Pt(0, 0, "O");
         var rim = d.Pt(R, 0);
-        d.Circle(d.Line("Circle", "#FFE5352B", 2), o, rim);
+        // the circle crosses the paper and every hexagon: a vivid red shows on both in the dark theme
+        d.Circle(d.Line("Circle", "#FFE5352B", 2, dark: "#FFFF5A4F"), o, rim);
         var l = d.ArcSlider(o, R, 158, 176.5, 172, (0, 0), "L");
         string a = d.Num($"-2 * (0.5 * L.X + {s3} * L.Y)", "a");
         var yellow = HexagonFromLeft(d, l, a);
@@ -645,10 +721,11 @@ static class Puzzles
         d.Polygon(d.Fill("LightGreen", "#FFDFFCB5"), left, right, topRight, topLeft);
         d.Polygon(d.Fill("Green", "#FF9AEBD1"), left, bottomLeft, bottomRight, right);
         d.Polygon(d.Fill("Purple", "#FFDEBAFA"), topLeft, h, i);
-        string blue = d.Line("Blue", "#FF1D3C99", 2.5);
+        // on the green, which stays bright in the dark theme: deep there too
+        string blue = d.Line("Blue", "#FF1D3C99", 2.5, dark: "#FF14286E");
         d.Segment(blue, i, topRight);
         d.Angle(blue, topRight, i, right, 30);
-        d.Label("?", topRight + V.At(0.15, -1.25), d.Text("BlueMark", "#FF1D3C99", 24));
+        d.Label("?", topRight + V.At(0.15, -1.25), d.Text("BlueMark", "#FF1D3C99", 24, dark: "#FF14286E"));
         d.Scene(-4.4, 3.9, 4.4, -3.9);
     }
 
@@ -670,7 +747,8 @@ static class Puzzles
         var s = d.Pt(new V($"K.X + 4 * {dx} ^ 2", $"K.Y + 4 * {dx} * {dy}"), "S");
         d.Arc("CircleSector", d.Fill("Orange", "#FFFCCE7A"), q, t, a);
         d.Arc("CircleSector", d.Fill("Yellow", "#FFFDFD5B"), m, q, t);
-        string red = d.Line("Red", "#FFE8402A", 2.5);
+        // across the orange and the yellow, which stay bright in the dark theme: deep there too
+        string red = d.Line("Red", "#FFE8402A", 2.5, dark: "#FFB0201A");
         d.Segment(red, a, p);
         d.Segment(red, p, t);
         d.Segment(red, p, s);
@@ -679,8 +757,8 @@ static class Puzzles
         string wedge = d.Wedge("BlueWedge", "#FF1414D2");
         d.Angle(wedge, p, a, s, 22);
         d.Angle(wedge, t, p, s, 22);
-        d.Angle(d.Line("OrangeLine", "#FFF07A12", 3), s, p, q, 26);
-        d.Label("?", s + V.At(-1.05, -0.6), d.Text("OrangeMark", "#FFE8710E", 24));
+        d.Angle(d.Line("OrangeLine", "#FFF07A12", 3, dark: "#FF9A3A00"), s, p, q, 26);
+        d.Label("?", s + V.At(-1.05, -0.6), d.Text("OrangeMark", "#FFE8710E", 24, dark: "#FF8A3200"));
         d.Scene(-4.3, 4.3, 2.3, -0.3);
     }
 
@@ -703,6 +781,8 @@ static class Puzzles
             d.Box(pink, V.At(i, j), V.At(i + 1, j + 1));
         }
 
+        // she inked every outline after coloring: the big square's side runs over the pink squares
+        d.Polygon(d.Outline("Frame"), v0, x, y, w);
         string blue = d.Line("Blue", "#FF2A2AB0", 2.5);
         d.Segment(blue, w, g);
         d.Angle(blue, w, v0, g, 26);
@@ -1018,6 +1098,8 @@ static class Puzzles
         d.Polygon(d.Fill("Green", "#FFD0EC9F", teal), m, br, g3, g2);
         d.Polygon(d.Fill("DarkBlue", "#FF6FA5DE", navy), tl, midLeft, m, topRight);
         d.Polygon(d.Fill("LightBlue", "#FFA4D3F2", navy), midLeft, q, bottomRight, m);
+        // inked after coloring: the big square's sides run over the green and the blue squares
+        d.Box(d.Outline("FrameInk", navy), V.At(0, 0), V.At(L, L));
         d.Label("12", Mid(d, midLeft, bottomRight), d.ShapeText("NavyMark", navy));
         d.Label("?", Mid(d, m, g3), d.ShapeText("TealMark", teal));
         d.Scene(-0.6, 9.8, 13.6, -0.6);
@@ -1087,12 +1169,14 @@ static class Puzzles
         d.Polygon(d.Fill("Yellow", "#FFFEFE92", null),
             d.Pt(-L, 0), d.Pt(new V($"-{k}", "0")), d.Pt(new V($"-{k}", k)), d.Pt(new V("0", k)), d.Pt(0, L), d.Pt(-L, L));
         d.Box(d.Fill("Red", "#FFDE7999", blue), new V("H.X", "0"), new V("0", "H.Y"));
-        string line = d.Line("Line", blue, 2.5);
+        // across the yellow (bright in the dark theme) and the paper: a blue between light and deep there
+        const string darkBlue = "#FF5B6EF5";
+        string line = d.Line("Line", blue, 2.5, dark: darkBlue);
         d.Segment(line, d.Pt(new V("H.X", "0")), d.Pt(new V("H.X", Lgf.N(L))));
         d.Segment(line, d.Pt(new V(Lgf.N(-L), "H.Y")), d.Pt(new V("0", "H.Y")));
         d.Segment(line, d.Pt(new V($"-{k}", "0")), d.Pt(new V($"-{k}", Lgf.N(L))));
         d.Segment(line, d.Pt(new V(Lgf.N(-L), k)), d.Pt(new V("0", k)));
-        d.Arc("CircleArc", d.Line("Arc", blue, 3), o, top, west);
+        d.Arc("CircleArc", d.Line("Arc", blue, 3, dark: darkBlue), o, top, west);
         d.Label("12", new V("H.X / 2", "H.Y / 2"), d.ShapeText());
         d.Scene(-8.4, 8.4, 0.4, -0.4);
     }

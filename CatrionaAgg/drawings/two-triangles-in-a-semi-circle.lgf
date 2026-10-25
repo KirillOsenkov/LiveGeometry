@@ -10,16 +10,30 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF0187FA" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3D92DB" />
+            <GradientStop Color="#FF1E73BC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF8402AE" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAA33D1" />
+            <GradientStop Color="#FF8C14B2" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="PurpleArrow" Color="#FF8A12B5" StrokeWidth="2.5">
-      <Dark Color="#FFB971D3" />
+      <Dark Color="#FFE0A2F6" />
     </LineStyle>
     <TextStyle Name="PurpleMark" FontSize="26" Color="#FF8A12B5" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FFB971D3" />
+      <Dark Color="#FFE0A2F6" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>

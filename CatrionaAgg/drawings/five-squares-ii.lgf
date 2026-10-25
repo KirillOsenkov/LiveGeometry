@@ -10,19 +10,54 @@
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
     <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF041A96" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3048CE" />
+            <GradientStop Color="#FF1129B0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFA2017D" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFCF31AB" />
+            <GradientStop Color="#FFB1138C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFE52F22" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDC493E" />
+            <GradientStop Color="#FFBE2A20" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFEE7A27" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDE8240" />
+            <GradientStop Color="#FFC06321" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFE2E208" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD9D93A" />
+            <GradientStop Color="#FFBABA1C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
   </Styles>
   <Figures>

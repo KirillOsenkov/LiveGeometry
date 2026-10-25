@@ -7,23 +7,47 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Frame" Color="#FF22307A" StrokeWidth="2.5" Fill="#FFFFFFFF">
-      <Dark Color="#FF858DB6" Fill="#FF2B2B2B" />
+      <Dark Color="#FFAFB8E9" Fill="#FF2B2B2B" />
     </ShapeStyle>
     <ShapeStyle Name="Green" Color="#FF2A8C8C" StrokeWidth="2.5" Fill="#FFD0EC9F" Texture="Crayon">
-      <Dark Color="#FF8AC0C0" />
+      <Dark Color="#FFB0E8E8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAFDB62" />
+            <GradientStop Color="#FF90BC44" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="DarkBlue" Color="#FF22307A" StrokeWidth="2.5" Fill="#FF6FA5DE" Texture="Crayon">
-      <Dark Color="#FF858DB6" />
+      <Dark Color="#FFAFB8E9" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4794E5" />
+            <GradientStop Color="#FF2976C7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="LightBlue" Color="#FF22307A" StrokeWidth="2.5" Fill="#FFA4D3F2" Texture="Crayon">
-      <Dark Color="#FF858DB6" />
+      <Dark Color="#FFAFB8E9" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF63ACDD" />
+            <GradientStop Color="#FF448EBE" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="FrameInk" Color="#FF22307A" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFAFB8E9" />
     </ShapeStyle>
     <TextStyle Name="NavyMark" FontSize="26" Color="#FF22307A" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FF22307A" />
+      <Dark Color="#FF121940" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
     <TextStyle Name="TealMark" FontSize="26" Color="#FF2A8C8C" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FF2A8C8C" />
+      <Dark Color="#FF133F3F" />
     </TextStyle>
   </Styles>
   <Figures>
@@ -112,25 +136,35 @@
       <Dependency Name="p6" />
       <Dependency Name="M" />
     </Polygon>
-    <PointByCoordinates Name="p17" Visible="false" X="(p4.X + p6.X) / 2" Y="(p4.Y + p6.Y) / 2">
+    <PointByCoordinates Name="p17" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p18" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="p19" Visible="false" X="8" Y="8" />
+    <PointByCoordinates Name="p20" Visible="false" X="0" Y="8" />
+    <Polygon Name="poly21" Style="FrameInk">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <PointByCoordinates Name="p22" Visible="false" X="(p4.X + p6.X) / 2" Y="(p4.Y + p6.Y) / 2">
       <Dependency Name="p4" />
       <Dependency Name="p6" />
     </PointByCoordinates>
-    <PointByCoordinates Name="at18" Style="Anchor" X="p17.X" Y="p17.Y">
-      <Dependency Name="p17" />
+    <PointByCoordinates Name="at23" Style="Anchor" X="p22.X" Y="p22.Y">
+      <Dependency Name="p22" />
     </PointByCoordinates>
-    <AttachedLabel Name="t19" Style="NavyMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="12">
-      <Dependency Name="at18" />
+    <AttachedLabel Name="t24" Style="NavyMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="12">
+      <Dependency Name="at23" />
     </AttachedLabel>
-    <PointByCoordinates Name="p20" Visible="false" X="(M.X + p13.X) / 2" Y="(M.Y + p13.Y) / 2">
+    <PointByCoordinates Name="p25" Visible="false" X="(M.X + p13.X) / 2" Y="(M.Y + p13.Y) / 2">
       <Dependency Name="M" />
       <Dependency Name="p13" />
     </PointByCoordinates>
-    <PointByCoordinates Name="at21" Style="Anchor" X="p20.X" Y="p20.Y">
-      <Dependency Name="p20" />
+    <PointByCoordinates Name="at26" Style="Anchor" X="p25.X" Y="p25.Y">
+      <Dependency Name="p25" />
     </PointByCoordinates>
-    <AttachedLabel Name="t22" Style="TealMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
-      <Dependency Name="at21" />
+    <AttachedLabel Name="t27" Style="TealMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at26" />
     </AttachedLabel>
   </Figures>
 </Drawing>

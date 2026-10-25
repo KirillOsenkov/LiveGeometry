@@ -7,10 +7,24 @@
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
     <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF03C2FB" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DB7DB" />
+            <GradientStop Color="#FF1E98BD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDFD18" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDEDE40" />
+            <GradientStop Color="#FFC0C021" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Color="#FFE6E6E6" />

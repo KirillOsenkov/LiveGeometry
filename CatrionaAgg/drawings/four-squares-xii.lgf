@@ -10,13 +10,20 @@
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
     </ShapeStyle>
     <ShapeStyle Name="Purple" Color="#FF4A2793" StrokeWidth="2.5" Fill="#FFF3C9F9" Texture="Crayon">
-      <Dark Color="#FF9B88C4" />
+      <Dark Color="#FFC2AEEA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC57CCF" />
+            <GradientStop Color="#FFA65EB0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Magenta" Color="#FFC4269B" StrokeWidth="2.5">
-      <Dark Color="#FFDC7DC3" />
+      <Dark Color="#FFEEAADD" />
     </LineStyle>
     <TextStyle Name="MagentaMark" FontSize="24" Color="#FFC4269B" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FFDC7DC3" />
+      <Dark Color="#FFEEAADD" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>

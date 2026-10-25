@@ -7,19 +7,40 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFDFFCB5" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAEDC6B" />
+            <GradientStop Color="#FF8FBD4C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF9AEBD1" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF5FDDB4" />
+            <GradientStop Color="#FF40BE96" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFDEBAFA" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAA70D8" />
+            <GradientStop Color="#FF8C51B9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Blue" Color="#FF1D3C99" StrokeWidth="2.5">
-      <Dark Color="#FF778AC2" />
+      <Dark Color="#FF14286E" />
     </LineStyle>
     <TextStyle Name="BlueMark" FontSize="24" Color="#FF1D3C99" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FF778AC2" />
+      <Dark Color="#FF14286E" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>

@@ -10,13 +10,34 @@
       <Dark Color="#FFE6E6E6" />
     </LineStyle>
     <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFBB0D1" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDE689C" />
+            <GradientStop Color="#FFBF497D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFD88F98" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD3606E" />
+            <GradientStop Color="#FFB54250" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFBCC76" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEAB24C" />
+            <GradientStop Color="#FFCC942D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1E1E1E" />

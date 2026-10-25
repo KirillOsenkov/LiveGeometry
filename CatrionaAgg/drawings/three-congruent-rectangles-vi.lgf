@@ -7,13 +7,34 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF3EE4FA" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF45D0E3" />
+            <GradientStop Color="#FF26B2C4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF9EF47C" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF79EA4C" />
+            <GradientStop Color="#FF5ACB2D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF4BDCB3" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF42E0B4" />
+            <GradientStop Color="#FF24C295" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />

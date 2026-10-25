@@ -204,7 +204,7 @@ foreach (var puzzle in detailed)
 
 // ---------- the catalog ----------
 
-// what was written by hand into the catalog (a puzzle's "play" line) is kept: fields this tool
+// what was written by hand into the catalog is kept: fields this tool
 // doesn't write are carried over from the file as it was
 var kept = new Dictionary<string, JsonObject>();
 if (File.Exists(catalogFile) && JsonNode.Parse(await File.ReadAllTextAsync(catalogFile))?["puzzles"] is JsonArray existing)
@@ -215,7 +215,8 @@ if (File.Exists(catalogFile) && JsonNode.Parse(await File.ReadAllTextAsync(catal
     }
 }
 
-var written = new HashSet<string> { "slug", "name", "title", "date", "statement", "thread", "categories", "techniques", "drawing" };
+// written here, so never carried over; and "play", a line per puzzle the page no longer shows
+var written = new HashSet<string> { "slug", "name", "title", "date", "statement", "thread", "categories", "techniques", "drawing", "live", "play" };
 var array = new JsonArray();
 foreach (var puzzle in puzzles)
 {
@@ -241,6 +242,12 @@ foreach (var puzzle in puzzles)
     if (drawn.Contains(puzzle.Slug))
     {
         entry["drawing"] = puzzle.Slug + ".lgf";
+
+        // something to drag: the drawing has handles (the page's badge on the tile)
+        if (File.ReadAllText(Path.Combine(drawingsFolder, puzzle.Slug + ".lgf")).Contains("Style=\"Handle\""))
+        {
+            entry["live"] = true;
+        }
     }
 
     if (kept.TryGetValue(puzzle.Slug, out var old))

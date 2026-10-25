@@ -21,7 +21,7 @@
         "invariance principle"
       ],
       "drawing": "three-hexagons-on-a-circle.lgf",
-      "play": "Drag the white point around the circle: all three hexagons change size. Keep an eye on the pink one next to the orange one."
+      "live": true
     },
     {
       "slug": "a-triangle-inside-a-hexagon",
@@ -41,7 +41,7 @@
         "invariance principle"
       ],
       "drawing": "a-triangle-inside-a-hexagon.lgf",
-      "play": "Slide the triangle's corner along the diagonal. The triangle turns and grows. What does the angle do?"
+      "live": true
     },
     {
       "slug": "a-semi-circle-and-a-quarter-circle",
@@ -55,7 +55,7 @@
       ],
       "techniques": [],
       "drawing": "a-semi-circle-and-a-quarter-circle.lgf",
-      "play": "Move the point on the quarter circle. The point on the semicircle follows so that the blue angles stay equal. Watch the orange angle."
+      "live": true
     },
     {
       "slug": "seven-squares",
@@ -73,7 +73,7 @@
         "invariance principle"
       ],
       "drawing": "seven-squares.lgf",
-      "play": "Turn the big square by its white corner: its far side always passes the top of the cross. Does the angle notice?"
+      "live": true
     },
     {
       "slug": "six-squares-and-a-quarter-circle",
@@ -88,7 +88,7 @@
       ],
       "techniques": [],
       "drawing": "six-squares-and-a-quarter-circle.lgf",
-      "play": "Slide the purple square's corner along the arc and the squares resize to stay in the quarter circle. Compare the yellow square with the blue one."
+      "live": true
     },
     {
       "slug": "two-hexagons-in-a-rectangle-ii",
@@ -101,8 +101,7 @@
         "Measures"
       ],
       "techniques": [],
-      "drawing": "two-hexagons-in-a-rectangle-ii.lgf",
-      "play": "Nothing to drag in this one: the conditions fix every line of it."
+      "drawing": "two-hexagons-in-a-rectangle-ii.lgf"
     },
     {
       "slug": "three-congruent-rectangles-vi",
@@ -116,7 +115,7 @@
       ],
       "techniques": [],
       "drawing": "three-congruent-rectangles-vi.lgf",
-      "play": "Slide the blue rectangle along the top of the green one, or drag the green one's corner to reshape all three. Watch the white triangles."
+      "live": true
     },
     {
       "slug": "four-quarter-circles-iii",
@@ -132,7 +131,7 @@
         "congruent"
       ],
       "drawing": "four-quarter-circles-iii.lgf",
-      "play": "Slide the point where the quarter circles meet along the diagonal. The red and the orange quarter circles grow and shrink together."
+      "live": true
     },
     {
       "slug": "two-triangles-in-a-semi-circle",
@@ -146,7 +145,7 @@
       ],
       "techniques": [],
       "drawing": "two-triangles-in-a-semi-circle.lgf",
-      "play": "Drag the blue triangle's corner around the arc. The triangles stay congruent and isosceles. What about their legs?"
+      "live": true
     },
     {
       "slug": "four-squares-x",
@@ -159,8 +158,7 @@
         "Shapes"
       ],
       "techniques": [],
-      "drawing": "four-squares-x.lgf",
-      "play": "Nothing to drag in this one: the conditions fix every line of it."
+      "drawing": "four-squares-x.lgf"
     },
     {
       "slug": "four-squares-ix",
@@ -173,8 +171,7 @@
         "Transformations and Symmetry"
       ],
       "techniques": [],
-      "drawing": "four-squares-ix.lgf",
-      "play": "Nothing to drag in this one: the conditions fix every line of it."
+      "drawing": "four-squares-ix.lgf"
     },
     {
       "slug": "three-regular-hexagons-and-a-semi-circle",
@@ -188,7 +185,7 @@
       ],
       "techniques": [],
       "drawing": "three-regular-hexagons-and-a-semi-circle.lgf",
-      "play": "Slide the blue hexagon's corner along the arc: the red and the yellow hexagons trade sizes while the blue one keeps its side of 2."
+      "live": true
     },
     {
       "slug": "four-quarter-circles-ii",
@@ -205,7 +202,7 @@
         "invariance principle"
       ],
       "drawing": "four-quarter-circles-ii.lgf",
-      "play": "Slide the white quarter circle's corner along the arc. The two pink pieces change shape. How much do they cover together?"
+      "live": true
     },
     {
       "slug": "subdivided-triangle-ii",
@@ -219,7 +216,7 @@
       ],
       "techniques": [],
       "drawing": "subdivided-triangle-ii.lgf",
-      "play": "Drag any corner of the triangle. A different triangle every time, the same question."
+      "live": true
     },
     {
       "slug": "four-squares-xii",
@@ -236,7 +233,7 @@
         "invariance principle"
       ],
       "drawing": "four-squares-xii.lgf",
-      "play": "Drag the corner of the left purple square to resize all three. What happens to the angle at the top corner?"
+      "live": true
     },
     {
       "slug": "four-squares-xi",
@@ -258,7 +255,7 @@
         "invariance principle"
       ],
       "drawing": "four-squares-xi.lgf",
-      "play": "Slide the foot of the blue rectangle along the bottom: it tilts and grows, and the green square follows."
+      "live": true
     },
     {
       "slug": "four-squares-and-an-isosceles-triangle",
@@ -272,8 +269,7 @@
       "techniques": [
         "similarity"
       ],
-      "drawing": "four-squares-and-an-isosceles-triangle.lgf",
-      "play": "Nothing to drag in this one: the conditions fix every line of it."
+      "drawing": "four-squares-and-an-isosceles-triangle.lgf"
     },
     {
       "slug": "two-triangles-and-a-quarter-circle",
@@ -288,7 +284,7 @@
         "angle in a semi-circle"
       ],
       "drawing": "two-triangles-and-a-quarter-circle.lgf",
-      "play": "Slide the corner the two triangles share: they get wider or narrower. Does the angle move?"
+      "live": true
     },
     {
       "slug": "two-squares-and-a-quarter-circle",
@@ -302,7 +298,7 @@
       ],
       "techniques": [],
       "drawing": "two-squares-and-a-quarter-circle.lgf",
-      "play": "Drag the red square's corner along the diagonal. The yellow strips get thinner as the red square shrinks."
+      "live": true
     },
     {
       "slug": "five-squares-ii",
@@ -319,7 +315,7 @@
         "transformation"
       ],
       "drawing": "five-squares-ii.lgf",
-      "play": "Every square can be resized by its white corner. However you size them, what fraction is shaded?"
+      "live": true
     },
     {
       "slug": "four-rectangles-and-a-hexagon",

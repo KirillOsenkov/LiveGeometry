@@ -6,12 +6,66 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDFD80" Texture="Crayon" />
-    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFE97FA8" Texture="Crayon" />
-    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF77D5FB" Texture="Crayon" />
-    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFC2E58A" Texture="Crayon" />
-    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FF977BE7" Texture="Crayon" />
-    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFABE85" Texture="Crayon" />
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDFD80" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFECEC4E" />
+            <GradientStop Color="#FFCDCD2F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFE97FA8" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE94B88" />
+            <GradientStop Color="#FFCA2C69" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF77D5FB" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4CBDEA" />
+            <GradientStop Color="#FF2E9ECC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFC2E58A" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFABE055" />
+            <GradientStop Color="#FF8CC237" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FF977BE7" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF734AE8" />
+            <GradientStop Color="#FF542BCA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFABE85" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEC9B4E" />
+            <GradientStop Color="#FFCD7C2F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
     <ShapeStyle Name="Hole" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFFFF">
       <Dark Fill="#FF2B2B2B" />
     </ShapeStyle>

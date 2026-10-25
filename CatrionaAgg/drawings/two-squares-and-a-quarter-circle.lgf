@@ -7,17 +7,33 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Frame" Color="#FF2B3FA0" StrokeWidth="2.5" Fill="#FFFFFFFF">
-      <Dark Color="#FF8A95CB" Fill="#FF2B2B2B" />
+      <Dark Color="#FFAFB9E9" Fill="#FF2B2B2B" />
     </ShapeStyle>
-    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEFE92" Texture="Crayon" />
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEFE92" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEEEE50" />
+            <GradientStop Color="#FFD0D031" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
     <ShapeStyle Name="Red" Color="#FF2B3FA0" StrokeWidth="2.5" Fill="#FFDE7999" Texture="Crayon">
-      <Dark Color="#FF8A95CB" />
+      <Dark Color="#FFAFB9E9" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE44C7C" />
+            <GradientStop Color="#FFC52D5D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <LineStyle Name="Line" Color="#FF2B3FA0" StrokeWidth="2.5">
-      <Dark Color="#FF808CC6" />
+      <Dark Color="#FF5B6EF5" />
     </LineStyle>
     <LineStyle Name="Arc" Color="#FF2B3FA0" StrokeWidth="3">
-      <Dark Color="#FF808CC6" />
+      <Dark Color="#FF5B6EF5" />
     </LineStyle>
     <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1E1E1E" />

@@ -4,7 +4,14 @@
   <Scene Left="-1.785" Top="3.785" Right="4.485" Bottom="-1.785" />
   <Styles>
     <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF0394D0" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF37A7D6" />
+            <GradientStop Color="#FF1989B7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
       <Dark Color="#FFE6E6E6" />

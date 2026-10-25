@@ -80,7 +80,7 @@
     --paper: #2B2B2B;
     --ink: #E8EBF0;
     --ink-soft: #A9B0BC;
-    --ink-faint: #7D8594;
+    --ink-faint: #949CAA;
     --line: #353A43;
     --line-strong: #474D58;
     --chip: #2E333B;
@@ -592,7 +592,7 @@
   #puzzle-view .topbar { position: static; flex: none; border-bottom-color: var(--line); }
 
   .stepper { display: flex; align-items: center; gap: 2px; }
-  .stepper .position { min-width: 54px; text-align: center; font-size: 13px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .stepper .position { min-width: 54px; text-align: center; font-size: 13px; font-weight: 500; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 
   .back {
     display: inline-flex;
@@ -661,29 +661,6 @@
   .stage-tools button:hover { color: var(--ink); border-color: var(--line-strong); }
   .stage-tools svg { width: 16px; height: 16px; }
 
-  /* the first moments: where to put a finger */
-  .nudge {
-    position: absolute;
-    left: 50%;
-    top: 16px;
-    transform: translate(-50%, 0);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
-    border-radius: 20px;
-    background: var(--ink);
-    color: var(--page);
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    pointer-events: none;
-    transition: opacity 0.6s, transform 0.6s var(--ease);
-  }
-
-  .nudge.gone { opacity: 0; transform: translate(-50%, -8px); }
-  .nudge svg { width: 16px; height: 16px; }
-
   .panel {
     min-height: 0;
     overflow-y: auto;
@@ -731,21 +708,6 @@
 
   .question footer { margin-top: 12px; font-size: 13.5px; color: var(--ink-soft); }
   .question footer a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
-
-  .play {
-    display: flex;
-    gap: 12px;
-    margin: 0 0 22px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    background: var(--accent-soft);
-    color: var(--ink);
-    font-size: 14.5px;
-    line-height: 1.5;
-  }
-
-  .play svg { width: 20px; height: 20px; flex: none; margin-top: 1px; color: var(--accent); }
-  .play p { margin: 0; }
 
   /* Andrew Stacey's three pages for the puzzle, side by side */
   .links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
@@ -1003,7 +965,6 @@
   <div class="puzzle-body" id="puzzle-body">
     <div class="stage" id="stage">
       <div id="player"></div>
-      <div class="nudge gone" id="nudge"><svg><use href="#icon-drag"/></svg><span>Drag the white points</span></div>
       <div class="stage-tools">
         <button type="button" id="fit" title="Fit the drawing to the window (Home)"><svg><use href="#icon-fit"/></svg><span>Fit</span></button>
         <button type="button" id="reset" title="Back to the drawing as it was"><svg><use href="#icon-reset"/></svg><span>Start over</span></button>
@@ -1016,7 +977,6 @@
         <p id="p-question"></p>
         <footer id="p-asked"></footer>
       </blockquote>
-      <div class="play" id="p-play"><svg><use href="#icon-drag"/></svg><p id="p-play-text"></p></div>
       <div class="links" id="p-links"></div>
       <div class="tags" id="p-tags"></div>
       <p class="credit" id="p-credit"></p>
@@ -1940,7 +1900,6 @@
     var galleryView = document.getElementById('gallery-view');
     var puzzleView = document.getElementById('puzzle-view');
     var playerElement = document.getElementById('player');
-    var nudge = document.getElementById('nudge');
     var puzzlePlayer = null;
     var current = null;
     var currentText = null;
@@ -1980,8 +1939,6 @@
           console.warn('CatrionaAgg: ' + puzzle.slug + ': ' + puzzlePlayer.loadErrors);
         }
 
-        showNudge(puzzle.live);
-
         // the neighbors, for the next step
         var index = currentOrder.indexOf(puzzle);
         if (index >= 0 && currentOrder.length > 1) {
@@ -1992,24 +1949,6 @@
         console.error('CatrionaAgg: ' + error.message);
       });
     }
-
-    var nudgeTimer = 0;
-
-    function showNudge(live) {
-      clearTimeout(nudgeTimer);
-      nudge.classList.add('gone');
-      if (!live) {
-        return;
-      }
-
-      requestAnimationFrame(function () { nudge.classList.remove('gone'); });
-      nudgeTimer = setTimeout(function () { nudge.classList.add('gone'); }, 3200);
-    }
-
-    playerElement.addEventListener('pointerdown', function () {
-      clearTimeout(nudgeTimer);
-      nudge.classList.add('gone');
-    });
 
     function element(tag, className, text) {
       var made = document.createElement(tag);
@@ -2051,8 +1990,6 @@
         thread.rel = 'noopener';
         asked.appendChild(thread);
       }
-
-      document.getElementById('p-play-text').textContent = puzzle.play || (puzzle.live ? 'Drag the white points: what changes, and what doesn’t?' : 'Nothing to drag in this one: the conditions fix every line of it.');
 
       var links = document.getElementById('p-links');
       links.replaceChildren(
@@ -2289,8 +2226,8 @@
         puzzle.techniques = entry.techniques || [];
         puzzle.shapes = shapesOf(puzzle);
         puzzle.question = questionOf(puzzle);
-        // the puzzles with something to drag are those whose play line doesn't say there is nothing
-        puzzle.live = puzzle.play != null && !/^Nothing to drag/.test(puzzle.play);
+        // something to drag (the catalog says, from the drawing's handles)
+        puzzle.live = entry.live === true;
         puzzle.searchText = [puzzle.title, plainQuestion(puzzle.statement), puzzle.year, puzzle.categories.join(' '), puzzle.techniques.join(' '), puzzle.shapes.join(' '), puzzle.question].join(' ').toLowerCase();
         return puzzle;
       });

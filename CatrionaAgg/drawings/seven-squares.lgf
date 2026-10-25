@@ -7,16 +7,33 @@
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Lavender" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFC4C2E8" Texture="Crayon">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF8380C5" />
+            <GradientStop Color="#FF6561A7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDD3FB" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFCD82C9" />
+            <GradientStop Color="#FFAE63AB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
       <Dark Color="#FFE6E6E6" />
     </ShapeStyle>
     <LineStyle Name="Blue" Color="#FF2A2AB0" StrokeWidth="2.5">
-      <Dark Color="#FF7F7FD0" />
+      <Dark Color="#FFADADEB" />
     </LineStyle>
     <TextStyle Name="BlueMark" FontSize="22" Color="#FF2A2AB0" FontFamily="Segoe UI" Bold="true">
-      <Dark Color="#FF7F7FD0" />
+      <Dark Color="#FFADADEB" />
     </TextStyle>
     <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
   </Styles>
@@ -112,20 +129,26 @@
       <Dependency Name="p34" />
       <Dependency Name="p35" />
     </Polygon>
-    <Segment Name="s37" Style="Blue">
+    <Polygon Name="poly37" Style="Frame">
+      <Dependency Name="V" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="W" />
+    </Polygon>
+    <Segment Name="s38" Style="Blue">
       <Dependency Name="W" />
       <Dependency Name="G" />
     </Segment>
-    <AngleArc Name="angle38" Style="Blue" Radius="26">
+    <AngleArc Name="angle39" Style="Blue" Radius="26">
       <Dependency Name="W" />
       <Dependency Name="V" />
       <Dependency Name="G" />
     </AngleArc>
-    <PointByCoordinates Name="at39" Style="Anchor" X="(W.X + 0.2)" Y="(W.Y - 0.65)">
+    <PointByCoordinates Name="at40" Style="Anchor" X="(W.X + 0.2)" Y="(W.Y - 0.65)">
       <Dependency Name="W" />
     </PointByCoordinates>
-    <AttachedLabel Name="t40" Style="BlueMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
-      <Dependency Name="at39" />
+    <AttachedLabel Name="t41" Style="BlueMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at40" />
     </AttachedLabel>
   </Figures>
 </Drawing>

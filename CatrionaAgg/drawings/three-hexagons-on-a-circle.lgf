@@ -4,19 +4,40 @@
   <Scene Left="-6.44" Top="6.54" Right="7.24" Bottom="-6.64" />
   <Styles>
     <LineStyle Name="Circle" Color="#FFE5352B" StrokeWidth="2">
-      <Dark Color="#FFEF8680" />
+      <Dark Color="#FFFF5A4F" />
     </LineStyle>
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
     <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFEE400" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBCB3D" />
+            <GradientStop Color="#FFBDAC1E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFF26313" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDC773E" />
+            <GradientStop Color="#FFBD581F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFD66A4" Texture="FeltTip">
-      <Dark Color="#FFE6E6E6" />
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE84A8B" />
+            <GradientStop Color="#FFCA2C6D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
     </ShapeStyle>
     <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
       <Dark Color="#FF1E1E1E" />
