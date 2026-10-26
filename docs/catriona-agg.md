@@ -61,7 +61,8 @@ page shows it), never copied.
   rearrangement glides the tiles to their new places (FLIP, tiles reused per puzzle).
 - **Link previews**: the `WriteGalleryIndex` task writes `CatrionaAgg/<slug>.html` (`puzzle.html`
   with the puzzle's title, question, canonical address and `/CatrionaAgg/previews/<slug>.png`
-  in the head, the question in the text a search engine reads) and the sitemap entries;
+  in the head, the title and question in the panel, there before the script fills in the
+  rest) and the sitemap entries;
   `tools/previews.cs` renders those pictures and `previews/index.png`, a mosaic, for the
   gallery. web.config routes /CatrionaAgg to the gallery and /CatrionaAgg/<slug> to the
   puzzle's page, else to `puzzle.html`.

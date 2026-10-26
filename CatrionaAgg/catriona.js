@@ -1204,9 +1204,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function showMissing(text, known) {
     document.getElementById('puzzle-body').hidden = true;
     document.querySelector('#puzzle-view .stepper').style.visibility = 'hidden';
-    var missing = document.getElementById('missing');
-    missing.hidden = false;
-    missing.replaceChildren(text);
+    var missing = element('p', 'missing', text);
+    document.getElementById('puzzle-view').appendChild(missing);
     if (known != null) {
       var link = element('a', null, 'See it on Mathforge Notes');
       link.href = mathforge(known.name);

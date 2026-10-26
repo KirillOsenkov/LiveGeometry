@@ -16,7 +16,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://livegeometry.com/CatrionaAgg">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="/favicon.ico">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -34,7 +33,6 @@
     document.documentElement.setAttribute('data-theme', theme.toLowerCase());
   })();
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/CatrionaAgg/catriona.css">
@@ -42,11 +40,6 @@
 <script src="/CatrionaAgg/catriona.js" defer></script>
 </head>
 <body>
-
-<div id="seo" class="visually-hidden">
-  <h1>Catriona Agg's geometry puzzles, live</h1>
-  <p>Catriona Agg's geometry puzzles redrawn as live constructions you can drag, with links to Andrew Stacey's catalogue, techniques and solutions at Mathforge Notes.</p>
-</div>
 
 <div id="puzzle-view">
   <header class="topbar">
@@ -60,17 +53,17 @@
       <a class="icon-button" id="next" title="Next puzzle (→)"><svg><use href="/CatrionaAgg/icons.svg#icon-next"/></svg></a>
     </div>
     <span class="spacer"></span>
-    <button class="icon-button theme" type="button" aria-label="Light or dark"><svg class="moon"><use href="/CatrionaAgg/icons.svg#icon-moon"/></svg><svg class="sun"><use href="/CatrionaAgg/icons.svg#icon-sun"/></svg></button>
+    <button class="icon-button theme" aria-label="Light or dark"><svg class="moon"><use href="/CatrionaAgg/icons.svg#icon-moon"/></svg><svg class="sun"><use href="/CatrionaAgg/icons.svg#icon-sun"/></svg></button>
   </header>
   <div class="puzzle-body" id="puzzle-body">
-    <div class="stage" id="stage">
+    <div class="stage">
       <div id="player"></div>
       <div class="stage-tools">
-        <button type="button" id="fit" title="Fit the drawing to the window (Home)"><svg><use href="/CatrionaAgg/icons.svg#icon-fit"/></svg><span>Fit</span></button>
-        <button type="button" id="reset" title="Back to the drawing as it was"><svg><use href="/CatrionaAgg/icons.svg#icon-reset"/></svg><span>Start over</span></button>
+        <button id="fit" title="Fit the drawing to the window (Home)"><svg><use href="/CatrionaAgg/icons.svg#icon-fit"/></svg><span>Fit</span></button>
+        <button id="reset" title="Back to the drawing as it was"><svg><use href="/CatrionaAgg/icons.svg#icon-reset"/></svg><span>Start over</span></button>
       </div>
     </div>
-    <aside class="panel" id="panel">
+    <aside class="panel">
       <p class="date" id="p-date"></p>
       <h1 id="p-title"></h1>
       <blockquote class="question">
@@ -82,7 +75,6 @@
       <p class="credit" id="p-credit"></p>
     </aside>
   </div>
-  <p class="missing" id="missing" hidden></p>
 </div>
 </body>
 </html>

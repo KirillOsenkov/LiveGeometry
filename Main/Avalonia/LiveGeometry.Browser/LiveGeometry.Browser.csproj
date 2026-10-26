@@ -106,8 +106,8 @@
        /sitemap.xml: the site's pages, the drawings among them.
        /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
        (CatrionaAgg/puzzles.json): the library's puzzle.html with the puzzle's title, its question
-       and its preview picture (/CatrionaAgg/previews/<slug>.png) in the head, and the question
-       and the credits in the text a search engine reads. -->
+       and its preview picture (/CatrionaAgg/previews/<slug>.png) in the head, and its title and
+       question in the page's panel. -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Source ParameterType="System.String" Required="true" />
@@ -343,9 +343,9 @@
                     html = ReplaceOnce(html, "<meta property=\"og:type\" content=\"[^\"]*\">", m => "<meta property=\"og:type\" content=\"article\">", catrionaTemplatePath);
                     html = ReplaceOnce(html, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/CatrionaAgg/previews/" + slug + ".png\">", catrionaTemplatePath);
                     html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">", catrionaTemplatePath);
-                    html = ReplaceOnce(html, "(<div id=\"seo\" class=\"visually-hidden\">).*?(</div>)", m => m.Groups[1].Value
-                        + "\n  <h1>" + escapedTitle + "</h1>\n  <p>“" + Escape(question) + "” A geometry puzzle by Catriona Agg, redrawn as a live construction you can drag. Its techniques and a full solution are on Andrew Stacey's Mathforge Notes.</p>\n"
-                        + m.Groups[2].Value, catrionaTemplatePath);
+                    // the title and the question are on the page before the script fills in the rest
+                    html = ReplaceOnce(html, "<h1 id=\"p-title\"></h1>", m => "<h1 id=\"p-title\">" + escapedTitle + "</h1>", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<p id=\"p-question\"></p>", m => "<p id=\"p-question\">“" + Escape(question) + "”</p>", catrionaTemplatePath);
                 }
                 catch (InvalidOperationException ex)
                 {
