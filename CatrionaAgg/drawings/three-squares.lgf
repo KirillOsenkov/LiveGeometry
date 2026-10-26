@@ -13,6 +13,9 @@
         </Fill>
       </Dark>
     </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="4">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
     <LineStyle Name="Red" Color="#FFDA0318" StrokeWidth="3">
       <Dark Color="#FFFA9EA7" />
     </LineStyle>
@@ -56,33 +59,37 @@
       <Dependency Name="U" />
       <Dependency Name="V" />
     </Polygon>
-    <PointByCoordinates Name="p13" Visible="false" X="(V.X + P.X) / 2" Y="(V.Y + P.Y) / 2">
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Segment>
+    <PointByCoordinates Name="p14" Visible="false" X="(V.X + P.X) / 2" Y="(V.Y + P.Y) / 2">
       <Dependency Name="V" />
       <Dependency Name="P" />
     </PointByCoordinates>
-    <Vector Name="v14" Style="Red">
-      <Dependency Name="p13" />
+    <Vector Name="v15" Style="Red">
+      <Dependency Name="p14" />
       <Dependency Name="V" />
     </Vector>
-    <Vector Name="v15" Style="Red">
-      <Dependency Name="p13" />
+    <Vector Name="v16" Style="Red">
+      <Dependency Name="p14" />
       <Dependency Name="P" />
     </Vector>
-    <PointByCoordinates Name="at16" Style="Anchor" X="3.65" Y="8.6" />
-    <AttachedLabel Name="t17" Style="RedMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
-      <Dependency Name="at16" />
+    <PointByCoordinates Name="at17" Style="Anchor" X="3.65" Y="8.6" />
+    <AttachedLabel Name="t18" Style="RedMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
     </AttachedLabel>
-    <PointByCoordinates Name="at18" Style="Anchor" X="1.9" Y="7.3" />
-    <AttachedLabel Name="t19" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="25">
-      <Dependency Name="at18" />
+    <PointByCoordinates Name="at19" Style="Anchor" X="1.9" Y="7.3" />
+    <AttachedLabel Name="t20" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="25">
+      <Dependency Name="at19" />
     </AttachedLabel>
-    <PointByCoordinates Name="at20" Style="Anchor" X="7.7781745931" Y="7.7781745931" />
-    <AttachedLabel Name="t21" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="18">
-      <Dependency Name="at20" />
+    <PointByCoordinates Name="at21" Style="Anchor" X="7.7781745931" Y="7.7781745931" />
+    <AttachedLabel Name="t22" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="18">
+      <Dependency Name="at21" />
     </AttachedLabel>
-    <PointByCoordinates Name="at22" Style="Anchor" X="2.8284271247" Y="2.8284271247" />
-    <AttachedLabel Name="t23" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="32">
-      <Dependency Name="at22" />
+    <PointByCoordinates Name="at23" Style="Anchor" X="2.8284271247" Y="2.8284271247" />
+    <AttachedLabel Name="t24" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="32">
+      <Dependency Name="at23" />
     </AttachedLabel>
   </Figures>
 </Drawing>

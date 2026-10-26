@@ -150,7 +150,8 @@ foreach (var puzzle in detailed)
     string text = await Source(puzzle.Name) ?? await Source(puzzle.Name.Replace("sequal", "sequel"));
     if (text == null)
     {
-        // listed on its year page but without a page of its own: no question, no techniques, no solution
+        // listed on its year page but without a page of its own: no question, no techniques, no
+        // solution (a question written into the catalog by hand, from her picture, is kept below)
         Console.WriteLine($"warning: no page for {puzzle.Name}");
         puzzle.NoPage = true;
         continue;

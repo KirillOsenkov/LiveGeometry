@@ -865,7 +865,8 @@
       "page": false,
       "categories": [],
       "techniques": [],
-      "drawing": "two-rectangles-and-a-square-ii.lgf"
+      "drawing": "two-rectangles-and-a-square-ii.lgf",
+      "statement": "6 equal squares in a semicircle or in a quarter circle. Which area is larger - pink or blue?"
     },
     {
       "slug": "subdivided-hexagon-ii",

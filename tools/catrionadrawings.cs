@@ -964,11 +964,12 @@ static partial class Puzzles
         var c1 = d.Pt(new V(Lgf.N(R / 2), $"{Lgf.N(R / 2)} + P.X"), "C1");
         var e = d.Pt(new V($"{Lgf.N(R)} + P.X", $"{Lgf.N(R)} - P.X"), "E");
         string ink = d.Line("Ink");
-        d.Segment(ink, o, t);
         d.Segment(ink, o, k);
         d.Arc("CircleSector", d.Fill("Pink", "#FFFBB0D1"), f, p, o);
         d.Arc("CircleSector", d.Fill("Red", "#FFD88F98"), c1, t, p);
         d.Arc("CircleSector", d.Fill("Orange", "#FFFBCC76"), k, e, p);
+        // the square's left side is inked over the red quarter circle that crosses it, as she drew it
+        d.Segment(ink, o, t);
         d.Arc("CircleArc", ink, o, k, t);
         d.Label("12", c1 + 0.42 * ((t - c1) + (p - c1)), d.ShapeText());
         d.Label("?", k + 0.42 * ((e - k) + (p - k)), d.ShapeText());

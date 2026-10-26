@@ -176,13 +176,15 @@ static partial class Puzzles
     }
 
     // A regular hexagon on a line, a line from its bottom left corner through its right corner, and a
-    // unit circle in the angle between the lines, touching the slanted one at the hexagon's corner. The
-    // hexagon's side? Nothing to drag: the angle is 30°, so the corner is 2 + √3 from the bottom left one.
+    // unit circle touching both lines and the hexagon's lower right side. The hexagon's side? Nothing
+    // to drag: the lines meet at 30°, so the circle's center is (2 + √3, 1), and being 1 from the
+    // lower right side (at 60° through (s, 0)) makes the side 2. It touches the slanted line just
+    // past the hexagon's corner, as she drew it.
     [Puzzle("tangential-hexagon-and-circle")]
     public static void TangentialHexagonAndCircle(Lgf d)
     {
         d.Texture = "FeltTip";
-        double s = (2 + Math.Sqrt(3)) / Math.Sqrt(3);
+        double s = 2;
         var hexagon = HexagonUp(d, V.At(0, 0), Lgf.N(s));
         var center = d.Pt(2 + Math.Sqrt(3), 1);
         var rim = d.Pt(3 + Math.Sqrt(3), 1);

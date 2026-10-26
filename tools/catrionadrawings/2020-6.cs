@@ -168,16 +168,17 @@ static partial class Puzzles
         d.Scene(0, (a + b) * S3, a + b, 0);
     }
 
-    // A rectangle in a circle and two quarter circles from its opposite corners, their arcs meeting
-    // at its middle and crossing the diagonal at its thirds (the dots; the ticks say the three parts
-    // are equal). What fraction is shaded? Nothing to drag: the thirds fix the rectangle's shape
-    // (width² = 1.4 height²), and the radius is the circle's.
+    // A rectangle in a circle and two quarter circles from its opposite corners, each arc touching
+    // the diagonal at one of its thirds (the dots; the ticks say the three parts are equal), the
+    // arcs apart. What fraction is shaded? Nothing to drag: the foot of the perpendicular from a
+    // corner at a third of the diagonal makes the width √2 times the height, and the radius, the
+    // corner's distance to the diagonal, height·√(2/3).
     [Puzzle("quarter-circles-in-a-rectangle-in-a-circle")]
     public static void QuarterCirclesInARectangleInACircle(Lgf d)
     {
         d.Texture = "FeltTip";
         const double h = 5;
-        double w = h * Math.Sqrt(1.4), r = Math.Sqrt(w * w + h * h) / 2;
+        double w = h * Math.Sqrt(2), r = h * Math.Sqrt(2.0 / 3);
         var bl = d.Pt(0, 0);
         var br = d.Pt(w, 0);
         var tr = d.Pt(w, h);

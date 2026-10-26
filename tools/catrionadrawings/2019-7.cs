@@ -399,9 +399,10 @@ static partial class Puzzles
         var p = d.Pt(w / 2 + h * h / (2 * w), h, "P");
         d.Polygon(d.Fill("Pink", "#FFD3015A", null), m, p, topRight, q);
         string dash = d.Line("Dash", "#FF0A0544", 3);
-        d.Dashed(dash, bottomLeft, m, 5);
+        // one diagonal of each rectangle is one line, from the bottom left corner through the center
+        // and the top right corner to the far corner: dashed all the way, over the pink, as she drew it
+        d.Dashed(dash, bottomLeft, r, 14);
         d.Dashed(dash, topLeft, m, 4);
-        d.Dashed(dash, topRight, r, 4);
         d.Dashed(dash, topRight, s, 4);
         string frame = d.Outline("Frame", Lgf.Ink, 4);
         d.Inked(frame, bottomLeft, q, topRight, topLeft);

@@ -47,9 +47,11 @@ page shows it), never copied.
   `#:include catrionadrawings/*.cs` (an SDK new enough for `#:include` in file-based apps;
   10.0.3xx has it). All 440 puzzles of the year pages were drawn on 2026-10-25 ("circles in rhombii
   sequal" is a typo there: its page is "...sequel", which catriona.cs tries next). Two have no
-  page of their own on Mathforge (drawn from their pictures): the catalog says `"page": false`
-  and they have no statement, so the page says it has no description and shows no links to
-  Mathforge, and so does the link preview `WriteGalleryIndex` writes. Each is her diagram as a
+  page of their own on Mathforge (drawn from their pictures): the catalog says `"page": false`,
+  and the page shows no links to Mathforge. Their question, where her picture has one in
+  print (two rectangles and a square ii), is written into `puzzles.json` by hand and kept by
+  catriona.cs; without one the page, and the link preview `WriteGalleryIndex` writes, say it
+  has no description. Each is her diagram as a
   construction over one or two handles (points on hidden segments or arcs that keep them in
   range) so that what the puzzle says holds while it is dragged - for an invariance puzzle the
   answer stays put. Hidden points by coordinates over the handles carry the geometry; a puzzle

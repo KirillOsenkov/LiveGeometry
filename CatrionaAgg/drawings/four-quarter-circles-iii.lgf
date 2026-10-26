@@ -68,27 +68,27 @@
     </PointByCoordinates>
     <Segment Name="s4" Style="Ink">
       <Dependency Name="O" />
-      <Dependency Name="T" />
-    </Segment>
-    <Segment Name="s5" Style="Ink">
-      <Dependency Name="O" />
       <Dependency Name="K" />
     </Segment>
-    <CircleSector Name="a6" Style="Pink">
+    <CircleSector Name="a5" Style="Pink">
       <Dependency Name="F" />
       <Dependency Name="P" />
       <Dependency Name="O" />
     </CircleSector>
-    <CircleSector Name="a7" Style="Red">
+    <CircleSector Name="a6" Style="Red">
       <Dependency Name="C1" />
       <Dependency Name="T" />
       <Dependency Name="P" />
     </CircleSector>
-    <CircleSector Name="a8" Style="Orange">
+    <CircleSector Name="a7" Style="Orange">
       <Dependency Name="K" />
       <Dependency Name="E" />
       <Dependency Name="P" />
     </CircleSector>
+    <Segment Name="s8" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Segment>
     <CircleArc Name="a9" Style="Ink">
       <Dependency Name="O" />
       <Dependency Name="K" />

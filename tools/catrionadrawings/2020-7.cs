@@ -295,6 +295,8 @@ static partial class Puzzles
         d.Box(cyan, V.At(0, 0), V.At(a, a));
         d.Box(cyan, V.At(a, a), V.At(a + b, a + b));
         d.Polygon(cyan, q, low, u, v);
+        // the 32's top side inked over the tilted square's corner, as she drew it: it closes the small triangle there
+        d.Segment(d.Line("Ink", Lgf.Ink, 4), q, p);
         string red = "#FFDA0318";
         string arrow = d.Line("Red", red, 3);
         var middle = Mid(d, v, p);
