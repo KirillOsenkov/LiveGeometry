@@ -144,14 +144,19 @@ class Player {
         return true;
     }
 
-    /** The element changed its size: the canvas follows, and the drawing is fitted again while it is still as it opened */
+    /**
+     * The element changed its size: the canvas follows, and the drawing is fitted again while it
+     * is still as it opened. Setting the canvas's size clears it, and a ResizeObserver runs just
+     * before the frame is painted: drawn now, not on the next frame, or every step of a resize
+     * would show the blank canvas for a frame (a flicker while the window is dragged)
+     */
     resize() {
         if (this.measureElement()) {
             if (this.keepFitted) {
                 this.fitInitial();
             }
 
-            this.invalidate();
+            this.render();
         }
     }
 

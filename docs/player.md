@@ -82,7 +82,11 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
   For pictures use headless Edge (`webauto start <url> 1000 700`, `nav`, `shot`, `drag`,
   `eval`): the app's browser pane can be too small to show a drawing, and `--check`'s PNGs
   of the desktop are the reference to put beside them. Headless Edge has a pixel ratio of
-  1; `Player.pixelRatio` says what the canvas is scaled by. `Main/Player/dev/bundle.html`
+  1; `Player.pixelRatio` says what the canvas is scaled by. **A resize draws at once**
+  (2026-10-25): setting a canvas's size clears it, and the ResizeObserver runs just before
+  the frame is painted, so `Player.resize` (and a page's player that overrides it) calls
+  `render()`, not `invalidate()` - a repaint on the next frame left every step of a window
+  drag showing a blank canvas, a flicker. `Main/Player/dev/bundle.html`
   plays the bundle the Desktop build made, as a page on another site would: an embed by
   URL and an inline one (dark, wheel zooming); `hosted.html?host=http://localhost:5006`
   takes the player and a drawing from another origin (a publish served by `tools/serve.cs`

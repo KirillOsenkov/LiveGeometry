@@ -366,9 +366,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return true;
       }
 
+      // drawn at once: the canvas's new size has cleared it, and the frame is painted next (Player.resize)
       resize() {
         if (this.measureElement()) {
-          this.invalidate();
+          this.render();
         }
       }
 

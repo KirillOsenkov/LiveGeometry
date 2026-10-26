@@ -1009,10 +1009,11 @@
         return true;
       }
 
-      // the logical size never changes, so a resize only redraws
+      // the logical size never changes, so a resize only redraws: at once, as the canvas's new
+      // size has cleared it and the frame is painted next (Player.resize)
       resize() {
         if (this.measureElement()) {
-          this.invalidate();
+          this.render();
         }
       }
 
