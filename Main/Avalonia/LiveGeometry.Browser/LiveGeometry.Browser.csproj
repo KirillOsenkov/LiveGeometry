@@ -319,7 +319,9 @@
             return found.Success ? Regex.Unescape(found.Groups[1].Value) : null;
         };
         {
-            foreach (Match entry in Regex.Matches(catalogText, "\\{[^{}]*\"slug\"[^{}]*\\}"))
+            // an entry is an object of strings and arrays; a string may hold braces (a question's \frac{1}{3})
+            const string Item = "(?:[^{}\"]|\"(?:[^\"\\\\]|\\\\.)*\")*";
+            foreach (Match entry in Regex.Matches(catalogText, "\\{" + Item + "\"slug\"" + Item + "\\}"))
             {
                 if (field(entry.Value, "drawing") == null)
                 {

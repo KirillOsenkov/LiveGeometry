@@ -862,8 +862,10 @@
       "name": "two rectangles and a square ii",
       "title": "Two Rectangles and a Square II",
       "date": "2021-07-18",
+      "page": false,
       "categories": [],
-      "techniques": []
+      "techniques": [],
+      "drawing": "two-rectangles-and-a-square-ii.lgf"
     },
     {
       "slug": "subdivided-hexagon-ii",
@@ -1445,8 +1447,11 @@
       "name": "two squares on a diameter of a circle",
       "title": "Two Squares on a Diameter of a Circle",
       "date": "2021-03-01",
+      "page": false,
       "categories": [],
-      "techniques": []
+      "techniques": [],
+      "drawing": "two-squares-on-a-diameter-of-a-circle.lgf",
+      "live": true
     },
     {
       "slug": "a-hexagon-and-a-nonagon",

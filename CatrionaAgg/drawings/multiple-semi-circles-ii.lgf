@@ -16,14 +16,6 @@
         </Fill>
       </Dark>
     </ShapeStyle>
-    <ShapeStyle Name="Clear" Color="#00000000" StrokeWidth="2.5">
-      <Fill>
-        <LinearGradientBrush>
-          <GradientStop Color="#004C4C4C" />
-          <GradientStop Color="#00000000" Offset="1" />
-        </LinearGradientBrush>
-      </Fill>
-    </ShapeStyle>
     <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFFB2E24" Texture="FeltTip">
       <Dark Texture="None">
         <Fill>
@@ -137,44 +129,40 @@
       <Dependency Name="a10" />
       <Dependency Name="a9" />
     </Region>
-    <Region Name="r19" Style="Clear" Operation="Difference">
+    <Region Name="r19" Style="Red" Operation="Difference">
       <Dependency Name="a12" />
       <Dependency Name="a11" />
     </Region>
-    <Region Name="r20" Style="Clear" Operation="Difference">
+    <Region Name="r20" Style="Red" Operation="Difference">
       <Dependency Name="a9" />
       <Dependency Name="a11" />
       <Dependency Name="poly17" />
     </Region>
-    <Region Name="r21" Style="Red" Operation="Union">
-      <Dependency Name="r19" />
-      <Dependency Name="r20" />
-    </Region>
-    <CircleArc Name="a22" Style="Ink">
+    <CircleArc Name="a21" Style="Ink">
       <Dependency Name="O" />
       <Dependency Name="p1" />
       <Dependency Name="p2" />
     </CircleArc>
-    <CircleArc Name="a23" Style="Ink">
+    <CircleArc Name="a22" Style="Ink">
       <Dependency Name="Bm" />
       <Dependency Name="Lr" />
       <Dependency Name="L" />
     </CircleArc>
-    <CircleArc Name="a24" Style="Ink">
+    <CircleArc Name="a23" Style="Ink">
       <Dependency Name="Sc" />
       <Dependency Name="F" />
       <Dependency Name="Sf" />
     </CircleArc>
-    <CircleArc Name="a25" Style="Ink">
+    <CircleArc Name="a24" Style="Ink">
       <Dependency Name="Cc" />
       <Dependency Name="Cr" />
       <Dependency Name="Cl" />
     </CircleArc>
-    <Segment Name="s26" Style="Ink">
+    <Segment Name="s25" Style="Ink">
       <Dependency Name="p2" />
       <Dependency Name="p1" />
     </Segment>
-    <Segment Name="s27" Style="Ink">
+    <Segment Name="s26" Style="Ink">
       <Dependency Name="L" />
       <Dependency Name="Lr" />
     </Segment>
