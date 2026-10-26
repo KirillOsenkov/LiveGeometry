@@ -4,8 +4,20 @@
 redrawn as live drawings, at /CatrionaAgg (the gallery: search, arrange by date, year, topic,
 shape or question) and /CatrionaAgg/<slug> (the puzzle full screen, her
 question, links to Andrew Stacey's puzzle, techniques and solution pages on Mathforge Notes).
-One page, `index.html`, played by the player (`/player/1/player.js`), no .NET: it reads the
-address like /web. The puzzles are hers and the catalogue his: both are credited on every view,
+Two pages, played by the player (`/player/1/player.js`), no .NET: the gallery `index.html` and
+`puzzle.html`, which reads the puzzle from its address (and says when it has no drawing of it).
+They share `catriona.css`, `catriona.js` (each page runs its part) and `icons.svg` (the
+icons, each drawn by `<use href="/CatrionaAgg/icons.svg#icon-back">`; the mark is the site's
+`/logo.svg`, whose gradients an icon referenced from another file may not find), linked by name
+(revalidated, not cached for good: web.config's mutable set), so a page carries its markup
+alone. Until 2026-10-25 both were one page with two views, the gallery kept behind the puzzle;
+now a step from one to the other is a page load, and what carried over is kept for the tab
+(`sessionStorage`): the gallery's arrangement (grouping, search, order), which the puzzle's
+arrows step through (date order when there is none, or it leaves the puzzle out), and the
+gallery's scroll, put back when "All puzzles" or Escape (a flag) or Back brings the reader to
+it. The address of the gallery says the arrangement too, and wins when it says one: a puzzle's
+tag is `/CatrionaAgg?by=topic#group-circle-theorems`. Browser Back usually restores the
+gallery from memory, tiles and all; otherwise the tiles draw again. The puzzles are hers and the catalogue his: both are credited on every view,
 the solution is never on the page, only linked, and her original drawing is linked (Mathforge's
 page shows it), never copied.
 - **The catalog** is `puzzles.json`, written by `dotnet run tools/catriona.cs -- [--recent N]
@@ -47,11 +59,14 @@ page shows it), never copied.
   as a PNG (an object URL) that every tile of it shows, only near the view, the nearest first;
   a theme change draws them again. Hovering a tile plays it and drifts its handles. A
   rearrangement glides the tiles to their new places (FLIP, tiles reused per puzzle).
-- **Link previews**: the `WriteGalleryIndex` task writes `CatrionaAgg/<slug>.html` (the page
+- **Link previews**: the `WriteGalleryIndex` task writes `CatrionaAgg/<slug>.html` (`puzzle.html`
   with the puzzle's title, question, canonical address and `/CatrionaAgg/previews/<slug>.png`
   in the head, the question in the text a search engine reads) and the sitemap entries;
   `tools/previews.cs` renders those pictures and `previews/index.png`, a mosaic, for the
-  gallery. web.config routes /CatrionaAgg and /CatrionaAgg/<slug>.
+  gallery. web.config routes /CatrionaAgg to the gallery and /CatrionaAgg/<slug> to the
+  puzzle's page, else to `puzzle.html`.
 - **Working on it**: `.claude/launch.json` has "catriona-dev": `tools/serve.cs` over a folder
   holding `player/1/player.js` (copied from a build's `obj/player/1/`) with
-  `--overlay CatrionaAgg=CatrionaAgg --reload`; `window.catrionaPlayer` is the puzzle's player.
+  `--overlay CatrionaAgg=CatrionaAgg --route CatrionaAgg=CatrionaAgg/puzzle.html --reload`
+  (every puzzle's address gets `puzzle.html` itself, the build's copies not being there);
+  `window.catrionaPlayer` is the puzzle's player.

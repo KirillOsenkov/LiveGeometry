@@ -5,7 +5,7 @@
 // Separate from webauto.cs on purpose: a running server locks its own executable, which
 // would block rebuilding webauto after an edit.
 //
-//   dotnet run tools/serve.cs -- <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload] [--shares <address>]
+//   dotnet run tools/serve.cs -- <dir> [port=5005] [--overlay <prefix>=<folder>]... [--route <prefix>=<page>]... [--reload] [--shares <address>]
 //   (blocks; run it in the background)
 //
 // For a `dotnet publish` output pass its wwwroot folder. No compression, no caching: this is
@@ -28,6 +28,10 @@
 // `--shares <address>` answers the addresses of shared drawings as web.config does: /s/<id>
 // with the web page, /s/<id>.lgf with a redirect to <address><id>.lgf (the storage, as
 // web.config's redirect says it, ending in /).
+//
+// `--route <prefix>=<page>` answers an extensionless path under the prefix that is no file
+// with the page (a path of the site), as a web.config rule does: `--route
+// CatrionaAgg=CatrionaAgg/puzzle.html` serves a puzzle's address with the puzzle page.
 
 using System.Net;
 using System.Text;
@@ -35,6 +39,7 @@ using System.Text.Json;
 
 var positional = new List<string>();
 var overlays = new List<(string Prefix, string Folder)>();
+var routes = new List<(string Prefix, string Page)>();
 bool liveReload = false;
 string sharesAddress = null;
 for (int i = 0; i < args.Length; i++)
@@ -57,6 +62,18 @@ for (int i = 0; i < args.Length; i++)
 
         overlays.Add((pair.Substring(0, equals).Trim('/'), Path.GetFullPath(pair.Substring(equals + 1))));
     }
+    else if (args[i] == "--route" && i + 1 < args.Length)
+    {
+        var pair = args[++i];
+        int equals = pair.IndexOf('=');
+        if (equals <= 0)
+        {
+            Console.WriteLine("--route wants <prefix>=<page>");
+            return 1;
+        }
+
+        routes.Add((pair.Substring(0, equals).Trim('/'), pair.Substring(equals + 1).Trim('/')));
+    }
     else if (args[i] == "--reload")
     {
         liveReload = true;
@@ -69,7 +86,7 @@ for (int i = 0; i < args.Length; i++)
 
 if (positional.Count == 0)
 {
-    Console.WriteLine("usage: serve <dir> [port=5005] [--overlay <prefix>=<folder>]... [--reload] [--shares <address>]");
+    Console.WriteLine("usage: serve <dir> [port=5005] [--overlay <prefix>=<folder>]... [--route <prefix>=<page>]... [--reload] [--shares <address>]");
     return 1;
 }
 
@@ -148,19 +165,7 @@ while (true)
                 relative = "web/index.html";
             }
 
-            // an overlay answers for its prefix from its own folder; the publish's copy is not consulted
-            var baseFolder = root;
-            var path = Path.GetFullPath(Path.Combine(root, relative.Length == 0 && isApp ? "index.html" : relative));
-            foreach (var overlay in overlays)
-            {
-                if (relative == overlay.Prefix || relative.StartsWith(overlay.Prefix + "/", StringComparison.OrdinalIgnoreCase))
-                {
-                    var rest = relative.Length > overlay.Prefix.Length ? relative.Substring(overlay.Prefix.Length + 1) : "";
-                    baseFolder = overlay.Folder;
-                    path = Path.GetFullPath(Path.Combine(overlay.Folder, rest.Length == 0 ? "index.html" : rest));
-                    break;
-                }
-            }
+            var (baseFolder, path) = Locate(relative);
 
             // The same fallbacks as web.config. A folder with an index.html is a page of its
             // own (/history, /embed, /web), and an extensionless path under it is a route of
@@ -169,10 +174,15 @@ while (true)
             if (!File.Exists(path) && Path.GetExtension(path).Length == 0)
             {
                 var folderIndex = FindFolderIndex(baseFolder, path);
+                var route = routes.FirstOrDefault(r => relative.TrimEnd('/').StartsWith(r.Prefix + "/", StringComparison.OrdinalIgnoreCase));
                 if (File.Exists(path + ".html"))
                 {
                     // a page beside its folder of pictures (/history/tabula is history/tabula.html)
                     path += ".html";
+                }
+                else if (route.Page != null && !Directory.Exists(path))
+                {
+                    (baseFolder, path) = Locate(route.Page);
                 }
                 else if (folderIndex != null)
                 {
@@ -225,6 +235,22 @@ while (true)
             try { context.Response.Close(); } catch { }
         }
     });
+}
+
+// the folder that answers for a path of the site, and the file there: an overlay answers for
+// its prefix from its own folder, and the publish's copy is not consulted
+(string BaseFolder, string Path) Locate(string relative)
+{
+    foreach (var overlay in overlays)
+    {
+        if (relative == overlay.Prefix || relative.StartsWith(overlay.Prefix + "/", StringComparison.OrdinalIgnoreCase))
+        {
+            var rest = relative.Length > overlay.Prefix.Length ? relative.Substring(overlay.Prefix.Length + 1) : "";
+            return (overlay.Folder, Path.GetFullPath(Path.Combine(overlay.Folder, rest.Length == 0 ? "index.html" : rest)));
+        }
+    }
+
+    return (root, Path.GetFullPath(Path.Combine(root, relative.Length == 0 && isApp ? "index.html" : relative)));
 }
 
 void ServeFile(HttpListenerContext context, string path)

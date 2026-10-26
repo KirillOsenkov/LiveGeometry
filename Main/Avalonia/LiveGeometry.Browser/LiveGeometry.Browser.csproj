@@ -91,7 +91,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\index.html;$(CatrionaFolder)\puzzles.json" />
+    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\puzzle.html;$(CatrionaFolder)\puzzles.json" />
   </ItemGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
@@ -105,7 +105,7 @@
        every /gallery/<slug> was the same page (web.config serves these in its place).
        /sitemap.xml: the site's pages, the drawings among them.
        /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
-       (CatrionaAgg/puzzles.json): the library's index.html with the puzzle's title, its question
+       (CatrionaAgg/puzzles.json): the library's puzzle.html with the puzzle's title, its question
        and its preview picture (/CatrionaAgg/previews/<slug>.png) in the head, and the question
        and the credits in the text a search engine reads. -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
@@ -219,7 +219,7 @@
         }
 
         // a question as the catalog has it, with the wiki's TeX ($6$, $x^2$, $\sqrt{2}$), as
-        // plainQuestion in CatrionaAgg/index.html writes it (the dollar in brackets: MSBuild
+        // plainQuestion in CatrionaAgg/catriona.js writes it (the dollar in brackets: MSBuild
         // takes a dollar and a parenthesis for a property, here too)
         string PlainQuestion(string text) => Regex.Replace(text ?? "", "[$]([^$]*)[$]", m =>
         {
@@ -301,7 +301,7 @@
         File.WriteAllText(OutputFile, items.ToString(), new UTF8Encoding(false));
 
         // Catriona Agg's puzzles: a page for each one that has a drawing
-        string catrionaTemplatePath = Path.Combine(CatrionaFolder, "index.html");
+        string catrionaTemplatePath = Path.Combine(CatrionaFolder, "puzzle.html");
         string catrionaTemplate = File.ReadAllText(catrionaTemplatePath);
         Directory.CreateDirectory(CatrionaPagesFolder);
         foreach (string stale in Directory.GetFiles(CatrionaPagesFolder, "*.html"))

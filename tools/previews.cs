@@ -353,7 +353,7 @@ partial class Program
             }
 
             // the points a reader drags are left out of a picture of a Catriona Agg puzzle, as
-            // on its tile (withoutHandles in CatrionaAgg/index.html)
+            // on its tile (withoutHandles in CatrionaAgg/catriona.js)
             function parse(text, hideHandles) {
                 const parsed = new DOMParser().parseFromString(text.replace(/^﻿/, "").trimStart(), "application/xml");
                 if (parsed.querySelector("parsererror") != null) {
