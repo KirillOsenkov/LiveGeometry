@@ -44,8 +44,23 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
         // PointerPressed is raised: the box stays the target until that press has been
         // handled, and takes the keyboard back when the press put a reference in (Insert)
         LostFocus += (s, e) => Dispatcher.UIThread.Post(ClearIfUnfocused, DispatcherPriority.Input);
+
+        // the pencil: the picking off and on while the keyboard stays in the box
+        // (TogglePicking). Off, a click on a figure selects it, as it does without a box.
+        // The way out of a label's text without leaving it, since Enter there starts a line.
+        brackets = CreateBracketsButton();
+        pencil = CreateButton(PropertyGridIcons.Create(PropertyGridIcon.Pencil), TogglePicking);
+        buttons = new StackPanel()
+        {
+            Orientation = Avalonia.Layout.Orientation.Horizontal,
+            Children = { brackets, CreateDegreeButton(), pencil }
+        };
+        ShowButtons(false);
+        InnerRightContent = buttons;
     }
 
+    StackPanel buttons;
+    Border brackets;
     Border pencil;
 
     // The drawing the box made itself the target of. Taken out of the tree (a tool's panel
@@ -62,25 +77,21 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
     void BecomeTarget()
     {
         SetTarget(Drawing);
-        if (InnerRightContent == null)
-        {
-            // the pencil: the picking off and on while the keyboard stays in the box
-            // (TogglePicking). Off, a click on a figure selects it, as it does without a
-            // box. The way out of a label's text without leaving it, since Enter there
-            // starts a line.
-            pencil = CreateButton(PropertyGridIcons.Create(PropertyGridIcon.Pencil), TogglePicking);
-            var buttons = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
-            if (Context == InsertContext.Text)
-            {
-                buttons.Children.Add(CreateBracketsButton());
-            }
-
-            buttons.Children.Add(CreateDegreeButton());
-            buttons.Children.Add(pencil);
-            InnerRightContent = buttons;
-        }
-
+        brackets.IsVisible = Context == InsertContext.Text;
+        ShowButtons(true);
         ShowPicking(true);
+    }
+
+    /// <summary>
+    /// The buttons at the box's right while it has the keyboard. Without it they keep their
+    /// height and give up their width, unseen: the box doesn't grow taller on a click into
+    /// it, and its text has the whole width while it isn't edited.
+    /// </summary>
+    void ShowButtons(bool show)
+    {
+        buttons.Width = show ? double.NaN : 0;
+        buttons.Opacity = show ? 1 : 0;
+        buttons.IsHitTestVisible = show;
     }
 
     /// <summary>The ° button: the degree sign, which no keyboard has a key for (sin(30°))</summary>
@@ -241,8 +252,7 @@ public class ExpressionTextBox : ColoredTextBox, IExpressionInsertTarget
         if (!IsFocused)
         {
             ClearTarget();
-            InnerRightContent = null;
-            pencil = null;
+            ShowButtons(false);
         }
     }
 
