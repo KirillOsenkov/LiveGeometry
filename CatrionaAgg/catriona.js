@@ -211,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var StateKey = 'CatrionaAgg.Arrangement';
   var ScrollKey = 'CatrionaAgg.GalleryScroll';
   var ReturnKey = 'CatrionaAgg.Returning';
+  var HandoffKey = 'LiveGeometry.Handoff';
 
   function readSession(key) {
     try { return sessionStorage.getItem(key); } catch (e) { return null; }
@@ -1112,6 +1113,27 @@ document.addEventListener('DOMContentLoaded', function () {
     return match != null && !/\.html$/i.test(match[1]) ? decodeURIComponent(match[1]).toLowerCase() : '';
   }
 
+  // The drawing in the editor, the app at /drawing, in a new tab, as the user's own (unsaved).
+  // What the editor is to do goes into the tab's storage, which the app takes out as it starts
+  // (main.js, MainView.Handoff.cs; /web hands over the same way): a tab opened by this one
+  // starts with a copy of the storage, so the handoff is left here only while it opens. It
+  // replaces the drawing the editor keeps, as Edit on /web does.
+  function editInLiveGeometry(text) {
+    var bytes = new TextEncoder().encode(text);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i += 0x8000) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    }
+
+    writeSession(HandoffKey, JSON.stringify({ action: 'edit', data: btoa(binary) }));
+    if (window.open('/drawing', '_blank') != null) {
+      writeSession(HandoffKey, null);
+    } else {
+      // a new tab refused (a popup blocker): this tab goes instead
+      location.href = '/drawing';
+    }
+  }
+
   // back to the gallery, which takes the reader back to where they were in it
   function goToGallery() {
     writeSession(ReturnKey, '1');
@@ -1152,9 +1174,9 @@ document.addEventListener('DOMContentLoaded', function () {
         goToGallery();
       }
     });
-    document.getElementById('fit').addEventListener('click', function () {
-      if (puzzlePlayer != null) {
-        puzzlePlayer.fit();
+    document.getElementById('edit').addEventListener('click', function () {
+      if (currentText != null) {
+        editInLiveGeometry(currentText);
       }
     });
     document.getElementById('reset').addEventListener('click', function () {

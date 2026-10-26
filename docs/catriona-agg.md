@@ -17,14 +17,20 @@ arrows step through (date order when there is none, or it leaves the puzzle out)
 gallery's scroll, put back when "All puzzles" or Escape (a flag) or Back brings the reader to
 it. The address of the gallery says the arrangement too, and wins when it says one: a puzzle's
 tag is `/CatrionaAgg?by=topic#group-circle-theorems`. Browser Back usually restores the
-gallery from memory, tiles and all; otherwise the tiles draw again. The puzzles are hers and the catalogue his: both are credited on every view,
+gallery from memory, tiles and all; otherwise the tiles draw again. A puzzle's Edit (the pencil
+of the start page, inline for its gradient) opens the drawing in the editor in a new tab, handed
+over as /web's Edit does (`LiveGeometry.Handoff` in `sessionStorage`): a tab opened by
+`window.open` without `noopener` starts with a copy of the opener's storage, so the handoff is
+set, the tab opened, and the handoff taken out of this tab again; a blocked new tab is this tab
+going instead. The puzzles are hers and the catalogue his: both are credited on every view,
 the solution is never on the page, only linked, and her original drawing is linked (Mathforge's
 page shows it), never copied.
 - **The catalog** is `puzzles.json`, written by `dotnet run tools/catriona.cs -- [--recent N]
   [--images <folder>]` from Mathforge's wiki sources (`/notes/source/<page>`): every puzzle of
   the year pages, the topics from "Puzzles by Topic" (or, for one newer than that page, its own
   techniques page), and for the drawn and the --recent ones the title, the question and the
-  BlueSky thread (Andrew Stacey links no tweets; neither do we). Pages are cached in the temp
+  BlueSky thread (an older puzzle's page links her post on X instead, which we leave out on
+  purpose: no links to Twitter). Pages are cached in the temp
   folder, so a rerun asks for nothing it has. Fields it doesn't write are kept. Rerun it after
   adding drawings: it marks the drawn ones (`drawing`, and `live` when the drawing has
   handles: the drag badge on the tile), and the gallery shows only those. (A "play" line per

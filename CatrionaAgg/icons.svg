@@ -29,9 +29,6 @@
   <symbol id="icon-reset" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M4,9.5 A6,6 0 1 1 6,14.4"/><path d="M4,4.5 V9.5 H9"/>
   </symbol>
-  <symbol id="icon-fit" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3,7.5 V3 H7.5 M12.5,3 H17 V7.5 M17,12.5 V17 H12.5 M7.5,17 H3 V12.5"/>
-  </symbol>
   <symbol id="icon-tools" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3,17 L10,3 L17,17 Z"/><path d="M6.5,10 H13.5"/>
   </symbol>

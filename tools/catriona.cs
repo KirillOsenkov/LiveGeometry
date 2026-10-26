@@ -157,6 +157,7 @@ foreach (var puzzle in detailed)
     puzzle.Image = Regex.Match(text, @"\[\[([^\]:]+\.(?:png|jpe?g)):pic\]\]", RegexOptions.IgnoreCase) is { Success: true } image ? image.Groups[1].Value : null;
     var quote = Regex.Matches(text, @"^>\s?(.*)$", RegexOptions.Multiline).Select(m => m.Groups[1].Value.Trim()).Where(s => s.Length > 0);
     puzzle.Statement = quote.Any() ? string.Join(" ", quote) : null;
+    // her post on BlueSky; an older puzzle's page links her post on X (Twitter), which we don't link to
     puzzle.Thread = Regex.Match(text, @"\((https://bsky\.app/[^)\s]+)\)") is { Success: true } thread ? thread.Groups[1].Value : null;
 
     // a puzzle newer than the last update of the topic index: its own techniques page says them
