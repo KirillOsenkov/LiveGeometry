@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.462" Top="6.462" Right="6.462" Bottom="-1.062" />
+  <Scene Left="-0.462" Top="6.462" Right="6.462" Bottom="-1.062" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF96DAF8" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF55BBE9" />
+            <GradientStop Color="#FF369DCA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Magenta" Color="#FFC84CAD" StrokeWidth="3">
+      <Dark Color="#FFE8B0DC" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF2A1E9B" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0AAEE" />
+    </ShapeStyle>
+    <TextStyle Name="MagentaMark" FontSize="44" Color="#FFC84CAD" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8B0DC" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="6" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="3" />
+    <PointByCoordinates Name="p5" Visible="false" X="3" Y="0" />
+    <CircleSector Name="a6" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSector>
+    <CircleSegment Name="a7" Visible="false">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <CircleSegment Name="a8" Visible="false">
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <Region Name="r9" Style="Blue" Operation="Difference">
+      <Dependency Name="a6" />
+      <Dependency Name="a7" />
+      <Dependency Name="a8" />
+    </Region>
+    <CircleArc Name="a10" Style="Magenta">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <CircleArc Name="a11" Style="Magenta">
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <CircleSector Name="a12" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSector>
+    <PointByCoordinates Name="at13" Style="Anchor" X="1.3" Y="1.25" />
+    <AttachedLabel Name="t14" Style="MagentaMark" Z="1" OffsetX="-16.64" OffsetY="-31.7" Text="4">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

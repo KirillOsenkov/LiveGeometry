@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.252" Top="3.852" Right="3.852" Bottom="-0.252" />
+  <Scene Left="-0.252" Top="3.852" Right="3.852" Bottom="-0.252" />
+  <Styles>
+    <ShapeStyle Name="Teal" Color="#00000000" StrokeWidth="2.5" Fill="#FF02C6C0" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF36D4CF" />
+            <GradientStop Color="#FF17B6B1" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF0A1446" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF3A4AD0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="B" Visible="false" X="1.2" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="2.4" Y="3.6" />
+    <PointByCoordinates Name="Lf" Visible="false" X="0.24" Y="0.72" />
+    <PointByCoordinates Name="Rt" Visible="false" X="3.36" Y="2.88" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.2" Y="3.6" />
+    <PointByCoordinates Name="p2" Visible="false" X="2.4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="3.6" />
+    <PointByCoordinates Name="p5" Visible="false" X="3.6" Y="3.6" />
+    <PointByCoordinates Name="p6" Visible="false" X="3.6" Y="0" />
+    <Polygon Name="poly7" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly8" Visible="false">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="poly9" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="Rt" />
+      <Dependency Name="T" />
+      <Dependency Name="Lf" />
+    </Polygon>
+    <Region Name="r10" Style="Teal" Operation="Union">
+      <Dependency Name="poly7" />
+      <Dependency Name="poly8" />
+      <Dependency Name="poly9" />
+    </Region>
+    <Polygon Name="poly11" Style="Frame">
+      <Dependency Name="p3" />
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Frame">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Frame">
+      <Dependency Name="B" />
+      <Dependency Name="Rt" />
+      <Dependency Name="T" />
+      <Dependency Name="Lf" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Frame">
+      <Dependency Name="p3" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="p4" />
+    </Polygon>
+  </Figures>
+</Drawing>

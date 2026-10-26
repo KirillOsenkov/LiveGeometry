@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.154" Top="6.104" Right="7.054" Bottom="-2.104" />
+  <Scene Left="-1.154" Top="6.104" Right="7.054" Bottom="-2.104" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Circle" Color="#FF1010A8" StrokeWidth="3.5">
+      <Dark Color="#FFA2A2F6" />
+    </LineStyle>
+    <ShapeStyle Name="Cyan" Color="#FF10C4D8" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA0EFF8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFD01818" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFF4A4A4" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4.8" Y="3.2" />
+    <PointByCoordinates Name="p2" Visible="false" X="6.8" Y="1.2" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="M" Style="Handle" X="5.9" Y="2.1" Parameter="0.55">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="b" Formula="(M.X - 4) / 2">
+      <Dependency Name="M" />
+    </Number>
+    <Number Name="hc" Formula="((4 + b) ^ 2 + 4 * b + b ^ 2) / (2 * (4 + b))">
+      <Dependency Name="b" />
+    </Number>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p6" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p7" Visible="false" X="hc" Y="2">
+      <Dependency Name="hc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="4" Y="4 + b">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p12" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly13" Style="Frame">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p15" Visible="false" X="4 + b" Y="4">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="4 + b" Y="4 + b">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="4" Y="4 + b">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <Polygon Name="poly18" Style="Frame">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Polygon>
+    <PointByCoordinates Name="p19" Visible="false" X="4" Y="4 - 2 * b">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="4 + 2 * b" Y="4 - 2 * b">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="4 + 2 * b" Y="4">
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="4" Y="4" />
+    <Polygon Name="poly23" Style="Frame">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <Circle Name="c24" Style="Circle">
+      <Dependency Name="p7" />
+      <Dependency Name="p4" />
+    </Circle>
+    <Polygon Name="poly25" Style="Cyan" Z="1">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly26" Style="Red" Z="1">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+      <Dependency Name="M" />
+    </Polygon>
+  </Figures>
+</Drawing>

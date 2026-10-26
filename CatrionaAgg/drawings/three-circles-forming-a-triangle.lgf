@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.346464282" Top="3.346464282" Right="4.2959540248" Bottom="-0.346464282" />
+  <Scene Left="-1.346464282" Top="3.346464282" Right="4.2959540248" Bottom="-0.346464282" />
+  <Styles>
+    <LineStyle Name="Medium" Color="#FF10C0FE" StrokeWidth="3">
+      <Dark Color="#FF9EE2FA" />
+    </LineStyle>
+    <LineStyle Name="Large" Color="#FF0418F5" StrokeWidth="3">
+      <Dark Color="#FF9EA6FA" />
+    </LineStyle>
+    <LineStyle Name="Small" Color="#FF2AE5FC" StrokeWidth="3">
+      <Dark Color="#FF9EF0FA" />
+    </LineStyle>
+    <LineStyle Name="Navy" Color="#FF0008BC" StrokeWidth="4">
+      <Dark Color="#FF9EA2FA" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="30" Color="#FF0008BC" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9EA2FA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="4">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2.4494897428" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0.6418163074" Y="2.8557550765" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="2" />
+    <Circle Name="c5" Style="Medium">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Circle>
+    <PointByCoordinates Name="p6" Visible="false" X="2.4494897428" Y="1.5" />
+    <PointByCoordinates Name="p7" Visible="false" X="2.4494897428" Y="3" />
+    <Circle Name="c8" Style="Large">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Circle>
+    <PointByCoordinates Name="p9" Visible="false" X="0.6418163074" Y="2.3557550765" />
+    <Circle Name="c10" Style="Small">
+      <Dependency Name="p9" />
+      <Dependency Name="T" />
+    </Circle>
+    <Segment Name="s11" Style="Navy">
+      <Dependency Name="p1" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s12" Style="Navy">
+      <Dependency Name="p2" />
+      <Dependency Name="T" />
+    </Segment>
+    <AngleArc Name="angle13" Style="Navy" Radius="30">
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </AngleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(T.X + 0.13)" Y="(T.Y - 0.55)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="NavyMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p16" Visible="false" X="-0.9" Y="0" />
+    <PointByCoordinates Name="p17" Visible="false" X="3.3494897428" Y="0" />
+    <Segment Name="s18" Style="Ink">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Segment>
+  </Figures>
+</Drawing>

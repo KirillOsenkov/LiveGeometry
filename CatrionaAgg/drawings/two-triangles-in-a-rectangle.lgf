@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.476" Top="4.476" Right="7.276" Bottom="-0.476" />
+  <Scene Left="-0.476" Top="4.476" Right="7.276" Bottom="-0.476" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFF2C53A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE1BA43" />
+            <GradientStop Color="#FFC39C24" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFF0845F" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE67048" />
+            <GradientStop Color="#FFC75129" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Gray" Color="#FF5A6070" StrokeWidth="2.5">
+      <Dark Color="#FF8C929E" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFC8201A" StrokeWidth="3">
+      <Dark Color="#FFF3A7A5" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Bl" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Tl" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="4.6" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="6.8" Y="4" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="W" Style="Handle" X="5.2" Y="4" Parameter="0.2727272727">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Br" Visible="false" X="W.X" Y="0">
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="4" Y="16 / W.X">
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="4" Y="0" />
+    <Polygon Name="poly4" Style="Yellow">
+      <Dependency Name="Tl" />
+      <Dependency Name="W" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Orange">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+      <Dependency Name="Br" />
+    </Polygon>
+    <Segment Name="s6" Style="Gray">
+      <Dependency Name="Bl" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="s7" Style="Gray">
+      <Dependency Name="Tl" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="s8" Style="Gray">
+      <Dependency Name="P" />
+      <Dependency Name="Br" />
+    </Segment>
+    <Segment Name="s9" Style="Gray">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+    <AngleArc Name="angle10" Style="Gray" Radius="14">
+      <Dependency Name="F" />
+      <Dependency Name="Bl" />
+      <Dependency Name="P" />
+    </AngleArc>
+    <Segment Name="s11" Style="Red" Decoration="TwoTicks">
+      <Dependency Name="Bl" />
+      <Dependency Name="Tl" />
+    </Segment>
+    <Segment Name="s12" Style="Red" Decoration="TwoTicks">
+      <Dependency Name="Bl" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="Tl" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="s14" Style="Ink">
+      <Dependency Name="W" />
+      <Dependency Name="Br" />
+    </Segment>
+    <Segment Name="s15" Style="Ink">
+      <Dependency Name="F" />
+      <Dependency Name="Br" />
+    </Segment>
+    <PointByCoordinates Name="d16" Style="Dot" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+  </Figures>
+</Drawing>

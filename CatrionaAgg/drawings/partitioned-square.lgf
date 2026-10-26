@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.42" Top="6.42" Right="6.42" Bottom="-0.42" />
+  <Scene Left="-0.42" Top="6.42" Right="6.42" Bottom="-0.42" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFDFF09A" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC6E05C" />
+            <GradientStop Color="#FFA8C23E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFB8DBE6" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF79B6C9" />
+            <GradientStop Color="#FF5A97AA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFCA895" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEC6F52" />
+            <GradientStop Color="#FFCE5033" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDE08A" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEDC54F" />
+            <GradientStop Color="#FFCEA730" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF1494DE" StrokeWidth="3">
+      <Dark Color="#FF0A4F8A" />
+    </LineStyle>
+    <TextStyle Name="BlueMark" FontSize="36" Color="#FF1494DE" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C3045" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="GreenMark" FontSize="30" Color="#FF6CC020" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF27450C" />
+    </TextStyle>
+    <TextStyle Name="OrangeMark" FontSize="30" Color="#FFF09A10" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF452F0C" />
+    </TextStyle>
+    <TextStyle Name="RedMark" FontSize="30" Color="#FFF02810" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF45120C" />
+    </TextStyle>
+    <TextStyle Name="CyanMark" FontSize="30" Color="#FF10B8E0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C3A45" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="BL" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="BR" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="6" />
+    <PointByCoordinates Name="T" Visible="false" X="3" Y="6" />
+    <PointByCoordinates Name="J" Visible="false" X="1.5" Y="3" />
+    <PointByCoordinates Name="K" Visible="false" X="3" Y="2" />
+    <Polygon Name="poly1" Style="Green">
+      <Dependency Name="TL" />
+      <Dependency Name="T" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Blue">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="J" />
+    </Polygon>
+    <Polygon Name="poly3" Style="Red">
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="K" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Orange">
+      <Dependency Name="T" />
+      <Dependency Name="TR" />
+      <Dependency Name="K" />
+      <Dependency Name="J" />
+    </Polygon>
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly9" Style="Frame">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="(TR.X + K.X) / 2" Y="(TR.Y + K.Y) / 2">
+      <Dependency Name="TR" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(TR.X - 0.12)" Y="(TR.Y - 0.16)">
+      <Dependency Name="TR" />
+    </PointByCoordinates>
+    <Vector Name="v12" Style="Arrow">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Vector>
+    <PointByCoordinates Name="p13" Visible="false" X="(K.X + 0.12)" Y="(K.Y + 0.16)">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Vector Name="v14" Style="Arrow">
+      <Dependency Name="p10" />
+      <Dependency Name="p13" />
+    </Vector>
+    <PointByCoordinates Name="at15" Style="Anchor" X="3.97" Y="4.25" />
+    <AttachedLabel Name="t16" Style="BlueMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="?">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at17" Style="Anchor" X="0.86" Y="4.25" />
+    <AttachedLabel Name="t18" Style="GreenMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="9">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at19" Style="Anchor" X="2.8" Y="3.7" />
+    <AttachedLabel Name="t20" Style="OrangeMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="9">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at21" Style="Anchor" X="5" Y="2.5" />
+    <AttachedLabel Name="t22" Style="RedMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="9">
+      <Dependency Name="at21" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at23" Style="Anchor" X="2" Y="1.05" />
+    <AttachedLabel Name="t24" Style="CyanMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="9">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

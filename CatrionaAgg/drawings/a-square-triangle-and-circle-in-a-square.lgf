@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.078" Top="15.078" Right="15.078" Bottom="-2.478" />
+  <Scene Left="-1.078" Top="15.078" Right="15.078" Bottom="-2.478" />
+  <Styles>
+    <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <ShapeStyle Name="Peach" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFF6CDB0" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDA986A" />
+            <GradientStop Color="#FFBB7A4C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFF9EFA6" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE1D261" />
+            <GradientStop Color="#FFC3B342" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFEE98B4" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE05C87" />
+            <GradientStop Color="#FFC13D68" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <TextStyle Name="GoldMark" FontSize="30" Color="#FFD4B820" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF453C0C" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="OrangeMark" FontSize="28" Color="#FFE07A50" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF451D0C" />
+    </TextStyle>
+    <TextStyle Name="RedMark" FontSize="28" Color="#FFB0182E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF450C15" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="14" Y="6" />
+    <PointByCoordinates Name="p3" Visible="false" X="8" Y="14" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="8" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="14" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="14" Y="14" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="14" />
+    <Polygon Name="poly9" Style="Paper">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="0" />
+    <Polygon Name="poly11" Style="Peach">
+      <Dependency Name="p10" />
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Yellow">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p13" Visible="false" X="12" Y="2" />
+    <PointByCoordinates Name="p14" Visible="false" X="14" Y="2" />
+    <Circle Name="c15" Style="Pink">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Circle>
+    <PointByCoordinates Name="at16" Style="Anchor" X="7" Y="7" />
+    <AttachedLabel Name="t17" Style="GoldMark" Z="1" OffsetX="-30.9" OffsetY="-22.25" Text="100">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at18" Style="Anchor" X="1.6" Y="1.9" />
+    <AttachedLabel Name="t19" Style="OrangeMark" Z="1" OffsetX="-20.36" OffsetY="-20.9" Text="24">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at20" Style="Anchor" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t21" Style="RedMark" Z="1" OffsetX="-11.68" OffsetY="-20.9" Text="?">
+      <Dependency Name="at20" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Styles>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <ShapeStyle Name="BlueWedge" Color="#FF0341CC" StrokeWidth="1" Fill="#FF0341CC">
+      <Dark Color="#FF9EBAFA" Fill="#FF9EBAFA" />
+    </ShapeStyle>
+    <TextStyle Name="BlueMark" FontSize="27" Color="#FF0341CC" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9EBAFA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <ShapeStyle Name="RedWedge" Color="#FFFB1231" StrokeWidth="1" Fill="#FFFB1231">
+      <Dark Color="#FFFA9EAA" Fill="#FFFA9EAA" />
+    </ShapeStyle>
+    <TextStyle Name="RedMark" FontSize="27" Color="#FFFB1231" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFA9EAA" />
+    </TextStyle>
+    <ShapeStyle Name="GreenWedge" Color="#FF0BA80B" StrokeWidth="1" Fill="#FF0BA80B">
+      <Dark Color="#FF9FF99F" Fill="#FF9FF99F" />
+    </ShapeStyle>
+    <TextStyle Name="GreenMark" FontSize="27" Color="#FF0BA80B" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9FF99F" />
+    </TextStyle>
+    <ShapeStyle Name="OrangeWedge" Color="#FFFD981F" StrokeWidth="1" Fill="#FFFD981F">
+      <Dark Color="#FFFAD09E" Fill="#FFFAD09E" />
+    </ShapeStyle>
+    <TextStyle Name="OrangeMark" FontSize="27" Color="#FFFD981F" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFAD09E" />
+    </TextStyle>
+    <ShapeStyle Name="PurpleWedge" Color="#FF230278" StrokeWidth="1" Fill="#FF230278">
+      <Dark Color="#FFB89EFA" Fill="#FFB89EFA" />
+    </ShapeStyle>
+    <TextStyle Name="PurpleMark" FontSize="27" Color="#FF230278" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB89EFA" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="M" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="-0.6945927107" Y="3.939231012" />
+    <PointByCoordinates Name="S" Visible="false" X="2" Y="3.4641016151" />
+    <Number Name="n1" Formula="((A.X - T.X) * (S.Y - A.Y) - 1 * (A.Y - T.Y) * (S.X - A.X)) / (((M.X - T.X) * (S.Y - A.Y) - 1 * (M.Y - T.Y) * (S.X - A.X)))">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+      <Dependency Name="S" />
+      <Dependency Name="M" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="(T.X + n1 * (M.X - T.X))" Y="(T.Y + n1 * (M.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="n1" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s2" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="s3" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s4" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s5" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="s6" Style="Ink">
+      <Dependency Name="S" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s7" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="s8" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="S" />
+    </Segment>
+    <PointByCoordinates Name="d9" Style="Dot" X="A.X" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d10" Style="Dot" X="M.X" Y="M.Y">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d11" Style="Dot" X="B.X" Y="B.Y">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <AngleArc Name="angle12" Style="BlueWedge" Radius="28">
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+    </AngleArc>
+    <PointByCoordinates Name="at13" Style="Anchor" X="-1.15" Y="3" />
+    <AttachedLabel Name="t14" Style="BlueMark" Z="1" OffsetX="-27.18" OffsetY="-19.55" Text="50°">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+    <AngleArc Name="angle15" Style="RedWedge" Radius="28">
+      <Dependency Name="X" />
+      <Dependency Name="T" />
+      <Dependency Name="S" />
+    </AngleArc>
+    <PointByCoordinates Name="at16" Style="Anchor" X="-0.03" Y="2.77" />
+    <AttachedLabel Name="t17" Style="RedMark" Z="1" OffsetX="-27.18" OffsetY="-19.55" Text="70°">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <AngleArc Name="angle18" Style="GreenWedge" Radius="28">
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <PointByCoordinates Name="at19" Style="Anchor" X="1.03" Y="3.28" />
+    <AttachedLabel Name="t20" Style="GreenMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+    <AngleArc Name="angle21" Style="OrangeWedge" Radius="28">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <PointByCoordinates Name="at22" Style="Anchor" X="-0.8" Y="0.45" />
+    <AttachedLabel Name="t23" Style="OrangeMark" Z="1" OffsetX="-27.18" OffsetY="-19.55" Text="80°">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+    <AngleArc Name="angle24" Style="PurpleWedge" Radius="28">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="S" />
+    </AngleArc>
+    <PointByCoordinates Name="at25" Style="Anchor" X="3" Y="0.5" />
+    <AttachedLabel Name="t26" Style="PurpleMark" Z="1" OffsetX="-27.18" OffsetY="-19.55" Text="60°">
+      <Dependency Name="at25" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

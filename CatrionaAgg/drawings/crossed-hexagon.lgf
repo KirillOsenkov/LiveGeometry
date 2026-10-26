@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.0120508076" Top="2.28" Right="2.0120508076" Bottom="-2.28" />
+  <Scene Left="-2.0120508076" Top="2.28" Right="2.0120508076" Bottom="-2.28" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FFB9C8F5" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF728AD4" />
+            <GradientStop Color="#FF536CB6" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF2233A0" StrokeWidth="2.5">
+      <Dark Color="#FFABB4ED" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p2" Visible="false" X="-1.7320508076" Y="1" />
+    <PointByCoordinates Name="p3" Visible="false" X="-1.7320508076" Y="-1" />
+    <PointByCoordinates Name="p4" Visible="false" X="-0" Y="-2" />
+    <PointByCoordinates Name="p5" Visible="false" X="1.7320508076" Y="-1" />
+    <PointByCoordinates Name="p6" Visible="false" X="1.7320508076" Y="1" />
+    <Number Name="n7" Formula="((p4.X - p1.X) * (p2.Y - p4.Y) - 1 * (p4.Y - p1.Y) * (p2.X - p4.X)) / (((p3.X - p1.X) * (p2.Y - p4.Y) - 1 * (p3.Y - p1.Y) * (p2.X - p4.X)))">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Number>
+    <PointByCoordinates Name="p8" Visible="false" X="(p1.X + n7 * (p3.X - p1.X))" Y="(p1.Y + n7 * (p3.Y - p1.Y))">
+      <Dependency Name="p1" />
+      <Dependency Name="n7" />
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <Number Name="n9" Formula="((p4.X - p1.X) * (p6.Y - p4.Y) - 1 * (p4.Y - p1.Y) * (p6.X - p4.X)) / (((p5.X - p1.X) * (p6.Y - p4.Y) - 1 * (p5.Y - p1.Y) * (p6.X - p4.X)))">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </Number>
+    <PointByCoordinates Name="p10" Visible="false" X="(p1.X + n9 * (p5.X - p1.X))" Y="(p1.Y + n9 * (p5.Y - p1.Y))">
+      <Dependency Name="p1" />
+      <Dependency Name="n9" />
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <Polygon Name="poly11" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p8" />
+      <Dependency Name="p4" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Blue">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Blue">
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Segment Name="s14" Style="BlueLine">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s15" Style="BlueLine">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s16" Style="BlueLine">
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s17" Style="BlueLine">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Polygon Name="poly18" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

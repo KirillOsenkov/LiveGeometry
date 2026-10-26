@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.8939521721" Top="3.8201618548" Right="7.8201618548" Bottom="-0.6578841946" />
+  <Scene Left="-2.8939521721" Top="3.8201618548" Right="7.8201618548" Bottom="-0.6578841946" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFF6A3BF" />
+          <GradientStop Color="#FFF27BA3" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEA4C81" />
+            <GradientStop Color="#FFCB2D62" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FF4ECFE2" />
+          <GradientStop Color="#FF02BBD5" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF38C3D6" />
+            <GradientStop Color="#FF19A4B8" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="PinkArc" Color="#FFC0306A" StrokeWidth="2">
+      <Dark Color="#FFEBADC6" />
+    </LineStyle>
+    <LineStyle Name="BlueArc" Color="#FF138E9C" StrokeWidth="2">
+      <Dark Color="#FFA4ECF4" />
+    </LineStyle>
+    <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="2.2360679775" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-2.2360679775" Y="0" />
+    <CircleSector Name="a3" Style="Pink">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSector>
+    <PointByCoordinates Name="C" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="7.1622776602" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="4" Y="3.1622776602" />
+    <CircleSector Name="a6" Style="Blue">
+      <Dependency Name="C" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleSector>
+    <CircleArc Name="a7" Style="PinkArc">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <CircleArc Name="a8" Style="BlueArc">
+      <Dependency Name="C" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointByCoordinates Name="p9" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="-1" Y="1" />
+    <PointByCoordinates Name="p12" Visible="false" X="-2" Y="1" />
+    <Polygon Name="poly13" Style="Paper" Z="1">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="p15" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p16" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p17" Visible="false" X="-1" Y="1" />
+    <Polygon Name="poly18" Style="Paper" Z="1">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Polygon>
+    <PointByCoordinates Name="p19" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p20" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p21" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="p22" Visible="false" X="0" Y="1" />
+    <Polygon Name="poly23" Style="Paper" Z="1">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <PointByCoordinates Name="p24" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p25" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p26" Visible="false" X="2" Y="1" />
+    <PointByCoordinates Name="p27" Visible="false" X="1" Y="1" />
+    <Polygon Name="poly28" Style="Paper" Z="1">
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+    </Polygon>
+    <PointByCoordinates Name="p29" Visible="false" X="-1" Y="1" />
+    <PointByCoordinates Name="p30" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p31" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p32" Visible="false" X="-1" Y="2" />
+    <Polygon Name="poly33" Style="Paper" Z="1">
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+      <Dependency Name="p32" />
+    </Polygon>
+    <PointByCoordinates Name="p34" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p35" Visible="false" X="1" Y="1" />
+    <PointByCoordinates Name="p36" Visible="false" X="1" Y="2" />
+    <PointByCoordinates Name="p37" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly38" Style="Paper" Z="1">
+      <Dependency Name="p34" />
+      <Dependency Name="p35" />
+      <Dependency Name="p36" />
+      <Dependency Name="p37" />
+    </Polygon>
+    <PointByCoordinates Name="p39" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p40" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p41" Visible="false" X="5" Y="1" />
+    <PointByCoordinates Name="p42" Visible="false" X="4" Y="1" />
+    <Polygon Name="poly43" Style="Paper" Z="1">
+      <Dependency Name="p39" />
+      <Dependency Name="p40" />
+      <Dependency Name="p41" />
+      <Dependency Name="p42" />
+    </Polygon>
+    <PointByCoordinates Name="p44" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p45" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p46" Visible="false" X="6" Y="1" />
+    <PointByCoordinates Name="p47" Visible="false" X="5" Y="1" />
+    <Polygon Name="poly48" Style="Paper" Z="1">
+      <Dependency Name="p44" />
+      <Dependency Name="p45" />
+      <Dependency Name="p46" />
+      <Dependency Name="p47" />
+    </Polygon>
+    <PointByCoordinates Name="p49" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p50" Visible="false" X="7" Y="0" />
+    <PointByCoordinates Name="p51" Visible="false" X="7" Y="1" />
+    <PointByCoordinates Name="p52" Visible="false" X="6" Y="1" />
+    <Polygon Name="poly53" Style="Paper" Z="1">
+      <Dependency Name="p49" />
+      <Dependency Name="p50" />
+      <Dependency Name="p51" />
+      <Dependency Name="p52" />
+    </Polygon>
+    <PointByCoordinates Name="p54" Visible="false" X="4" Y="1" />
+    <PointByCoordinates Name="p55" Visible="false" X="5" Y="1" />
+    <PointByCoordinates Name="p56" Visible="false" X="5" Y="2" />
+    <PointByCoordinates Name="p57" Visible="false" X="4" Y="2" />
+    <Polygon Name="poly58" Style="Paper" Z="1">
+      <Dependency Name="p54" />
+      <Dependency Name="p55" />
+      <Dependency Name="p56" />
+      <Dependency Name="p57" />
+    </Polygon>
+    <PointByCoordinates Name="p59" Visible="false" X="5" Y="1" />
+    <PointByCoordinates Name="p60" Visible="false" X="6" Y="1" />
+    <PointByCoordinates Name="p61" Visible="false" X="6" Y="2" />
+    <PointByCoordinates Name="p62" Visible="false" X="5" Y="2" />
+    <Polygon Name="poly63" Style="Paper" Z="1">
+      <Dependency Name="p59" />
+      <Dependency Name="p60" />
+      <Dependency Name="p61" />
+      <Dependency Name="p62" />
+    </Polygon>
+    <PointByCoordinates Name="p64" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="p65" Visible="false" X="5" Y="2" />
+    <PointByCoordinates Name="p66" Visible="false" X="5" Y="3" />
+    <PointByCoordinates Name="p67" Visible="false" X="4" Y="3" />
+    <Polygon Name="poly68" Style="Paper" Z="1">
+      <Dependency Name="p64" />
+      <Dependency Name="p65" />
+      <Dependency Name="p66" />
+      <Dependency Name="p67" />
+    </Polygon>
+  </Figures>
+</Drawing>

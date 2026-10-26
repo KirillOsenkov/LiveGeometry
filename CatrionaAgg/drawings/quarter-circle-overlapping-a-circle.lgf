@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.822" Top="4.622" Right="4.422" Bottom="-0.622" />
+  <Scene Left="-0.822" Top="4.622" Right="4.422" Bottom="-0.622" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDCE90" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEEAA50" />
+            <GradientStop Color="#FFCF8B31" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Clear" Color="#00000000" StrokeWidth="0" IsFilled="false">
+      <Dark Color="#00000000" />
+    </ShapeStyle>
+    <LineStyle Name="Circle" Color="#FFF5A818" StrokeWidth="3">
+      <Dark Color="#FFFADA9E" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="OrangeLine" Color="#FFFE8434" StrokeWidth="2.5">
+      <Dark Color="#FF8A3200" />
+    </LineStyle>
+    <ShapeStyle Name="OrangeWedge" Color="#FFFE8434" StrokeWidth="1" Fill="#FFFE8434">
+      <Dark Color="#FFFAC29E" Fill="#FFFAC29E" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="E" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.6" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="X" Style="Handle" X="2.62" Y="0" Parameter="0.51">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="K" Visible="false" X="X.X / 2" Y="2">
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Number Name="q" Formula="16 / X.X">
+      <Dependency Name="X" />
+    </Number>
+    <Number Name="u" Formula="32 / (q ^ 2 + 16)">
+      <Dependency Name="q" />
+    </Number>
+    <PointByCoordinates Name="Y" Visible="false" X="u * q" Y="4 - 4 * u">
+      <Dependency Name="u" />
+      <Dependency Name="q" />
+    </PointByCoordinates>
+    <Number Name="s" Formula="(X.X + 4) / 8">
+      <Dependency Name="X" />
+    </Number>
+    <PointByCoordinates Name="Z" Visible="false" X="4 * s" Y="4 - 4 * s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="Orange">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Circle Name="c5" Style="Clear">
+      <Dependency Name="K" />
+      <Dependency Name="O" />
+    </Circle>
+    <PointByCoordinates Name="p6" Visible="false" X="(T.X + 1.5 * (Y.X - T.X))" Y="(T.Y + 1.5 * (Y.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="Y" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="(T.X + 1.5 * (Z.X - T.X))" Y="(T.Y + 1.5 * (Z.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Polygon Name="poly8" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Region Name="r9" Style="Orange" Operation="Intersection">
+      <Dependency Name="poly8" />
+      <Dependency Name="c5" />
+    </Region>
+    <Circle Name="c10" Style="Circle">
+      <Dependency Name="K" />
+      <Dependency Name="O" />
+    </Circle>
+    <CircleSector Name="a11" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="T" />
+    </CircleSector>
+    <Segment Name="s12" Style="OrangeLine">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="s13" Style="OrangeLine">
+      <Dependency Name="T" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="s14" Style="OrangeLine">
+      <Dependency Name="T" />
+      <Dependency Name="E" />
+    </Segment>
+    <Number Name="n15" Formula="distance(T, O)">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+    </Number>
+    <Number Name="n16" Formula="distance(T, X)">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+    </Number>
+    <PointByCoordinates Name="p17" Visible="false" X="(T.X + 0.7 * ((O.X - T.X) / n15))" Y="(T.Y + 0.7 * ((O.Y - T.Y) / n15))">
+      <Dependency Name="T" />
+      <Dependency Name="O" />
+      <Dependency Name="n15" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="(T.X + 0.7 * ((X.X - T.X) / n16))" Y="(T.Y + 0.7 * ((X.Y - T.Y) / n16))">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+      <Dependency Name="n16" />
+    </PointByCoordinates>
+    <CircleSector Name="a19" Style="OrangeWedge">
+      <Dependency Name="T" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+    </CircleSector>
+    <Number Name="n20" Formula="distance(T, Z)">
+      <Dependency Name="T" />
+      <Dependency Name="Z" />
+    </Number>
+    <Number Name="n21" Formula="distance(T, Y)">
+      <Dependency Name="T" />
+      <Dependency Name="Y" />
+    </Number>
+    <PointByCoordinates Name="p22" Visible="false" X="(T.X + (Z.X - T.X) / n20)" Y="(T.Y + (Z.Y - T.Y) / n20)">
+      <Dependency Name="T" />
+      <Dependency Name="Z" />
+      <Dependency Name="n20" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="(T.X + (Y.X - T.X) / n21)" Y="(T.Y + (Y.Y - T.Y) / n21)">
+      <Dependency Name="T" />
+      <Dependency Name="Y" />
+      <Dependency Name="n21" />
+    </PointByCoordinates>
+    <CircleSector Name="a24" Style="OrangeWedge">
+      <Dependency Name="T" />
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+    </CircleSector>
+  </Figures>
+</Drawing>

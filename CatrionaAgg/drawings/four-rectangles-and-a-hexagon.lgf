@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.8024871131" Top="4.5345379206" Right="2.8024871131" Bottom="-8.5345379206" />
+  <Scene Left="-2.8024871131" Top="4.5345379206" Right="2.8024871131" Bottom="-8.5345379206" />
+  <Styles>
+    <LineStyle Name="Gold" Color="#FFC9A430" StrokeWidth="3">
+      <Dark Color="#FFDAC660" />
+    </LineStyle>
+    <LineStyle Name="Chalk" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFF4F4F4" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="24" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF4F4F4" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-2 + 0.5 * 2)" Y="0.8660254037844386 * 2" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-2 + 1.5 * 2)" Y="0.8660254037844386 * 2" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-2 + 2 * 2)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-2 + 1.5 * 2)" Y="-0.8660254037844386 * 2" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-2 + 0.5 * 2)" Y="-0.8660254037844386 * 2" />
+    <Segment Name="s7" Style="Gold">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s8" Style="Gold">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s9" Style="Gold">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s10" Style="Gold">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s11" Style="Gold">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Segment Name="s12" Style="Gold">
+      <Dependency Name="p6" />
+      <Dependency Name="p1" />
+    </Segment>
+    <PointByCoordinates Name="p13" Visible="false" X="-1" Y="1.7320508076" />
+    <PointByCoordinates Name="p14" Visible="false" X="1" Y="1.7320508076" />
+    <PointByCoordinates Name="p15" Visible="false" X="1" Y="3.7320508076" />
+    <PointByCoordinates Name="p16" Visible="false" X="-1" Y="3.7320508076" />
+    <Segment Name="s17" Style="Gold">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Segment>
+    <Segment Name="s18" Style="Gold">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Segment>
+    <Segment Name="s19" Style="Gold">
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Segment>
+    <Segment Name="s20" Style="Gold">
+      <Dependency Name="p16" />
+      <Dependency Name="p13" />
+    </Segment>
+    <PointByCoordinates Name="p21" Visible="false" X="-1" Y="-1.7320508076" />
+    <PointByCoordinates Name="p22" Visible="false" X="1" Y="-1.7320508076" />
+    <PointByCoordinates Name="p23" Visible="false" X="1" Y="-3.7320508076" />
+    <PointByCoordinates Name="p24" Visible="false" X="-1" Y="-3.7320508076" />
+    <Segment Name="s25" Style="Gold">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Segment>
+    <Segment Name="s26" Style="Gold">
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+    </Segment>
+    <Segment Name="s27" Style="Gold">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Segment>
+    <Segment Name="s28" Style="Gold">
+      <Dependency Name="p24" />
+      <Dependency Name="p21" />
+    </Segment>
+    <PointByCoordinates Name="p29" Visible="false" X="-1" Y="-3.7320508076" />
+    <PointByCoordinates Name="p30" Visible="false" X="1" Y="-3.7320508076" />
+    <PointByCoordinates Name="p31" Visible="false" X="1" Y="-5.7320508076" />
+    <PointByCoordinates Name="p32" Visible="false" X="-1" Y="-5.7320508076" />
+    <Segment Name="s33" Style="Gold">
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+    </Segment>
+    <Segment Name="s34" Style="Gold">
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+    </Segment>
+    <Segment Name="s35" Style="Gold">
+      <Dependency Name="p31" />
+      <Dependency Name="p32" />
+    </Segment>
+    <Segment Name="s36" Style="Gold">
+      <Dependency Name="p32" />
+      <Dependency Name="p29" />
+    </Segment>
+    <PointByCoordinates Name="p37" Visible="false" X="-1" Y="-5.7320508076" />
+    <PointByCoordinates Name="p38" Visible="false" X="1" Y="-5.7320508076" />
+    <PointByCoordinates Name="p39" Visible="false" X="1" Y="-7.7320508076" />
+    <PointByCoordinates Name="p40" Visible="false" X="-1" Y="-7.7320508076" />
+    <Segment Name="s41" Style="Gold">
+      <Dependency Name="p37" />
+      <Dependency Name="p38" />
+    </Segment>
+    <Segment Name="s42" Style="Gold">
+      <Dependency Name="p38" />
+      <Dependency Name="p39" />
+    </Segment>
+    <Segment Name="s43" Style="Gold">
+      <Dependency Name="p39" />
+      <Dependency Name="p40" />
+    </Segment>
+    <Segment Name="s44" Style="Gold">
+      <Dependency Name="p40" />
+      <Dependency Name="p37" />
+    </Segment>
+    <PointByCoordinates Name="A" Visible="false" X="-1" Y="3.7320508076" />
+    <PointByCoordinates Name="B" Visible="false" X="-1" Y="-7.7320508076" />
+    <Segment Name="s45" Style="Chalk">
+      <Dependency Name="A" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s46" Style="Chalk">
+      <Dependency Name="p4" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="angle47" Style="Chalk" Radius="22">
+      <Dependency Name="p4" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </AngleArc>
+    <PointByCoordinates Name="at48" Style="Anchor" X="(p4.X - 0.75)" Y="(p4.Y + 0.05)">
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t49" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at48" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

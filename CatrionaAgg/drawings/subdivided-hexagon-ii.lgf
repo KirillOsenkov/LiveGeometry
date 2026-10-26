@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.0120508076" Top="2.28" Right="2.0120508076" Bottom="-2.28" />
+  <Scene Left="-2.0120508076" Top="2.28" Right="2.0120508076" Bottom="-2.28" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF40A1FD" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4596E3" />
+            <GradientStop Color="#FF2778C5" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFF64" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8E84A" />
+            <GradientStop Color="#FFCACA2C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFEA596D" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE4465C" />
+            <GradientStop Color="#FFC6273D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FF74C057" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF6CDE41" />
+            <GradientStop Color="#FF4EBF22" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C0" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="C1" Visible="false" X="-1.7320508076" Y="1" />
+    <PointByCoordinates Name="C2" Visible="false" X="-1.7320508076" Y="-1" />
+    <PointByCoordinates Name="C3" Visible="false" X="-0" Y="-2" />
+    <PointByCoordinates Name="C4" Visible="false" X="1.7320508076" Y="-1" />
+    <PointByCoordinates Name="C5" Visible="false" X="1.7320508076" Y="1" />
+    <PointByCoordinates Name="p1" Visible="false" X="(C0.X + C1.X) / 2" Y="(C0.Y + C1.Y) / 2">
+      <Dependency Name="C0" />
+      <Dependency Name="C1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(C1.X + C2.X) / 2" Y="(C1.Y + C2.Y) / 2">
+      <Dependency Name="C1" />
+      <Dependency Name="C2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p3" Visible="false" X="(C2.X + C3.X) / 2" Y="(C2.Y + C3.Y) / 2">
+      <Dependency Name="C2" />
+      <Dependency Name="C3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(C3.X + C4.X) / 2" Y="(C3.Y + C4.Y) / 2">
+      <Dependency Name="C3" />
+      <Dependency Name="C4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(C4.X + C5.X) / 2" Y="(C4.Y + C5.Y) / 2">
+      <Dependency Name="C4" />
+      <Dependency Name="C5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(C5.X + C0.X) / 2" Y="(C5.Y + C0.Y) / 2">
+      <Dependency Name="C5" />
+      <Dependency Name="C0" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Xt" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="Xb" Visible="false" X="0" Y="-1" />
+    <Polygon Name="poly7" Style="Blue">
+      <Dependency Name="C1" />
+      <Dependency Name="p1" />
+      <Dependency Name="Xt" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Yellow">
+      <Dependency Name="p6" />
+      <Dependency Name="C5" />
+      <Dependency Name="p5" />
+      <Dependency Name="Xt" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Red">
+      <Dependency Name="p2" />
+      <Dependency Name="Xb" />
+      <Dependency Name="p3" />
+      <Dependency Name="C2" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Green">
+      <Dependency Name="Xb" />
+      <Dependency Name="p5" />
+      <Dependency Name="C4" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="p6" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="p2" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s14" Style="Ink">
+      <Dependency Name="p5" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s15" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C0" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s16" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p1" />
+      <Dependency Name="C1" />
+    </Segment>
+    <Segment Name="s17" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s18" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p2" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="s19" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C2" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s20" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p3" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="s21" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s22" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p4" />
+      <Dependency Name="C4" />
+    </Segment>
+    <Segment Name="s23" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s24" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p5" />
+      <Dependency Name="C5" />
+    </Segment>
+    <Segment Name="s25" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="C5" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Segment Name="s26" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p6" />
+      <Dependency Name="C0" />
+    </Segment>
+  </Figures>
+</Drawing>

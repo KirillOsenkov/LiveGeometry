@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.5629848481" Top="7.8056255352" Right="7.8056255352" Bottom="-1.3629848481" />
+  <Scene Left="-0.5629848481" Top="7.8056255352" Right="7.8056255352" Bottom="-1.3629848481" />
+  <Styles>
+    <ShapeStyle Name="Gray" Color="#FF8A96A8" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFC4CAD4" />
+    </ShapeStyle>
+    <ShapeStyle Name="LightBlue" Color="#FF15A4D2" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFA2E1F6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF0A5CB4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9ECAFA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFD0503E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFEBB5AD" />
+    </ShapeStyle>
+    <TextStyle Name="LightBlueText" FontSize="32" Color="#FF15A4D2" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA2E1F6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="BlueText" FontSize="30" Color="#FF0A5CB4" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9ECAFA" />
+    </TextStyle>
+    <TextStyle Name="RedText" FontSize="26" Color="#FFD0503E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFEBB5AD" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="7.2426406871" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="7.2426406871" Y="7.2426406871" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="7.2426406871" />
+    <Polygon Name="poly5" Style="Gray">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="Cb" Visible="false" X="4.4142135624" Y="4.4142135624" />
+    <PointByCoordinates Name="Cs" Visible="false" X="1.4142135624" Y="1.4142135624" />
+    <PointByCoordinates Name="p6" Visible="false" X="4.4142135624" Y="7.2426406871" />
+    <Circle Name="c7" Style="LightBlue">
+      <Dependency Name="Cb" />
+      <Dependency Name="p6" />
+    </Circle>
+    <PointByCoordinates Name="p8" Visible="false" X="1.4142135624" Y="0" />
+    <Circle Name="c9" Style="Blue">
+      <Dependency Name="Cs" />
+      <Dependency Name="p8" />
+    </Circle>
+    <PointByCoordinates Name="p10" Visible="false" X="2.8284271247" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="7.2426406871" Y="0" />
+    <PointByCoordinates Name="p12" Visible="false" X="7.2426406871" Y="1.5857864376" />
+    <PointByCoordinates Name="p13" Visible="false" X="2.8284271247" Y="1.5857864376" />
+    <Polygon Name="poly14" Style="Red">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Polygon>
+    <PointByCoordinates Name="at15" Style="Anchor" X="Cb.X" Y="Cb.Y">
+      <Dependency Name="Cb" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t16" Style="LightBlueText" Z="1" OffsetX="-22.84" OffsetY="-23.6" Text="8π">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at17" Style="Anchor" X="Cs.X" Y="Cs.Y">
+      <Dependency Name="Cs" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t18" Style="BlueText" Z="1" OffsetX="-21.6" OffsetY="-22.25" Text="2π">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at19" Style="Anchor" X="5.0355339059" Y="0.7928932188" />
+    <AttachedLabel Name="t20" Style="RedText" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

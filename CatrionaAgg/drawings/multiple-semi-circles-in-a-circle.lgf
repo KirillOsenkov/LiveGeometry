@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.42" Top="3.42" Right="3.42" Bottom="-3.42" />
+  <Scene Left="-3.42" Top="3.42" Right="3.42" Bottom="-3.42" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFCF866" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8E44A" />
+            <GradientStop Color="#FFCAC52B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFC4EA80" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFB1E94B" />
+            <GradientStop Color="#FF92CB2D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Teal" Color="#FF0E9F92" StrokeWidth="3">
+      <Dark Color="#FFA1F7EF" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="3" />
+    <PointByCoordinates Name="B" Visible="false" X="0" Y="-3" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="-1.65" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="1.65" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="C" Style="Handle" X="0" Y="0.483" Parameter="0.6463636364">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="U" Visible="false" X="0" Y="C.Y + 1">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="0" Y="C.Y - 1">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Mr" Visible="false" X="0" Y="(C.Y + 2) / 2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Mt" Visible="false" X="0" Y="(C.Y + 4) / 2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Ml" Visible="false" X="0" Y="(C.Y - 2) / 2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Mb" Visible="false" X="0" Y="(C.Y - 4) / 2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <CircleSegment Name="a4" Visible="false">
+      <Dependency Name="Mr" />
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </CircleSegment>
+    <CircleSegment Name="a5" Visible="false">
+      <Dependency Name="Mt" />
+      <Dependency Name="U" />
+      <Dependency Name="T" />
+    </CircleSegment>
+    <CircleSegment Name="a6" Visible="false">
+      <Dependency Name="Ml" />
+      <Dependency Name="U" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <CircleSegment Name="a7" Visible="false">
+      <Dependency Name="Mb" />
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <Circle Name="c8" Style="Yellow">
+      <Dependency Name="C" />
+      <Dependency Name="U" />
+    </Circle>
+    <Region Name="r9" Style="Green" Operation="Difference">
+      <Dependency Name="a4" />
+      <Dependency Name="a5" />
+      <Dependency Name="c8" />
+    </Region>
+    <Region Name="r10" Style="Green" Operation="Difference">
+      <Dependency Name="a6" />
+      <Dependency Name="a7" />
+      <Dependency Name="c8" />
+    </Region>
+    <Circle Name="c11" Style="Teal">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Circle>
+    <Segment Name="s12" Style="Teal">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Segment>
+    <CircleArc Name="a13" Style="Teal">
+      <Dependency Name="Mr" />
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </CircleArc>
+    <CircleArc Name="a14" Style="Teal">
+      <Dependency Name="Mt" />
+      <Dependency Name="U" />
+      <Dependency Name="T" />
+    </CircleArc>
+    <CircleArc Name="a15" Style="Teal">
+      <Dependency Name="Ml" />
+      <Dependency Name="U" />
+      <Dependency Name="B" />
+    </CircleArc>
+    <CircleArc Name="a16" Style="Teal">
+      <Dependency Name="Mb" />
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </CircleArc>
+    <Circle Name="c17" Style="Teal">
+      <Dependency Name="C" />
+      <Dependency Name="U" />
+    </Circle>
+  </Figures>
+</Drawing>

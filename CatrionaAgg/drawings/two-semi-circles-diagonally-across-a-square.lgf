@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.783" Top="6.183" Right="1.083" Bottom="-0.583" />
+  <Scene Left="-6.783" Top="6.183" Right="1.083" Bottom="-0.583" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Green" Color="#FF22D84A" StrokeWidth="3" Fill="#FFB8FB18" Texture="Crayon">
+      <Dark Color="#FFA7F1B7" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAFDE40" />
+            <GradientStop Color="#FF91BF21" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF0A0A30" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF08E0C8" StrokeWidth="3">
+      <Dark Color="#FF3FF0DA" />
+    </LineStyle>
+    <TextStyle Name="TealMark" FontSize="34" Color="#FF08E0C8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF3FF0DA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="K" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(K.X - 1.1025494233)" Y="(K.Y + 3.8450467838)">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(K.X - 3.8450467838)" Y="(K.Y + 1.1025494233)">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="K" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="-2.0601522996" Y="3.4286692028" Parameter="2.1118483949">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="s" Formula="P.Y - P.X">
+      <Dependency Name="P" />
+    </Number>
+    <PointByCoordinates Name="BL" Visible="false" X="-s" Y="0">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TR" Visible="false" X="0" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TL" Visible="false" X="-s" Y="s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(BL.X + P.X) / 2" Y="(BL.Y + P.Y) / 2">
+      <Dependency Name="BL" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <CircleSegment Name="a5" Style="Green">
+      <Dependency Name="p4" />
+      <Dependency Name="P" />
+      <Dependency Name="BL" />
+    </CircleSegment>
+    <PointByCoordinates Name="p6" Visible="false" X="(P.X + TR.X) / 2" Y="(P.Y + TR.Y) / 2">
+      <Dependency Name="P" />
+      <Dependency Name="TR" />
+    </PointByCoordinates>
+    <CircleSegment Name="a7" Style="Green">
+      <Dependency Name="p6" />
+      <Dependency Name="P" />
+      <Dependency Name="TR" />
+    </CircleSegment>
+    <Polygon Name="poly8" Style="Frame" Z="1">
+      <Dependency Name="BL" />
+      <Dependency Name="K" />
+      <Dependency Name="TR" />
+      <Dependency Name="TL" />
+    </Polygon>
+    <Number Name="n9" Formula="distance(P, K)">
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Number>
+    <PointByCoordinates Name="p10" Visible="false" X="(K.X - P.X) / n9" Y="(K.Y - P.Y) / n9">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+      <Dependency Name="n9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="K.X" Y="K.Y">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(p11.X + p12.X) / 2" Y="(p11.Y + p12.Y) / 2">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(p13.X - 1 * 0.42 * p10.X)" Y="(p13.Y - 1 * 0.42 * p10.Y)">
+      <Dependency Name="p13" />
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(p13.X + 0.42 * p10.X)" Y="(p13.Y + 0.42 * p10.Y)">
+      <Dependency Name="p13" />
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <Vector Name="v16" Style="Arrow">
+      <Dependency Name="p14" />
+      <Dependency Name="p11" />
+    </Vector>
+    <Vector Name="v17" Style="Arrow">
+      <Dependency Name="p15" />
+      <Dependency Name="p12" />
+    </Vector>
+    <PointByCoordinates Name="at18" Style="Anchor" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="TealMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

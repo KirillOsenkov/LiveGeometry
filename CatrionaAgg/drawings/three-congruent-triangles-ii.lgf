@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.84" Top="6.0361524227" Right="6.84" Bottom="-0.84" />
+  <Scene Left="-6.84" Top="6.0361524227" Right="6.84" Bottom="-0.84" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFE87A83" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE84A57" />
+            <GradientStop Color="#FFCA2B38" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFEC4C2" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD77774" />
+            <GradientStop Color="#FFB85956" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFB397CB" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9D6DC5" />
+            <GradientStop Color="#FF7E4FA7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Indigo" Color="#FF4B2795" StrokeWidth="2.5">
+      <Dark Color="#FFC2AEEA" />
+    </LineStyle>
+    <TextStyle Name="IndigoMark" FontSize="28" Color="#FF4B2795" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF211141" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-6" Y="0" />
+    <PointByCoordinates Name="F" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="D" Visible="false" X="-3" Y="5.1961524227" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.2" Y="2.0784609691" />
+    <PointByCoordinates Name="p2" Visible="false" X="2.7" Y="4.6765371804" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="E" Style="Handle" X="2.34" Y="4.0529988897" Parameter="0.76">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="B" Visible="false" X="-E.X" Y="E.Y">
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="Red">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Pink">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Purple">
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Segment Name="s7" Style="Indigo">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+    </Segment>
+    <AngleArc Name="angle8" Style="Indigo" Radius="50">
+      <Dependency Name="F" />
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </AngleArc>
+    <PointByCoordinates Name="at9" Style="Anchor" X="(F.X - 1.55)" Y="(F.Y + 0.42)">
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t10" Style="IndigoMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

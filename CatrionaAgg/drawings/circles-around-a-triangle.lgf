@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.92" Top="4.42" Right="5.92" Bottom="-2.42" />
+  <Scene Left="-0.92" Top="4.42" Right="5.92" Bottom="-2.42" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF98D4F0" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF5BB7E1" />
+            <GradientStop Color="#FF3C98C3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="YellowGreen" Color="#FF9CC23A" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFD8E8B0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF3EB42C" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFB5EBAD" />
+    </ShapeStyle>
+    <ShapeStyle Name="BlueRim" Color="#FF1C8AE0" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA4D1F4" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="4" Y="3" />
+    <PointByCoordinates Name="Mc" Visible="false" X="2" Y="1.5" />
+    <PointByCoordinates Name="Mb" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="Ms" Visible="false" X="4" Y="1.5" />
+    <Circle Name="c1" Visible="false">
+      <Dependency Name="Mc" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="c2" Visible="false">
+      <Dependency Name="Mb" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="c3" Visible="false">
+      <Dependency Name="Ms" />
+      <Dependency Name="B" />
+    </Circle>
+    <Polygon Name="poly4" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Region Name="r5" Style="Blue" Operation="Difference">
+      <Dependency Name="c1" />
+      <Dependency Name="c2" />
+      <Dependency Name="c3" />
+      <Dependency Name="poly4" />
+    </Region>
+    <Region Name="r6" Style="Blue" Operation="Difference">
+      <Dependency Name="c2" />
+      <Dependency Name="c1" />
+    </Region>
+    <Region Name="r7" Style="Blue" Operation="Difference">
+      <Dependency Name="c3" />
+      <Dependency Name="c1" />
+    </Region>
+    <Region Name="r8" Style="Blue" Operation="Difference">
+      <Dependency Name="poly4" />
+      <Dependency Name="c3" />
+    </Region>
+    <Region Name="r9" Style="Blue" Operation="Difference">
+      <Dependency Name="poly4" />
+      <Dependency Name="c2" />
+    </Region>
+    <Circle Name="c10" Style="YellowGreen">
+      <Dependency Name="Mc" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="c11" Style="Green">
+      <Dependency Name="Mb" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="c12" Style="BlueRim">
+      <Dependency Name="Ms" />
+      <Dependency Name="B" />
+    </Circle>
+    <Polygon Name="poly13" Style="Frame" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+  </Figures>
+</Drawing>

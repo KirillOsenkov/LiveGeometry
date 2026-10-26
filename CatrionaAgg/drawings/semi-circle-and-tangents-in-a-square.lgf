@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Scene Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEF99A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEBE455" />
+            <GradientStop Color="#FFCDC536" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="YellowLine" Color="#FFEACC07" StrokeWidth="3">
+      <Dark Color="#FFFAEE9E" />
+    </LineStyle>
+    <LineStyle Name="Magenta" Color="#FFD3007A" StrokeWidth="4">
+      <Dark Color="#FFFA9ED3" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p5" Visible="false" X="2" Y="2.5" />
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p7" Visible="false" X="4" Y="1" />
+    <Polygon Name="poly8" Style="Yellow">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Yellow">
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Segment Name="s10" Style="YellowLine">
+      <Dependency Name="p4" />
+      <Dependency Name="p7" />
+    </Segment>
+    <Segment Name="s11" Style="YellowLine">
+      <Dependency Name="p3" />
+      <Dependency Name="p6" />
+    </Segment>
+    <PointByCoordinates Name="p12" Visible="false" X="2" Y="0" />
+    <CircleArc Name="a13" Style="Magenta">
+      <Dependency Name="p12" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <Polygon Name="poly14" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+  </Figures>
+</Drawing>

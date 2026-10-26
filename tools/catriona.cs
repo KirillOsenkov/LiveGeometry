@@ -146,10 +146,13 @@ var drawn = Directory.Exists(drawingsFolder)
 var detailed = puzzles.Where((p, i) => i < recent || drawn.Contains(p.Slug)).ToList();
 foreach (var puzzle in detailed)
 {
-    string text = await Source(puzzle.Name);
+    // a year page's typo: the puzzle's own page is spelled right (and the typo only redirects to it)
+    string text = await Source(puzzle.Name) ?? await Source(puzzle.Name.Replace("sequal", "sequel"));
     if (text == null)
     {
+        // listed on its year page but without a page of its own: no question, no techniques, no solution
         Console.WriteLine($"warning: no page for {puzzle.Name}");
+        puzzle.NoPage = true;
         continue;
     }
 
@@ -217,7 +220,7 @@ if (File.Exists(catalogFile) && JsonNode.Parse(await File.ReadAllTextAsync(catal
 }
 
 // written here, so never carried over; and "play", a line per puzzle the page no longer shows
-var written = new HashSet<string> { "slug", "name", "title", "date", "statement", "thread", "categories", "techniques", "drawing", "live", "play" };
+var written = new HashSet<string> { "slug", "name", "title", "date", "statement", "thread", "page", "categories", "techniques", "drawing", "live", "play" };
 var array = new JsonArray();
 foreach (var puzzle in puzzles)
 {
@@ -236,6 +239,11 @@ foreach (var puzzle in puzzles)
     if (puzzle.Thread != null)
     {
         entry["thread"] = puzzle.Thread;
+    }
+
+    if (puzzle.NoPage)
+    {
+        entry["page"] = false;
     }
 
     entry["categories"] = new JsonArray(puzzle.Categories.Select(c => (JsonNode)c).ToArray());
@@ -383,6 +391,7 @@ class Puzzle
     public string Image;
     public string Statement;
     public string Thread;
+    public bool NoPage;
     public List<string> Categories = new();
     public List<string> Techniques = new();
 

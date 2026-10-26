@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.7" Top="5.7" Right="5.7" Bottom="-0.7" />
+  <Scene Left="-5.7" Top="5.7" Right="5.7" Bottom="-0.7" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#FFF04DBE" StrokeWidth="2.5" Fill="#FFFDD5FD" Texture="Crayon">
+      <Dark Color="#FFF7A1DD" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFCC83CC" />
+            <GradientStop Color="#FFAD65AD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Semicircle" Color="#FFF04DBE" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF7A1DD" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="W" Visible="false" X="-5" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="-1" Y="4" />
+    <PointByCoordinates Name="F" Visible="false" X="3" Y="4" />
+    <CircleSector Name="a1" Style="Pink">
+      <Dependency Name="C" />
+      <Dependency Name="T" />
+      <Dependency Name="W" />
+    </CircleSector>
+    <CircleSector Name="a2" Style="Pink">
+      <Dependency Name="T" />
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </CircleSector>
+    <CircleSegment Name="a3" Style="Semicircle">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </CircleSegment>
+  </Figures>
+</Drawing>

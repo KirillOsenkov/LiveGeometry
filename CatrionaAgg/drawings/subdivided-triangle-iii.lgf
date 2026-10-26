@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.4168392137" Top="1.4668392137" Right="6.3716851243" Bottom="-1.4668392137" />
+  <Scene Left="-0.4168392137" Top="1.4668392137" Right="6.3716851243" Bottom="-1.4668392137" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEF15B" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE7DA49" />
+            <GradientStop Color="#FFC8BC2A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFE8850" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE67A47" />
+            <GradientStop Color="#FFC75C29" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFEB545A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE4464C" />
+            <GradientStop Color="#FFC5272D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFB2D7" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE067A1" />
+            <GradientStop Color="#FFC14982" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FF1E1E1E" />
+    </LineStyle>
+    <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="5.9548459106" Y="1.05" />
+    <PointByCoordinates Name="B" Visible="false" X="5.9548459106" Y="-1.05" />
+    <PointByCoordinates Name="D" Visible="false" X="2.0680962813" Y="0.3646611731" />
+    <PointByCoordinates Name="E" Visible="false" X="3.8867496293" Y="-0.6853388269" />
+    <PointByCoordinates Name="F" Visible="false" X="5.2366036096" Y="0.9233545037" />
+    <Polygon Name="poly1" Style="Yellow">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Orange">
+      <Dependency Name="D" />
+      <Dependency Name="F" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="poly3" Style="Red">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Pink">
+      <Dependency Name="F" />
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Segment Name="s5" Style="Frame" Decoration="TwoTicks">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="s6" Style="Frame">
+      <Dependency Name="D" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s7" Style="Frame" Decoration="TwoTicks">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s8" Style="Frame">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="s9" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="s10" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s11" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Segment>
+    <Number Name="n12" Formula="distance(A, B)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Number>
+    <Number Name="n13" Formula="distance(A, T)">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Number>
+    <PointByCoordinates Name="p14" Visible="false" X="(A.X + 0.5 * ((B.X - A.X) / n12))" Y="(A.Y + 0.5 * ((B.Y - A.Y) / n12))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="n12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(A.X + 0.5 * ((T.X - A.X) / n13))" Y="(A.Y + 0.5 * ((T.Y - A.Y) / n13))">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+      <Dependency Name="n13" />
+    </PointByCoordinates>
+    <CircleArc Name="a16" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </CircleArc>
+    <PointByCoordinates Name="at17" Style="Anchor" X="0.74" Y="-0.03" />
+    <AttachedLabel Name="t18" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

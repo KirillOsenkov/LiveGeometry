@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.518" Top="3.918" Right="6.018" Bottom="-4.518" />
+  <Scene Left="-0.518" Top="3.918" Right="6.018" Bottom="-4.518" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF3002F8" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFAF9EFA" />
+    </ShapeStyle>
+    <LineStyle Name="Magenta" Color="#FFF305EC" StrokeWidth="3.5">
+      <Dark Color="#FFFA9EF7" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFF20484" StrokeWidth="3">
+      <Dark Color="#FFFA9ECF" />
+    </LineStyle>
+    <TextStyle Name="RedMark" FontSize="36" Color="#FFF20484" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFA9ECF" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="-4" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="-4" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="(P.X + 3.2766081772)" Y="(P.Y + 2.2943057454)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(P.X - 0.348622971)" Y="(P.Y + 3.9847787924)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <CircleArc Name="track6" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointOnFigure Name="T" Style="Handle" X="2.2367716139" Y="3.3161502902" Parameter="0.9773843811">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p7" Visible="false" X="(T.X + T.Y)" Y="(T.Y - T.X)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(P.X + T.Y)" Y="(P.Y - T.X)">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Polygon Name="poly9" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Frame">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Segment Name="s11" Style="Magenta">
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s12" Style="Magenta">
+      <Dependency Name="T" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Number Name="n13" Formula="distance(T, p1)">
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+    </Number>
+    <Number Name="n14" Formula="distance(T, p3)">
+      <Dependency Name="T" />
+      <Dependency Name="p3" />
+    </Number>
+    <PointByCoordinates Name="p15" Visible="false" X="(T.X + 0.85 * ((p1.X - T.X) / n13))" Y="(T.Y + 0.85 * ((p1.Y - T.Y) / n13))">
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+      <Dependency Name="n13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(T.X + 0.85 * ((p3.X - T.X) / n14))" Y="(T.Y + 0.85 * ((p3.Y - T.Y) / n14))">
+      <Dependency Name="T" />
+      <Dependency Name="p3" />
+      <Dependency Name="n14" />
+    </PointByCoordinates>
+    <CircleArc Name="a17" Style="Red">
+      <Dependency Name="T" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </CircleArc>
+    <PointByCoordinates Name="at18" Style="Anchor" X="(T.X + 0.2)" Y="(T.Y - 1.4)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="RedMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="?">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

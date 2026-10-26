@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Scene Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF05A8AC" StrokeWidth="2.5" Fill="#FF36DFBC" Texture="Crayon">
+      <Dark Color="#FF9EF8FA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF40DEBD" />
+            <GradientStop Color="#FF21C09F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1040C0" StrokeWidth="2.5" Fill="#FF0564D6" Texture="Crayon">
+      <Dark Color="#FFA1B8F7" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3980D7" />
+            <GradientStop Color="#FF1A62B8" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFE9F" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEAE858" />
+            <GradientStop Color="#FFCBC93A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFD8607E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFEBADBD" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="G" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="3" Y="4" />
+    <PointByCoordinates Name="Y" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="3" Y="3" />
+    <CircleSector Name="a2" Style="Green">
+      <Dependency Name="G" />
+      <Dependency Name="p1" />
+      <Dependency Name="O" />
+    </CircleSector>
+    <PointByCoordinates Name="p3" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="3" Y="3" />
+    <CircleSector Name="a5" Style="Blue">
+      <Dependency Name="B" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </CircleSector>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p7" Visible="false" X="2" Y="4" />
+    <CircleSector Name="a8" Style="Yellow">
+      <Dependency Name="Y" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </CircleSector>
+    <PointByCoordinates Name="p9" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="5" />
+    <CircleSector Name="a11" Style="Red">
+      <Dependency Name="O" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </CircleSector>
+  </Figures>
+</Drawing>

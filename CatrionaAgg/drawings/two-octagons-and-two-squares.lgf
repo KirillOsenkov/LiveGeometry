@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7.1918542282" Top="7.1918542282" Right="7.1918542282" Bottom="-7.1918542282" />
+  <Scene Left="-7.1918542282" Top="7.1918542282" Right="7.1918542282" Bottom="-7.1918542282" />
+  <Styles>
+    <ShapeStyle Name="Octagon" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFE5502C" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFF4B4A4" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF2A4A9A" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFAFC0E9" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="3.69551813" Y="1.5307337295" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.5307337295" Y="3.69551813" />
+    <PointByCoordinates Name="p3" Visible="false" X="-1.5307337295" Y="3.69551813" />
+    <PointByCoordinates Name="p4" Visible="false" X="-3.69551813" Y="1.5307337295" />
+    <PointByCoordinates Name="p5" Visible="false" X="-3.69551813" Y="-1.5307337295" />
+    <PointByCoordinates Name="p6" Visible="false" X="-1.5307337295" Y="-3.69551813" />
+    <PointByCoordinates Name="p7" Visible="false" X="1.5307337295" Y="-3.69551813" />
+    <PointByCoordinates Name="p8" Visible="false" X="3.69551813" Y="-1.5307337295" />
+    <PointByCoordinates Name="p9" Visible="false" X="5.2262518595" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="3.69551813" Y="3.69551813" />
+    <PointByCoordinates Name="p11" Visible="false" X="0" Y="5.2262518595" />
+    <PointByCoordinates Name="p12" Visible="false" X="-3.69551813" Y="3.69551813" />
+    <PointByCoordinates Name="p13" Visible="false" X="-5.2262518595" Y="0" />
+    <PointByCoordinates Name="p14" Visible="false" X="-3.69551813" Y="-3.69551813" />
+    <PointByCoordinates Name="p15" Visible="false" X="-0" Y="-5.2262518595" />
+    <PointByCoordinates Name="p16" Visible="false" X="3.69551813" Y="-3.69551813" />
+    <PointByCoordinates Name="p17" Visible="false" X="2.6131259298" Y="6.3086440598" />
+    <PointByCoordinates Name="p18" Visible="false" X="-6.3086440598" Y="2.6131259298" />
+    <PointByCoordinates Name="p19" Visible="false" X="-2.6131259298" Y="-6.3086440598" />
+    <PointByCoordinates Name="p20" Visible="false" X="6.3086440598" Y="-2.6131259298" />
+    <Polygon Name="poly21" Style="Octagon">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly22" Style="Octagon">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Polygon>
+    <Polygon Name="poly23" Style="Red">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <PointByCoordinates Name="p24" Visible="false" X="-3.69551813" Y="-3.69551813" />
+    <PointByCoordinates Name="p25" Visible="false" X="1.5307337295" Y="-3.69551813" />
+    <PointByCoordinates Name="p26" Visible="false" X="1.5307337295" Y="1.5307337295" />
+    <PointByCoordinates Name="p27" Visible="false" X="-3.69551813" Y="1.5307337295" />
+    <Polygon Name="poly28" Style="Blue">
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+    </Polygon>
+  </Figures>
+</Drawing>

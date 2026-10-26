@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFE44" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE4E346" />
+            <GradientStop Color="#FFC6C527" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FF9AFC5C" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF86E749" />
+            <GradientStop Color="#FF67C82A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF2A2A1A" StrokeWidth="6">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF2A2A1A" StrokeWidth="6" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="p3" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="p4" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="-3.4641016151" />
+    <PointByCoordinates Name="p8" Visible="false" X="-1.2" Y="0.692820323" />
+    <Polygon Name="poly9" Style="Yellow">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Yellow">
+      <Dependency Name="p8" />
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Green">
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+    </Segment>
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="p8" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s14" Style="Ink">
+      <Dependency Name="p8" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Polygon Name="poly15" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

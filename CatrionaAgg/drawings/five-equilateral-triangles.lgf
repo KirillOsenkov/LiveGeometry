@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.5684" Top="7.6184" Right="8.6884" Bottom="-0.5684" />
+  <Scene Left="-0.5684" Top="7.6184" Right="8.6884" Bottom="-0.5684" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="DarkGreen" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF8BBF7F" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF74C861" />
+            <GradientStop Color="#FF55AA42" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFA5D06C" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9FDF49" />
+            <GradientStop Color="#FF80C12A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="LightGreen" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFCCE674" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC3E749" />
+            <GradientStop Color="#FFA4C92A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFFEFD6A" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE9E84B" />
+            <GradientStop Color="#FFCAC92C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <TextStyle Name="Mark" FontSize="40" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="2.5" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="5.5" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="M" Style="Handle" X="4" Y="0" Parameter="0.5">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="E" Visible="false" X="8.12" Y="0" />
+    <Number Name="a" Formula="M.X / 2">
+      <Dependency Name="M" />
+    </Number>
+    <Number Name="b" Formula="8.12 - M.X">
+      <Dependency Name="M" />
+    </Number>
+    <PointByCoordinates Name="P2" Visible="false" X="a" Y="0">
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A" Visible="false" X="a / 2" Y="0.8660254037844386 * a">
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C" Visible="false" X="1.5 * a" Y="0.8660254037844386 * a">
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B" Visible="false" X="M.X + b / 2" Y="0.8660254037844386 * b">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="(A.X + (0.5 * (B.X - A.X) - 1 * 0.8660254038 * (B.Y - A.Y)))" Y="(A.Y + (0.8660254038 * (B.X - A.X) + 0.5 * (B.Y - A.Y)))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="DarkGreen">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Green">
+      <Dependency Name="A" />
+      <Dependency Name="P2" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly6" Style="LightGreen">
+      <Dependency Name="P2" />
+      <Dependency Name="M" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly7" Style="Yellow">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="(A.X + B.X + F.X) / 3" Y="(A.Y + B.Y + F.Y) / 3">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at10" Style="Anchor" X="p9.X" Y="p9.Y">
+      <Dependency Name="p9" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t11" Style="Mark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="14">
+      <Dependency Name="at10" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

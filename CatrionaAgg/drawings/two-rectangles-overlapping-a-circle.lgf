@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.959" Top="4.959" Right="4.959" Bottom="-4.959" />
+  <Scene Left="-4.959" Top="4.959" Right="4.959" Bottom="-4.959" />
+  <Styles>
+    <PointStyle Name="Dot9" Size="9" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFEE666D" />
+          <GradientStop Color="#FFE7242F" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDD3F48" />
+            <GradientStop Color="#FFBE2029" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFFD956" />
+          <GradientStop Color="#FFFFC90D" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark>
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDDBA3F" />
+            <GradientStop Color="#FFBE9B20" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Rim" Color="#FFC0C0C0" StrokeWidth="2" IsFilled="false">
+      <Dark Color="#FFCCCCCC" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF4A4A4A" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFCCCCCC" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="d1" Style="Dot9" X="3.7587704831" Y="1.3680805733" />
+    <PointByCoordinates Name="d2" Style="Dot9" X="2.5711504387" Y="3.0641777725" />
+    <PointByCoordinates Name="d3" Style="Dot9" X="0.6945927107" Y="3.939231012" />
+    <PointByCoordinates Name="d4" Style="Dot9" X="-1.3680805733" Y="3.7587704831" />
+    <PointByCoordinates Name="d5" Style="Dot9" X="-3.0641777725" Y="2.5711504387" />
+    <PointByCoordinates Name="d6" Style="Dot9" X="-3.939231012" Y="0.6945927107" />
+    <PointByCoordinates Name="d7" Style="Dot9" X="-3.7587704831" Y="-1.3680805733" />
+    <PointByCoordinates Name="d8" Style="Dot9" X="-2.5711504387" Y="-3.0641777725" />
+    <PointByCoordinates Name="d9" Style="Dot9" X="-0.6945927107" Y="-3.939231012" />
+    <PointByCoordinates Name="d10" Style="Dot9" X="1.3680805733" Y="-3.7587704831" />
+    <PointByCoordinates Name="d11" Style="Dot9" X="3.0641777725" Y="-2.5711504387" />
+    <PointByCoordinates Name="d12" Style="Dot9" X="3.939231012" Y="-0.6945927107" />
+    <PointByCoordinates Name="p13" Visible="false" X="-1.7786025531" Y="4.103239325" />
+    <PointByCoordinates Name="p14" Visible="false" X="4.3497529918" Y="-1.0390615525" />
+    <PointByCoordinates Name="p15" Visible="false" X="1.7786025531" Y="-4.103239325" />
+    <PointByCoordinates Name="p16" Visible="false" X="-4.3497529918" Y="1.0390615525" />
+    <PointByCoordinates Name="p17" Visible="false" X="1.0390615525" Y="4.3497529918" />
+    <PointByCoordinates Name="p18" Visible="false" X="-4.103239325" Y="-1.7786025531" />
+    <PointByCoordinates Name="p19" Visible="false" X="-1.0390615525" Y="-4.3497529918" />
+    <PointByCoordinates Name="p20" Visible="false" X="4.103239325" Y="1.7786025531" />
+    <Circle Name="c21" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="d1" />
+    </Circle>
+    <Polygon Name="poly22" Visible="false">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Polygon>
+    <Polygon Name="poly23" Visible="false">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <Region Name="r24" Style="Red" Operation="Difference">
+      <Dependency Name="poly22" />
+      <Dependency Name="c21" />
+    </Region>
+    <Region Name="r25" Style="Red" Operation="Difference">
+      <Dependency Name="poly23" />
+      <Dependency Name="c21" />
+    </Region>
+    <Region Name="r26" Style="Orange" Operation="Difference">
+      <Dependency Name="c21" />
+      <Dependency Name="poly22" />
+      <Dependency Name="poly23" />
+    </Region>
+    <Circle Name="c27" Style="Rim">
+      <Dependency Name="O" />
+      <Dependency Name="d1" />
+    </Circle>
+    <Polygon Name="poly28" Style="Frame" Z="1">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Polygon>
+    <Polygon Name="poly29" Style="Frame" Z="1">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+  </Figures>
+</Drawing>

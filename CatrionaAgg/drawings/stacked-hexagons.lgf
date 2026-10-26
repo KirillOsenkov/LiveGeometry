@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.7805" Top="9.4407540378" Right="8.9305" Bottom="-1.3305" />
+  <Scene Left="-3.7805" Top="9.4407540378" Right="8.9305" Bottom="-1.3305" />
+  <Styles>
+    <ShapeStyle Name="Navy" Color="#FF023190" StrokeWidth="3" Fill="#FFA8BCDC" Texture="Crayon">
+      <Dark Color="#FF9EBCFA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7293CA" />
+            <GradientStop Color="#FF5375AB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFE0484A" StrokeWidth="2" Fill="#FFE0868F" Texture="Crayon">
+      <Dark Color="#FFF0A8A9" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDE5563" />
+            <GradientStop Color="#FFC03644" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF0B82BA" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FF9FDCF9" />
+    </ShapeStyle>
+    <LineStyle Name="Shelf" Color="#FF023851" StrokeWidth="3">
+      <Dark Color="#FF9EDDFA" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="30" Color="#FF023190" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C1F45" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="1.7320508076" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-2 + 0.5 * 2)" Y="(1.7320508076 + 0.8660254037844386 * 2)" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-2 + 1.5 * 2)" Y="(1.7320508076 + 0.8660254037844386 * 2)" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-2 + 2 * 2)" Y="1.7320508076" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-2 + 1.5 * 2)" Y="(1.7320508076 - 0.8660254037844386 * 2)" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-2 + 0.5 * 2)" Y="(1.7320508076 - 0.8660254037844386 * 2)" />
+    <PointByCoordinates Name="p7" Visible="false" X="1.5" Y="2.5980762114" />
+    <PointByCoordinates Name="p8" Visible="false" X="(1.5 + 0.5 * 3)" Y="(2.5980762114 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p9" Visible="false" X="(1.5 + 1.5 * 3)" Y="(2.5980762114 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p10" Visible="false" X="(1.5 + 2 * 3)" Y="2.5980762114" />
+    <PointByCoordinates Name="p11" Visible="false" X="(1.5 + 1.5 * 3)" Y="(2.5980762114 - 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p12" Visible="false" X="(1.5 + 0.5 * 3)" Y="(2.5980762114 - 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p13" Visible="false" X="-2.5" Y="6.0621778265" />
+    <PointByCoordinates Name="p14" Visible="false" X="(-2.5 + 0.5 * 3)" Y="(6.0621778265 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p15" Visible="false" X="(-2.5 + 1.5 * 3)" Y="(6.0621778265 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p16" Visible="false" X="(-2.5 + 2 * 3)" Y="6.0621778265" />
+    <PointByCoordinates Name="p17" Visible="false" X="(-2.5 + 1.5 * 3)" Y="(6.0621778265 - 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p18" Visible="false" X="(-2.5 + 0.5 * 3)" Y="(6.0621778265 - 0.8660254037844386 * 3)" />
+    <Polygon Name="poly19" Style="Navy">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly20" Style="Red">
+      <Dependency Name="p14" />
+      <Dependency Name="p13" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Polygon Name="poly21" Style="Cyan">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+    </Polygon>
+    <Polygon Name="poly22" Style="Cyan">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p23" Visible="false" X="-2.85" Y="0" />
+    <PointByCoordinates Name="p24" Visible="false" X="7.95" Y="0" />
+    <Segment Name="s25" Style="Shelf">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Segment>
+    <PointByCoordinates Name="p26" Visible="false" X="-3" Y="-0.55" />
+    <Segment Name="s27" Style="Shelf">
+      <Dependency Name="p23" />
+      <Dependency Name="p26" />
+    </Segment>
+    <PointByCoordinates Name="p28" Visible="false" X="8.15" Y="-0.55" />
+    <Segment Name="s29" Style="Shelf">
+      <Dependency Name="p24" />
+      <Dependency Name="p28" />
+    </Segment>
+    <PointByCoordinates Name="at30" Style="Anchor" X="0" Y="1.7320508076" />
+    <AttachedLabel Name="t31" Style="NavyMark" Z="1" OffsetX="-21.6" OffsetY="-22.25" Text="10">
+      <Dependency Name="at30" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

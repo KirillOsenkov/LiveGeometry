@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.0060379206" Top="2.0060379206" Right="2.0060379206" Bottom="-2.4560379206" />
+  <Scene Left="-2.0060379206" Top="2.0060379206" Right="2.0060379206" Bottom="-2.4560379206" />
+  <Styles>
+    <ShapeStyle Name="Rectangle" Color="#FF0A0A44" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFA6A6F2" />
+    </ShapeStyle>
+    <LineStyle Name="Circle" Color="#FFCA0B5B" StrokeWidth="3">
+      <Dark Color="#FFFA9EC5" />
+    </LineStyle>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <LineStyle Name="Yellow" Color="#FFFCEA04" StrokeWidth="4">
+      <Dark Color="#FFFAF39E" />
+    </LineStyle>
+    <ShapeStyle Name="OrangeWedge" Color="#FFE8700A" StrokeWidth="1" Fill="#FFE8700A">
+      <Dark Color="#FFFAC89E" Fill="#FFFAC89E" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF0A0A44" StrokeWidth="3">
+      <Dark Color="#FFA6A6F2" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="30" Color="#FF0A0A44" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA6A6F2" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.7320508076" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-1.5" Y="0.8660254038" />
+    <PointByCoordinates Name="B" Visible="false" X="1.5" Y="0.8660254038" />
+    <PointByCoordinates Name="L" Visible="false" X="-1.5" Y="-0.8660254038" />
+    <PointByCoordinates Name="R" Visible="false" X="1.5" Y="-0.8660254038" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="-1.7320508076" />
+    <PointByCoordinates Name="p2" Visible="false" X="-1.5" Y="-1.7320508076" />
+    <PointByCoordinates Name="p3" Visible="false" X="1.5" Y="-1.7320508076" />
+    <Polygon Name="poly4" Style="Rectangle">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Circle Name="c5" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+    </Circle>
+    <PointByCoordinates Name="p6" Visible="false" X="(O.X + 1.3268278963)" Y="(O.Y + 1.1133407985)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="(O.X - 1.3268278963)" Y="(O.Y + 1.1133407985)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track8" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="-0.4482877361" Y="1.6730326075" Parameter="1.8325957146">
+      <Dependency Name="track8" />
+    </PointOnFigure>
+    <Segment Name="s9" Style="Yellow">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="s10" Style="Yellow">
+      <Dependency Name="P" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s11" Style="Yellow">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s12" Style="Yellow">
+      <Dependency Name="P" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="s13" Style="Yellow">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="angle14" Style="OrangeWedge" Radius="36">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+    </AngleArc>
+    <AngleArc Name="angle15" Style="OrangeWedge" Radius="36">
+      <Dependency Name="P" />
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </AngleArc>
+    <AngleArc Name="angle16" Style="OrangeWedge" Radius="36">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+    </AngleArc>
+    <AngleArc Name="angle17" Style="OrangeWedge" Radius="36">
+      <Dependency Name="P" />
+      <Dependency Name="R" />
+      <Dependency Name="B" />
+    </AngleArc>
+    <Number Name="n18" Formula="distance(p3, p2)">
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Number>
+    <PointByCoordinates Name="p19" Visible="false" X="(p2.X - p3.X) / n18" Y="(p2.Y - p3.Y) / n18">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="n18" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(p3.X + 0.3 * -p19.Y)" Y="(p3.Y + 0.3 * p19.X)">
+      <Dependency Name="p3" />
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(p2.X + 0.3 * -p19.Y)" Y="(p2.Y + 0.3 * p19.X)">
+      <Dependency Name="p2" />
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="(p20.X + p21.X) / 2" Y="(p20.Y + p21.Y) / 2">
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="(p22.X - 1 * 0.2 * p19.X)" Y="(p22.Y - 1 * 0.2 * p19.Y)">
+      <Dependency Name="p22" />
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="(p22.X + 0.2 * p19.X)" Y="(p22.Y + 0.2 * p19.Y)">
+      <Dependency Name="p22" />
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <Vector Name="v25" Style="Arrow">
+      <Dependency Name="p23" />
+      <Dependency Name="p20" />
+    </Vector>
+    <Vector Name="v26" Style="Arrow">
+      <Dependency Name="p24" />
+      <Dependency Name="p21" />
+    </Vector>
+    <PointByCoordinates Name="at27" Style="Anchor" X="p22.X" Y="p22.Y">
+      <Dependency Name="p22" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t28" Style="NavyMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="3">
+      <Dependency Name="at27" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

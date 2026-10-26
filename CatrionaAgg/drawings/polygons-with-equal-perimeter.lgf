@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.9415" Top="6.1376524227" Right="14.3915" Bottom="-0.9415" />
+  <Scene Left="-0.9415" Top="6.1376524227" Right="14.3915" Bottom="-0.9415" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF0E9060" StrokeWidth="3" Fill="#FFCFE6DC" Texture="Crayon">
+      <Dark Color="#FFA2F6D7" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF8BBDA7" />
+            <GradientStop Color="#FF6C9E89" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Lime" Color="#FF8CDC5A" StrokeWidth="3" Fill="#FFEEF6C4" Texture="Crayon">
+      <Dark Color="#FFC4EDAB" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC2CF7A" />
+            <GradientStop Color="#FFA3B15B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF253B50" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFB0CDE8" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3" Y="5.1961524227" />
+    <PointByCoordinates Name="p4" Visible="false" X="7.45" Y="2.5980762114" />
+    <PointByCoordinates Name="p5" Visible="false" X="(7.45 + 0.5 * 3)" Y="(2.5980762114 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p6" Visible="false" X="(7.45 + 1.5 * 3)" Y="(2.5980762114 + 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p7" Visible="false" X="(7.45 + 2 * 3)" Y="2.5980762114" />
+    <PointByCoordinates Name="p8" Visible="false" X="(7.45 + 1.5 * 3)" Y="(2.5980762114 - 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p9" Visible="false" X="(7.45 + 0.5 * 3)" Y="(2.5980762114 - 0.8660254037844386 * 3)" />
+    <PointByCoordinates Name="p10" Visible="false" X="3" Y="1.7320508076" />
+    <PointByCoordinates Name="p11" Visible="false" X="10.45" Y="2.5980762114" />
+    <PointByCoordinates Name="p12" Visible="false" X="3" Y="0" />
+    <Circle Name="c13" Style="Green">
+      <Dependency Name="p10" />
+      <Dependency Name="p12" />
+    </Circle>
+    <PointByCoordinates Name="p14" Visible="false" X="10.45" Y="0" />
+    <Circle Name="c15" Style="Lime">
+      <Dependency Name="p11" />
+      <Dependency Name="p14" />
+    </Circle>
+    <Polygon Name="poly16" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Polygon Name="poly17" Style="Frame" Z="1">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+  </Figures>
+</Drawing>

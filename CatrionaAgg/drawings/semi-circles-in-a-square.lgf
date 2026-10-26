@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-11.4" Top="11.4" Right="11.4" Bottom="-11.4" />
+  <Scene Left="-11.4" Top="11.4" Right="11.4" Bottom="-11.4" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFF7E204" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBCD3D" />
+            <GradientStop Color="#FFBCAF1E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFF04896" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF7A1C9" />
+    </ShapeStyle>
+    <LineStyle Name="Orange" Color="#FFF58A35" StrokeWidth="3.5">
+      <Dark Color="#FFFAC79E" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="10" />
+    <PointByCoordinates Name="p3" Visible="false" X="-10" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="-10" />
+    <PointByCoordinates Name="p5" Visible="false" X="10" Y="0" />
+    <Polygon Name="poly6" Visible="false">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="(p1.X + p2.X) / 2" Y="(p1.Y + p2.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <CircleSegment Name="a8" Visible="false">
+      <Dependency Name="p7" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <Polygon Name="poly9" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Region Name="r10" Style="Yellow" Operation="Difference">
+      <Dependency Name="poly9" />
+      <Dependency Name="a8" />
+    </Region>
+    <Region Name="r11" Style="Yellow" Operation="Difference">
+      <Dependency Name="a8" />
+      <Dependency Name="poly6" />
+    </Region>
+    <PointByCoordinates Name="p12" Visible="false" X="(p1.X + p3.X) / 2" Y="(p1.Y + p3.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <CircleSegment Name="a13" Visible="false">
+      <Dependency Name="p12" />
+      <Dependency Name="p3" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <Polygon Name="poly14" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Region Name="r15" Style="Yellow" Operation="Difference">
+      <Dependency Name="poly14" />
+      <Dependency Name="a13" />
+    </Region>
+    <Region Name="r16" Style="Yellow" Operation="Difference">
+      <Dependency Name="a13" />
+      <Dependency Name="poly6" />
+    </Region>
+    <PointByCoordinates Name="p17" Visible="false" X="(p1.X + p4.X) / 2" Y="(p1.Y + p4.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <CircleSegment Name="a18" Visible="false">
+      <Dependency Name="p17" />
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <Polygon Name="poly19" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Region Name="r20" Style="Yellow" Operation="Difference">
+      <Dependency Name="poly19" />
+      <Dependency Name="a18" />
+    </Region>
+    <Region Name="r21" Style="Yellow" Operation="Difference">
+      <Dependency Name="a18" />
+      <Dependency Name="poly6" />
+    </Region>
+    <PointByCoordinates Name="p22" Visible="false" X="(p1.X + p5.X) / 2" Y="(p1.Y + p5.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <CircleSegment Name="a23" Visible="false">
+      <Dependency Name="p22" />
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <Polygon Name="poly24" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Region Name="r25" Style="Yellow" Operation="Difference">
+      <Dependency Name="poly24" />
+      <Dependency Name="a23" />
+    </Region>
+    <Region Name="r26" Style="Yellow" Operation="Difference">
+      <Dependency Name="a23" />
+      <Dependency Name="poly6" />
+    </Region>
+    <Polygon Name="poly27" Style="Pink">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Segment Name="s28" Style="Orange">
+      <Dependency Name="p2" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s29" Style="Orange">
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </Segment>
+    <CircleArc Name="a30" Style="Orange">
+      <Dependency Name="p7" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <CircleArc Name="a31" Style="Orange">
+      <Dependency Name="p12" />
+      <Dependency Name="p3" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <CircleArc Name="a32" Style="Orange">
+      <Dependency Name="p17" />
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <CircleArc Name="a33" Style="Orange">
+      <Dependency Name="p22" />
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </CircleArc>
+  </Figures>
+</Drawing>

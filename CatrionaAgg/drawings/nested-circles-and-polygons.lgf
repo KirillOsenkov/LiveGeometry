@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.0161564946" Top="3.0161564946" Right="3.0161564946" Bottom="-3.0161564946" />
+  <Scene Left="-3.0161564946" Top="3.0161564946" Right="3.0161564946" Bottom="-3.0161564946" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#FFF20B01" StrokeWidth="3.5" Fill="#FFFCD9F5" Texture="Crayon">
+      <Dark Color="#FFFAA29E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC987BC" />
+            <GradientStop Color="#FFAA699D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Lime" Color="#FFB6F210" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFE1FA9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFF9B30C" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFADF9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FFFCD807" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFAEC9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="GreenDot" Color="#00000000" StrokeWidth="2.5" Fill="#FF0CE804" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF40D93B" />
+            <GradientStop Color="#FF22BA1C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="RedDot" Color="#00000000" StrokeWidth="2.5" Fill="#FFE82010" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDA483C" />
+            <GradientStop Color="#FFBC291E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="1.7320508076" />
+    <Circle Name="c3" Style="Pink">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Circle>
+    <PointByCoordinates Name="p4" Visible="false" X="2.6457513111" Y="0" />
+    <Circle Name="c5" Style="Lime">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+    </Circle>
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="1" Y="1.7320508076" />
+    <PointByCoordinates Name="p8" Visible="false" X="-1" Y="1.7320508076" />
+    <PointByCoordinates Name="p9" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="-1" Y="-1.7320508076" />
+    <PointByCoordinates Name="p11" Visible="false" X="1" Y="-1.7320508076" />
+    <PointByCoordinates Name="p12" Visible="false" X="-2" Y="-1.7320508076" />
+    <PointByCoordinates Name="p13" Visible="false" X="2" Y="-1.7320508076" />
+    <PointByCoordinates Name="p14" Visible="false" X="2" Y="1.7320508076" />
+    <PointByCoordinates Name="p15" Visible="false" X="-2" Y="1.7320508076" />
+    <Polygon Name="poly16" Style="Orange" Z="1">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly17" Style="Yellow" Z="1">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <PointByCoordinates Name="p18" Visible="false" X="(p12.X + 0.09)" Y="p12.Y">
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <Circle Name="c19" Style="GreenDot">
+      <Dependency Name="p12" />
+      <Dependency Name="p18" />
+    </Circle>
+    <PointByCoordinates Name="p20" Visible="false" X="(p13.X + 0.09)" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <Circle Name="c21" Style="GreenDot">
+      <Dependency Name="p13" />
+      <Dependency Name="p20" />
+    </Circle>
+    <PointByCoordinates Name="p22" Visible="false" X="(p14.X + 0.09)" Y="p14.Y">
+      <Dependency Name="p14" />
+    </PointByCoordinates>
+    <Circle Name="c23" Style="GreenDot">
+      <Dependency Name="p14" />
+      <Dependency Name="p22" />
+    </Circle>
+    <PointByCoordinates Name="p24" Visible="false" X="(p15.X + 0.09)" Y="p15.Y">
+      <Dependency Name="p15" />
+    </PointByCoordinates>
+    <Circle Name="c25" Style="GreenDot">
+      <Dependency Name="p15" />
+      <Dependency Name="p24" />
+    </Circle>
+    <PointByCoordinates Name="p26" Visible="false" X="(p6.X + 0.05)" Y="p6.Y">
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <Circle Name="c27" Style="RedDot">
+      <Dependency Name="p6" />
+      <Dependency Name="p26" />
+    </Circle>
+    <PointByCoordinates Name="p28" Visible="false" X="(p7.X + 0.05)" Y="p7.Y">
+      <Dependency Name="p7" />
+    </PointByCoordinates>
+    <Circle Name="c29" Style="RedDot">
+      <Dependency Name="p7" />
+      <Dependency Name="p28" />
+    </Circle>
+    <PointByCoordinates Name="p30" Visible="false" X="(p8.X + 0.05)" Y="p8.Y">
+      <Dependency Name="p8" />
+    </PointByCoordinates>
+    <Circle Name="c31" Style="RedDot">
+      <Dependency Name="p8" />
+      <Dependency Name="p30" />
+    </Circle>
+    <PointByCoordinates Name="p32" Visible="false" X="(p9.X + 0.05)" Y="p9.Y">
+      <Dependency Name="p9" />
+    </PointByCoordinates>
+    <Circle Name="c33" Style="RedDot">
+      <Dependency Name="p9" />
+      <Dependency Name="p32" />
+    </Circle>
+    <PointByCoordinates Name="p34" Visible="false" X="(p10.X + 0.05)" Y="p10.Y">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <Circle Name="c35" Style="RedDot">
+      <Dependency Name="p10" />
+      <Dependency Name="p34" />
+    </Circle>
+    <PointByCoordinates Name="p36" Visible="false" X="(p11.X + 0.05)" Y="p11.Y">
+      <Dependency Name="p11" />
+    </PointByCoordinates>
+    <Circle Name="c37" Style="RedDot">
+      <Dependency Name="p11" />
+      <Dependency Name="p36" />
+    </Circle>
+  </Figures>
+</Drawing>

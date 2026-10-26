@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.28" Top="4.28" Right="3.7441016151" Bottom="-0.28" />
+  <Scene Left="-0.28" Top="4.28" Right="3.7441016151" Bottom="-0.28" />
+  <Styles>
+    <ShapeStyle Name="Paper" Color="#FF1E1E1E" StrokeWidth="5" Fill="#FFFFFFFF">
+      <Dark Color="#FFE6E6E6" Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="5" Fill="#FF01F1BF" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3CDAB9" />
+            <GradientStop Color="#FF1DBB9A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="5" Fill="#FFE9014D" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD93A6E" />
+            <GradientStop Color="#FFBA1C50" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="5" Fill="#FFFE8502" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB903D" />
+            <GradientStop Color="#FFBD711F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="5" Fill="#FFFEDD01" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBC73D" />
+            <GradientStop Color="#FFBDA81F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P" Visible="false" X="1.7320508076" Y="3" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.4641016151" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3.4641016151" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly5" Style="Paper">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="1.1547005384" Y="4" />
+    <PointByCoordinates Name="p8" Visible="false" X="2.3094010768" Y="4" />
+    <Polygon Name="poly9" Style="Red">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly11" Style="Orange">
+      <Dependency Name="p4" />
+      <Dependency Name="p10" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="3.4641016151" Y="2" />
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p3" />
+      <Dependency Name="p12" />
+      <Dependency Name="P" />
+    </Polygon>
+  </Figures>
+</Drawing>

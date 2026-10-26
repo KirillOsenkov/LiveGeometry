@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-8.0610173055" Top="8.0610173055" Right="8.0610173055" Bottom="-0.9899494937" />
+  <Scene Left="-8.0610173055" Top="8.0610173055" Right="8.0610173055" Bottom="-0.9899494937" />
+  <Styles>
+    <LineStyle Name="Blue" Color="#FF0C40F0" StrokeWidth="3.5">
+      <Dark Color="#FF9EB3FA" />
+    </LineStyle>
+    <LineStyle Name="Cyan" Color="#FF31CCE3" StrokeWidth="3.5">
+      <Dark Color="#FFA5E9F3" />
+    </LineStyle>
+    <ShapeStyle Name="Red" Color="#FFF21A14" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFFAA19E" />
+    </ShapeStyle>
+    <TextStyle Name="BlueMark" FontSize="34" Color="#FF0C40F0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9EB3FA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="CyanMark" FontSize="38" Color="#FF31CCE3" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA5E9F3" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="7.0710678119" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="-7.0710678119" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="-4.2426406871" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-4.2426406871" Y="5.6568542495" />
+    <Segment Name="s6" Style="Cyan">
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s7" Style="Cyan">
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s8" Style="Blue">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s9" Style="Blue">
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s10" Style="Blue">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <AngleArc Name="angle11" Style="Blue" Radius="14">
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </AngleArc>
+    <AngleArc Name="angle12" Style="Cyan" Radius="14">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+    </AngleArc>
+    <CircleSegment Name="a13" Style="Red">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <PointByCoordinates Name="at14" Style="Anchor" X="-5.1194530958" Y="1.767766953" />
+    <AttachedLabel Name="t15" Style="BlueMark" Z="1" OffsetX="-13.54" OffsetY="-24.95" Text="8">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at16" Style="Anchor" X="-1.4142135624" Y="2.2627416998" />
+    <AttachedLabel Name="t17" Style="CyanMark" Z="1" OffsetX="-26.56" OffsetY="-27.65" Text="32">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

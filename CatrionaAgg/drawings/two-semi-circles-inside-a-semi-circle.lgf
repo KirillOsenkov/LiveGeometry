@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Styles>
+    <ShapeStyle Name="Semicircle" Color="#FFB060C4" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFDDB0E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFBA8BD6" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFA85ED4" />
+            <GradientStop Color="#FF893FB5" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-4" Y="0" />
+    <CircleSegment Name="a3" Style="Semicircle">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+    <PointByCoordinates Name="M" Visible="false" X="-2.3094010768" Y="2.3094010768" />
+    <PointByCoordinates Name="A" Visible="false" X="-3.9423942386" Y="0.6764079149" />
+    <PointByCoordinates Name="B" Visible="false" X="-0.6764079149" Y="3.9423942386" />
+    <CircleSegment Name="a4" Style="Purple">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <PointByCoordinates Name="C" Visible="false" X="1.6905989232" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="-0.6188021535" Y="0" />
+    <CircleSegment Name="a7" Style="Purple">
+      <Dependency Name="C" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </CircleSegment>
+  </Figures>
+</Drawing>

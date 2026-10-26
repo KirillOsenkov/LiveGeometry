@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.6327172275" Top="4.3233161507" Right="2.6327172275" Bottom="-0.3233161507" />
+  <Scene Left="-2.6327172275" Top="4.3233161507" Right="2.6327172275" Bottom="-0.3233161507" />
+  <Styles>
+    <ShapeStyle Name="DarkGreen" Color="#FF1F6B4E" StrokeWidth="2.5" Fill="#FF66B887" Texture="Crayon">
+      <Dark Color="#FFB0E8D3" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF51D084" />
+            <GradientStop Color="#FF32B165" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="LightGreen" Color="#FF5E9E3C" StrokeWidth="2.5" Fill="#FFB0F07A" Texture="Crayon">
+      <Dark Color="#FFC3E8B0" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF93E94B" />
+            <GradientStop Color="#FF75CB2D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Triangle" Color="#FF1F6B4E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFB0E8D3" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF2B2622" StrokeWidth="2.5">
+      <Dark Color="#FF2B2622" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="32" Color="#FF2B2622" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF2E2824" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="L" Visible="false" X="-2.3094010768" Y="0" />
+    <PointByCoordinates Name="R" Visible="false" X="2.3094010768" Y="0" />
+    <PointByCoordinates Name="X" Visible="false" X="2" Y="0.5358983849" />
+    <Polygon Name="poly1" Style="DarkGreen">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+      <Dependency Name="A" />
+    </Polygon>
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly6" Style="LightGreen">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p8" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p9" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly11" Style="LightGreen">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Triangle">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Segment>
+    <AngleArc Name="angle14" Style="Ink" Radius="30">
+      <Dependency Name="X" />
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <PointByCoordinates Name="at15" Style="Anchor" X="(X.X - 0.62)" Y="(X.Y + 0.32)">
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t16" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

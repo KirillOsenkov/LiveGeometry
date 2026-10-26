@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDC78B" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEDA24F" />
+            <GradientStop Color="#FFCF8430" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFE04E52" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF0A8AA" />
+    </ShapeStyle>
+    <ShapeStyle Name="OrangeLine" Color="#FFF85530" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFFAAF9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-4 + 0.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-4 + 1.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-4 + 2 * 4)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-4 + 1.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-4 + 0.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p7" Visible="false" X="-3.4" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="0.8" Y="0" />
+    <Segment Name="track9" Visible="false">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Segment>
+    <PointOnFigure Name="M" Style="Handle" X="-2" Y="0" Parameter="0.3333333333">
+      <Dependency Name="track9" />
+    </PointOnFigure>
+    <Number Name="a" Formula="(M.X + 4) / 2">
+      <Dependency Name="M" />
+    </Number>
+    <Number Name="b" Formula="4 - a">
+      <Dependency Name="a" />
+    </Number>
+    <PointByCoordinates Name="p10" Visible="false" X="p1.X" Y="p1.Y">
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(p1.X + 0.5 * a)" Y="(p1.Y + 0.8660254037844386 * a)">
+      <Dependency Name="p1" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(p1.X + 1.5 * a)" Y="(p1.Y + 0.8660254037844386 * a)">
+      <Dependency Name="p1" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(p1.X + 2 * a)" Y="p1.Y">
+      <Dependency Name="p1" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(p1.X + 1.5 * a)" Y="(p1.Y - 0.8660254037844386 * a)">
+      <Dependency Name="p1" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(p1.X + 0.5 * a)" Y="(p1.Y - 0.8660254037844386 * a)">
+      <Dependency Name="p1" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="M.X" Y="M.Y">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="(M.X + 0.5 * b)" Y="(M.Y + 0.8660254037844386 * b)">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="(M.X + 1.5 * b)" Y="(M.Y + 0.8660254037844386 * b)">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="(M.X + 2 * b)" Y="M.Y">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(M.X + 1.5 * b)" Y="(M.Y - 0.8660254037844386 * b)">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(M.X + 0.5 * b)" Y="(M.Y - 0.8660254037844386 * b)">
+      <Dependency Name="M" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <Polygon Name="poly22" Style="Orange">
+      <Dependency Name="p11" />
+      <Dependency Name="p18" />
+      <Dependency Name="p20" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <Polygon Name="poly23" Style="Red">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <Polygon Name="poly24" Style="Red">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </Polygon>
+    <Polygon Name="poly25" Style="OrangeLine">
+      <Dependency Name="p11" />
+      <Dependency Name="p18" />
+      <Dependency Name="p20" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <Polygon Name="poly26" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

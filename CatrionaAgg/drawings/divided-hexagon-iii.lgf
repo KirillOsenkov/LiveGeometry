@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDE58F" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEECB50" />
+            <GradientStop Color="#FFCFAD31" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFF08AB4" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE9508F" />
+            <GradientStop Color="#FFCA3170" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF9CEDFA" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF59D3E7" />
+            <GradientStop Color="#FF3AB5C9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Purple" Color="#FF1A10B0" StrokeWidth="3">
+      <Dark Color="#FFA7A2F6" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="32" Color="#FF0A10A8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C0E45" />
+    </TextStyle>
+    <TextStyle Name="PurpleMark" FontSize="32" Color="#FF6E2860" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF3C1634" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="R" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="Ta" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="L" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="D" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="C" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="X" Visible="false" X="0.7803044999" Y="1.3515270392" />
+    <PointByCoordinates Name="Sr" Visible="false" X="2.8773826753" Y="1.9444302438" />
+    <PointByCoordinates Name="Tt" Visible="false" X="0.2452346494" Y="3.4641016151" />
+    <Polygon Name="poly1" Style="Yellow">
+      <Dependency Name="L" />
+      <Dependency Name="Ta" />
+      <Dependency Name="Tt" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Pink">
+      <Dependency Name="X" />
+      <Dependency Name="Tt" />
+      <Dependency Name="B" />
+      <Dependency Name="Sr" />
+    </Polygon>
+    <Polygon Name="poly3" Style="Blue">
+      <Dependency Name="L" />
+      <Dependency Name="X" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Frame">
+      <Dependency Name="R" />
+      <Dependency Name="B" />
+      <Dependency Name="Ta" />
+      <Dependency Name="L" />
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Segment Name="s5" Style="Purple">
+      <Dependency Name="L" />
+      <Dependency Name="Sr" />
+    </Segment>
+    <Segment Name="s6" Style="Purple">
+      <Dependency Name="Tt" />
+      <Dependency Name="C" />
+    </Segment>
+    <PointByCoordinates Name="p7" Visible="false" X="(L.X + Ta.X + Tt.X + X.X) / 4" Y="(L.Y + Ta.Y + Tt.Y + X.Y) / 4">
+      <Dependency Name="L" />
+      <Dependency Name="Ta" />
+      <Dependency Name="Tt" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at8" Style="Anchor" X="p7.X" Y="p7.Y">
+      <Dependency Name="p7" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t9" Style="PurpleMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="?">
+      <Dependency Name="at8" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p10" Visible="false" X="(X.X + Tt.X + B.X + Sr.X) / 4" Y="(X.Y + Tt.Y + B.Y + Sr.Y) / 4">
+      <Dependency Name="X" />
+      <Dependency Name="Tt" />
+      <Dependency Name="B" />
+      <Dependency Name="Sr" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at11" Style="Anchor" X="p10.X" Y="p10.Y">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t12" Style="NavyMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="1">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p13" Visible="false" X="(L.X + X.X + C.X + D.X) / 4" Y="(L.Y + X.Y + C.Y + D.Y) / 4">
+      <Dependency Name="L" />
+      <Dependency Name="X" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at14" Style="Anchor" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="NavyMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="9">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

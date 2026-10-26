@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.35" Top="3.35" Right="5.35" Bottom="-0.35" />
+  <Scene Left="-0.35" Top="3.35" Right="5.35" Bottom="-0.35" />
+  <Styles>
+    <ShapeStyle Name="Lime" Color="#00000000" StrokeWidth="2.5" Fill="#FFB4F23E" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFABE244" />
+            <GradientStop Color="#FF8DC325" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF04A446" StrokeWidth="5" IsFilled="false">
+      <Dark Color="#FF9EFAC4" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF0550DC" StrokeWidth="5" IsFilled="false">
+      <Dark Color="#FF9EBEFA" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="3" />
+    <PointByCoordinates Name="F" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="G" Visible="false" X="3.2" Y="2.4" />
+    <PointByCoordinates Name="p1" Visible="false" X="2" Y="1.5" />
+    <Polygon Name="poly2" Style="Lime">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly3" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="T" />
+    </Polygon>
+  </Figures>
+</Drawing>

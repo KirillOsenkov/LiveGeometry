@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.0847058824" Top="4.3788235294" Right="5.0847058824" Bottom="-0.7788235294" />
+  <Scene Left="-1.0847058824" Top="4.3788235294" Right="5.0847058824" Bottom="-0.7788235294" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDB8FD" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB6DDB" />
+            <GradientStop Color="#FFBC4EBC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF6D087F" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFEB9FF9" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFF80A10" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFF4A4A" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="3" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="1" />
+    <Polygon Name="poly5" Style="Pink">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly10" Style="Purple">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="4.7058823529" Y="2.8235294118" />
+    <PointByCoordinates Name="p12" Visible="false" X="-0.7058823529" Y="1.1764705882" />
+    <Polygon Name="poly13" Style="Red">
+      <Dependency Name="p1" />
+      <Dependency Name="p11" />
+      <Dependency Name="p2" />
+      <Dependency Name="p12" />
+    </Polygon>
+  </Figures>
+</Drawing>

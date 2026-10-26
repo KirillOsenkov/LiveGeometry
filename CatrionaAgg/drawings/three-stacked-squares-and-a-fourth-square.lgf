@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.006" Top="5.606" Right="2.606" Bottom="-0.906" />
+  <Scene Left="-4.006" Top="5.606" Right="2.606" Bottom="-0.906" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Cyan" Color="#00000000" StrokeWidth="2.5" Fill="#FF10E3EC" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DD4DB" />
+            <GradientStop Color="#FF1EB6BC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="CyanLine" Color="#FF1EBDC0" StrokeWidth="2" IsFilled="false">
+      <Dark Color="#FFA7F0F1" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="M" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0.72" Y="2" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.2" Y="2" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="H" Style="Handle" X="0.8" Y="2" Parameter="0.1666666667">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="l" Formula="sqrt(H.X ^ 2 + 4)">
+      <Dependency Name="H" />
+    </Number>
+    <Number Name="s" Formula="(5 + 4 * H.X) / l">
+      <Dependency Name="H" />
+      <Dependency Name="l" />
+    </Number>
+    <PointByCoordinates Name="p4" Visible="false" X="s * (H.X / l)" Y="s * (2 / l)">
+      <Dependency Name="s" />
+      <Dependency Name="H" />
+      <Dependency Name="l" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="s * (-2 / l)" Y="s * (H.X / l)">
+      <Dependency Name="s" />
+      <Dependency Name="l" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(s * (H.X / l) + s * (-2 / l))" Y="(s * (2 / l) + s * (H.X / l))">
+      <Dependency Name="s" />
+      <Dependency Name="H" />
+      <Dependency Name="l" />
+    </PointByCoordinates>
+    <Polygon Name="poly7" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="p8" Visible="false" X="-2.5" Y="2" />
+    <PointByCoordinates Name="p9" Visible="false" X="-0.5" Y="2" />
+    <PointByCoordinates Name="p10" Visible="false" X="-0.5" Y="4" />
+    <PointByCoordinates Name="p11" Visible="false" X="-2.5" Y="4" />
+    <Polygon Name="poly12" Visible="false">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <PointByCoordinates Name="p13" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p14" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p15" Visible="false" X="-2" Y="2" />
+    <Polygon Name="poly16" Visible="false">
+      <Dependency Name="p13" />
+      <Dependency Name="M" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <PointByCoordinates Name="p17" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p18" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p19" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly20" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Polygon>
+    <Region Name="r21" Visible="false" Operation="Union">
+      <Dependency Name="poly12" />
+      <Dependency Name="poly16" />
+      <Dependency Name="poly20" />
+    </Region>
+    <Region Name="r22" Style="Cyan" Operation="Intersection">
+      <Dependency Name="poly7" />
+      <Dependency Name="r21" />
+    </Region>
+    <Polygon Name="poly23" Style="CyanLine">
+      <Dependency Name="M" />
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="p24" Visible="false" X="-2.5" Y="2" />
+    <PointByCoordinates Name="p25" Visible="false" X="-0.5" Y="2" />
+    <PointByCoordinates Name="p26" Visible="false" X="-0.5" Y="4" />
+    <PointByCoordinates Name="p27" Visible="false" X="-2.5" Y="4" />
+    <Polygon Name="poly28" Style="Frame">
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+    </Polygon>
+    <PointByCoordinates Name="p29" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p30" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p31" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p32" Visible="false" X="-2" Y="2" />
+    <Polygon Name="poly33" Style="Frame">
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+      <Dependency Name="p32" />
+    </Polygon>
+    <PointByCoordinates Name="p34" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p35" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p36" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p37" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly38" Style="Frame">
+      <Dependency Name="p34" />
+      <Dependency Name="p35" />
+      <Dependency Name="p36" />
+      <Dependency Name="p37" />
+    </Polygon>
+  </Figures>
+</Drawing>

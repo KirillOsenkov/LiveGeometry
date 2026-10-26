@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.644" Top="5.644" Right="9.844" Bottom="-0.644" />
+  <Scene Left="-0.644" Top="5.644" Right="9.844" Bottom="-0.644" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF2AEFEA" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF41DFDB" />
+            <GradientStop Color="#FF22C0BC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FF9418B8" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFB237D5" />
+            <GradientStop Color="#FF9318B7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Bt" Visible="false" X="9.2" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-1.5" Y="2.8" />
+    <PointByCoordinates Name="p2" Visible="false" X="5.6" Y="2.8" />
+    <PointByCoordinates Name="p3" Visible="false" X="5.6" Y="7" />
+    <PointByCoordinates Name="p4" Visible="false" X="-1.5" Y="7" />
+    <Polygon Name="poly5" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointInRegion Name="C" Style="Handle" X="1.26" Y="5">
+      <Dependency Name="poly5" />
+    </PointInRegion>
+    <PointByCoordinates Name="E" Visible="false" X="(C.X + 4.6)" Y="C.Y">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Number Name="n6" Formula="((Bt.X - A.X) * (C.Y - Bt.Y) - 1 * (Bt.Y - A.Y) * (C.X - Bt.X)) / (((E.X - A.X) * (C.Y - Bt.Y) - 1 * (E.Y - A.Y) * (C.X - Bt.X)))">
+      <Dependency Name="Bt" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="(A.X + n6 * (E.X - A.X))" Y="(A.Y + n6 * (E.Y - A.Y))">
+      <Dependency Name="A" />
+      <Dependency Name="n6" />
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <Polygon Name="poly7" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="X" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Blue">
+      <Dependency Name="Bt" />
+      <Dependency Name="E" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Purple">
+      <Dependency Name="A" />
+      <Dependency Name="Bt" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Segment Name="s10" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="Bt" />
+      <Dependency Name="C" />
+    </Segment>
+    <Polygon Name="poly12" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="Bt" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Polygon>
+  </Figures>
+</Drawing>

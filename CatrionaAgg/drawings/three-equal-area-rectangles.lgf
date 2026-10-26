@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.007" Top="8.607" Right="9.507" Bottom="-1.757" />
+  <Scene Left="-2.007" Top="8.607" Right="9.507" Bottom="-1.757" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF010D86" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF2E3CCC" />
+            <GradientStop Color="#FF0F1DAD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFCDA01" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBC63D" />
+            <GradientStop Color="#FFBCA71E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFE00002" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD7393B" />
+            <GradientStop Color="#FFB91B1C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="NavyArrow" Color="#FF0A1A9A" StrokeWidth="2.5">
+      <Dark Color="#FF9FA9F9" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="22" Color="#FF0A1A9A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9FA9F9" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <LineStyle Name="GoldArrow" Color="#FFE6B800" StrokeWidth="2.5">
+      <Dark Color="#FFFAE89E" />
+    </LineStyle>
+    <TextStyle Name="GoldMark" FontSize="18" Color="#FFE6B800" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFAE89E" />
+    </TextStyle>
+    <LineStyle Name="RedArrow" Color="#FFD0105A" StrokeWidth="2.5">
+      <Dark Color="#FFF8A0C2" />
+    </LineStyle>
+    <TextStyle Name="RedMark" FontSize="24" Color="#FFD0105A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF8A0C2" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p3" Visible="false" X="7" Y="1" />
+    <PointByCoordinates Name="p4" Visible="false" X="7" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="8" Y="7" />
+    <PointByCoordinates Name="p7" Visible="false" X="7" Y="7" />
+    <PointByCoordinates Name="p8" Visible="false" X="7.58" Y="7.56" />
+    <PointByCoordinates Name="p9" Visible="false" X="-0.42" Y="1.56" />
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Yellow">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Red">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Frame" Z="1">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Frame" Z="1">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="-0.32" Y="0" />
+    <PointByCoordinates Name="p17" Visible="false" X="-0.32" Y="1" />
+    <PointByCoordinates Name="p18" Visible="false" X="(p16.X + p17.X) / 2" Y="(p16.Y + p17.Y) / 2">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <Vector Name="v19" Style="NavyArrow">
+      <Dependency Name="p18" />
+      <Dependency Name="p16" />
+    </Vector>
+    <Vector Name="v20" Style="NavyArrow">
+      <Dependency Name="p18" />
+      <Dependency Name="p17" />
+    </Vector>
+    <PointByCoordinates Name="at21" Style="Anchor" X="-0.95" Y="0.5" />
+    <AttachedLabel Name="t22" Style="NavyMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at21" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p23" Visible="false" X="7" Y="-0.28" />
+    <PointByCoordinates Name="p24" Visible="false" X="8" Y="-0.28" />
+    <PointByCoordinates Name="p25" Visible="false" X="(p23.X + p24.X) / 2" Y="(p23.Y + p24.Y) / 2">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </PointByCoordinates>
+    <Vector Name="v26" Style="GoldArrow">
+      <Dependency Name="p25" />
+      <Dependency Name="p23" />
+    </Vector>
+    <Vector Name="v27" Style="GoldArrow">
+      <Dependency Name="p25" />
+      <Dependency Name="p24" />
+    </Vector>
+    <PointByCoordinates Name="at28" Style="Anchor" X="7.5" Y="-0.82" />
+    <AttachedLabel Name="t29" Style="GoldMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at28" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p30" Visible="false" X="8.24" Y="7.18" />
+    <PointByCoordinates Name="p31" Visible="false" X="7.82" Y="7.74" />
+    <PointByCoordinates Name="p32" Visible="false" X="(p30.X + p31.X) / 2" Y="(p30.Y + p31.Y) / 2">
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+    </PointByCoordinates>
+    <Vector Name="v33" Style="RedArrow">
+      <Dependency Name="p32" />
+      <Dependency Name="p30" />
+    </Vector>
+    <Vector Name="v34" Style="RedArrow">
+      <Dependency Name="p32" />
+      <Dependency Name="p31" />
+    </Vector>
+    <PointByCoordinates Name="at35" Style="Anchor" X="8.62" Y="7.78" />
+    <AttachedLabel Name="t36" Style="RedMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="7">
+      <Dependency Name="at35" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

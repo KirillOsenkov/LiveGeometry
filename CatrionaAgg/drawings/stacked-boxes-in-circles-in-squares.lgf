@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.0874" Top="4.9674" Right="14.6674" Bottom="-0.9674" />
+  <Scene Left="-1.0874" Top="4.9674" Right="14.6674" Bottom="-0.9674" />
+  <Styles>
+    <LineStyle Name="Pink" Color="#FFE04A94" StrokeWidth="3">
+      <Dark Color="#FFF0A8CC" />
+    </LineStyle>
+    <ShapeStyle Name="Circle" Color="#FF2EA3B5" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFAEE2EA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Box" Color="#FF2D3FA6" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFAFB7E9" />
+    </ShapeStyle>
+    <LineStyle Name="BoxLine" Color="#FF2D3FA6" StrokeWidth="3">
+      <Dark Color="#FFAFB7E9" />
+    </LineStyle>
+    <ShapeStyle Name="PinkDot" Color="#FFE04A94" StrokeWidth="1" Fill="#FFE04A94">
+      <Dark Color="#FFF0A8CC" Fill="#FFF0A8CC" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-0.12" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="12.4" Y="4" />
+    <Segment Name="s3" Style="Pink">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointByCoordinates Name="p4" Visible="false" X="-0.12" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="12.4" Y="0" />
+    <Segment Name="s6" Style="Pink">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="-0.08" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="4.08" />
+    <Segment Name="s9" Style="Pink">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Segment>
+    <PointByCoordinates Name="p10" Visible="false" X="4" Y="-0.08" />
+    <PointByCoordinates Name="p11" Visible="false" X="4" Y="4.08" />
+    <Segment Name="s12" Style="Pink">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Segment>
+    <PointByCoordinates Name="p13" Visible="false" X="8" Y="-0.08" />
+    <PointByCoordinates Name="p14" Visible="false" X="8" Y="4.08" />
+    <Segment Name="s15" Style="Pink">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Segment>
+    <PointByCoordinates Name="p16" Visible="false" X="12" Y="-0.08" />
+    <PointByCoordinates Name="p17" Visible="false" X="12" Y="4.08" />
+    <Segment Name="s18" Style="Pink">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Segment>
+    <PointByCoordinates Name="p19" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p20" Visible="false" X="4" Y="2" />
+    <Circle Name="c21" Style="Circle">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Circle>
+    <PointByCoordinates Name="p22" Visible="false" X="0.5857864376" Y="0.5857864376" />
+    <PointByCoordinates Name="p23" Visible="false" X="3.4142135624" Y="0.5857864376" />
+    <PointByCoordinates Name="p24" Visible="false" X="3.4142135624" Y="3.4142135624" />
+    <PointByCoordinates Name="p25" Visible="false" X="0.5857864376" Y="3.4142135624" />
+    <Polygon Name="poly26" Style="Box">
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+    </Polygon>
+    <PointByCoordinates Name="p27" Visible="false" X="6" Y="2" />
+    <PointByCoordinates Name="p28" Visible="false" X="8" Y="2" />
+    <Circle Name="c29" Style="Circle">
+      <Dependency Name="p27" />
+      <Dependency Name="p28" />
+    </Circle>
+    <PointByCoordinates Name="p30" Visible="false" X="5.105572809" Y="0.211145618" />
+    <PointByCoordinates Name="p31" Visible="false" X="6.894427191" Y="0.211145618" />
+    <PointByCoordinates Name="p32" Visible="false" X="6.894427191" Y="3.788854382" />
+    <PointByCoordinates Name="p33" Visible="false" X="5.105572809" Y="3.788854382" />
+    <Polygon Name="poly34" Style="Box">
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+      <Dependency Name="p32" />
+      <Dependency Name="p33" />
+    </Polygon>
+    <PointByCoordinates Name="p35" Visible="false" X="5.105572809" Y="2" />
+    <PointByCoordinates Name="p36" Visible="false" X="6.894427191" Y="2" />
+    <Segment Name="s37" Style="BoxLine">
+      <Dependency Name="p35" />
+      <Dependency Name="p36" />
+    </Segment>
+    <PointByCoordinates Name="p38" Visible="false" X="10" Y="2" />
+    <PointByCoordinates Name="p39" Visible="false" X="12" Y="2" />
+    <Circle Name="c40" Style="Circle">
+      <Dependency Name="p38" />
+      <Dependency Name="p39" />
+    </Circle>
+    <PointByCoordinates Name="p41" Visible="false" X="9.367544468" Y="0.1026334039" />
+    <PointByCoordinates Name="p42" Visible="false" X="10.632455532" Y="0.1026334039" />
+    <PointByCoordinates Name="p43" Visible="false" X="10.632455532" Y="3.8973665961" />
+    <PointByCoordinates Name="p44" Visible="false" X="9.367544468" Y="3.8973665961" />
+    <Polygon Name="poly45" Style="Box">
+      <Dependency Name="p41" />
+      <Dependency Name="p42" />
+      <Dependency Name="p43" />
+      <Dependency Name="p44" />
+    </Polygon>
+    <PointByCoordinates Name="p46" Visible="false" X="9.367544468" Y="1.367544468" />
+    <PointByCoordinates Name="p47" Visible="false" X="10.632455532" Y="1.367544468" />
+    <Segment Name="s48" Style="BoxLine">
+      <Dependency Name="p46" />
+      <Dependency Name="p47" />
+    </Segment>
+    <PointByCoordinates Name="p49" Visible="false" X="9.367544468" Y="2.632455532" />
+    <PointByCoordinates Name="p50" Visible="false" X="10.632455532" Y="2.632455532" />
+    <Segment Name="s51" Style="BoxLine">
+      <Dependency Name="p49" />
+      <Dependency Name="p50" />
+    </Segment>
+    <PointByCoordinates Name="p52" Visible="false" X="12.75" Y="2.3" />
+    <PointByCoordinates Name="p53" Visible="false" X="12.85" Y="2.3" />
+    <Circle Name="c54" Style="PinkDot">
+      <Dependency Name="p52" />
+      <Dependency Name="p53" />
+    </Circle>
+    <PointByCoordinates Name="p55" Visible="false" X="13.17" Y="2.3" />
+    <PointByCoordinates Name="p56" Visible="false" X="13.27" Y="2.3" />
+    <Circle Name="c57" Style="PinkDot">
+      <Dependency Name="p55" />
+      <Dependency Name="p56" />
+    </Circle>
+    <PointByCoordinates Name="p58" Visible="false" X="13.59" Y="2.3" />
+    <PointByCoordinates Name="p59" Visible="false" X="13.69" Y="2.3" />
+    <Circle Name="c60" Style="PinkDot">
+      <Dependency Name="p58" />
+      <Dependency Name="p59" />
+    </Circle>
+  </Figures>
+</Drawing>

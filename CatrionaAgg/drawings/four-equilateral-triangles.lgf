@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.63" Top="5.8261524227" Right="7.63" Bottom="-0.63" />
+  <Scene Left="-2.63" Top="5.8261524227" Right="7.63" Bottom="-0.63" />
+  <Styles>
+    <ShapeStyle Name="Brown" Color="#FF775F5F" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFD2C6C6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FFBF6FE6" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFCF4FF" />
+          <GradientStop Color="#FFFBF0FF" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFD8A8F0">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFB598BF" />
+            <GradientStop Color="#FF9679A1" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFF0A020" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFEF8EE" />
+          <GradientStop Color="#FFFEF5E6" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFF9D69F">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC4B090" />
+            <GradientStop Color="#FFA59272" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFD93838" StrokeWidth="2.5">
+      <Fill>
+        <LinearGradientBrush>
+          <GradientStop Color="#FFFCF1F1" />
+          <GradientStop Color="#FFFBEBEB" Offset="1" />
+        </LinearGradientBrush>
+      </Fill>
+      <Dark Color="#FFEFA9A9">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFBF9696" />
+            <GradientStop Color="#FFA07777" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <PointStyle Name="Dot6" Size="6" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="B" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="3" Y="5.1961524227" />
+    <PointByCoordinates Name="P" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="Q" Visible="false" X="5" Y="1.7320508076" />
+    <PointByCoordinates Name="R" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="L" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="K" Visible="false" X="7" Y="1.7320508076" />
+    <Polygon Name="poly1" Style="Brown">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Purple">
+      <Dependency Name="L" />
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Polygon Name="poly3" Style="Orange">
+      <Dependency Name="Q" />
+      <Dependency Name="K" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Red">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </Polygon>
+    <PointByCoordinates Name="d5" Style="Dot6" X="A.X" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d6" Style="Dot6" X="B.X" Y="B.Y">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d7" Style="Dot6" X="C.X" Y="C.Y">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d8" Style="Dot6" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d9" Style="Dot6" X="Q.X" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d10" Style="Dot6" X="R.X" Y="R.Y">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d11" Style="Dot6" X="L.X" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d12" Style="Dot6" X="K.X" Y="K.Y">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(L.X + P.X + B.X) / 3" Y="(L.Y + P.Y + B.Y) / 3">
+      <Dependency Name="L" />
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at14" Style="Anchor" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="ShapeMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="20">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p16" Visible="false" X="(P.X + Q.X + R.X) / 3" Y="(P.Y + Q.Y + R.Y) / 3">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at17" Style="Anchor" X="p16.X" Y="p16.Y">
+      <Dependency Name="p16" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t18" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p19" Visible="false" X="(Q.X + K.X + C.X) / 3" Y="(Q.Y + K.Y + C.Y) / 3">
+      <Dependency Name="Q" />
+      <Dependency Name="K" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at20" Style="Anchor" X="p19.X" Y="p19.Y">
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t21" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="5">
+      <Dependency Name="at20" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

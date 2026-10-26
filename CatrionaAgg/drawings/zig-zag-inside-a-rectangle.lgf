@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.42" Top="2.77" Right="6.42" Bottom="-3.42" />
+  <Scene Left="-0.42" Top="2.77" Right="6.42" Bottom="-3.42" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF1428B8" StrokeWidth="2.5" Fill="#FFB4D5F6" Texture="Crayon">
+      <Dark Color="#FFA3ADF5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF6DA2D8" />
+            <GradientStop Color="#FF4F84B9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF4A08A4" StrokeWidth="2.5" Fill="#FFD6C4EE" Texture="Crayon">
+      <Dark Color="#FFC59EFA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9E7EC9" />
+            <GradientStop Color="#FF805FAA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="AngleMark" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFB4ACB8" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9F87AB" />
+            <GradientStop Color="#FF81698D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(C.X - 1.5)" Y="(C.Y - 2.5980762114)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(C.X - 0.2092694212)" Y="(C.Y - 2.9926921508)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="Q" Style="Handle" X="2.2590029618" Y="-2.9070471942" Parameter="4.4628068973">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p4" Visible="false" X="(C.X + 2.5980762114)" Y="(C.Y + 1.5)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(C.X + 1.846984426)" Y="(C.Y + 2.3640322608)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <CircleArc Name="track6" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointOnFigure Name="T" Style="Handle" X="5.2082912614" Y="2.030627909" Parameter="0.7435102613">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="T.X" Y="0">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="T.X" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Polygon Name="poly11" Style="Blue">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="T.X" Y="0">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p14" Visible="false" X="6" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="T.X" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Polygon Name="poly16" Style="Blue">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <PointByCoordinates Name="p17" Visible="false" X="0" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="Q.X" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="Q.X" Y="0">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="0" Y="0" />
+    <Polygon Name="poly21" Style="Purple">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Polygon>
+    <PointByCoordinates Name="p22" Visible="false" X="Q.X" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="6" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p25" Visible="false" X="Q.X" Y="0">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Polygon Name="poly26" Style="Purple">
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+    </Polygon>
+    <Segment Name="s27" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="s28" Style="Ink">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s29" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="E" />
+    </Segment>
+    <PointByCoordinates Name="p30" Visible="false" X="0" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <AngleArc Name="angle31" Style="AngleMark" Radius="34">
+      <Dependency Name="O" />
+      <Dependency Name="p30" />
+      <Dependency Name="Q" />
+    </AngleArc>
+    <PointByCoordinates Name="p32" Visible="false" X="Q.X" Y="0">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <AngleArc Name="angle33" Style="AngleMark" Radius="34">
+      <Dependency Name="Q" />
+      <Dependency Name="p32" />
+      <Dependency Name="T" />
+    </AngleArc>
+    <PointByCoordinates Name="p34" Visible="false" X="6" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <AngleArc Name="angle35" Style="AngleMark" Radius="34">
+      <Dependency Name="E" />
+      <Dependency Name="p34" />
+      <Dependency Name="T" />
+    </AngleArc>
+  </Figures>
+</Drawing>

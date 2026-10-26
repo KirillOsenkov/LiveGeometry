@@ -328,10 +328,14 @@
 
                 string slug = field(entry.Value, "slug");
                 string title = field(entry.Value, "title");
-                string question = PlainQuestion(field(entry.Value, "statement") ?? "");
+                // a puzzle with no page of its own on Mathforge has no question written down (as catriona.js says it)
+                string statement = field(entry.Value, "statement");
+                string question = statement != null ? "“" + PlainQuestion(statement) + "”" : "This puzzle didn’t have a description.";
                 string url = SiteUrl + "/CatrionaAgg/" + slug;
                 string escapedTitle = Escape(title);
-                string description = Escape("Catriona Agg's puzzle: “" + question + "” Her diagram redrawn as live geometry you can drag, with Andrew Stacey's techniques and solution at Mathforge Notes.");
+                string description = Escape(statement != null
+                    ? "Catriona Agg's puzzle: " + question + " Her diagram redrawn as live geometry you can drag, with Andrew Stacey's techniques and solution at Mathforge Notes."
+                    : "Catriona Agg's puzzle, her diagram redrawn as live geometry you can drag.");
                 string html = catrionaTemplate;
                 try
                 {
@@ -345,7 +349,7 @@
                     html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">", catrionaTemplatePath);
                     // the title and the question are on the page before the script fills in the rest
                     html = ReplaceOnce(html, "<h1 id=\"p-title\"></h1>", m => "<h1 id=\"p-title\">" + escapedTitle + "</h1>", catrionaTemplatePath);
-                    html = ReplaceOnce(html, "<p id=\"p-question\"></p>", m => "<p id=\"p-question\">“" + Escape(question) + "”</p>", catrionaTemplatePath);
+                    html = ReplaceOnce(html, "<p id=\"p-question\"></p>", m => "<p id=\"p-question\">" + Escape(question) + "</p>", catrionaTemplatePath);
                 }
                 catch (InvalidOperationException ex)
                 {

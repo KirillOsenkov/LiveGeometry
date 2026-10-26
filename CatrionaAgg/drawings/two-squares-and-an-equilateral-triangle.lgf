@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3824871131" Top="5.1145379206" Right="5.8465887282" Bottom="-0.3824871131" />
+  <Scene Left="-0.3824871131" Top="5.1145379206" Right="5.8465887282" Bottom="-0.3824871131" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="6" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF088E58" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FF9EFAD5" />
+    </ShapeStyle>
+    <LineStyle Name="Lime" Color="#FF80B502" StrokeWidth="4">
+      <Dark Color="#FFDFFA9E" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.4641016151" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3.4641016151" Y="3.4641016151" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="3.4641016151" />
+    <Polygon Name="poly5" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="3.4641016151" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="5.4641016151" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="5.4641016151" Y="2" />
+    <PointByCoordinates Name="p9" Visible="false" X="3.4641016151" Y="2" />
+    <Polygon Name="poly10" Style="Frame">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p12" Visible="false" X="5.4641016151" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="2.7320508076" Y="4.7320508076" />
+    <Polygon Name="poly13" Style="Green">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="T" />
+    </Polygon>
+    <PointByCoordinates Name="K" Visible="false" X="5.4641016151" Y="2" />
+    <PointByCoordinates Name="p14" Visible="false" X="3.4641016151" Y="2" />
+    <PointByCoordinates Name="p15" Visible="false" X="T.X" Y="T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(T.X + 0.0839694656 * (K.X - T.X))" Y="(T.Y + 0.0839694656 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s17" Style="Lime">
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Segment>
+    <PointByCoordinates Name="p18" Visible="false" X="(T.X + 0.1526717557 * (K.X - T.X))" Y="(T.Y + 0.1526717557 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="(T.X + 0.2366412214 * (K.X - T.X))" Y="(T.Y + 0.2366412214 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s20" Style="Lime">
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Segment>
+    <PointByCoordinates Name="p21" Visible="false" X="(T.X + 0.3053435115 * (K.X - T.X))" Y="(T.Y + 0.3053435115 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="(T.X + 0.3893129771 * (K.X - T.X))" Y="(T.Y + 0.3893129771 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s23" Style="Lime">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Segment>
+    <PointByCoordinates Name="p24" Visible="false" X="(T.X + 0.4580152672 * (K.X - T.X))" Y="(T.Y + 0.4580152672 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p25" Visible="false" X="(T.X + 0.5419847328 * (K.X - T.X))" Y="(T.Y + 0.5419847328 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s26" Style="Lime">
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+    </Segment>
+    <PointByCoordinates Name="p27" Visible="false" X="(T.X + 0.6106870229 * (K.X - T.X))" Y="(T.Y + 0.6106870229 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p28" Visible="false" X="(T.X + 0.6946564885 * (K.X - T.X))" Y="(T.Y + 0.6946564885 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s29" Style="Lime">
+      <Dependency Name="p27" />
+      <Dependency Name="p28" />
+    </Segment>
+    <PointByCoordinates Name="p30" Visible="false" X="(T.X + 0.7633587786 * (K.X - T.X))" Y="(T.Y + 0.7633587786 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p31" Visible="false" X="(T.X + 0.8473282443 * (K.X - T.X))" Y="(T.Y + 0.8473282443 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s32" Style="Lime">
+      <Dependency Name="p30" />
+      <Dependency Name="p31" />
+    </Segment>
+    <PointByCoordinates Name="p33" Visible="false" X="(T.X + 0.9160305344 * (K.X - T.X))" Y="(T.Y + 0.9160305344 * (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p34" Visible="false" X="(T.X + (K.X - T.X))" Y="(T.Y + (K.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="s35" Style="Lime">
+      <Dependency Name="p33" />
+      <Dependency Name="p34" />
+    </Segment>
+    <Number Name="n36" Formula="distance(K, T)">
+      <Dependency Name="K" />
+      <Dependency Name="T" />
+    </Number>
+    <Number Name="n37" Formula="distance(K, p14)">
+      <Dependency Name="K" />
+      <Dependency Name="p14" />
+    </Number>
+    <PointByCoordinates Name="p38" Visible="false" X="(K.X + 0.33 * ((T.X - K.X) / n36))" Y="(K.Y + 0.33 * ((T.Y - K.Y) / n36))">
+      <Dependency Name="K" />
+      <Dependency Name="T" />
+      <Dependency Name="n36" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p39" Visible="false" X="(K.X + 0.33 * ((p14.X - K.X) / n37))" Y="(K.Y + 0.33 * ((p14.Y - K.Y) / n37))">
+      <Dependency Name="K" />
+      <Dependency Name="p14" />
+      <Dependency Name="n37" />
+    </PointByCoordinates>
+    <CircleArc Name="a40" Style="Lime">
+      <Dependency Name="K" />
+      <Dependency Name="p38" />
+      <Dependency Name="p39" />
+    </CircleArc>
+  </Figures>
+</Drawing>

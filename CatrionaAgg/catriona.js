@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var Base = '/CatrionaAgg';
   var Mathforge = 'https://notes.mathforge.org/notes/published/';
   var Icons = Base + '/icons.svg';
+  // what the page says for a puzzle that has no page of its own on Mathforge (WriteGalleryIndex in LiveGeometry.Browser.csproj says the same)
+  var NoDescription = 'This puzzle didn’t have a description.';
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isGallery = document.getElementById('gallery-view') != null;
 
@@ -1049,7 +1051,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function fillPanel(puzzle) {
     document.getElementById('p-date').textContent = longDate(puzzle.date);
     document.getElementById('p-title').textContent = puzzle.title;
-    document.getElementById('p-question').textContent = '“' + plainQuestion(puzzle.statement) + '”';
+    // a puzzle with no page of its own on Mathforge has no question written down
+    document.getElementById('p-question').textContent = puzzle.statement != null ? '“' + plainQuestion(puzzle.statement) + '”' : NoDescription;
     var asked = document.getElementById('p-asked');
     asked.replaceChildren();
     asked.append('Catriona Agg');
@@ -1063,10 +1066,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var links = document.getElementById('p-links');
-    links.replaceChildren(
-      linkCard(mathforge(puzzle.name), '#14B67F', 'icon-picture', 'Original', 'Catriona’s original drawing, on Mathforge Notes'),
-      linkCard(mathforge(puzzle.name + ' techniques'), '#F26313', 'icon-tools', 'Techniques', 'The techniques a solution uses, on Mathforge Notes'),
-      linkCard(mathforge(puzzle.name + ' solution'), '#8A12B5', 'icon-key', 'Solution', 'Andrew Stacey’s solution, on Mathforge Notes'));
+    links.replaceChildren();
+    if (puzzle.page !== false) {
+      links.append(
+        linkCard(mathforge(puzzle.name), '#14B67F', 'icon-picture', 'Original', 'Catriona’s original drawing, on Mathforge Notes'),
+        linkCard(mathforge(puzzle.name + ' techniques'), '#F26313', 'icon-tools', 'Techniques', 'The techniques a solution uses, on Mathforge Notes'),
+        linkCard(mathforge(puzzle.name + ' solution'), '#8A12B5', 'icon-key', 'Solution', 'Andrew Stacey’s solution, on Mathforge Notes'));
+    }
 
     // a tag is the gallery arranged by its kind, at its section
     var tags = document.getElementById('p-tags');

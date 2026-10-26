@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.85" Top="2.85" Right="2.85" Bottom="-0.35" />
+  <Scene Left="-2.85" Top="2.85" Right="2.85" Bottom="-0.35" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFF808" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCD83E" />
+            <GradientStop Color="#FFBEB920" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="4.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFE0060C" StrokeWidth="3.5">
+      <Dark Color="#FFB0101A" />
+    </LineStyle>
+    <TextStyle Name="RedMark" FontSize="36" Color="#FFE0060C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF450C0E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-1.5" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0.9" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="C" Style="Handle" X="-0.85" Y="0" Parameter="0.2708333333">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="R" Formula="sqrt(C.X ^ 2 + 4)">
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="-R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B" Visible="false" X="R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="C.X" Y="2">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(A.X + C.X) / 2" Y="(A.Y + C.Y) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(C.X + B.X) / 2" Y="(C.Y + B.Y) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <CircleSegment Name="a6" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="a7" Visible="false">
+      <Dependency Name="p4" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleSegment Name="a8" Visible="false">
+      <Dependency Name="p5" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </CircleSegment>
+    <Region Name="r9" Style="Yellow" Operation="Difference">
+      <Dependency Name="a6" />
+      <Dependency Name="a7" />
+      <Dependency Name="a8" />
+    </Region>
+    <CircleSegment Name="a10" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <CircleArc Name="a11" Style="Ink">
+      <Dependency Name="p4" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <CircleArc Name="a12" Style="Ink">
+      <Dependency Name="p5" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </CircleArc>
+    <Segment Name="s13" Style="Red">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(C.X - 0.3)" Y="(C.Y + 1.1)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="RedMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="2">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

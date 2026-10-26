@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-15.39" Top="15.39" Right="15.39" Bottom="-15.39" />
+  <Scene Left="-15.39" Top="15.39" Right="15.39" Bottom="-15.39" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Clear" Color="#00000000" StrokeWidth="0" IsFilled="false">
+      <Dark Color="#00000000" />
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEC690" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEE9D50" />
+            <GradientStop Color="#FFCF7F31" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Magenta" Color="#FFC8287A" StrokeWidth="2.5">
+      <Dark Color="#FFEEAACD" />
+    </LineStyle>
+    <TextStyle Name="MagentaMark" FontSize="26" Color="#FFC8287A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF440E29" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="MagentaFive" FontSize="32" Color="#FFC8287A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFEEAACD" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.5 * -0.4067366431" Y="1.5 * 0.9135454576" />
+    <PointByCoordinates Name="p2" Visible="false" X="8 * -0.4067366431" Y="8 * 0.9135454576" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="M" Style="Handle" X="-2.058087414" Y="4.6225400157" Parameter="0.5476923077">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="I1" Visible="false" X="(M.X - 1 * 2.5 * 0.9135454576)" Y="(M.Y - 1 * 2.5 * 0.4067366431)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I2" Visible="false" X="(M.X + 2.5 * 0.9135454576)" Y="(M.Y + 2.5 * 0.4067366431)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E1" Visible="false" X="(M.X - 1 * 12.5 * 0.9135454576)" Y="(M.Y - 1 * 12.5 * 0.4067366431)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E2" Visible="false" X="(M.X + 12.5 * 0.9135454576)" Y="(M.Y + 12.5 * 0.4067366431)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Circle Name="c4" Style="Clear">
+      <Dependency Name="O" />
+      <Dependency Name="E1" />
+    </Circle>
+    <Circle Name="c5" Style="Clear">
+      <Dependency Name="O" />
+      <Dependency Name="I1" />
+    </Circle>
+    <Region Name="r6" Style="Orange" Operation="Difference">
+      <Dependency Name="c4" />
+      <Dependency Name="c5" />
+    </Region>
+    <Circle Name="c7" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="E1" />
+    </Circle>
+    <Circle Name="c8" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="I1" />
+    </Circle>
+    <Segment Name="s9" Style="Magenta">
+      <Dependency Name="E1" />
+      <Dependency Name="E2" />
+    </Segment>
+    <PointByCoordinates Name="p10" Visible="false" X="(E1.X + I1.X) / 2" Y="(E1.Y + I1.Y) / 2">
+      <Dependency Name="E1" />
+      <Dependency Name="I1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at11" Style="Anchor" X="(p10.X + 1.15 * -0.4067366431)" Y="(p10.Y + 1.15 * 0.9135454576)">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t12" Style="MagentaMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p13" Visible="false" X="(E2.X + I2.X) / 2" Y="(E2.Y + I2.Y) / 2">
+      <Dependency Name="E2" />
+      <Dependency Name="I2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(p13.X + 1.15 * -0.4067366431)" Y="(p13.Y + 1.15 * 0.9135454576)">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="MagentaMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at16" Style="Anchor" X="(M.X - 1 * 1.7 * -0.4067366431)" Y="(M.Y - 1 * 1.7 * 0.9135454576)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t17" Style="MagentaFive" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="5">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFF901" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBD83D" />
+            <GradientStop Color="#FFBDB91F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Square" Color="#FFF08A24" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF8CCA0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Circle" Color="#FFF08A24" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF8CCA0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <TextStyle Name="ShapeMark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="0" Y="-4" />
+    <PointByCoordinates Name="A" Visible="false" X="-3.4641016151" Y="2" />
+    <PointByCoordinates Name="Bt" Visible="false" X="3.4641016151" Y="2" />
+    <PointByCoordinates Name="TL" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="TR" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="BL" Visible="false" X="-2" Y="-0.5358983849" />
+    <PointByCoordinates Name="BR" Visible="false" X="2" Y="-0.5358983849" />
+    <Polygon Name="poly1" Style="Yellow">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p2" Visible="false" X="-1.1547005384" Y="2" />
+    <PointByCoordinates Name="p3" Visible="false" X="1.1547005384" Y="2" />
+    <Polygon Name="poly4" Style="Yellow">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="O" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Square">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <Circle Name="c6" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Circle>
+    <Polygon Name="poly7" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="Bt" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Frame">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="O" />
+    </Polygon>
+    <PointByCoordinates Name="at9" Style="Anchor" X="0" Y="-1.9" />
+    <AttachedLabel Name="t10" Style="ShapeMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="24">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at11" Style="Anchor" X="0" Y="1.35" />
+    <AttachedLabel Name="t12" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

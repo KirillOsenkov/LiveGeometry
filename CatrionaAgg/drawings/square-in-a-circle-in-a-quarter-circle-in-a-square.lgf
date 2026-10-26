@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.42" Top="6.42" Right="6.42" Bottom="-0.42" />
+  <Scene Left="-0.42" Top="6.42" Right="6.42" Bottom="-0.42" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF10B0B8" StrokeWidth="3.5" Fill="#FFE2F8F9" Texture="Crayon">
+      <Dark Color="#FFA1F3F7" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF90C0C2" />
+            <GradientStop Color="#FF71A1A3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Arc" Color="#FFB040A0" StrokeWidth="3.5">
+      <Dark Color="#FFE8B0E0" />
+    </LineStyle>
+    <TextStyle Name="CyanMark" FontSize="36" Color="#FF10A0A8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C4245" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <LineStyle Name="Circle" Color="#FF1A1090" StrokeWidth="3.5">
+      <Dark Color="#FFAAA3F5" />
+    </LineStyle>
+    <ShapeStyle Name="Blue" Color="#FF1A5EAD" StrokeWidth="3.5" Fill="#FFCBEBF7" Texture="Crayon">
+      <Dark Color="#FFA6C9F2" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7FB7CC" />
+            <GradientStop Color="#FF6099AE" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <TextStyle Name="BlueMark" FontSize="44" Color="#FF1A5EAD" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C2745" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly8" Style="Frame">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4.2426406871" />
+    <PointByCoordinates Name="p10" Visible="false" X="1.7573593129" Y="4.2426406871" />
+    <PointByCoordinates Name="p11" Visible="false" X="1.7573593129" Y="6" />
+    <PointByCoordinates Name="p12" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly13" Style="Cyan">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <CircleArc Name="a14" Style="Arc">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <PointByCoordinates Name="at15" Style="Anchor" X="0.8786796564" Y="5.1213203436" />
+    <AttachedLabel Name="t16" Style="CyanMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="4">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p17" Visible="false" X="3.5147186258" Y="2.4852813742" />
+    <PointByCoordinates Name="p18" Visible="false" X="1.7573593129" Y="4.2426406871" />
+    <PointByCoordinates Name="p19" Visible="false" X="(p17.X + 2.4852813742)" Y="p17.Y">
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="p17.X" Y="(p17.Y + 2.4852813742)">
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(p17.X - 2.4852813742)" Y="p17.Y">
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="p17.X" Y="(p17.Y - 2.4852813742)">
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <Polygon Name="poly23" Style="Blue">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <Circle Name="c24" Style="Circle">
+      <Dependency Name="p17" />
+      <Dependency Name="p19" />
+    </Circle>
+    <PointByCoordinates Name="at25" Style="Anchor" X="p17.X" Y="p17.Y">
+      <Dependency Name="p17" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t26" Style="BlueMark" Z="1" OffsetX="-16.64" OffsetY="-31.7" Text="?">
+      <Dependency Name="at25" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

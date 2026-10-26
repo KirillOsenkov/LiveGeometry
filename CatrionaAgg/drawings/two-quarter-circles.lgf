@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.42" Top="4.02" Right="6.42" Bottom="-0.42" />
+  <Scene Left="-0.42" Top="4.02" Right="6.42" Bottom="-0.42" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFE04" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCDB3E" />
+            <GradientStop Color="#FFBDBD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFDA20A" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCA13E" />
+            <GradientStop Color="#FFBE8320" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="30" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Yc" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Oc" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.2" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="G" Style="Handle" X="2.43" Y="0" Parameter="0.3583333333">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Y" Visible="false" X="0" Y="G.X">
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Ot" Visible="false" X="6" Y="6 - G.X">
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <Number Name="t" Formula="2 * G.X ^ 2 / (36 + G.X ^ 2)">
+      <Dependency Name="G" />
+    </Number>
+    <PointByCoordinates Name="P" Visible="false" X="t * 6" Y="G.X * (1 - t)">
+      <Dependency Name="t" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <CircleSector Name="a4" Style="Yellow">
+      <Dependency Name="Yc" />
+      <Dependency Name="G" />
+      <Dependency Name="Y" />
+    </CircleSector>
+    <CircleSector Name="a5" Style="Orange">
+      <Dependency Name="Oc" />
+      <Dependency Name="Ot" />
+      <Dependency Name="G" />
+    </CircleSector>
+    <Segment Name="s6" Style="Ink">
+      <Dependency Name="Y" />
+      <Dependency Name="Oc" />
+    </Segment>
+    <Segment Name="s7" Style="Ink">
+      <Dependency Name="Ot" />
+      <Dependency Name="P" />
+    </Segment>
+    <Number Name="n8" Formula="distance(P, Oc)">
+      <Dependency Name="P" />
+      <Dependency Name="Oc" />
+    </Number>
+    <Number Name="n9" Formula="distance(P, Ot)">
+      <Dependency Name="P" />
+      <Dependency Name="Ot" />
+    </Number>
+    <PointByCoordinates Name="p10" Visible="false" X="(P.X + 0.5 * ((Oc.X - P.X) / n8))" Y="(P.Y + 0.5 * ((Oc.Y - P.Y) / n8))">
+      <Dependency Name="P" />
+      <Dependency Name="Oc" />
+      <Dependency Name="n8" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(P.X + 0.5 * ((Ot.X - P.X) / n9))" Y="(P.Y + 0.5 * ((Ot.Y - P.Y) / n9))">
+      <Dependency Name="P" />
+      <Dependency Name="Ot" />
+      <Dependency Name="n9" />
+    </PointByCoordinates>
+    <CircleArc Name="a12" Style="Ink">
+      <Dependency Name="P" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </CircleArc>
+    <PointByCoordinates Name="at13" Style="Anchor" X="(P.X + 0.85)" Y="(P.Y + 0.1)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t14" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

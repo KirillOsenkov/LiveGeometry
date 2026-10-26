@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.508" Top="2.508" Right="1.658" Bottom="-2.508" />
+  <Scene Left="-2.508" Top="2.508" Right="1.658" Bottom="-2.508" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF05A6FC" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DA5DC" />
+            <GradientStop Color="#FF1F86BD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF0448F0" StrokeWidth="3">
+      <Dark Color="#FF9EB9FA" />
+    </LineStyle>
+    <LineStyle Name="PinkArrow" Color="#FFF0206D" StrokeWidth="3">
+      <Dark Color="#FFF99FC0" />
+    </LineStyle>
+    <TextStyle Name="PinkMark" FontSize="30" Color="#FFF0206D" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF99FC0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="0.3" />
+    <PointByCoordinates Name="p2" Visible="false" X="-2" Y="1.5" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="H" Style="Handle" X="-2" Y="0.52" Parameter="0.1833333333">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="R" Formula="sqrt(4 + H.Y ^ 2)">
+      <Dependency Name="H" />
+    </Number>
+    <PointByCoordinates Name="Top" Visible="false" X="0" Y="R">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bottom" Visible="false" X="0" Y="-R">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Up" Visible="false" X="0" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Down" Visible="false" X="0" Y="-H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Cu" Visible="false" X="0" Y="(R - H.Y) / 2">
+      <Dependency Name="R" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Cl" Visible="false" X="0" Y="(H.Y - R) / 2">
+      <Dependency Name="H" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <CircleSegment Name="a4" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="Top" />
+      <Dependency Name="Bottom" />
+    </CircleSegment>
+    <CircleSegment Name="a5" Visible="false">
+      <Dependency Name="Cu" />
+      <Dependency Name="Top" />
+      <Dependency Name="Down" />
+    </CircleSegment>
+    <CircleSegment Name="a6" Visible="false">
+      <Dependency Name="Cl" />
+      <Dependency Name="Bottom" />
+      <Dependency Name="Up" />
+    </CircleSegment>
+    <CircleSegment Name="a7" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="Down" />
+      <Dependency Name="Up" />
+    </CircleSegment>
+    <Region Name="r8" Visible="false" Operation="Union">
+      <Dependency Name="a4" />
+      <Dependency Name="a6" />
+    </Region>
+    <Region Name="r9" Style="Blue" Operation="Difference">
+      <Dependency Name="r8" />
+      <Dependency Name="a5" />
+      <Dependency Name="a7" />
+    </Region>
+    <CircleArc Name="a10" Style="BlueLine">
+      <Dependency Name="C" />
+      <Dependency Name="Top" />
+      <Dependency Name="Bottom" />
+    </CircleArc>
+    <CircleArc Name="a11" Style="BlueLine">
+      <Dependency Name="Cu" />
+      <Dependency Name="Top" />
+      <Dependency Name="Down" />
+    </CircleArc>
+    <CircleArc Name="a12" Style="BlueLine">
+      <Dependency Name="Cl" />
+      <Dependency Name="Bottom" />
+      <Dependency Name="Up" />
+    </CircleArc>
+    <CircleArc Name="a13" Style="BlueLine">
+      <Dependency Name="C" />
+      <Dependency Name="Down" />
+      <Dependency Name="Up" />
+    </CircleArc>
+    <Segment Name="s14" Style="BlueLine">
+      <Dependency Name="Top" />
+      <Dependency Name="Bottom" />
+    </Segment>
+    <PointByCoordinates Name="p15" Visible="false" X="-1" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Vector Name="v16" Style="PinkArrow">
+      <Dependency Name="p15" />
+      <Dependency Name="H" />
+    </Vector>
+    <Vector Name="v17" Style="PinkArrow">
+      <Dependency Name="p15" />
+      <Dependency Name="Up" />
+    </Vector>
+    <PointByCoordinates Name="at18" Style="Anchor" X="-0.85" Y="H.Y + 0.25">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="PinkMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="2">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

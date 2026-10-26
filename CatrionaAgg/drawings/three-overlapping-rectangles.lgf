@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.769" Top="3.069" Right="6.869" Bottom="-4.469" />
+  <Scene Left="-0.769" Top="3.069" Right="6.869" Bottom="-4.469" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Pink" Color="#FFEE1BA7" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF8A0DA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF20E0F5" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9EF1FA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Navy" Color="#FF0604BA" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9F9EFA" />
+    </ShapeStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Q" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(Q.X + 4.7552825815)" Y="(Q.Y + 1.5450849719)">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(Q.X + 4.3301270189)" Y="(Q.Y + 2.5)">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="4.4707711842" Y="2.2387954392" Parameter="0.464257581">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p4" Visible="false" X="0.6 * P.Y" Y="-0.6 * P.X">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="0.92 * P.Y" Y="-0.92 * P.X">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="track6" Visible="false">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <PointOnFigure Name="K" Style="Handle" X="1.813" Y="-3.622" Parameter="0.65625">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Fr" Visible="false" X="(P.X + K.X)" Y="(P.Y + K.Y)">
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Number Name="pb" Formula="K.Y + (P.X - K.X) / P.X * P.Y">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+    </Number>
+    <Number Name="cr" Formula="P.X - P.Y / K.Y * K.X">
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+    </Number>
+    <PointByCoordinates Name="PF" Visible="false" X="P.X" Y="pb">
+      <Dependency Name="P" />
+      <Dependency Name="pb" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CT" Visible="false" X="cr" Y="0">
+      <Dependency Name="cr" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="pb">
+      <Dependency Name="pb" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Polygon Name="poly9" Style="Pink">
+      <Dependency Name="p7" />
+      <Dependency Name="PF" />
+      <Dependency Name="P" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="0" Y="K.Y">
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="cr" Y="K.Y">
+      <Dependency Name="cr" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Polygon Name="poly12" Style="Cyan">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="CT" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Navy">
+      <Dependency Name="Q" />
+      <Dependency Name="K" />
+      <Dependency Name="Fr" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="d14" Style="Dot" X="Q.X" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d15" Style="Dot" X="PF.X" Y="PF.Y">
+      <Dependency Name="PF" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d16" Style="Dot" X="CT.X" Y="CT.Y">
+      <Dependency Name="CT" />
+    </PointByCoordinates>
+  </Figures>
+</Drawing>

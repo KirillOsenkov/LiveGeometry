@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.5008290377" Top="6.5008290377" Right="7.6555295761" Bottom="-1.6555295761" />
+  <Scene Left="-0.5008290377" Top="6.5008290377" Right="7.6555295761" Bottom="-1.6555295761" />
+  <Styles>
+    <ShapeStyle Name="Cyan" Color="#FF1FBCEB" StrokeWidth="3" Fill="#FF7FDBFB" Texture="Crayon">
+      <Dark Color="#FFA1E3F7" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4DC2EB" />
+            <GradientStop Color="#FF2FA4CD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF2F4BDB" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA8B4F0" />
+    </ShapeStyle>
+    <LineStyle Name="Purple" Color="#FFA77BEB" StrokeWidth="2.5">
+      <Dark Color="#FFC4A6F2" />
+    </LineStyle>
+    <TextStyle Name="PurpleMark" FontSize="26" Color="#FFA77BEB" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFC4A6F2" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p5" Visible="false" X="2" Y="2.8452994616" />
+    <PointByCoordinates Name="p6" Visible="false" X="3.1547005384" Y="0.8452994616" />
+    <PointByCoordinates Name="p7" Visible="false" X="5.1547005384" Y="2" />
+    <PointByCoordinates Name="p8" Visible="false" X="3.1547005384" Y="4.8452994616" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.1547005384" Y="6" />
+    <Polygon Name="poly10" Style="Cyan">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Cyan">
+      <Dependency Name="p5" />
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="6" Y="-1.1547005384" />
+    <PointByCoordinates Name="p13" Visible="false" X="7.1547005384" Y="0.8452994616" />
+    <Polygon Name="poly14" Style="Cyan">
+      <Dependency Name="p7" />
+      <Dependency Name="p2" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Segment Name="s16" Style="Purple">
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Number Name="n17" Formula="distance(p1, p2)">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Number>
+    <Number Name="n18" Formula="distance(p1, p6)">
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+    </Number>
+    <PointByCoordinates Name="p19" Visible="false" X="(p1.X + 0.4 * ((p2.X - p1.X) / n17))" Y="(p1.Y + 0.4 * ((p2.Y - p1.Y) / n17))">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="n17" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(p1.X + 0.4 * ((p6.X - p1.X) / n18))" Y="(p1.Y + 0.4 * ((p6.Y - p1.Y) / n18))">
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+      <Dependency Name="n18" />
+    </PointByCoordinates>
+    <CircleArc Name="a21" Style="Purple">
+      <Dependency Name="p1" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </CircleArc>
+    <PointByCoordinates Name="at22" Style="Anchor" X="0.4" Y="0.7" />
+    <AttachedLabel Name="t23" Style="PurpleMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

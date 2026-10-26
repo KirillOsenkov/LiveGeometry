@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.84" Top="6.84" Right="6.84" Bottom="-2.2748778704" />
+  <Scene Left="-6.84" Top="6.84" Right="6.84" Bottom="-2.2748778704" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#FFFCE41A" StrokeWidth="3" Fill="#FFFFF601" Texture="FeltTip">
+      <Dark Color="#FFFAF09E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBD63D" />
+            <GradientStop Color="#FFBDB71F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Orange" Color="#FFF29A1A" StrokeWidth="3">
+      <Dark Color="#FFFAD49E" />
+    </LineStyle>
+    <LineStyle Name="Crimson" Color="#FFD2145C" StrokeWidth="3.5">
+      <Dark Color="#FFF6A2C2" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-6" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3.4641016151" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="-3.4641016151" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="-4.8989794856" Y="3.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="4.8989794856" Y="3.4641016151" />
+    <CircleSegment Name="a8" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </CircleSegment>
+    <CircleArc Name="a9" Style="Orange">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </CircleArc>
+    <Segment Name="s10" Style="Orange">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Segment>
+    <CircleArc Name="a11" Style="Crimson">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <Segment Name="s12" Style="Crimson">
+      <Dependency Name="p2" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s13" Style="Crimson">
+      <Dependency Name="p3" />
+      <Dependency Name="p1" />
+    </Segment>
+  </Figures>
+</Drawing>

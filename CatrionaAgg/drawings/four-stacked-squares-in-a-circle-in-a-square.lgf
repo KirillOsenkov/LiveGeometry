@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.7" Top="5.7" Right="5.7" Bottom="-5.7" />
+  <Scene Left="-5.7" Top="5.7" Right="5.7" Bottom="-5.7" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FF3EB0D4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFACDDEC" />
+    </ShapeStyle>
+    <ShapeStyle Name="Circle" Color="#FF3887D8" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFAACCEE" />
+    </ShapeStyle>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Pink" Color="#FFE87A50" StrokeWidth="4" Fill="#FFF0C2D6" Texture="Crayon">
+      <Dark Color="#FFFFA27A" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFCC7B9E" />
+            <GradientStop Color="#FFAD5D80" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-5" Y="-5" />
+    <PointByCoordinates Name="p2" Visible="false" X="5" Y="-5" />
+    <PointByCoordinates Name="p3" Visible="false" X="5" Y="5" />
+    <PointByCoordinates Name="p4" Visible="false" X="-5" Y="5" />
+    <Polygon Name="poly5" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="5" Y="0" />
+    <Circle Name="c7" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="p6" />
+    </Circle>
+    <PointByCoordinates Name="p8" Visible="false" X="0.7705650725" Y="0.295792218" />
+    <PointByCoordinates Name="p9" Visible="false" X="2.4273091089" Y="0.9317566688" />
+    <Segment Name="track10" Visible="false">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="0.7705650725" Y="0.295792218" Parameter="0">
+      <Dependency Name="track10" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p11" Visible="false" X="-4.071768443" Y="-2.9018445421" />
+    <PointByCoordinates Name="p12" Visible="false" X="-0.9094907829" Y="-2.9018445421" />
+    <PointByCoordinates Name="p13" Visible="false" X="-0.9094907829" Y="0.2604331181" />
+    <PointByCoordinates Name="p14" Visible="false" X="-4.071768443" Y="0.2604331181" />
+    <Polygon Name="poly15" Style="Pink">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="-2.0427497438" Y="0.9094907829" />
+    <PointByCoordinates Name="p17" Visible="false" X="0.9094907829" Y="2.0427497438" />
+    <PointByCoordinates Name="p18" Visible="false" X="-0.2237681781" Y="4.9949902705" />
+    <PointByCoordinates Name="p19" Visible="false" X="-3.1760087048" Y="3.8617313095" />
+    <Polygon Name="poly20" Style="Pink">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Polygon>
+    <PointByCoordinates Name="p21" Visible="false" X="(B.X - 0.9094907829)" Y="(B.Y - 2.0427497438)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="(B.X + 2.0427497438)" Y="(B.Y - 0.9094907829)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="(B.X + 0.9094907829)" Y="(B.Y + 2.0427497438)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="(B.X - 2.0427497438)" Y="(B.Y + 0.9094907829)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="poly25" Style="Pink">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Polygon>
+    <PointByCoordinates Name="p26" Visible="false" X="0.2237681781" Y="-4.9949902705" />
+    <PointByCoordinates Name="p27" Visible="false" X="3.1760087048" Y="-3.8617313095" />
+    <PointByCoordinates Name="p28" Visible="false" X="2.0427497438" Y="-0.9094907829" />
+    <PointByCoordinates Name="p29" Visible="false" X="-0.9094907829" Y="-2.0427497438" />
+    <Polygon Name="poly30" Style="Pink">
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+      <Dependency Name="p28" />
+      <Dependency Name="p29" />
+    </Polygon>
+  </Figures>
+</Drawing>

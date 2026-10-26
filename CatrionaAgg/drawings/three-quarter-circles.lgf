@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3115" Top="4.3115" Right="4.3115" Bottom="-0.7615" />
+  <Scene Left="-0.3115" Top="4.3115" Right="4.3115" Bottom="-0.7615" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEB4D6" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDE699F" />
+            <GradientStop Color="#FFBF4B80" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Magenta" Color="#FFB22FA8" StrokeWidth="3">
+      <Dark Color="#FFEAAEE5" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <LineStyle Name="AngleMark" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="24" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="2.472135955" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="2.472135955" />
+    <PointByCoordinates Name="p4" Visible="false" X="4" Y="2.472135955" />
+    <PointByCoordinates Name="p5" Visible="false" X="1.527864045" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="0.7639320225" Y="2.3511410092" />
+    <CircleSector Name="a6" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+      <Dependency Name="A" />
+    </CircleSector>
+    <CircleSector Name="a7" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSector>
+    <Region Name="r8" Style="Pink" Operation="Union">
+      <Dependency Name="a6" />
+      <Dependency Name="a7" />
+    </Region>
+    <CircleArc Name="a9" Style="Magenta">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <CircleArc Name="a10" Style="Magenta">
+      <Dependency Name="A" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <CircleArc Name="a11" Style="Magenta">
+      <Dependency Name="B" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <Segment Name="s12" Style="Magenta">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s13" Style="Magenta">
+      <Dependency Name="A" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s14" Style="Magenta">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s15" Style="Ink">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="angle16" Style="AngleMark" Radius="30">
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <PointByCoordinates Name="at17" Style="Anchor" X="(B.X - 0.3)" Y="(B.Y + 0.62)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t18" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

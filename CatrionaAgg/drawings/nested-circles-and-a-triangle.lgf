@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEEE45" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE4D646" />
+            <GradientStop Color="#FFC6B827" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Inner" Color="#FFEE9A20" StrokeWidth="2.5" Fill="#FFFEEE45" Texture="Crayon">
+      <Dark Color="#FFF8D4A0" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE4D646" />
+            <GradientStop Color="#FFC6B827" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFE2231A" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFF4A7A4" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFF8045B" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFA9EBF" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p3" Visible="false" X="-3.4641016151" Y="-2" />
+    <PointByCoordinates Name="p4" Visible="false" X="3.4641016151" Y="-2" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="-2" />
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="1" />
+    <Circle Name="c7" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Circle>
+    <Circle Name="c8" Visible="false">
+      <Dependency Name="p6" />
+      <Dependency Name="p2" />
+    </Circle>
+    <Region Name="r9" Style="Yellow" Operation="Difference">
+      <Dependency Name="c7" />
+      <Dependency Name="c8" />
+    </Region>
+    <Circle Name="c10" Style="Inner">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </Circle>
+    <Circle Name="c11" Style="Red">
+      <Dependency Name="p6" />
+      <Dependency Name="p2" />
+    </Circle>
+    <Circle Name="c12" Style="Pink">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Circle>
+    <Polygon Name="poly13" Style="Frame" Z="1">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+  </Figures>
+</Drawing>

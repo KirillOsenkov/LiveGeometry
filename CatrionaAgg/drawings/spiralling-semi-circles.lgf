@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-18.52" Top="2.52" Right="18.52" Bottom="-38.52" />
+  <Scene Left="-18.52" Top="2.52" Right="18.52" Bottom="-38.52" />
+  <Styles>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFFA1505" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB483D" />
+            <GradientStop Color="#FFBD291F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDA204" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCA23D" />
+            <GradientStop Color="#FFBD831F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Blue" Color="#FF1E28B4" StrokeWidth="3.5">
+      <Dark Color="#FF6B7BFF" />
+    </LineStyle>
+    <PointStyle Name="Dot10" Size="10" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <LineStyle Name="Arrow" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="D0" Visible="false" X="0" Y="-0" />
+    <PointByCoordinates Name="D1" Visible="false" X="0" Y="-4" />
+    <PointByCoordinates Name="D2" Visible="false" X="0" Y="-8" />
+    <PointByCoordinates Name="D3" Visible="false" X="0" Y="-12" />
+    <PointByCoordinates Name="D4" Visible="false" X="0" Y="-16" />
+    <PointByCoordinates Name="D5" Visible="false" X="0" Y="-20" />
+    <PointByCoordinates Name="D6" Visible="false" X="0" Y="-24" />
+    <PointByCoordinates Name="D7" Visible="false" X="0" Y="-28" />
+    <PointByCoordinates Name="D8" Visible="false" X="0" Y="-32" />
+    <PointByCoordinates Name="D9" Visible="false" X="0" Y="-36" />
+    <PointByCoordinates Name="S" Visible="false" X="0" Y="-18" />
+    <PointByCoordinates Name="p1" Visible="false" X="D4.X" Y="(D4.Y + 16)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="D4.X" Y="(D4.Y - 16)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <CircleSector Name="a3" Visible="false">
+      <Dependency Name="D4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSector>
+    <PointByCoordinates Name="p4" Visible="false" X="D4.X" Y="(D4.Y + 12)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="D4.X" Y="(D4.Y - 12)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <CircleSector Name="a6" Visible="false">
+      <Dependency Name="D4" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleSector>
+    <PointByCoordinates Name="p7" Visible="false" X="D4.X" Y="(D4.Y + 8)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="D4.X" Y="(D4.Y - 8)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <CircleSector Name="a9" Visible="false">
+      <Dependency Name="D4" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </CircleSector>
+    <PointByCoordinates Name="p10" Visible="false" X="D4.X" Y="(D4.Y + 4)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="D4.X" Y="(D4.Y - 4)">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <CircleSector Name="a12" Visible="false">
+      <Dependency Name="D4" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </CircleSector>
+    <PointByCoordinates Name="p13" Visible="false" X="S.X" Y="(S.Y + 2)">
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="S.X" Y="(S.Y - 2)">
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <CircleSector Name="a15" Visible="false">
+      <Dependency Name="S" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </CircleSector>
+    <PointByCoordinates Name="p16" Visible="false" X="D5.X" Y="(D5.Y - 16)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="D5.X" Y="(D5.Y + 16)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <CircleSector Name="a18" Visible="false">
+      <Dependency Name="D5" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </CircleSector>
+    <PointByCoordinates Name="p19" Visible="false" X="D5.X" Y="(D5.Y - 12)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="D5.X" Y="(D5.Y + 12)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <CircleSector Name="a21" Visible="false">
+      <Dependency Name="D5" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </CircleSector>
+    <PointByCoordinates Name="p22" Visible="false" X="D5.X" Y="(D5.Y - 8)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="D5.X" Y="(D5.Y + 8)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <CircleSector Name="a24" Visible="false">
+      <Dependency Name="D5" />
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+    </CircleSector>
+    <PointByCoordinates Name="p25" Visible="false" X="D5.X" Y="(D5.Y - 4)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p26" Visible="false" X="D5.X" Y="(D5.Y + 4)">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <CircleSector Name="a27" Visible="false">
+      <Dependency Name="D5" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+    </CircleSector>
+    <Region Name="r28" Visible="false" Operation="Difference">
+      <Dependency Name="a3" />
+      <Dependency Name="a6" />
+    </Region>
+    <Region Name="r29" Visible="false" Operation="Difference">
+      <Dependency Name="a21" />
+      <Dependency Name="a24" />
+    </Region>
+    <Region Name="r30" Visible="false" Operation="Difference">
+      <Dependency Name="a9" />
+      <Dependency Name="a12" />
+    </Region>
+    <Region Name="r31" Style="Red" Operation="Union">
+      <Dependency Name="r28" />
+      <Dependency Name="r29" />
+      <Dependency Name="r30" />
+      <Dependency Name="a27" />
+      <Dependency Name="a15" />
+    </Region>
+    <Region Name="r32" Visible="false" Operation="Difference">
+      <Dependency Name="a18" />
+      <Dependency Name="a21" />
+    </Region>
+    <Region Name="r33" Visible="false" Operation="Difference">
+      <Dependency Name="a6" />
+      <Dependency Name="a9" />
+    </Region>
+    <Region Name="r34" Visible="false" Operation="Difference">
+      <Dependency Name="a24" />
+      <Dependency Name="a27" />
+    </Region>
+    <Region Name="r35" Visible="false" Operation="Difference">
+      <Dependency Name="a12" />
+      <Dependency Name="a15" />
+    </Region>
+    <Region Name="r36" Style="Orange" Operation="Union">
+      <Dependency Name="r32" />
+      <Dependency Name="r33" />
+      <Dependency Name="r34" />
+      <Dependency Name="r35" />
+    </Region>
+    <CircleArc Name="a37" Style="Blue">
+      <Dependency Name="D4" />
+      <Dependency Name="D0" />
+      <Dependency Name="D8" />
+    </CircleArc>
+    <CircleArc Name="a38" Style="Blue">
+      <Dependency Name="D5" />
+      <Dependency Name="D9" />
+      <Dependency Name="D1" />
+    </CircleArc>
+    <CircleArc Name="a39" Style="Blue">
+      <Dependency Name="D4" />
+      <Dependency Name="D1" />
+      <Dependency Name="D7" />
+    </CircleArc>
+    <CircleArc Name="a40" Style="Blue">
+      <Dependency Name="D5" />
+      <Dependency Name="D8" />
+      <Dependency Name="D2" />
+    </CircleArc>
+    <CircleArc Name="a41" Style="Blue">
+      <Dependency Name="D4" />
+      <Dependency Name="D2" />
+      <Dependency Name="D6" />
+    </CircleArc>
+    <CircleArc Name="a42" Style="Blue">
+      <Dependency Name="D5" />
+      <Dependency Name="D7" />
+      <Dependency Name="D3" />
+    </CircleArc>
+    <CircleArc Name="a43" Style="Blue">
+      <Dependency Name="D4" />
+      <Dependency Name="D3" />
+      <Dependency Name="D5" />
+    </CircleArc>
+    <CircleArc Name="a44" Style="Blue">
+      <Dependency Name="D5" />
+      <Dependency Name="D6" />
+      <Dependency Name="D4" />
+    </CircleArc>
+    <CircleArc Name="a45" Style="Blue">
+      <Dependency Name="S" />
+      <Dependency Name="D4" />
+      <Dependency Name="D5" />
+    </CircleArc>
+    <PointByCoordinates Name="d46" Style="Dot10" X="D0.X" Y="D0.Y">
+      <Dependency Name="D0" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d47" Style="Dot10" X="D1.X" Y="D1.Y">
+      <Dependency Name="D1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d48" Style="Dot10" X="D2.X" Y="D2.Y">
+      <Dependency Name="D2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d49" Style="Dot10" X="D3.X" Y="D3.Y">
+      <Dependency Name="D3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d50" Style="Dot10" X="D4.X" Y="D4.Y">
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d51" Style="Dot10" X="D5.X" Y="D5.Y">
+      <Dependency Name="D5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d52" Style="Dot10" X="D6.X" Y="D6.Y">
+      <Dependency Name="D6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d53" Style="Dot10" X="D7.X" Y="D7.Y">
+      <Dependency Name="D7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d54" Style="Dot10" X="D8.X" Y="D8.Y">
+      <Dependency Name="D8" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d55" Style="Dot10" X="D9.X" Y="D9.Y">
+      <Dependency Name="D9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p56" Visible="false" X="1.4" Y="0" />
+    <PointByCoordinates Name="p57" Visible="false" X="1.4" Y="-2" />
+    <PointByCoordinates Name="p58" Visible="false" X="1.4" Y="-4" />
+    <Vector Name="v59" Style="Arrow">
+      <Dependency Name="p57" />
+      <Dependency Name="p56" />
+    </Vector>
+    <Vector Name="v60" Style="Arrow">
+      <Dependency Name="p57" />
+      <Dependency Name="p58" />
+    </Vector>
+    <PointByCoordinates Name="at61" Style="Anchor" X="4" Y="-2" />
+    <AttachedLabel Name="t62" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at61" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

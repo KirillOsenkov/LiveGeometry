@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.455" Top="6.455" Right="6.455" Bottom="-0.955" />
+  <Scene Left="-0.455" Top="6.455" Right="6.455" Bottom="-0.955" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFFD8E92" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFED4F55" />
+            <GradientStop Color="#FFCF3136" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF6AA0D6" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4695E4" />
+            <GradientStop Color="#FF2776C5" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="3.5147186258" Y="2.4852813742" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.0294372515" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="6" Y="4.9705627485" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly8" Style="Pink">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <CircleSegment Name="a9" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+  </Figures>
+</Drawing>

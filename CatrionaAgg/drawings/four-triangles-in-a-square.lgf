@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFC4F5D6" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7ACE99" />
+            <GradientStop Color="#FF5CB07B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFEF87C" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEBE44D" />
+            <GradientStop Color="#FFCDC52F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.4641016151" Y="2.5358983849" />
+    <PointByCoordinates Name="p3" Visible="false" X="-1.4641016151" Y="2.5358983849" />
+    <PointByCoordinates Name="p4" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-2.5358983849" Y="1.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="-2.5358983849" Y="-1.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="-0" Y="-4" />
+    <PointByCoordinates Name="p8" Visible="false" X="-1.4641016151" Y="-2.5358983849" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.4641016151" Y="-2.5358983849" />
+    <PointByCoordinates Name="p10" Visible="false" X="4" Y="-0" />
+    <PointByCoordinates Name="p11" Visible="false" X="2.5358983849" Y="-1.4641016151" />
+    <PointByCoordinates Name="p12" Visible="false" X="2.5358983849" Y="1.4641016151" />
+    <Polygon Name="poly13" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p12" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Green">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Polygon Name="poly16" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Polygon Name="poly17" Style="Green">
+      <Dependency Name="p7" />
+      <Dependency Name="p9" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly18" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p6" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly19" Style="Green">
+      <Dependency Name="p10" />
+      <Dependency Name="p12" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly20" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p9" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly21" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Polygon Name="poly22" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly23" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly24" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly25" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p4" />
+      <Dependency Name="p7" />
+      <Dependency Name="p10" />
+    </Polygon>
+  </Figures>
+</Drawing>

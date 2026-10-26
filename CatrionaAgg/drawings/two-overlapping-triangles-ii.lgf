@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.992" Top="3.8561016151" Right="2.392" Bottom="-0.392" />
+  <Scene Left="-3.992" Top="3.8561016151" Right="2.392" Bottom="-0.392" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF8EC8FD" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4FA2ED" />
+            <GradientStop Color="#FF3183CF" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="LightBlue" Color="#FF439DD4" StrokeWidth="3">
+      <Dark Color="#FFACD4EC" />
+    </LineStyle>
+    <ShapeStyle Name="Big" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Small" Color="#FF2B2E9C" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFAFB1E9" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="3.4641016151" />
+    <PointByCoordinates Name="P" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="R" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-1.6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="1" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="-0.96" Y="0" Parameter="0.2461538462">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="L" Visible="false" X="(A.X + (0.5 * (B.X - A.X) + 0.8660254038 * (B.Y - A.Y)))" Y="(A.Y + (-1 * 0.8660254038 * (B.X - A.X) + 0.5 * (B.Y - A.Y)))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="Blue">
+      <Dependency Name="L" />
+      <Dependency Name="A" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Segment Name="s5" Style="LightBlue">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Segment>
+    <Polygon Name="poly6" Style="Big">
+      <Dependency Name="P" />
+      <Dependency Name="R" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="poly7" Style="Small">
+      <Dependency Name="L" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Polygon>
+  </Figures>
+</Drawing>

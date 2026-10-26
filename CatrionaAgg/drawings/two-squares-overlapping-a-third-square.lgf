@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.8870922709" Top="5.6473710483" Right="4.2331574859" Bottom="-0.3694541807" />
+  <Scene Left="-0.8870922709" Top="5.6473710483" Right="4.2331574859" Bottom="-0.3694541807" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF03ACFD" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DA8DB" />
+            <GradientStop Color="#FF1F8ABD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFD0127F" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF7A1D2" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF0410D8" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FF9EA3FA" />
+    </ShapeStyle>
+    <TextStyle Name="PinkMark" FontSize="34" Color="#FFD0127F" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF7A1D2" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="NavyMark" FontSize="32" Color="#FF1E28B4" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C1045" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.8637033052" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3.8637033052" Y="3.8637033052" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="3.8637033052" />
+    <PointByCoordinates Name="p5" Visible="false" X="2.8284271247" Y="3.8637033052" />
+    <PointByCoordinates Name="p6" Visible="false" X="1.4142135624" Y="5.2779168675" />
+    <PointByCoordinates Name="p7" Visible="false" X="1.4142135624" Y="2.4494897428" />
+    <PointByCoordinates Name="p8" Visible="false" X="-0.5176380902" Y="1.9318516526" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.9318516526" Y="0.5176380902" />
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Pink">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Pink">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p1" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="at14" Style="Anchor" X="1.4142135624" Y="4.4637033052" />
+    <AttachedLabel Name="t15" Style="PinkMark" Z="1" OffsetX="-13.54" OffsetY="-24.95" Text="4">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at16" Style="Anchor" X="0.6571067812" Y="1.2247448714" />
+    <AttachedLabel Name="t17" Style="PinkMark" Z="1" OffsetX="-13.54" OffsetY="-24.95" Text="4">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at18" Style="Anchor" X="3.4437033052" Y="3.0137033052" />
+    <AttachedLabel Name="t19" Style="NavyMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="?">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

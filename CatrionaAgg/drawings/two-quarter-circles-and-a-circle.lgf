@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.665" Top="4.665" Right="6.165" Bottom="-4.665" />
+  <Scene Left="-4.665" Top="4.665" Right="6.165" Bottom="-4.665" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Green" Color="#FF2F4A40" StrokeWidth="2.5" Fill="#FFACDFBB" Texture="Crayon">
+      <Dark Color="#FFB0E8D3" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF73CA8D" />
+            <GradientStop Color="#FF55AB6E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Yellow" Color="#FFF0C04C" StrokeWidth="2.5">
+      <Dark Color="#FFF7DEA1" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(O.X + 3.8450467838)" Y="(O.Y + 1.1025494233)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p3" Visible="false" X="(O.X + 3.1520430144)" Y="(O.Y + 2.4626459013)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track4" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <PointOnFigure Name="T" Style="Handle" X="3.521909414" Y="1.8963528362" Parameter="0.4939281783">
+      <Dependency Name="track4" />
+    </PointOnFigure>
+    <PointByCoordinates Name="P" Visible="false" X="T.X" Y="-T.X">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="-T.Y" Y="-T.X">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S" Visible="false" X="T.X" Y="-T.Y">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" Visible="false" X="2 * T.X - T.Y" Y="-T.X">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <CircleSector Name="a5" Style="Green">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </CircleSector>
+    <CircleSector Name="a6" Style="Green">
+      <Dependency Name="P" />
+      <Dependency Name="E" />
+      <Dependency Name="S" />
+    </CircleSector>
+    <Circle Name="c7" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+    </Circle>
+  </Figures>
+</Drawing>

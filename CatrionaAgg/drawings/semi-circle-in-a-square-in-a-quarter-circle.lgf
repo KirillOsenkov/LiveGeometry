@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3130495168" Top="4.7851854718" Right="4.7851854718" Bottom="-0.3130495168" />
+  <Scene Left="-0.3130495168" Top="4.7851854718" Right="4.7851854718" Bottom="-0.3130495168" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF1040E0" StrokeWidth="3" Fill="#FF0AC2FA" Texture="Crayon">
+      <Dark Color="#FFA0B4F8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3EB7DC" />
+            <GradientStop Color="#FF1F98BD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFD0102A" StrokeWidth="3" Fill="#FFFCAD66" Texture="Crayon">
+      <Dark Color="#FFF8A0AC" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8954A" />
+            <GradientStop Color="#FFCA762B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <PointStyle Name="Dot13" Size="13" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="RedMark" FontSize="32" Color="#FFE01020" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF450C11" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="4.472135955" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="4.472135955" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="0" />
+    <CircleSector Name="a7" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSector>
+    <CircleSegment Name="a8" Style="Orange">
+      <Dependency Name="p6" />
+      <Dependency Name="p3" />
+      <Dependency Name="O" />
+    </CircleSegment>
+    <Polygon Name="poly9" Style="Frame" Z="1">
+      <Dependency Name="O" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="d10" Style="Dot13" X="2" Y="4" />
+    <PointByCoordinates Name="d11" Style="Dot13" X="4" Y="2" />
+    <Segment Name="s12" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p5" />
+      <Dependency Name="d10" />
+    </Segment>
+    <Segment Name="s13" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="d10" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s14" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="p4" />
+      <Dependency Name="d11" />
+    </Segment>
+    <Segment Name="s15" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="d11" />
+      <Dependency Name="p3" />
+    </Segment>
+    <PointByCoordinates Name="at16" Style="Anchor" X="1.9" Y="1" />
+    <AttachedLabel Name="t17" Style="RedMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

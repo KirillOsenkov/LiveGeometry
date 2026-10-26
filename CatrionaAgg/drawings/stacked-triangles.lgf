@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.1032" Top="4.7432" Right="6.7432" Bottom="-2.6432" />
+  <Scene Left="-2.1032" Top="4.7432" Right="6.7432" Bottom="-2.6432" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#FF14CDA8" StrokeWidth="3" Fill="#FFFEFD20" Texture="FeltTip">
+      <Dark Color="#FFA2F6E5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDFDF41" />
+            <GradientStop Color="#FFC1C023" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF14CDA8" StrokeWidth="3" Fill="#FF1EC4F8" Texture="FeltTip">
+      <Dark Color="#FFA2F6E5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF40B9DE" />
+            <GradientStop Color="#FF229AC0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF14CDA8" StrokeWidth="3" Fill="#FFA6EE48" Texture="FeltTip">
+      <Dark Color="#FFA2F6E5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9EE244" />
+            <GradientStop Color="#FF7FC426" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FF14CDA8" StrokeWidth="3" Fill="#FFFF00E0" Texture="FeltTip">
+      <Dark Color="#FFA2F6E5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB3DC8" />
+            <GradientStop Color="#FFBD1FA9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Base" Color="#FF5A10E0" StrokeWidth="3.5">
+      <Dark Color="#FFBFA0F8" />
+    </LineStyle>
+    <ShapeStyle Name="YellowBlob" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEFD06" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCDB3E" />
+            <GradientStop Color="#FFBDBD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="BlueBlob" Color="#00000000" StrokeWidth="2.5" Fill="#FF03A2FC" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DA2DB" />
+            <GradientStop Color="#FF1F84BD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="PinkBlob" Color="#00000000" StrokeWidth="2.5" Fill="#FFF503C8" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDA3CBD" />
+            <GradientStop Color="#FFBC1E9E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="GreenBlob" Color="#00000000" StrokeWidth="2.5" Fill="#FF59E704" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF76D93B" />
+            <GradientStop Color="#FF57BA1C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <TextStyle Name="PurpleMark" FontSize="30" Color="#FF5A10E0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFBFA0F8" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.1" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="1.88" Y="0" Parameter="0.4105263158">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="b" Formula="sqrt(12.296 - B.X ^ 2)">
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="C" Visible="false" X="B.X / 2" Y="0.8660254037844386 * B.X">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" Visible="false" X="B.X + b" Y="0">
+      <Dependency Name="B" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="B.X + b / 2" Y="0.8660254037844386 * b">
+      <Dependency Name="B" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="(C.X + (0.5 * (D.X - C.X) - 1 * 0.8660254038 * (D.Y - C.Y)))" Y="(C.Y + (0.8660254038 * (D.X - C.X) + 0.5 * (D.Y - C.Y)))">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="Yellow">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Blue">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Green">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="poly7" Style="Pink">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p8" Visible="false" X="-1.56" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="E.X + 1.3" Y="0">
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <Segment Name="s10" Style="Base">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Segment>
+    <PointByCoordinates Name="p11" Visible="false" X="0.08" Y="-0.84" />
+    <PointByCoordinates Name="p12" Visible="false" X="0.35" Y="-0.84" />
+    <Circle Name="c13" Style="YellowBlob">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Circle>
+    <PointByCoordinates Name="p14" Visible="false" X="1.44" Y="-0.84" />
+    <PointByCoordinates Name="p15" Visible="false" X="1.71" Y="-0.84" />
+    <Circle Name="c16" Style="BlueBlob">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Circle>
+    <PointByCoordinates Name="p17" Visible="false" X="0.78" Y="-1.76" />
+    <PointByCoordinates Name="p18" Visible="false" X="1.05" Y="-1.76" />
+    <Circle Name="c19" Style="PinkBlob">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+    </Circle>
+    <PointByCoordinates Name="p20" Visible="false" X="2.18" Y="-1.76" />
+    <PointByCoordinates Name="p21" Visible="false" X="2.45" Y="-1.76" />
+    <Circle Name="c22" Style="GreenBlob">
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </Circle>
+    <PointByCoordinates Name="at23" Style="Anchor" X="0.78" Y="-0.84" />
+    <AttachedLabel Name="t24" Style="PurpleMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="+">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at25" Style="Anchor" X="2.08" Y="-0.84" />
+    <AttachedLabel Name="t26" Style="PurpleMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="=">
+      <Dependency Name="at25" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at27" Style="Anchor" X="3.1" Y="-0.84" />
+    <AttachedLabel Name="t28" Style="PurpleMark" Z="1" OffsetX="-30.9" OffsetY="-22.25" Text="100">
+      <Dependency Name="at27" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at29" Style="Anchor" X="1.54" Y="-1.76" />
+    <AttachedLabel Name="t30" Style="PurpleMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="+">
+      <Dependency Name="at29" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at31" Style="Anchor" X="2.84" Y="-1.76" />
+    <AttachedLabel Name="t32" Style="PurpleMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="=">
+      <Dependency Name="at31" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at33" Style="Anchor" X="3.7" Y="-1.76" />
+    <AttachedLabel Name="t34" Style="PurpleMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="?">
+      <Dependency Name="at33" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.84" Top="6.9021778265" Right="12.84" Bottom="-1.94" />
+  <Scene Left="-0.84" Top="6.9021778265" Right="12.84" Bottom="-1.94" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0AB9EE" StrokeWidth="3" Fill="#FF8FE3FB" Texture="Crayon">
+      <Dark Color="#FF0A5A78" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4FCAED" />
+            <GradientStop Color="#FF31ACCF" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF0AB9EE" StrokeWidth="3" Fill="#FF52F0FC" Texture="Crayon">
+      <Dark Color="#FF0A5A78" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF47DAE6" />
+            <GradientStop Color="#FF29BCC7" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="LightCyan" Color="#FF0AB9EE" StrokeWidth="3" Fill="#FFA6FEFE" Texture="Crayon">
+      <Dark Color="#FF0A5A78" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF5EE5E5" />
+            <GradientStop Color="#FF40C6C6" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF55C040" StrokeWidth="3">
+      <Dark Color="#FFB9E8B0" />
+    </LineStyle>
+    <TextStyle Name="GreenMark" FontSize="34" Color="#FF55C040" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB9E8B0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4.9403571429" Y="2.8820088259" />
+    <PointByCoordinates Name="p2" Visible="false" X="7.1903571429" Y="2.1025859625" />
+    <PointByCoordinates Name="p3" Visible="false" X="6.5903571429" Y="5.2202774161" />
+    <PointByCoordinates Name="p4" Visible="false" X="5.1503571429" Y="3.9732008346" />
+    <Polygon Name="poly5" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointInRegion Name="P" Style="Handle" X="5.15" Y="3.204293994">
+      <Dependency Name="poly5" />
+    </PointInRegion>
+    <Number Name="b" Formula="P.Y / 1.7320508076">
+      <Dependency Name="P" />
+    </Number>
+    <Number Name="a" Formula="(P.X - b) / 2">
+      <Dependency Name="P" />
+      <Dependency Name="b" />
+    </Number>
+    <Number Name="c" Formula="6 - a - b">
+      <Dependency Name="a" />
+      <Dependency Name="b" />
+    </Number>
+    <Number Name="h" Formula="P.Y + 1.7320508076 * a">
+      <Dependency Name="P" />
+      <Dependency Name="a" />
+    </Number>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="12" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="12 - a - b" Y="h">
+      <Dependency Name="a" />
+      <Dependency Name="b" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TL" Visible="false" X="a + b" Y="h">
+      <Dependency Name="a" />
+      <Dependency Name="b" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="TL.X - a / 2" Y="TL.Y - 0.8660254037844386 * a">
+      <Dependency Name="TL" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="p9.X" Y="p9.Y">
+      <Dependency Name="p9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(p9.X + 0.5 * a)" Y="(p9.Y + 0.8660254037844386 * a)">
+      <Dependency Name="p9" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(p9.X + 1.5 * a)" Y="(p9.Y + 0.8660254037844386 * a)">
+      <Dependency Name="p9" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(p9.X + 2 * a)" Y="p9.Y">
+      <Dependency Name="p9" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(p9.X + 1.5 * a)" Y="(p9.Y - 0.8660254037844386 * a)">
+      <Dependency Name="p9" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(p9.X + 0.5 * a)" Y="(p9.Y - 0.8660254037844386 * a)">
+      <Dependency Name="p9" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="P.X - 1.5 * b" Y="0.8660254037844386 * b">
+      <Dependency Name="P" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="p16.X" Y="p16.Y">
+      <Dependency Name="p16" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="(p16.X + 0.5 * b)" Y="(p16.Y + 0.8660254037844386 * b)">
+      <Dependency Name="p16" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="(p16.X + 1.5 * b)" Y="(p16.Y + 0.8660254037844386 * b)">
+      <Dependency Name="p16" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(p16.X + 2 * b)" Y="p16.Y">
+      <Dependency Name="p16" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(p16.X + 1.5 * b)" Y="(p16.Y - 0.8660254037844386 * b)">
+      <Dependency Name="p16" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="(p16.X + 0.5 * b)" Y="(p16.Y - 0.8660254037844386 * b)">
+      <Dependency Name="p16" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="(P.X + 0.5 * c)" Y="(P.Y + 0.8660254037844386 * c)">
+      <Dependency Name="P" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p25" Visible="false" X="(P.X + 1.5 * c)" Y="(P.Y + 0.8660254037844386 * c)">
+      <Dependency Name="P" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p26" Visible="false" X="(P.X + 2 * c)" Y="P.Y">
+      <Dependency Name="P" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p27" Visible="false" X="(P.X + 1.5 * c)" Y="(P.Y - 0.8660254037844386 * c)">
+      <Dependency Name="P" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p28" Visible="false" X="(P.X + 0.5 * c)" Y="(P.Y - 0.8660254037844386 * c)">
+      <Dependency Name="P" />
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <Polygon Name="poly29" Style="Blue">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </Polygon>
+    <Polygon Name="poly30" Style="Cyan">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <Polygon Name="poly31" Style="LightCyan">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+      <Dependency Name="p28" />
+    </Polygon>
+    <Polygon Name="poly32" Style="Frame" Z="1">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="TL" />
+    </Polygon>
+    <Number Name="n33" Formula="distance(p7, p6)">
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+    </Number>
+    <PointByCoordinates Name="p34" Visible="false" X="(p6.X - p7.X) / n33" Y="(p6.Y - p7.Y) / n33">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="n33" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p35" Visible="false" X="(p7.X + 0.75 * -p34.Y)" Y="(p7.Y + 0.75 * p34.X)">
+      <Dependency Name="p7" />
+      <Dependency Name="p34" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p36" Visible="false" X="(p6.X + 0.75 * -p34.Y)" Y="(p6.Y + 0.75 * p34.X)">
+      <Dependency Name="p6" />
+      <Dependency Name="p34" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p37" Visible="false" X="(p35.X + p36.X) / 2" Y="(p35.Y + p36.Y) / 2">
+      <Dependency Name="p35" />
+      <Dependency Name="p36" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p38" Visible="false" X="(p37.X - 1 * 0.5 * p34.X)" Y="(p37.Y - 1 * 0.5 * p34.Y)">
+      <Dependency Name="p37" />
+      <Dependency Name="p34" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p39" Visible="false" X="(p37.X + 0.5 * p34.X)" Y="(p37.Y + 0.5 * p34.Y)">
+      <Dependency Name="p37" />
+      <Dependency Name="p34" />
+    </PointByCoordinates>
+    <Vector Name="v40" Style="Arrow">
+      <Dependency Name="p38" />
+      <Dependency Name="p35" />
+    </Vector>
+    <Vector Name="v41" Style="Arrow">
+      <Dependency Name="p39" />
+      <Dependency Name="p36" />
+    </Vector>
+    <PointByCoordinates Name="at42" Style="Anchor" X="p37.X" Y="p37.Y">
+      <Dependency Name="p37" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t43" Style="GreenMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at42" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

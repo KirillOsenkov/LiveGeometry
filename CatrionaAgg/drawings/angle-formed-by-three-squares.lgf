@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.7367435565" Top="2.1027689603" Right="3.1187943641" Bottom="-0.2367435565" />
+  <Scene Left="-0.7367435565" Top="2.1027689603" Right="3.1187943641" Bottom="-0.2367435565" />
+  <Styles>
+    <LineStyle Name="Base" Color="#FFA6DA10" StrokeWidth="4">
+      <Dark Color="#FFC8F060" />
+    </LineStyle>
+    <ShapeStyle Name="Green" Color="#FF02D86A" StrokeWidth="3" Fill="#FF85EBA4" Texture="Crayon">
+      <Dark Color="#FF0B5A30" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4EE77D" />
+            <GradientStop Color="#FF30C95E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GreenLine" Color="#FF02D86A" StrokeWidth="3">
+      <Dark Color="#FF0B5A30" />
+    </LineStyle>
+    <LineStyle Name="Purple" Color="#FF5A20C4" StrokeWidth="3.5">
+      <Dark Color="#FFC1A7F1" />
+    </LineStyle>
+    <LineStyle Name="Teal" Color="#FF1F6F70" StrokeWidth="3.5">
+      <Dark Color="#FF0F3F40" />
+    </LineStyle>
+    <TextStyle Name="PurpleMark" FontSize="30" Color="#FF5A20C4" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFC1A7F1" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="1.7320508076" Y="1" />
+    <PointByCoordinates Name="R" Visible="false" X="1.2320508076" Y="1.8660254038" />
+    <PointByCoordinates Name="p2" Visible="false" X="-0.5" Y="0.8660254038" />
+    <PointByCoordinates Name="F" Visible="false" X="2.7320508076" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="2.7320508076" Y="1" />
+    <PointByCoordinates Name="p4" Visible="false" X="1.7320508076" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-0.45" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="2.8820508076" Y="0" />
+    <Segment Name="s7" Style="Base">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Polygon Name="poly8" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Green">
+      <Dependency Name="p4" />
+      <Dependency Name="F" />
+      <Dependency Name="p3" />
+      <Dependency Name="T" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="(p1.X + T.X) / 2" Y="(p1.Y + T.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(p2.X + R.X) / 2" Y="(p2.Y + R.Y) / 2">
+      <Dependency Name="p2" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Segment Name="s12" Style="GreenLine">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Segment>
+    <Number Name="n13" Formula="((T.X - R.X) * (p3.Y - T.Y) - 1 * (T.Y - R.Y) * (p3.X - T.X)) / (((F.X - R.X) * (p3.Y - T.Y) - 1 * (F.Y - R.Y) * (p3.X - T.X)))">
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+      <Dependency Name="p3" />
+      <Dependency Name="F" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="(R.X + n13 * (F.X - R.X))" Y="(R.Y + n13 * (F.Y - R.Y))">
+      <Dependency Name="R" />
+      <Dependency Name="n13" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Segment Name="s14" Style="Purple">
+      <Dependency Name="R" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="s15" Style="Teal">
+      <Dependency Name="X" />
+      <Dependency Name="F" />
+    </Segment>
+    <AngleArc Name="angle16" Style="Purple" Radius="30">
+      <Dependency Name="X" />
+      <Dependency Name="p3" />
+      <Dependency Name="R" />
+    </AngleArc>
+    <PointByCoordinates Name="at17" Style="Anchor" X="(X.X + 0.14)" Y="(X.Y + 0.36)">
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t18" Style="PurpleMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

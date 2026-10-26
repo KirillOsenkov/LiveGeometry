@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3143" Top="4.3143" Right="4.8043" Bottom="-0.3143" />
+  <Scene Left="-0.3143" Top="4.3143" Right="4.8043" Bottom="-0.3143" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFF0767A" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE94B50" />
+            <GradientStop Color="#FFCA2C31" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF6AA0EC" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF498AE7" />
+            <GradientStop Color="#FF2A6CC8" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="RedLine" Color="#FFB04448" StrokeWidth="2.5">
+      <Dark Color="#FF6E1418" />
+    </LineStyle>
+    <LineStyle Name="BlueLine" Color="#FF2F4E9E" StrokeWidth="2.5">
+      <Dark Color="#FF101F4E" />
+    </LineStyle>
+    <ShapeStyle Name="RedWedge" Color="#FFB04448" StrokeWidth="1" Fill="#FFB04448">
+      <Dark Color="#FFE8B0B2" Fill="#FFE8B0B2" />
+    </ShapeStyle>
+    <ShapeStyle Name="BlueWedge" Color="#FF2F4E9E" StrokeWidth="1" Fill="#FF2F4E9E">
+      <Dark Color="#FFB0C0E8" Fill="#FFB0C0E8" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="4.49" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="2.1 * 0.7466748607" Y="2.1 * 0.6651891855" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.9 * 0.7466748607" Y="3.9 * 0.6651891855" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="T" Style="Handle" X="2.6282955096" Y="2.3414659328" Parameter="0.7888888889">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="r" Formula="distance(O, T)">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Number>
+    <Number Name="s" Formula="6.0133268662 - r">
+      <Dependency Name="r" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="r">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="r" Y="0">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B" Visible="false" X="4.49 - s" Y="4">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="4.49" Y="4 - s">
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <CircleSector Name="a6" Style="Red">
+      <Dependency Name="O" />
+      <Dependency Name="p4" />
+      <Dependency Name="A" />
+    </CircleSector>
+    <CircleSector Name="a7" Style="Blue">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="p5" />
+    </CircleSector>
+    <PointByCoordinates Name="p8" Visible="false" X="4.49" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly10" Style="Frame" Z="1">
+      <Dependency Name="O" />
+      <Dependency Name="p8" />
+      <Dependency Name="C" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Segment Name="s11" Style="RedLine">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s12" Style="BlueLine">
+      <Dependency Name="B" />
+      <Dependency Name="T" />
+    </Segment>
+    <AngleArc Name="angle13" Style="RedWedge" Radius="44">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </AngleArc>
+    <AngleArc Name="angle14" Style="BlueWedge" Radius="44">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="T" />
+    </AngleArc>
+  </Figures>
+</Drawing>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.84" Top="6.84" Right="10.84" Bottom="-5.84" />
+  <Scene Left="-2.84" Top="6.84" Right="10.84" Bottom="-5.84" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF2E9A6A" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0E8CF" />
+    </ShapeStyle>
+    <ShapeStyle Name="LightGreen" Color="#FF9EE060" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFCBEEAA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Teal" Color="#FF3E92B8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0D7E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF2C5CB0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFADC4EB" />
+    </ShapeStyle>
+    <ShapeStyle Name="Navy" Color="#FF04089C" StrokeWidth="3.5" Fill="#FF04089C" Texture="FeltTip">
+      <Dark Color="#FF9EA1FA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3135CF" />
+            <GradientStop Color="#FF1216B0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="5" Y="5" />
+    <PointByCoordinates Name="Q" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="P" Visible="false" X="2" Y="6" />
+    <PointByCoordinates Name="L" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="R" Visible="false" X="6" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="5" Y="-5" />
+    <PointByCoordinates Name="p2" Visible="false" X="10" Y="0" />
+    <Polygon Name="poly3" Style="Green">
+      <Dependency Name="A" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="T" />
+    </Polygon>
+    <PointByCoordinates Name="p4" Visible="false" X="-2" Y="4" />
+    <Polygon Name="poly5" Style="LightGreen">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="1" Y="3" />
+    <Polygon Name="poly7" Style="Teal">
+      <Dependency Name="T" />
+      <Dependency Name="P" />
+      <Dependency Name="p6" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <PointByCoordinates Name="p8" Visible="false" X="6" Y="2" />
+    <Polygon Name="poly9" Style="Blue">
+      <Dependency Name="Q" />
+      <Dependency Name="p8" />
+      <Dependency Name="R" />
+      <Dependency Name="L" />
+    </Polygon>
+    <PointByCoordinates Name="p10" Visible="false" X="5" Y="3" />
+    <Polygon Name="poly11" Style="Navy">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+      <Dependency Name="p10" />
+      <Dependency Name="R" />
+    </Polygon>
+  </Figures>
+</Drawing>

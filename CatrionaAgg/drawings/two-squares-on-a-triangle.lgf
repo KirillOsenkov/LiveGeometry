@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-8.146" Top="6.646" Right="0.746" Bottom="-0.846" />
+  <Scene Left="-8.146" Top="6.646" Right="0.746" Bottom="-0.846" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Purple" Color="#FF5A10C4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFC4A1F7" />
+    </ShapeStyle>
+    <LineStyle Name="PurpleLine" Color="#FF5A10C4" StrokeWidth="3.5">
+      <Dark Color="#FFC4A1F7" />
+    </LineStyle>
+    <LineStyle Name="Cyan" Color="#FF10EEFC" StrokeWidth="3.5">
+      <Dark Color="#FF9EF4FA" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <TextStyle Name="CyanMark" FontSize="30" Color="#FF10EEFC" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9EF4FA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-6" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="1.6" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="4.6" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="0" Y="2.85" Parameter="0.4166666667">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p4" Visible="false" X="(A.X + B.X) / 2" Y="(A.Y + B.Y) / 2">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(A.X - B.Y / 2)" Y="(A.Y + 3)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(B.X - B.Y / 2)" Y="(B.Y + 3)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="(p4.X - B.Y / 2)" Y="(p4.Y + 3)">
+      <Dependency Name="p4" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Polygon Name="poly7" Style="Purple">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Segment Name="s8" Style="PurpleLine">
+      <Dependency Name="p4" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="s9" Style="Cyan">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Segment>
+    <Polygon Name="poly10" Style="Frame" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Number Name="n11" Formula="distance(C, P)">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Number>
+    <Number Name="n12" Formula="distance(C, A)">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Number>
+    <PointByCoordinates Name="p13" Visible="false" X="(C.X + 0.9 * ((P.X - C.X) / n11))" Y="(C.Y + 0.9 * ((P.Y - C.Y) / n11))">
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+      <Dependency Name="n11" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(C.X + 0.9 * ((A.X - C.X) / n12))" Y="(C.Y + 0.9 * ((A.Y - C.Y) / n12))">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="n12" />
+    </PointByCoordinates>
+    <CircleArc Name="a15" Style="Cyan">
+      <Dependency Name="C" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </CircleArc>
+    <PointByCoordinates Name="at16" Style="Anchor" X="-1.5" Y="0.75" />
+    <AttachedLabel Name="t17" Style="CyanMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

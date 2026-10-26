@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="6.86" Right="4.56" Bottom="-0.56" />
+  <Scene Left="-4.56" Top="6.86" Right="4.56" Bottom="-0.56" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <LineStyle Name="Blue" Color="#FF0A4CF8" StrokeWidth="3">
+      <Dark Color="#FF9EB8FA" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFF90606" StrokeWidth="3">
+      <Dark Color="#FFFA9E9E" />
+    </LineStyle>
+    <ShapeStyle Name="Navy" Color="#FF2E3F9D" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFB0B9E8" />
+    </ShapeStyle>
+    <LineStyle Name="Orange" Color="#FFF2A12C" StrokeWidth="2.5">
+      <Dark Color="#FFF9D49F" />
+    </LineStyle>
+    <TextStyle Name="OrangeMark" FontSize="30" Color="#FFF2A12C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF9D49F" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="W" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(O.X - 3.0641777725)" Y="(O.Y + 2.5711504387)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(O.X - 3.9125904029)" Y="(O.Y + 0.8316467633)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="X" Style="Handle" X="-3.5317903714" Y="1.8778862511" Parameter="2.652900463">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Y" Visible="false" X="X.Y" Y="-X.X">
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(O.X + 3.9125904029)" Y="(O.Y + 0.8316467633)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(O.X + 2.7786334818)" Y="(O.Y + 2.8773592014)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track6" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointOnFigure Name="Q" Style="Handle" X="3.0641777725" Y="2.5711504387" Parameter="0.6981317008">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <Number Name="n7" Formula="((Q.X - W.X) * (Y.Y - Q.Y) - 1 * (Q.Y - W.Y) * (Y.X - Q.X)) / (((X.X - W.X) * (Y.Y - Q.Y) - 1 * (X.Y - W.Y) * (Y.X - Q.X)))">
+      <Dependency Name="Q" />
+      <Dependency Name="W" />
+      <Dependency Name="Y" />
+      <Dependency Name="X" />
+    </Number>
+    <PointByCoordinates Name="P" Visible="false" X="(W.X + n7 * (X.X - W.X))" Y="(W.Y + n7 * (X.Y - W.Y))">
+      <Dependency Name="W" />
+      <Dependency Name="n7" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <CircleArc Name="a8" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+      <Dependency Name="W" />
+    </CircleArc>
+    <CircleArc Name="a9" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="Q" />
+      <Dependency Name="Y" />
+    </CircleArc>
+    <CircleArc Name="a10" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+    </CircleArc>
+    <CircleArc Name="a11" Style="Red">
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+      <Dependency Name="X" />
+    </CircleArc>
+    <Polygon Name="poly12" Style="Navy" Z="1">
+      <Dependency Name="W" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Number Name="n13" Formula="distance(P, W)">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+    </Number>
+    <Number Name="n14" Formula="distance(P, Q)">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Number>
+    <PointByCoordinates Name="p15" Visible="false" X="(P.X + 0.42 * ((W.X - P.X) / n13))" Y="(P.Y + 0.42 * ((W.Y - P.Y) / n13))">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+      <Dependency Name="n13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(P.X + 0.42 * ((Q.X - P.X) / n14))" Y="(P.Y + 0.42 * ((Q.Y - P.Y) / n14))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="n14" />
+    </PointByCoordinates>
+    <CircleArc Name="a17" Style="Orange">
+      <Dependency Name="P" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </CircleArc>
+    <Number Name="n18" Formula="distance(E, Q)">
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+    </Number>
+    <Number Name="n19" Formula="distance(E, W)">
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </Number>
+    <PointByCoordinates Name="p20" Visible="false" X="(E.X + 0.42 * ((Q.X - E.X) / n18))" Y="(E.Y + 0.42 * ((Q.Y - E.Y) / n18))">
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="n18" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(E.X + 0.42 * ((W.X - E.X) / n19))" Y="(E.Y + 0.42 * ((W.Y - E.Y) / n19))">
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+      <Dependency Name="n19" />
+    </PointByCoordinates>
+    <CircleArc Name="a22" Style="Orange">
+      <Dependency Name="E" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </CircleArc>
+    <Number Name="n23" Formula="distance(P, W)">
+      <Dependency Name="P" />
+      <Dependency Name="W" />
+    </Number>
+    <Number Name="n24" Formula="distance(P, Q)">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Number>
+    <PointByCoordinates Name="p25" Visible="false" X="(W.X - P.X) / n23 + (Q.X - P.X) / n24" Y="(W.Y - P.Y) / n23 + (Q.Y - P.Y) / n24">
+      <Dependency Name="W" />
+      <Dependency Name="P" />
+      <Dependency Name="n23" />
+      <Dependency Name="Q" />
+      <Dependency Name="n24" />
+    </PointByCoordinates>
+    <Number Name="n26" Formula="sqrt(p25.X ^ 2 + p25.Y ^ 2)">
+      <Dependency Name="p25" />
+    </Number>
+    <PointByCoordinates Name="at27" Style="Anchor" X="(P.X + 0.75 * (p25.X / n26))" Y="(P.Y + 0.75 * (p25.Y / n26))">
+      <Dependency Name="P" />
+      <Dependency Name="p25" />
+      <Dependency Name="n26" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t28" Style="OrangeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="a">
+      <Dependency Name="at27" />
+    </AttachedLabel>
+    <Number Name="n29" Formula="distance(E, Q)">
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+    </Number>
+    <Number Name="n30" Formula="distance(E, W)">
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </Number>
+    <PointByCoordinates Name="p31" Visible="false" X="(Q.X - E.X) / n29 + (W.X - E.X) / n30" Y="(Q.Y - E.Y) / n29 + (W.Y - E.Y) / n30">
+      <Dependency Name="Q" />
+      <Dependency Name="E" />
+      <Dependency Name="n29" />
+      <Dependency Name="W" />
+      <Dependency Name="n30" />
+    </PointByCoordinates>
+    <Number Name="n32" Formula="sqrt(p31.X ^ 2 + p31.Y ^ 2)">
+      <Dependency Name="p31" />
+    </Number>
+    <PointByCoordinates Name="at33" Style="Anchor" X="(E.X + 0.8 * (p31.X / n32))" Y="(E.Y + 0.8 * (p31.Y / n32))">
+      <Dependency Name="E" />
+      <Dependency Name="p31" />
+      <Dependency Name="n32" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t34" Style="OrangeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="b">
+      <Dependency Name="at33" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at35" Style="Anchor" X="2.3" Y="5.1" />
+    <AttachedLabel Name="t36" Style="OrangeMark" Z="1" OffsetX="-59.42" OffsetY="-19.55" Text="a+b = ?">
+      <Dependency Name="at35" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

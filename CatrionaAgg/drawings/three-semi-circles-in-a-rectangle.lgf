@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3665247584" Top="3.6025927359" Right="5.6025927359" Bottom="-0.3665247584" />
+  <Scene Left="-0.3665247584" Top="3.6025927359" Right="5.6025927359" Bottom="-0.3665247584" />
+  <Styles>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFE04F56" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE2434B" />
+            <GradientStop Color="#FFC3252C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF295B8C" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3883CD" />
+            <GradientStop Color="#FF1965AF" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="3.2360679775" />
+    <PointByCoordinates Name="TR" Visible="false" X="5.2360679775" Y="3.2360679775" />
+    <PointByCoordinates Name="BR" Visible="false" X="5.2360679775" Y="0" />
+    <PointByCoordinates Name="F" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="1.6180339887" />
+    <PointByCoordinates Name="p2" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="2.6180339887" Y="3.2360679775" />
+    <CircleSegment Name="a4" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="O" />
+      <Dependency Name="TL" />
+    </CircleSegment>
+    <CircleSegment Name="a5" Visible="false">
+      <Dependency Name="p2" />
+      <Dependency Name="F" />
+      <Dependency Name="O" />
+    </CircleSegment>
+    <CircleSegment Name="a6" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+    </CircleSegment>
+    <CircleSector Name="a7" Visible="false">
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="F" />
+    </CircleSector>
+    <Region Name="r8" Style="Red" Operation="Difference">
+      <Dependency Name="a4" />
+      <Dependency Name="a5" />
+      <Dependency Name="a6" />
+    </Region>
+    <Region Name="r9" Style="Red" Operation="Difference">
+      <Dependency Name="a7" />
+      <Dependency Name="a6" />
+      <Dependency Name="a5" />
+    </Region>
+    <Region Name="r10" Style="Blue" Operation="Difference">
+      <Dependency Name="a6" />
+      <Dependency Name="a4" />
+      <Dependency Name="a7" />
+      <Dependency Name="a5" />
+    </Region>
+    <Region Name="r11" Style="Blue" Operation="Difference">
+      <Dependency Name="a5" />
+      <Dependency Name="a4" />
+      <Dependency Name="a6" />
+    </Region>
+    <CircleArc Name="a12" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="O" />
+      <Dependency Name="TL" />
+    </CircleArc>
+    <CircleArc Name="a13" Style="Ink">
+      <Dependency Name="p2" />
+      <Dependency Name="F" />
+      <Dependency Name="O" />
+    </CircleArc>
+    <CircleArc Name="a14" Style="Ink">
+      <Dependency Name="p3" />
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+    </CircleArc>
+    <CircleArc Name="a15" Style="Ink">
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="F" />
+    </CircleArc>
+    <Polygon Name="poly16" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="TL" />
+    </Polygon>
+  </Figures>
+</Drawing>

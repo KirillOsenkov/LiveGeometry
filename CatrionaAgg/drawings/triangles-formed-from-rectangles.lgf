@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.87" Top="7.77" Right="5.67" Bottom="-0.77" />
+  <Scene Left="-6.87" Top="7.77" Right="5.67" Bottom="-0.77" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFBA306" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCA33D" />
+            <GradientStop Color="#FFBD841F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Gold" Color="#00000000" StrokeWidth="2.5" Fill="#FFFCC924" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE0BA41" />
+            <GradientStop Color="#FFC19C23" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFE58" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE7E649" />
+            <GradientStop Color="#FFC8C72A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="OrangeLine" Color="#FFF06A04" StrokeWidth="2.5">
+      <Dark Color="#FFF07A1A" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Ground" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="3.5" Y="7" />
+    <PointByCoordinates Name="p2" Visible="false" X="4.5" Y="7" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="R" Style="Handle" X="4" Y="7" Parameter="0.5">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="p4" Visible="false" X="-0.45 * R.X" Y="3.15">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="-0.59 * R.X" Y="4.13">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Segment Name="track6" Visible="false">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Segment>
+    <PointOnFigure Name="S" Style="Handle" X="-2.26" Y="3.955" Parameter="0.8214285714">
+      <Dependency Name="track6" />
+    </PointOnFigure>
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="7" />
+    <PointByCoordinates Name="B" Visible="false" X="R.X" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Number Name="n7" Formula="((O.X - T.X) * (B.Y - O.Y) - 1 * (O.Y - T.Y) * (B.X - O.X)) / (((S.X - T.X) * (B.Y - O.Y) - 1 * (S.Y - T.Y) * (B.X - O.X)))">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+      <Dependency Name="S" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="(T.X + n7 * (S.X - T.X))" Y="(T.Y + n7 * (S.Y - T.Y))">
+      <Dependency Name="T" />
+      <Dependency Name="n7" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <Number Name="n8" Formula="((S.X - A.X) * (B.Y - S.Y) - 1 * (S.Y - A.Y) * (B.X - S.X)) / (((R.X - A.X) * (B.Y - S.Y) - 1 * (R.Y - A.Y) * (B.X - S.X)))">
+      <Dependency Name="S" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+    </Number>
+    <PointByCoordinates Name="X1" Visible="false" X="(A.X + n8 * (R.X - A.X))" Y="(A.Y + n8 * (R.Y - A.Y))">
+      <Dependency Name="A" />
+      <Dependency Name="n8" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Number Name="n9" Formula="((T.X - A.X) * (B.Y - T.Y) - 1 * (T.Y - A.Y) * (B.X - T.X)) / (((R.X - A.X) * (B.Y - T.Y) - 1 * (R.Y - A.Y) * (B.X - T.X)))">
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+    </Number>
+    <PointByCoordinates Name="X2" Visible="false" X="(A.X + n9 * (R.X - A.X))" Y="(A.Y + n9 * (R.Y - A.Y))">
+      <Dependency Name="A" />
+      <Dependency Name="n9" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Polygon Name="poly10" Style="Orange">
+      <Dependency Name="A" />
+      <Dependency Name="S" />
+      <Dependency Name="X1" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Gold">
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+      <Dependency Name="X2" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Yellow">
+      <Dependency Name="X1" />
+      <Dependency Name="X2" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Segment Name="s13" Style="OrangeLine">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s14" Style="OrangeLine">
+      <Dependency Name="A" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="s15" Style="OrangeLine">
+      <Dependency Name="S" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s16" Style="OrangeLine">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointByCoordinates Name="p17" Visible="false" X="S.X" Y="0">
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="0" Y="S.Y">
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <Polygon Name="poly19" Style="Frame" Z="1">
+      <Dependency Name="p17" />
+      <Dependency Name="O" />
+      <Dependency Name="p18" />
+      <Dependency Name="S" />
+    </Polygon>
+    <Polygon Name="poly20" Style="Frame" Z="1">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+      <Dependency Name="T" />
+    </Polygon>
+    <PointByCoordinates Name="p21" Visible="false" X="A.X - 0.3" Y="0">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="R.X + 0.4" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Segment Name="s23" Style="Ground">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Segment>
+  </Figures>
+</Drawing>

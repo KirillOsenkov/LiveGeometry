@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.2778749102" Top="3.1108445079" Right="3.5180392246" Bottom="-3.3108445079" />
+  <Scene Left="-4.2778749102" Top="3.1108445079" Right="3.5180392246" Bottom="-3.3108445079" />
+  <Styles>
+    <ShapeStyle Name="Lime" Color="#00000000" StrokeWidth="2.5" Fill="#FFE6FDB8" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFB6DB6D" />
+            <GradientStop Color="#FF98BC4E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF18C8DA" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFA3EDF5" />
+    </ShapeStyle>
+    <LineStyle Name="Ticks" Color="#FF18C8DA" StrokeWidth="3">
+      <Dark Color="#FFA3EDF5" />
+    </LineStyle>
+    <ShapeStyle Name="Green" Color="#FF8EE010" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFD5F8A0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-3.0393427426" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-3.0393427426 + 0.5 * 3.0393427426)" Y="0.8660254037844386 * 3.0393427426" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-3.0393427426 + 1.5 * 3.0393427426)" Y="0.8660254037844386 * 3.0393427426" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-3.0393427426 + 2 * 3.0393427426)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-3.0393427426 + 1.5 * 3.0393427426)" Y="-0.8660254037844386 * 3.0393427426" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-3.0393427426 + 0.5 * 3.0393427426)" Y="-0.8660254037844386 * 3.0393427426" />
+    <PointByCoordinates Name="p7" Visible="false" X="(p5.X + p6.X) / 2" Y="(p5.Y + p6.Y) / 2">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(p3.X + (0.5 * (p7.X - p3.X) + 0.8660254038 * (p7.Y - p3.Y)))" Y="(p3.Y + (-1 * 0.8660254038 * (p7.X - p3.X) + 0.5 * (p7.Y - p3.Y)))">
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+    </PointByCoordinates>
+    <Polygon Name="poly9" Style="Lime">
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Cyan">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Segment Name="s11" Style="Ticks" Decoration="TwoTicks">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Segment>
+    <Segment Name="s12" Style="Ticks" Decoration="TwoTicks">
+      <Dependency Name="p7" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Polygon Name="poly13" Style="Green" Z="1">
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+  </Figures>
+</Drawing>

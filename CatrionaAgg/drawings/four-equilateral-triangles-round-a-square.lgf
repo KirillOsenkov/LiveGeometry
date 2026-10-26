@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.3945379206" Top="5.3945379206" Right="5.3945379206" Bottom="-5.3945379206" />
+  <Scene Left="-5.3945379206" Top="5.3945379206" Right="5.3945379206" Bottom="-5.3945379206" />
+  <Styles>
+    <ShapeStyle Name="Teal" Color="#00000000" StrokeWidth="2.5" Fill="#FFC5E1EB" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF80B4C6" />
+            <GradientStop Color="#FF6295A8" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Tips" Color="#FF1FA8D0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFA6E1F2" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF0745B8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9EBEFA" />
+    </ShapeStyle>
+    <TextStyle Name="TealMark" FontSize="36" Color="#FF1D9DC2" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA6E1F2" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4.7320508076" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="4.7320508076" />
+    <PointByCoordinates Name="p3" Visible="false" X="-4.7320508076" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="-4.7320508076" />
+    <PointByCoordinates Name="p5" Visible="false" X="1.7320508076" Y="1.7320508076" />
+    <PointByCoordinates Name="p6" Visible="false" X="-1.7320508076" Y="1.7320508076" />
+    <PointByCoordinates Name="p7" Visible="false" X="-1.7320508076" Y="-1.7320508076" />
+    <PointByCoordinates Name="p8" Visible="false" X="1.7320508076" Y="-1.7320508076" />
+    <Polygon Name="poly9" Style="Teal">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Teal">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Teal">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Teal">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Tips">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Blue">
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p8" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly16" Style="Blue">
+      <Dependency Name="p8" />
+      <Dependency Name="p7" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly17" Style="Blue">
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Polygon Name="poly18" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <PointByCoordinates Name="at19" Style="Anchor" X="0" Y="0" />
+    <AttachedLabel Name="t20" Style="TealMark" Z="1" OffsetX="-25.32" OffsetY="-26.3" Text="12">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

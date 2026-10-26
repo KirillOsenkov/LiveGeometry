@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFED702" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBC33D" />
+            <GradientStop Color="#FFBDA41F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF28C8E0" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFA6E8F2" />
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFE50A06" StrokeWidth="3.5">
+      <Dark Color="#FFFF5A4F" />
+    </LineStyle>
+    <ShapeStyle Name="Blue" Color="#FF0600DE" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFA19EFA" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="p3" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="p4" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="(p1.X + p2.X) / 2" Y="(p1.Y + p2.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(p2.X + p3.X) / 2" Y="(p2.Y + p3.Y) / 2">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="(p3.X + p4.X) / 2" Y="(p3.Y + p4.Y) / 2">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="(p4.X + p5.X) / 2" Y="(p4.Y + p5.Y) / 2">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(p5.X + p6.X) / 2" Y="(p5.Y + p6.Y) / 2">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(p6.X + p1.X) / 2" Y="(p6.Y + p1.Y) / 2">
+      <Dependency Name="p6" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <CircleSegment Name="a13" Visible="false">
+      <Dependency Name="p7" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleSegment>
+    <CircleSegment Name="a14" Visible="false">
+      <Dependency Name="p8" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+    <CircleSegment Name="a15" Visible="false">
+      <Dependency Name="p9" />
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <CircleSegment Name="a16" Visible="false">
+      <Dependency Name="p10" />
+      <Dependency Name="p5" />
+      <Dependency Name="p4" />
+    </CircleSegment>
+    <CircleSegment Name="a17" Visible="false">
+      <Dependency Name="p11" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </CircleSegment>
+    <CircleSegment Name="a18" Visible="false">
+      <Dependency Name="p12" />
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+    </CircleSegment>
+    <Polygon Name="poly19" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Region Name="r20" Style="Yellow" Operation="Difference">
+      <Dependency Name="poly19" />
+      <Dependency Name="a13" />
+      <Dependency Name="a14" />
+      <Dependency Name="a15" />
+      <Dependency Name="a16" />
+      <Dependency Name="a17" />
+      <Dependency Name="a18" />
+    </Region>
+    <Region Name="r21" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a13" />
+      <Dependency Name="a14" />
+    </Region>
+    <Region Name="r22" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a14" />
+      <Dependency Name="a15" />
+    </Region>
+    <Region Name="r23" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a15" />
+      <Dependency Name="a16" />
+    </Region>
+    <Region Name="r24" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a16" />
+      <Dependency Name="a17" />
+    </Region>
+    <Region Name="r25" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a17" />
+      <Dependency Name="a18" />
+    </Region>
+    <Region Name="r26" Style="Yellow" Operation="Intersection">
+      <Dependency Name="a18" />
+      <Dependency Name="a13" />
+    </Region>
+    <Polygon Name="poly27" Style="Cyan">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <CircleArc Name="a28" Style="Red">
+      <Dependency Name="p7" />
+      <Dependency Name="p2" />
+      <Dependency Name="p1" />
+    </CircleArc>
+    <CircleArc Name="a29" Style="Red">
+      <Dependency Name="p8" />
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <CircleArc Name="a30" Style="Red">
+      <Dependency Name="p9" />
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <CircleArc Name="a31" Style="Red">
+      <Dependency Name="p10" />
+      <Dependency Name="p5" />
+      <Dependency Name="p4" />
+    </CircleArc>
+    <CircleArc Name="a32" Style="Red">
+      <Dependency Name="p11" />
+      <Dependency Name="p6" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <CircleArc Name="a33" Style="Red">
+      <Dependency Name="p12" />
+      <Dependency Name="p1" />
+      <Dependency Name="p6" />
+    </CircleArc>
+    <Circle Name="c34" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+    </Circle>
+  </Figures>
+</Drawing>

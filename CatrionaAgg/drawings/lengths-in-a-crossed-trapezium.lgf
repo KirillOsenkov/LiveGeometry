@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-8.83" Top="3.63" Right="1.43" Bottom="-0.63" />
+  <Scene Left="-8.83" Top="3.63" Right="1.43" Bottom="-0.63" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFF2D82A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDFCB41" />
+            <GradientStop Color="#FFC0AC22" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FF7CC040" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF87DB3D" />
+            <GradientStop Color="#FF69BD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Teal" Color="#FF12876A" StrokeWidth="2.5">
+      <Dark Color="#FFA5F3E0" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="BR" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="0" Y="3" />
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="3" />
+    <PointByCoordinates Name="p2" Visible="false" X="-5.5" Y="3" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="TL" Style="Handle" X="-4" Y="3" Parameter="0.5714285714">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="BL" Visible="false" X="TL.X - 4" Y="0">
+      <Dependency Name="TL" />
+    </PointByCoordinates>
+    <Number Name="n4" Formula="((BL.X - TL.X) * (TR.Y - BL.Y) - 1 * (BL.Y - TL.Y) * (TR.X - BL.X)) / (((BR.X - TL.X) * (TR.Y - BL.Y) - 1 * (BR.Y - TL.Y) * (TR.X - BL.X)))">
+      <Dependency Name="BL" />
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="(TL.X + n4 * (BR.X - TL.X))" Y="(TL.Y + n4 * (BR.Y - TL.Y))">
+      <Dependency Name="TL" />
+      <Dependency Name="n4" />
+      <Dependency Name="BR" />
+    </PointByCoordinates>
+    <Polygon Name="poly5" Style="Yellow">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Green">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Polygon Name="poly7" Style="Frame">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="TL" />
+    </Polygon>
+    <Segment Name="s8" Style="Teal">
+      <Dependency Name="TL" />
+      <Dependency Name="BR" />
+    </Segment>
+    <Segment Name="s9" Style="Teal">
+      <Dependency Name="BL" />
+      <Dependency Name="TR" />
+    </Segment>
+    <PointByCoordinates Name="at10" Style="Anchor" X="0.5" Y="1.5" />
+    <AttachedLabel Name="t11" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="3">
+      <Dependency Name="at10" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at12" Style="Anchor" X="TL.X - 2.45" Y="1.95">
+      <Dependency Name="TL" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t13" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="x">
+      <Dependency Name="at12" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

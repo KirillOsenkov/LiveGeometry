@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.469" Top="6.469" Right="6.469" Bottom="-1.169" />
+  <Scene Left="-0.469" Top="6.469" Right="6.469" Bottom="-1.169" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFF55A02" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDA753C" />
+            <GradientStop Color="#FFBC571E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="BL" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="3.8" Y="3.8" />
+    <PointByCoordinates Name="p2" Visible="false" X="6.9" Y="3.8" />
+    <PointByCoordinates Name="p3" Visible="false" X="6.9" Y="6.4" />
+    <PointByCoordinates Name="p4" Visible="false" X="3.8" Y="6.4" />
+    <Polygon Name="poly5" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointInRegion Name="H" Style="Handle" X="6" Y="6">
+      <Dependency Name="poly5" />
+    </PointInRegion>
+    <PointByCoordinates Name="BR" Visible="false" X="H.X" Y="0">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" Visible="false" X="0" Y="H.Y / 2">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" Visible="false" X="H.X" Y="H.Y / 2">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Tm" Visible="false" X="H.X / 2" Y="H.Y">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bm" Visible="false" X="H.X / 2" Y="0">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Number Name="n6" Formula="((Tm.X - TL.X) * (L.Y - Tm.Y) - 1 * (Tm.Y - TL.Y) * (L.X - Tm.X)) / (((R.X - TL.X) * (L.Y - Tm.Y) - 1 * (R.Y - TL.Y) * (L.X - Tm.X)))">
+      <Dependency Name="Tm" />
+      <Dependency Name="TL" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Number>
+    <PointByCoordinates Name="X1" Visible="false" X="(TL.X + n6 * (R.X - TL.X))" Y="(TL.Y + n6 * (R.Y - TL.Y))">
+      <Dependency Name="TL" />
+      <Dependency Name="n6" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Number Name="n7" Formula="((Bm.X - BR.X) * (R.Y - Bm.Y) - 1 * (Bm.Y - BR.Y) * (R.X - Bm.X)) / (((L.X - BR.X) * (R.Y - Bm.Y) - 1 * (L.Y - BR.Y) * (R.X - Bm.X)))">
+      <Dependency Name="Bm" />
+      <Dependency Name="BR" />
+      <Dependency Name="R" />
+      <Dependency Name="L" />
+    </Number>
+    <PointByCoordinates Name="X2" Visible="false" X="(BR.X + n7 * (L.X - BR.X))" Y="(BR.Y + n7 * (L.Y - BR.Y))">
+      <Dependency Name="BR" />
+      <Dependency Name="n7" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Polygon Name="poly8" Style="Orange">
+      <Dependency Name="L" />
+      <Dependency Name="X1" />
+      <Dependency Name="R" />
+      <Dependency Name="X2" />
+    </Polygon>
+    <Segment Name="s9" Style="Ink">
+      <Dependency Name="TL" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="s10" Style="Ink">
+      <Dependency Name="BR" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="Tm" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="Bm" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="s13" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="BL" />
+      <Dependency Name="Bm" />
+    </Segment>
+    <Segment Name="s14" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="Bm" />
+      <Dependency Name="BR" />
+    </Segment>
+    <Segment Name="s15" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="BR" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="s16" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="R" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="s17" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="H" />
+      <Dependency Name="Tm" />
+    </Segment>
+    <Segment Name="s18" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="Tm" />
+      <Dependency Name="TL" />
+    </Segment>
+    <Segment Name="s19" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="TL" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s20" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="L" />
+      <Dependency Name="BL" />
+    </Segment>
+  </Figures>
+</Drawing>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <ShapeStyle Name="Orange" Color="#FFE0601E" StrokeWidth="2" Fill="#FFEE6F2A" Texture="FeltTip">
+      <Dark Color="#FFF3C0A5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDF7840" />
+            <GradientStop Color="#FFC05A22" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <PointStyle Name="Dot14" Size="14" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-4 + 0.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-4 + 1.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-4 + 2 * 4)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-4 + 1.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-4 + 0.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p7" Visible="false" X="(p1.X + p2.X) / 2" Y="(p1.Y + p2.Y) / 2">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(p2.X + p3.X) / 2" Y="(p2.Y + p3.Y) / 2">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="(p3.X + p4.X) / 2" Y="(p3.Y + p4.Y) / 2">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="(p4.X + p5.X) / 2" Y="(p4.Y + p5.Y) / 2">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(p5.X + p6.X) / 2" Y="(p5.Y + p6.Y) / 2">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(p6.X + p1.X) / 2" Y="(p6.Y + p1.Y) / 2">
+      <Dependency Name="p6" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Polygon Name="poly13" Style="Orange">
+      <Dependency Name="p1" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Orange">
+      <Dependency Name="p1" />
+      <Dependency Name="p9" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Orange">
+      <Dependency Name="p12" />
+      <Dependency Name="p10" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly16" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <PointByCoordinates Name="d17" Style="Dot14" X="p1.X" Y="p1.Y">
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d18" Style="Dot14" X="p7.X" Y="p7.Y">
+      <Dependency Name="p7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d19" Style="Dot14" X="p2.X" Y="p2.Y">
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d20" Style="Dot14" X="p8.X" Y="p8.Y">
+      <Dependency Name="p8" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d21" Style="Dot14" X="p3.X" Y="p3.Y">
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d22" Style="Dot14" X="p9.X" Y="p9.Y">
+      <Dependency Name="p9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d23" Style="Dot14" X="p4.X" Y="p4.Y">
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d24" Style="Dot14" X="p10.X" Y="p10.Y">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d25" Style="Dot14" X="p5.X" Y="p5.Y">
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d26" Style="Dot14" X="p11.X" Y="p11.Y">
+      <Dependency Name="p11" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d27" Style="Dot14" X="p6.X" Y="p6.Y">
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d28" Style="Dot14" X="p12.X" Y="p12.Y">
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+  </Figures>
+</Drawing>

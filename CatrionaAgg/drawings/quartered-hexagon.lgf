@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF64F4FB" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4AE0E8" />
+            <GradientStop Color="#FF2BC2C9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFC8FD9E" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF98E859" />
+            <GradientStop Color="#FF7ACA3A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GreenLine" Color="#FF036B2D" StrokeWidth="3">
+      <Dark Color="#FF9EFAC3" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="p3" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="p4" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="-2.4" Y="-1.7320508076" />
+    <PointByCoordinates Name="p8" Visible="false" X="2.4" Y="-1.7320508076" />
+    <Segment Name="track9" Visible="false">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Segment>
+    <PointOnFigure Name="P" Style="Handle" X="-1.2" Y="-1.7320508076" Parameter="0.25">
+      <Dependency Name="track9" />
+    </PointOnFigure>
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="P" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Segment Name="s12" Style="GreenLine">
+      <Dependency Name="P" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s13" Style="GreenLine">
+      <Dependency Name="P" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s14" Style="GreenLine">
+      <Dependency Name="P" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s15" Style="GreenLine">
+      <Dependency Name="P" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Polygon Name="poly16" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

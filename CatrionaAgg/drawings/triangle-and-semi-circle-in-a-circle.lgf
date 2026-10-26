@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFBA42A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE09E42" />
+            <GradientStop Color="#FFC28024" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF14C4DC" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFA2ECF6" />
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFF03C0A" StrokeWidth="3.5">
+      <Dark Color="#FFFAB29E" />
+    </LineStyle>
+    <LineStyle Name="Magenta" Color="#FFF0189A" StrokeWidth="3.5">
+      <Dark Color="#FFF99FD5" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Apex" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="Bl" Visible="false" X="-3.4641016151" Y="-2" />
+    <PointByCoordinates Name="Br" Visible="false" X="3.4641016151" Y="-2" />
+    <PointByCoordinates Name="M" Visible="false" X="0" Y="-2" />
+    <Polygon Name="poly1" Visible="false">
+      <Dependency Name="Apex" />
+      <Dependency Name="Bl" />
+      <Dependency Name="Br" />
+    </Polygon>
+    <CircleSector Name="a2" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="Br" />
+      <Dependency Name="Bl" />
+    </CircleSector>
+    <Region Name="r3" Style="Orange" Operation="Difference">
+      <Dependency Name="poly1" />
+      <Dependency Name="a2" />
+    </Region>
+    <Region Name="r4" Style="Orange" Operation="Difference">
+      <Dependency Name="a2" />
+      <Dependency Name="poly1" />
+    </Region>
+    <Circle Name="c5" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="Apex" />
+    </Circle>
+    <Segment Name="s6" Style="Red">
+      <Dependency Name="Bl" />
+      <Dependency Name="Apex" />
+    </Segment>
+    <Segment Name="s7" Style="Red">
+      <Dependency Name="Apex" />
+      <Dependency Name="Br" />
+    </Segment>
+    <CircleArc Name="a8" Style="Magenta">
+      <Dependency Name="M" />
+      <Dependency Name="Br" />
+      <Dependency Name="Bl" />
+    </CircleArc>
+    <Segment Name="s9" Style="Magenta">
+      <Dependency Name="Bl" />
+      <Dependency Name="Br" />
+    </Segment>
+  </Figures>
+</Drawing>

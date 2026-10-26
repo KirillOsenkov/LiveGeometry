@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.593" Top="4.1845494309" Right="7.693" Bottom="-2.8845494309" />
+  <Scene Left="-3.593" Top="4.1845494309" Right="7.693" Bottom="-2.8845494309" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Green" Color="#FF4AAFBA" StrokeWidth="3.5" Fill="#FFCDE6BE" Texture="Crayon">
+      <Dark Color="#FFB0E3E8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF99C67D" />
+            <GradientStop Color="#FF7AA75F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Magenta" Color="#FFDC3C88" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFEFA9CA" />
+    </ShapeStyle>
+    <TextStyle Name="TealText" FontSize="24" Color="#FF4AAFBA" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB0E3E8" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="MagentaText" FontSize="24" Color="#FFDC3C88" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFEFA9CA" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-0.9230986699" Y="1.5915494309" />
+    <PointByCoordinates Name="p2" Visible="false" X="-1.8302818456" Y="1.5915494309" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="TL" Style="Handle" X="-1.2732395447" Y="1.5915494309" Parameter="0.3859649123">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="t" Formula="-TL.X / 1.5915494309">
+      <Dependency Name="TL" />
+    </Number>
+    <Number Name="k" Formula="2.3561944902 - (1 + t ^ 2) / (2 * t)">
+      <Dependency Name="t" />
+    </Number>
+    <Number Name="sinb" Formula="1 / k">
+      <Dependency Name="k" />
+    </Number>
+    <Number Name="cosb" Formula="sqrt(1 - sinb ^ 2)">
+      <Dependency Name="sinb" />
+    </Number>
+    <Number Name="u" Formula="(1 - cosb) / sinb">
+      <Dependency Name="cosb" />
+      <Dependency Name="sinb" />
+    </Number>
+    <PointByCoordinates Name="TR" Visible="false" X="1.5915494309 * u" Y="1.5915494309">
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BR" Visible="false" X="1.5915494309 / u" Y="-1.5915494309">
+      <Dependency Name="u" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BL" Visible="false" X="-1.5915494309 / t" Y="-1.5915494309">
+      <Dependency Name="t" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="1.5915494309" />
+    <Circle Name="c5" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="p4" />
+    </Circle>
+    <Polygon Name="poly6" Style="Magenta" Z="1">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <PointByCoordinates Name="at7" Style="Anchor" X="3.5" Y="3.0415494309" />
+    <AttachedLabel Name="t8" Style="TealText" Z="1" OffsetX="-136.92" OffsetY="-18.2" Text="Circumference = 10">
+      <Dependency Name="at7" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at9" Style="Anchor" X="3.9" Y="2.1915494309" />
+    <AttachedLabel Name="t10" Style="MagentaText" Z="1" OffsetX="-107.16" OffsetY="-18.2" Text="Perimeter = 15">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

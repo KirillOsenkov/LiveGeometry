@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.7504871131" Top="2.7504871131" Right="8.2145887282" Bottom="-0.7504871131" />
+  <Scene Left="-0.7504871131" Top="2.7504871131" Right="8.2145887282" Bottom="-0.7504871131" />
+  <Styles>
+    <LineStyle Name="Yellow" Color="#FFE8C01E" StrokeWidth="4">
+      <Dark Color="#FFF6E5A2" />
+    </LineStyle>
+    <LineStyle Name="YellowMark" Color="#FFE8C01E" StrokeWidth="2.5">
+      <Dark Color="#FFF6E5A2" />
+    </LineStyle>
+    <LineStyle Name="Green" Color="#FF7DB060" StrokeWidth="4">
+      <Dark Color="#FFC4E8B0" />
+    </LineStyle>
+    <LineStyle Name="Blue" Color="#FF3D7AA6" StrokeWidth="4">
+      <Dark Color="#FFB0D1E8" />
+    </LineStyle>
+    <LineStyle Name="BlueMark" Color="#FF3D7AA6" StrokeWidth="3">
+      <Dark Color="#FFB0D1E8" />
+    </LineStyle>
+    <TextStyle Name="BlueText" FontSize="24" Color="#FF2E6A80" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB0D9E8" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="Y" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="C" Visible="false" X="7.4641016151" Y="2" />
+    <Segment Name="s1" Style="Yellow" Decoration="OneTick">
+      <Dependency Name="A" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="s2" Style="Yellow" Decoration="OneTick">
+      <Dependency Name="Y" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="angle3" Style="YellowMark" Radius="18">
+      <Dependency Name="Y" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </AngleArc>
+    <Segment Name="s4" Style="Green" Decoration="TwoTicks">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s5" Style="Green" Decoration="TwoTicks">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s6" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Number Name="n7" Formula="distance(C, A)">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Number>
+    <Number Name="n8" Formula="distance(C, B)">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="p9" Visible="false" X="(C.X + 1.1 * ((A.X - C.X) / n7))" Y="(C.Y + 1.1 * ((A.Y - C.Y) / n7))">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="n7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="(C.X + 1.1 * ((B.X - C.X) / n8))" Y="(C.Y + 1.1 * ((B.Y - C.Y) / n8))">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="n8" />
+    </PointByCoordinates>
+    <CircleArc Name="a11" Style="BlueMark">
+      <Dependency Name="C" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </CircleArc>
+    <PointByCoordinates Name="at12" Style="Anchor" X="5.85" Y="1.3" />
+    <AttachedLabel Name="t13" Style="BlueText" Z="1" OffsetX="-10.44" OffsetY="-18.2" Text="x">
+      <Dependency Name="at12" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

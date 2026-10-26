@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.5224871131" Top="5.9865887282" Right="7.9865887282" Bottom="-0.9224871131" />
+  <Scene Left="-0.5224871131" Top="5.9865887282" Right="7.9865887282" Bottom="-0.9224871131" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF0304F8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF6B7BFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF5010C4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFBFA1F7" />
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFF00707" StrokeWidth="3.5">
+      <Dark Color="#FFFA9E9E" />
+    </LineStyle>
+    <LineStyle Name="RedMark" Color="#FFF00707" StrokeWidth="3">
+      <Dark Color="#FFFA9E9E" />
+    </LineStyle>
+    <TextStyle Name="RedText" FontSize="32" Color="#FFF00707" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFA9E9E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="5.4641016151" Y="5.4641016151" />
+    <PointByCoordinates Name="R" Visible="false" X="7.4641016151" Y="2" />
+    <PointByCoordinates Name="L" Visible="false" X="2" Y="3.4641016151" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly5" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Purple">
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+      <Dependency Name="P" />
+      <Dependency Name="L" />
+    </Polygon>
+    <Segment Name="s7" Style="Red">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Segment>
+    <AngleArc Name="angle8" Style="RedMark" Radius="24">
+      <Dependency Name="P" />
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </AngleArc>
+    <PointByCoordinates Name="at9" Style="Anchor" X="P.X" Y="(P.Y - 1)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t10" Style="RedText" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="?">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

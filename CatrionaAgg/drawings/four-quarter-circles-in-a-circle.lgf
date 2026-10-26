@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2" Fill="#FF0193FE" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3D98DB" />
+            <GradientStop Color="#FF1F7ABD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2" Fill="#FFFCEA01" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBD03D" />
+            <GradientStop Color="#FFBCB11E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="2" Fill="#FFEE6A81" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE74964" />
+            <GradientStop Color="#FFC82A46" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="2" Fill="#FF9F81CE" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF895AD3" />
+            <GradientStop Color="#FF6B3CB4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Circle" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Rim" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="Reach" Visible="false" X="1.8" Y="0" />
+    <Circle Name="c1" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Reach" />
+    </Circle>
+    <PointInRegion Name="C" Style="Handle" X="-0.33" Y="0.89">
+      <Dependency Name="c1" />
+    </PointInRegion>
+    <Number Name="k" Formula="C.X ^ 2 + C.Y ^ 2 - 16">
+      <Dependency Name="C" />
+    </Number>
+    <Number Name="rBlue" Formula="(sqrt((-1 * C.X + 1 * C.Y) ^ 2 - 2 * k) - (-1 * C.X + 1 * C.Y)) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="k" />
+    </Number>
+    <PointByCoordinates Name="p2" Visible="false" X="(C.X - 1 * rBlue)" Y="(C.Y + 1 * rBlue)">
+      <Dependency Name="C" />
+      <Dependency Name="rBlue" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p3" Visible="false" X="(C.X - 1 * rBlue)" Y="C.Y">
+      <Dependency Name="C" />
+      <Dependency Name="rBlue" />
+    </PointByCoordinates>
+    <CircleSector Name="a4" Style="Blue">
+      <Dependency Name="p3" />
+      <Dependency Name="C" />
+      <Dependency Name="p2" />
+    </CircleSector>
+    <Number Name="rYellow" Formula="(sqrt((1 * C.X + 1 * C.Y) ^ 2 - 2 * k) - (1 * C.X + 1 * C.Y)) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="k" />
+    </Number>
+    <PointByCoordinates Name="p5" Visible="false" X="(C.X + 1 * rYellow)" Y="(C.Y + 1 * rYellow)">
+      <Dependency Name="C" />
+      <Dependency Name="rYellow" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="C.X" Y="(C.Y + 1 * rYellow)">
+      <Dependency Name="C" />
+      <Dependency Name="rYellow" />
+    </PointByCoordinates>
+    <CircleSector Name="a7" Style="Yellow">
+      <Dependency Name="p6" />
+      <Dependency Name="C" />
+      <Dependency Name="p5" />
+    </CircleSector>
+    <Number Name="rRed" Formula="(sqrt((1 * C.X + -1 * C.Y) ^ 2 - 2 * k) - (1 * C.X + -1 * C.Y)) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="k" />
+    </Number>
+    <PointByCoordinates Name="p8" Visible="false" X="(C.X + 1 * rRed)" Y="(C.Y - 1 * rRed)">
+      <Dependency Name="C" />
+      <Dependency Name="rRed" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="(C.X + 1 * rRed)" Y="C.Y">
+      <Dependency Name="C" />
+      <Dependency Name="rRed" />
+    </PointByCoordinates>
+    <CircleSector Name="a10" Style="Red">
+      <Dependency Name="p9" />
+      <Dependency Name="C" />
+      <Dependency Name="p8" />
+    </CircleSector>
+    <Number Name="rPurple" Formula="(sqrt((-1 * C.X + -1 * C.Y) ^ 2 - 2 * k) - (-1 * C.X + -1 * C.Y)) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="k" />
+    </Number>
+    <PointByCoordinates Name="p11" Visible="false" X="(C.X - 1 * rPurple)" Y="(C.Y - 1 * rPurple)">
+      <Dependency Name="C" />
+      <Dependency Name="rPurple" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="C.X" Y="(C.Y - 1 * rPurple)">
+      <Dependency Name="C" />
+      <Dependency Name="rPurple" />
+    </PointByCoordinates>
+    <CircleSector Name="a13" Style="Purple">
+      <Dependency Name="p12" />
+      <Dependency Name="C" />
+      <Dependency Name="p11" />
+    </CircleSector>
+    <Circle Name="c14" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="Rim" />
+    </Circle>
+  </Figures>
+</Drawing>

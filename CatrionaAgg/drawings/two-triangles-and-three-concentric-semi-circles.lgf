@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.56" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFE02" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCDB3D" />
+            <GradientStop Color="#FFBDBC1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hole" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFFFF">
+      <Dark Fill="#FF2B2B2B" />
+    </ShapeStyle>
+    <LineStyle Name="Cyan" Color="#FF18B4FA" StrokeWidth="3">
+      <Dark Color="#FF1C8CD8" />
+    </LineStyle>
+    <LineStyle Name="Diameter" Color="#FF2E7FE8" StrokeWidth="3">
+      <Dark Color="#FFA3C7F5" />
+    </LineStyle>
+    <LineStyle Name="Blue" Color="#FF0A18A8" StrokeWidth="3.5">
+      <Dark Color="#FF1A2A90" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFE25858" StrokeWidth="3">
+      <Dark Color="#FFF0A8A8" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="W" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="F" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="G" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="T" Visible="false" X="1" Y="1.7320508076" />
+    <CircleSegment Name="a3" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </CircleSegment>
+    <CircleSegment Name="a4" Style="Hole">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="F" />
+    </CircleSegment>
+    <CircleSegment Name="a5" Style="Yellow">
+      <Dependency Name="O" />
+      <Dependency Name="G" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+    <CircleArc Name="a6" Style="Cyan">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </CircleArc>
+    <CircleArc Name="a7" Style="Cyan">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="F" />
+    </CircleArc>
+    <CircleArc Name="a8" Style="Cyan">
+      <Dependency Name="O" />
+      <Dependency Name="G" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <Segment Name="s9" Style="Diameter">
+      <Dependency Name="W" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="s10" Style="Blue">
+      <Dependency Name="F" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="s11" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="s12" Style="Red">
+      <Dependency Name="F" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s13" Style="Red">
+      <Dependency Name="T" />
+      <Dependency Name="G" />
+    </Segment>
+  </Figures>
+</Drawing>

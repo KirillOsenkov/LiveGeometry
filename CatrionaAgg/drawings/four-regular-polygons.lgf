@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.342" Top="0.742" Right="6.742" Bottom="-7.642" />
+  <Scene Left="-5.342" Top="0.742" Right="6.742" Bottom="-7.642" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#FFF1E028" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF9F19F" />
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF28B4CC" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFAAE4EE" />
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF6E64B0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB7B0E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFD8581E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF3BDA5" />
+    </ShapeStyle>
+    <TextStyle Name="CyanMark" FontSize="32" Color="#FF28B4CC" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFAAE4EE" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="PurpleMark" FontSize="32" Color="#FF6E64B0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB7B0E8" />
+    </TextStyle>
+    <TextStyle Name="RedMark" FontSize="32" Color="#FFD8581E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF3BDA5" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(A.X - 2.8593325769)" Y="(A.Y - 3.175610544)">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(A.X + 0.4466716025)" Y="(A.Y - 4.2497964178)">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="H" Style="Handle" X="-0.5947152583" Y="-4.2316189425" Parameter="4.5727626402">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="along" Formula="H.X * -0.3090169944 + H.Y * -0.9510565163">
+      <Dependency Name="H" />
+    </Number>
+    <Number Name="across" Formula="H.Y * -0.3090169944 - H.X * -0.9510565163">
+      <Dependency Name="H" />
+    </Number>
+    <Number Name="U" Formula="along + sqrt(6.9282032303 - across ^ 2)">
+      <Dependency Name="along" />
+      <Dependency Name="across" />
+    </Number>
+    <Number Name="Ry" Formula="U / 1.9021130326">
+      <Dependency Name="U" />
+    </Number>
+    <PointByCoordinates Name="p4" Visible="false" X="Ry * -0.9510565163" Y="Ry * (0.3090169944 - 1)">
+      <Dependency Name="Ry" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="Ry * -0.5877852523" Y="Ry * (-0.8090169944 - 1)">
+      <Dependency Name="Ry" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="Ry * 0.5877852523" Y="Ry * (-0.8090169944 - 1)">
+      <Dependency Name="Ry" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="Ry * 0.9510565163" Y="Ry * (0.3090169944 - 1)">
+      <Dependency Name="Ry" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Cc" Visible="false" X="0.5257311121 * (0.9510565163 * H.X - 1 * 0.3090169944 * H.Y)" Y="0.5257311121 * (0.3090169944 * H.X + 0.9510565163 * H.Y)">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(Cc.X + (0.3090169944 * -Cc.X - 1 * 0.9510565163 * -Cc.Y))" Y="(Cc.Y + (0.9510565163 * -Cc.X + 0.3090169944 * -Cc.Y))">
+      <Dependency Name="Cc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="(Cc.X + (-1 * 0.8090169944 * -Cc.X - 1 * 0.5877852523 * -Cc.Y))" Y="(Cc.Y + (0.5877852523 * -Cc.X - 1 * 0.8090169944 * -Cc.Y))">
+      <Dependency Name="Cc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="(Cc.X + (-1 * 0.8090169944 * -Cc.X + 0.5877852523 * -Cc.Y))" Y="(Cc.Y + (-1 * 0.5877852523 * -Cc.X - 1 * 0.8090169944 * -Cc.Y))">
+      <Dependency Name="Cc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(Cc.X + (0.3090169944 * -Cc.X + 0.9510565163 * -Cc.Y))" Y="(Cc.Y + (-1 * 0.9510565163 * -Cc.X + 0.3090169944 * -Cc.Y))">
+      <Dependency Name="Cc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" Visible="false" X="(0.8090169944 * H.X - 1 * 0.5877852523 * H.Y)" Y="(0.5877852523 * H.X + 0.8090169944 * H.Y)">
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="(p5.X + (0.5 * (H.X - p5.X) - 1 * 0.8660254038 * (H.Y - p5.Y)))" Y="(p5.Y + (0.8660254038 * (H.X - p5.X) + 0.5 * (H.Y - p5.Y)))">
+      <Dependency Name="p5" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(p6.X + (0.5 * (Q.X - p6.X) + 0.8660254038 * (Q.Y - p6.Y)))" Y="(p6.Y + (-1 * 0.8660254038 * (Q.X - p6.X) + 0.5 * (Q.Y - p6.Y)))">
+      <Dependency Name="p6" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Polygon Name="poly14" Style="Yellow">
+      <Dependency Name="A" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Cyan">
+      <Dependency Name="A" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly16" Style="Purple">
+      <Dependency Name="p5" />
+      <Dependency Name="H" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly17" Style="Red">
+      <Dependency Name="p6" />
+      <Dependency Name="Q" />
+      <Dependency Name="p13" />
+    </Polygon>
+    <PointByCoordinates Name="at18" Style="Anchor" X="Cc.X" Y="Cc.Y">
+      <Dependency Name="Cc" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="CyanMark" Z="1" OffsetX="-22.84" OffsetY="-23.6" Text="12">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p20" Visible="false" X="(p5.X + H.X + p12.X) / 3" Y="(p5.Y + H.Y + p12.Y) / 3">
+      <Dependency Name="p5" />
+      <Dependency Name="H" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at21" Style="Anchor" X="p20.X" Y="p20.Y">
+      <Dependency Name="p20" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t22" Style="PurpleMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="3">
+      <Dependency Name="at21" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p23" Visible="false" X="(p6.X + Q.X + p13.X) / 3" Y="(p6.Y + Q.Y + p13.Y) / 3">
+      <Dependency Name="p6" />
+      <Dependency Name="Q" />
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at24" Style="Anchor" X="p23.X" Y="p23.Y">
+      <Dependency Name="p23" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t25" Style="RedMark" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="?">
+      <Dependency Name="at24" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

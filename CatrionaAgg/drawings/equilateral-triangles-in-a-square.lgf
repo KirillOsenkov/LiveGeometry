@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Scene Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Styles>
+    <ShapeStyle Name="Violet" Color="#FFDA80D8" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8B0E7" />
+    </ShapeStyle>
+    <ShapeStyle Name="Magenta" Color="#FFF40580" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFA9ECD" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF3A2010" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE9C5AF" />
+    </ShapeStyle>
+    <TextStyle Name="MagentaMark" FontSize="36" Color="#FFF40580" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFA9ECD" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="VioletMark" FontSize="36" Color="#FF9A3AAA" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE0B0E8" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="1.6905989232" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p3" Visible="false" X="2.8452994616" Y="2" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="3.4641016151" />
+    <Polygon Name="poly7" Style="Violet">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Magenta">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly10" Style="Frame">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p2" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="at11" Style="Anchor" X="2" Y="1.2" />
+    <AttachedLabel Name="t12" Style="MagentaMark" Z="1" OffsetX="-25.32" OffsetY="-26.3" Text="12">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at13" Style="Anchor" X="2.8452994616" Y="3.3833333333" />
+    <AttachedLabel Name="t14" Style="VioletMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="?">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

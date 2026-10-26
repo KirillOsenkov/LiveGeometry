@@ -1,3 +1,6 @@
+#!/usr/bin/env dotnet
+#:include catrionadrawings/*.cs
+
 // Writes the drawings of the Catriona Agg library (CatrionaAgg/drawings/<slug>.lgf), one
 // function per puzzle: her diagrams redrawn as constructions, in her colors, so that what the
 // puzzle says holds while the figure is dragged. No text but what her diagrams have (the given
@@ -10,6 +13,10 @@
 // segment or arc that keeps it in range), then the shapes on them. Each drawing has a scene,
 // the view it is fitted to. Then catriona.cs marks the puzzles that have a drawing in
 // puzzles.json.
+//
+// This file has the drawing kit (V, Lgf) and the first 20 puzzles drawn; the rest are in
+// catrionadrawings/<year>[-<part>].cs, more of the partial class Puzzles. A puzzle's function
+// says its slug with [Puzzle].
 
 #nullable disable
 
@@ -18,6 +25,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -27,29 +36,15 @@ string repository = FindRepository();
 string output = Path.Combine(repository, "CatrionaAgg", "drawings");
 Directory.CreateDirectory(output);
 
-var puzzles = new Dictionary<string, Action<Lgf>>
+var puzzles = new Dictionary<string, Action<Lgf>>();
+foreach (var method in typeof(Puzzles).GetMethods(BindingFlags.Public | BindingFlags.Static))
 {
-    ["three-hexagons-on-a-circle"] = Puzzles.ThreeHexagonsOnACircle,
-    ["a-triangle-inside-a-hexagon"] = Puzzles.ATriangleInsideAHexagon,
-    ["a-semi-circle-and-a-quarter-circle"] = Puzzles.ASemiCircleAndAQuarterCircle,
-    ["seven-squares"] = Puzzles.SevenSquares,
-    ["six-squares-and-a-quarter-circle"] = Puzzles.SixSquaresAndAQuarterCircle,
-    ["two-hexagons-in-a-rectangle-ii"] = Puzzles.TwoHexagonsInARectangleII,
-    ["three-congruent-rectangles-vi"] = Puzzles.ThreeCongruentRectanglesVI,
-    ["four-quarter-circles-iii"] = Puzzles.FourQuarterCirclesIII,
-    ["two-triangles-in-a-semi-circle"] = Puzzles.TwoTrianglesInASemiCircle,
-    ["four-squares-x"] = Puzzles.FourSquaresX,
-    ["four-squares-ix"] = Puzzles.FourSquaresIX,
-    ["three-regular-hexagons-and-a-semi-circle"] = Puzzles.ThreeRegularHexagonsAndASemiCircle,
-    ["four-quarter-circles-ii"] = Puzzles.FourQuarterCirclesII,
-    ["subdivided-triangle-ii"] = Puzzles.SubdividedTriangleII,
-    ["four-squares-xii"] = Puzzles.FourSquaresXII,
-    ["four-squares-xi"] = Puzzles.FourSquaresXI,
-    ["four-squares-and-an-isosceles-triangle"] = Puzzles.FourSquaresAndAnIsoscelesTriangle,
-    ["two-triangles-and-a-quarter-circle"] = Puzzles.TwoTrianglesAndAQuarterCircle,
-    ["two-squares-and-a-quarter-circle"] = Puzzles.TwoSquaresAndAQuarterCircle,
-    ["five-squares-ii"] = Puzzles.FiveSquaresII,
-};
+    if (method.GetCustomAttribute<PuzzleAttribute>() is { } puzzle && !puzzles.TryAdd(puzzle.Slug, method.CreateDelegate<Action<Lgf>>()))
+    {
+        Console.WriteLine($"error: two drawings called {puzzle.Slug}");
+        return 1;
+    }
+}
 
 var wanted = args.Length > 0 ? args : puzzles.Keys.ToArray();
 foreach (var slug in wanted)
@@ -80,6 +75,13 @@ static string FindRepository()
     }
 
     throw new Exception("run this from inside the repository");
+}
+
+/// <summary>The puzzle a function of Puzzles draws: its slug, the name of its drawing</summary>
+[AttributeUsage(AttributeTargets.Method)]
+class PuzzleAttribute(string slug) : Attribute
+{
+    public string Slug => slug;
 }
 
 /// <summary>A point as two expressions</summary>
@@ -170,7 +172,8 @@ class Lgf
     private readonly XElement styles = new("Styles");
     private readonly XElement figures = new("Figures");
     private readonly HashSet<string> names = new(StringComparer.Ordinal);
-    private readonly HashSet<string> styleNames = new(StringComparer.Ordinal);
+    /// <summary>The styles by name, and which method made each</summary>
+    private readonly Dictionary<string, string> styleKinds = new(StringComparer.Ordinal);
     private (double Left, double Top, double Right, double Bottom) scene;
     private int counter;
 
@@ -183,15 +186,31 @@ class Lgf
     // ---------- styles ----------
 
     /// <summary>
+    /// Whether the style is to be made: a name used before gives the style made then, by the same
+    /// method (a Line called like an earlier Fill would silently be that fill)
+    /// </summary>
+    bool IsNewStyle(string name, [CallerMemberName] string kind = null)
+    {
+        if (styleKinds.TryGetValue(name, out var made))
+        {
+            return made == kind ? false : throw new Exception($"the style {name} is a {made}, not a {kind}");
+        }
+
+        styleKinds[name] = kind;
+        return true;
+    }
+
+    /// <summary>
     /// What she colored the drawing with, the Texture of its fills: "Crayon" (colored pencil)
     /// or "FeltTip"; null for a diagonal gradient from a lighter tint of the color to the color
     /// </summary>
     public string Texture = "Crayon";
 
     /// <summary>A filled shape, the color laid down as she colored it (<see cref="Texture"/>), outlined in ink (or the given color)</summary>
-    public string Fill(string name, string color, string outline = Ink, double width = 2.5, double tint = 0.3)
+    /// <param name="darkOutline">The outline's color on the dark paper: by default a light tint of it (DarkLine)</param>
+    public string Fill(string name, string color, string outline = Ink, double width = 2.5, double tint = 0.3, string darkOutline = null)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             var style = new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", outline == null ? "#00000000" : outline), new XAttribute("StrokeWidth", N(width)),
                 Texture != null ? new XAttribute("Fill", color) : new XElement("Fill", Gradient(Mix(color, "#FFFFFFFF", tint), color)),
@@ -199,16 +218,18 @@ class Lgf
             var dark = new XElement("Dark");
             if (outline != null)
             {
-                dark.Add(new XAttribute("Color", outline == Ink ? DarkInk : DarkLine(outline)));
+                dark.Add(new XAttribute("Color", darkOutline ?? (outline == Ink ? DarkInk : DarkLine(outline))));
             }
 
             // On the dark paper a scan of pencil or pen on white can't be faithful (its pale spots
             // would be the dark paper): no texture there, and a gentle gradient in a tone of the
-            // same hue made for the dark paper (DarkTone) - an artistic liberty, not her colors
-            if (Texture != null)
+            // same hue made for the dark paper (DarkTone) - an artistic liberty, not her colors.
+            // A drawing she made on a computer gets the same tone: her light fills would glare.
+            // (a transparent fill stays transparent)
+            if (!color.StartsWith("#00"))
             {
                 var (light, deep) = DarkTone(color);
-                dark.Add(new XAttribute("Texture", "None"), new XElement("Fill", Gradient(light, deep)));
+                dark.Add(Texture != null ? new XAttribute("Texture", "None") : null, new XElement("Fill", Gradient(light, deep)));
             }
 
             if (dark.HasAttributes || dark.HasElements)
@@ -246,7 +267,8 @@ class Lgf
     static string DarkLine(string color)
     {
         var (hue, saturation, _, _) = ToHsl(color);
-        return Hsl(hue, Math.Clamp(saturation, 0.55, 0.9), 0.8);
+        // a gray stays gray (its hue is meaningless)
+        return Hsl(hue, saturation < 0.15 ? saturation : Math.Clamp(saturation, 0.55, 0.9), 0.8);
     }
 
     /// <summary>A colored text on a filled shape under the dark theme: the same hue, deep, on the mid-tone fill</summary>
@@ -290,7 +312,7 @@ class Lgf
     /// <summary>The paper's own color: white on the light paper, the dark paper's color on the dark one</summary>
     public string PaperFill(string name = "Paper", string outline = Ink, double width = 2.5)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", outline ?? "#00000000"), new XAttribute("StrokeWidth", N(width)), new XAttribute("Fill", Paper),
                 new XElement("Dark", outline == null ? null : new XAttribute("Color", outline == Ink ? DarkInk : DarkLine(outline)), new XAttribute("Fill", DarkPaper))));
@@ -300,12 +322,13 @@ class Lgf
     }
 
     /// <summary>An outline without a fill</summary>
-    public string Outline(string name, string color = Ink, double width = 2.5)
+    /// <param name="dark">The color on the dark paper: by default a light tint of the color (DarkLine)</param>
+    public string Outline(string name, string color = Ink, double width = 2.5, string dark = null)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", N(width)), new XAttribute("IsFilled", "false"),
-                new XElement("Dark", new XAttribute("Color", color == Ink ? DarkInk : DarkLine(color)))));
+                new XElement("Dark", new XAttribute("Color", dark ?? (color == Ink ? DarkInk : DarkLine(color))))));
         }
 
         return name;
@@ -314,7 +337,7 @@ class Lgf
     /// <param name="dark">The color on the dark paper: by default a light tint of the color (DarkLine); a line that mostly crosses fills the dark theme leaves bright (yellow, orange, green) wants a deep one</param>
     public string Line(string name, string color = Ink, double width = 2.5, string dark = null)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("LineStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", N(width)),
                 new XElement("Dark", new XAttribute("Color", dark ?? (color == Ink ? DarkInk : DarkLine(color))))));
@@ -326,7 +349,7 @@ class Lgf
     /// <summary>A filled angle mark</summary>
     public string Wedge(string name, string color)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("ShapeStyle", new XAttribute("Name", name), new XAttribute("Color", color), new XAttribute("StrokeWidth", "1"), new XAttribute("Fill", color),
                 new XElement("Dark", new XAttribute("Color", DarkLine(color)), new XAttribute("Fill", DarkLine(color)))));
@@ -338,7 +361,7 @@ class Lgf
     /// <summary>A text on the paper: light on the dark paper (or <paramref name="dark"/>, for one on a fill the dark theme leaves bright)</summary>
     public string Text(string name = "Mark", string color = Ink, double size = 26, string dark = null)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("TextStyle", new XAttribute("Name", name), new XAttribute("FontSize", N(size)), new XAttribute("Color", color), new XAttribute("FontFamily", "Segoe UI"), new XAttribute("Bold", "true"),
                 new XElement("Dark", new XAttribute("Color", dark ?? (color == Ink ? DarkInk : DarkLine(color))))));
@@ -350,7 +373,7 @@ class Lgf
     /// <summary>A text on a filled shape: dark on the fill under both themes (the dark theme's fills are mid-tones, DarkTone)</summary>
     public string ShapeText(string name = "ShapeMark", string color = Ink, double size = 26)
     {
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("TextStyle", new XAttribute("Name", name), new XAttribute("FontSize", N(size)), new XAttribute("Color", color), new XAttribute("FontFamily", "Segoe UI"), new XAttribute("Bold", "true"),
                 new XElement("Dark", new XAttribute("Color", color == Ink ? Ink : DarkOnShape(color)))));
@@ -363,7 +386,7 @@ class Lgf
     public string Handle()
     {
         const string name = "Handle";
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("PointStyle", new XAttribute("Name", name), new XAttribute("Size", "15"), new XAttribute("Fill", "#FFFFFFFF"), new XAttribute("Color", "#FF1E1E1E"), new XAttribute("StrokeWidth", "2.5"),
                 new XElement("Dark", new XAttribute("Fill", "#FF1E2228"), new XAttribute("Color", "#FFF2F2F2"))));
@@ -372,12 +395,13 @@ class Lgf
         return name;
     }
 
-    public string Dot()
+    /// <summary>A dot in ink, 8 pixels across or the given size</summary>
+    public string Dot(double size = 8)
     {
-        const string name = "Dot";
-        if (styleNames.Add(name))
+        string name = size == 8 ? "Dot" : "Dot" + N(size);
+        if (IsNewStyle(name))
         {
-            styles.Add(new XElement("PointStyle", new XAttribute("Name", name), new XAttribute("Size", "8"), new XAttribute("Fill", Ink), new XAttribute("Color", Ink), new XAttribute("StrokeWidth", "1"),
+            styles.Add(new XElement("PointStyle", new XAttribute("Name", name), new XAttribute("Size", N(size)), new XAttribute("Fill", Ink), new XAttribute("Color", Ink), new XAttribute("StrokeWidth", "1"),
                 new XElement("Dark", new XAttribute("Fill", DarkInk), new XAttribute("Color", DarkInk))));
         }
 
@@ -440,11 +464,21 @@ class Lgf
 
     public V Pt(double x, double y, string name = null) => Pt(V.At(x, y), name);
 
+    /// <summary>A hidden point where the line through a and b crosses the line through c and e</summary>
+    public V Crossing(V a, V b, V c, V e, string name = null)
+    {
+        static string Cross(V u, V v) => V.Sum(V.Times(u.X, v.Y), V.Neg(V.Times(u.Y, v.X)));
+        var along = b - a;
+        var other = e - c;
+        string t = Num($"{Cross(c - a, other)} / ({Cross(along, other)})");
+        return Pt(a + t * along, name);
+    }
+
     /// <summary>A visible point at the expressions' place: a dot that can't be dragged</summary>
-    public V DotAt(V at, string name = null)
+    public V DotAt(V at, string name = null, double size = 8)
     {
         name ??= Name("d");
-        Add("PointByCoordinates", name, new XAttribute("Style", Dot()), new XAttribute("X", at.X), new XAttribute("Y", at.Y), Dependencies(Named(at.X, at.Y).ToArray()));
+        Add("PointByCoordinates", name, new XAttribute("Style", Dot(size)), new XAttribute("X", at.X), new XAttribute("Y", at.Y), Dependencies(Named(at.X, at.Y).ToArray()));
         return V.Of(name);
     }
 
@@ -490,16 +524,37 @@ class Lgf
         return V.Of(name);
     }
 
+    /// <summary>A handle kept inside a shape (a hidden circle, polygon or region): dragged anywhere, it stops at the edge</summary>
+    public V HandleIn(string shape, double x, double y, string name = null)
+    {
+        name ??= Name("h");
+        Add("PointInRegion", name, new XAttribute("Style", Handle()), new XAttribute("X", N(x)), new XAttribute("Y", N(y)), Dependencies(shape));
+        return V.Of(name);
+    }
+
     static string PointName(V point) => point.X.EndsWith(".X") && point.Y == point.X.Substring(0, point.X.Length - 2) + ".Y"
         ? point.X.Substring(0, point.X.Length - 2)
         : throw new Exception("not a point: " + point);
 
     string Points(V point) => names.Contains(PointName(point)) ? PointName(point) : throw new Exception("unknown point " + point);
 
+    /// <summary>A polygon; without a style a hidden one, an operand of a region</summary>
     public string Polygon(string style, params V[] points)
     {
         string name = Name("poly");
-        Add("Polygon", name, new XAttribute("Style", style), Dependencies(points.Select(Points).ToArray()));
+        Add("Polygon", name, style == null ? new XAttribute("Visible", "false") : new XAttribute("Style", style), Dependencies(points.Select(Points).ToArray()));
+        return name;
+    }
+
+    /// <summary>
+    /// A polygon over every other shape, inked after coloring: polygons are drawn in a layer
+    /// under circles, arcs, sectors and segments, so one added last would still be under those;
+    /// Z 1 puts it over all of them (still under the points and the texts)
+    /// </summary>
+    public string Inked(string style, params V[] points)
+    {
+        string name = Name("poly");
+        Add("Polygon", name, new XAttribute("Style", style), new XAttribute("Z", "1"), Dependencies(points.Select(Points).ToArray()));
         return name;
     }
 
@@ -520,6 +575,20 @@ class Lgf
         return name;
     }
 
+    /// <summary>
+    /// A dashed line from a to b drawn as so many dashes (the player's own dash pattern is a few
+    /// pixels, far shorter than hers), a dash at each end; share is the part of a period inked
+    /// </summary>
+    public void Dashed(string style, V a, V b, int dashes, double share = 0.6)
+    {
+        double period = 1 / (dashes - 1 + share);
+        for (int i = 0; i < dashes; i++)
+        {
+            double from = i * period, to = Math.Min(1, i * period + share * period);
+            Segment(style, Pt(a + from * (b - a)), Pt(a + to * (b - a)));
+        }
+    }
+
     public string Vector(string style, V a, V b)
     {
         string name = Name("v");
@@ -527,10 +596,11 @@ class Lgf
         return name;
     }
 
+    /// <summary>A circle; without a style a hidden one, an operand of a region or what a handle stays in</summary>
     public string Circle(string style, V center, V through)
     {
         string name = Name("c");
-        Add("Circle", name, new XAttribute("Style", style), Dependencies(Points(center), Points(through)));
+        Add("Circle", name, style == null ? new XAttribute("Visible", "false") : new XAttribute("Style", style), Dependencies(Points(center), Points(through)));
         return name;
     }
 
@@ -542,10 +612,11 @@ class Lgf
         return name;
     }
 
+    /// <summary>A region; without a style a hidden one, an operand of another region</summary>
     public string Region(string style, string operation, params string[] operands)
     {
         string name = Name("r");
-        Add("Region", name, new XAttribute("Style", style), new XAttribute("Operation", operation), Dependencies(operands));
+        Add("Region", name, style == null ? new XAttribute("Visible", "false") : new XAttribute("Style", style), new XAttribute("Operation", operation), Dependencies(operands));
         return name;
     }
 
@@ -562,14 +633,19 @@ class Lgf
     /// toward a to the side toward b: an angle mark (AngleArc) draws a square at 90°, which would say
     /// the answer when the answer is 90°
     /// </summary>
-    public string ArcMark(string style, V vertex, V a, V b, double radius)
+    public string ArcMark(string style, V vertex, V a, V b, double radius) => Mark("CircleArc", style, vertex, a, b, radius);
+
+    /// <summary>A filled angle mark (a <see cref="Wedge"/> style) as a sector of the given radius (units), counterclockwise from the side toward a to the side toward b: it keeps its size against the drawing, as <see cref="ArcMark"/></summary>
+    public string SectorMark(string style, V vertex, V a, V b, double radius) => Mark("CircleSector", style, vertex, a, b, radius);
+
+    string Mark(string kind, string style, V vertex, V a, V b, double radius)
     {
         string v = PointName(vertex);
         string toA = Num($"distance({v}, {PointName(a)})");
         string toB = Num($"distance({v}, {PointName(b)})");
         var start = Pt(vertex + Lgf.N(radius) * new V($"({PointName(a)}.X - {v}.X) / {toA}", $"({PointName(a)}.Y - {v}.Y) / {toA}"));
         var end = Pt(vertex + Lgf.N(radius) * new V($"({PointName(b)}.X - {v}.X) / {toB}", $"({PointName(b)}.Y - {v}.Y) / {toB}"));
-        return Arc("CircleArc", style, vertex, start, end);
+        return Arc(kind, style, vertex, start, end);
     }
 
     /// <summary>
@@ -594,7 +670,7 @@ class Lgf
     string Anchor()
     {
         const string name = "Anchor";
-        if (styleNames.Add(name))
+        if (IsNewStyle(name))
         {
             styles.Add(new XElement("PointStyle", new XAttribute("Name", name), new XAttribute("Size", "1"), new XAttribute("Fill", "#00000000"), new XAttribute("Color", "#00000000"), new XAttribute("StrokeWidth", "0")));
         }
@@ -603,7 +679,8 @@ class Lgf
     }
 
     /// <summary>A dimension: a double arrow beside the segment from a to b, the given distance to its left (in units), with a text in a gap in the middle</summary>
-    public void Dimension(string lineStyle, string textStyle, V a, V b, double offset, string text, double gap = 0.45)
+    /// <param name="size">The text style's size, which centers the text in the gap</param>
+    public void Dimension(string lineStyle, string textStyle, V a, V b, double offset, string text, double gap = 0.45, double size = 26)
     {
         string length = Num($"distance({PointName(a)}, {PointName(b)})");
         var along = Pt(new V($"({PointName(b)}.X - {PointName(a)}.X) / {length}", $"({PointName(b)}.Y - {PointName(a)}.Y) / {length}"));
@@ -615,7 +692,16 @@ class Lgf
         var right = Pt(middle + gap * along);
         Vector(lineStyle, left, from);
         Vector(lineStyle, right, to);
-        Label(text, middle, textStyle);
+        Label(text, middle, textStyle, size);
+    }
+
+    /// <summary>An unbroken double arrow from a to b (two vectors from its middle) with a text at the given place, beside it as she often wrote it</summary>
+    public void DoubleArrow(string lineStyle, string textStyle, V a, V b, string text, V textAt, double size = 26)
+    {
+        var middle = Pt(new V($"({a.X} + {b.X}) / 2", $"({a.Y} + {b.Y}) / 2"));
+        Vector(lineStyle, middle, Pt(a));
+        Vector(lineStyle, middle, Pt(b));
+        Label(text, textAt, textStyle, size);
     }
 
     public string ToText()
@@ -640,7 +726,7 @@ class Lgf
     }
 }
 
-static class Puzzles
+static partial class Puzzles
 {
     const double S3 = 0.8660254037844386; // sqrt(3) / 2
     static readonly string s3 = "0.8660254037844386";
@@ -681,6 +767,7 @@ static class Puzzles
     // the circle; the orange one hangs from its top right vertex and the pink one from its bottom right,
     // each with a vertex on the circle. Dragging the yellow one's left vertex along the circle resizes all
     // three, and the pink one stays four times the orange one.
+    [Puzzle("three-hexagons-on-a-circle")]
     public static void ThreeHexagonsOnACircle(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -708,6 +795,7 @@ static class Puzzles
     // An equilateral triangle inside a regular hexagon, one vertex at a corner of the hexagon and one on
     // the long diagonal. Dragging that one along the diagonal swings the third vertex, and the blue line
     // from it to the next corner keeps its angle.
+    [Puzzle("a-triangle-inside-a-hexagon")]
     public static void ATriangleInsideAHexagon(Lgf d)
     {
         var right = d.Pt(4, 0);
@@ -733,6 +821,7 @@ static class Puzzles
     // angle? The point on the quarter circle is dragged, and the point on the semicircle follows so that
     // the blue angles stay equal: it is where the line from the dragged point through the middle of the
     // semicircle's other half meets it again.
+    [Puzzle("a-semi-circle-and-a-quarter-circle")]
     public static void ASemiCircleAndAQuarterCircle(Lgf d)
     {
         var q = d.Pt(0, 0, "Q");
@@ -765,6 +854,7 @@ static class Puzzles
     // Seven squares: six small ones in a net and a big one with a corner at the bottom of the net's middle
     // column and its far side through the top of it. Dragging the big square's corner turns it (its far
     // side always through that point), and the angle stays.
+    [Puzzle("seven-squares")]
     public static void SevenSquares(Lgf d)
     {
         var v0 = d.Pt(1, 0, "V");
@@ -793,6 +883,7 @@ static class Puzzles
     // Six squares and a quarter circle, the purple square with two corners on the arc; the blue square
     // has area 2, the yellow? Dragging the purple square's corner along the arc changes the sizes, and
     // the yellow square stays twice as wide as the blue.
+    [Puzzle("six-squares-and-a-quarter-circle")]
     public static void SixSquaresAndAQuarterCircle(Lgf d)
     {
         const double R = 10;
@@ -817,6 +908,7 @@ static class Puzzles
 
     // Two regular hexagons in a rectangle whose diagonal runs along a side of each. Nothing to drag: the
     // rectangle is the one the hexagons fit.
+    [Puzzle("two-hexagons-in-a-rectangle-ii")]
     public static void TwoHexagonsInARectangleII(Lgf d)
     {
         const double s = 2, h = 2.5 * s, w = 2.5 * 2 * S3 * s;
@@ -839,6 +931,7 @@ static class Puzzles
     // Three congruent rectangles, two lines from the top corner making two white triangles. Dragging
     // the blue rectangle along the top of the green one, or the green one's corner to change the shape
     // of all three: the white triangles always add up to a quarter of a rectangle... (the fraction shaded stays).
+    [Puzzle("three-congruent-rectangles-vi")]
     public static void ThreeCongruentRectanglesVI(Lgf d)
     {
         var o = d.Pt(0, 0, "O");
@@ -859,6 +952,7 @@ static class Puzzles
 
     // Four quarter circles; the red one has area 12, the orange? Every quarter circle meets at the point on
     // the diagonal, which is dragged: the red one and the orange one change, the orange one stays twice the red.
+    [Puzzle("four-quarter-circles-iii")]
     public static void FourQuarterCirclesIII(Lgf d)
     {
         const double R = 10;
@@ -884,6 +978,7 @@ static class Puzzles
     // Two congruent isosceles triangles in a semicircle, sharing the end of its diameter; the purple one's
     // legs are 4, the semicircle's area? Dragging the blue one's corner along the arc: the triangles change,
     // the legs stay the radius.
+    [Puzzle("two-triangles-in-a-semi-circle")]
     public static void TwoTrianglesInASemiCircle(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -907,6 +1002,7 @@ static class Puzzles
 
     // Four squares: two yellow of area 9, the blue? and a big one on the blue one's corner and the
     // top yellow one's, its side through the left yellow one's corner. Nothing to drag: the condition fixes it.
+    [Puzzle("four-squares-x")]
     public static void FourSquaresX(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -931,6 +1027,7 @@ static class Puzzles
     // A green square with a corner at the end of a row of three squares and its sides through two
     // corners of the first one. The angle at its far corner, between its side and the line to the row's
     // first corner? Nothing to drag: the row decides the square.
+    [Puzzle("four-squares-ix")]
     public static void FourSquaresIX(Lgf d)
     {
         var w = d.Pt(1.2, 0.4);
@@ -953,6 +1050,7 @@ static class Puzzles
     // Three regular hexagons: the red one and the yellow one on the diameter sharing a corner, the blue
     // one, of side 2, on their outer top corners, which are on the semicircle. Its diameter? Dragging the
     // blue one's corner along the arc changes the red one and the yellow one; the semicircle stays.
+    [Puzzle("three-regular-hexagons-and-a-semi-circle")]
     public static void ThreeRegularHexagonsAndASemiCircle(Lgf d)
     {
         const double R = 4;
@@ -999,6 +1097,7 @@ static class Puzzles
     // Four quarter circles; what fraction is shaded? The white quarter circle has its corner on the
     // vertical radius and its other end on the arc, the inner left one reaches the same height. Dragging
     // that end along the arc: the shaded parts change, together they stay half.
+    [Puzzle("four-quarter-circles-ii")]
     public static void FourQuarterCirclesII(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -1029,6 +1128,7 @@ static class Puzzles
 
     // A triangle, one side halved, another cut in three; what fraction is shaded? Every corner can be
     // dragged: the fraction stays.
+    [Puzzle("subdivided-triangle-ii")]
     public static void SubdividedTriangleII(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -1051,6 +1151,7 @@ static class Puzzles
 
     // Four squares: three the same size in a big one; the angle at its corner? Dragging the corner of the
     // left small square resizes the three: the angle stays.
+    [Puzzle("four-squares-xii")]
     public static void FourSquaresXII(Lgf d)
     {
         const double L = 10;
@@ -1075,6 +1176,7 @@ static class Puzzles
     // A big square, a blue rectangle of two squares (area 12 each) hanging from its corner down to its
     // bottom side, and a green square between the rectangle's middle and the big square's other corner.
     // Dragging the rectangle's foot along the bottom tilts it: the green square stays twice the blue one.
+    [Puzzle("four-squares-xi")]
     public static void FourSquaresXI(Lgf d)
     {
         const double L = 8;
@@ -1107,6 +1209,7 @@ static class Puzzles
 
     // Four squares (a 2 by 2 grid of side 3) and an isosceles triangle whose sides run through grid
     // points. Its area? Nothing to drag: the grid decides it.
+    [Puzzle("four-squares-and-an-isosceles-triangle")]
     public static void FourSquaresAndAnIsoscelesTriangle(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -1129,6 +1232,7 @@ static class Puzzles
     // Two congruent right triangles side by side under a quarter circle as high as they are; the angle
     // where the arc crosses the left one's long side? Dragging the corner they share changes their shape:
     // the angle stays.
+    [Puzzle("two-triangles-and-a-quarter-circle")]
     public static void TwoTrianglesAndAQuarterCircle(Lgf d)
     {
         d.Texture = "FeltTip";
@@ -1156,6 +1260,7 @@ static class Puzzles
     // Two squares and a quarter circle: the red square (area 12) in the big one's corner, its sides drawn
     // on across, and lines through where they cross the arc. The yellow area? Dragging the red square's
     // corner along the diagonal: the yellow area stays the red one's.
+    [Puzzle("two-squares-and-a-quarter-circle")]
     public static void TwoSquaresAndAQuarterCircle(Lgf d)
     {
         const double L = 8;
@@ -1183,6 +1288,7 @@ static class Puzzles
 
     // Five squares in a row, a fan of triangles from one corner to their tops. What fraction is shaded?
     // Every square's corner can be dragged to resize it: the fraction stays.
+    [Puzzle("five-squares-ii")]
     public static void FiveSquaresII(Lgf d)
     {
         d.Texture = "FeltTip";

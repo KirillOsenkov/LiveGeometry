@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Scene Left="-0.308" Top="4.308" Right="4.308" Bottom="-0.708" />
+  <Styles>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEAC02" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBA83D" />
+            <GradientStop Color="#FFBD891F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <PointStyle Name="Dot20" Size="20" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="Mb" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="Mr" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="X" Visible="false" X="1.6" Y="0.8" />
+    <Polygon Name="poly4" Style="Orange">
+      <Dependency Name="p1" />
+      <Dependency Name="X" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Orange">
+      <Dependency Name="X" />
+      <Dependency Name="Mr" />
+      <Dependency Name="p3" />
+      <Dependency Name="Mb" />
+    </Polygon>
+    <Segment Name="s6" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="Mb" />
+    </Segment>
+    <Segment Name="s7" Style="Ink">
+      <Dependency Name="p2" />
+      <Dependency Name="Mr" />
+    </Segment>
+    <PointByCoordinates Name="p8" Visible="false" X="4" Y="4" />
+    <Polygon Name="poly9" Style="Frame" Z="1">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p8" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <PointByCoordinates Name="MbDot" Style="Dot20" X="Mb.X" Y="Mb.Y">
+      <Dependency Name="Mb" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="MrDot" Style="Dot20" X="Mr.X" Y="Mr.Y">
+      <Dependency Name="Mr" />
+    </PointByCoordinates>
+  </Figures>
+</Drawing>

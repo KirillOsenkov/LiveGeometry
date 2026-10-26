@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.885" Top="0.935" Right="5.385" Bottom="-3.385" />
+  <Scene Left="-0.885" Top="0.935" Right="5.385" Bottom="-3.385" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FFBEE04A" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFBDE143" />
+            <GradientStop Color="#FF9EC224" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Line" Color="#FF10A81C" StrokeWidth="3.5">
+      <Dark Color="#FF34B848" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF10A81C" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF34B848" />
+    </ShapeStyle>
+    <TextStyle Name="Mark" FontSize="26" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="BL" Visible="false" X="-0.5" Y="-2.5" />
+    <PointByCoordinates Name="BR" Visible="false" X="4.5" Y="-2.5" />
+    <PointByCoordinates Name="X" Visible="false" X="1" Y="-1" />
+    <PointByCoordinates Name="Y" Visible="false" X="3.5" Y="-1.5" />
+    <Polygon Name="poly1" Style="Green">
+      <Dependency Name="TL" />
+      <Dependency Name="X" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Green">
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+      <Dependency Name="Y" />
+    </Polygon>
+    <Segment Name="s3" Style="Line">
+      <Dependency Name="P" />
+      <Dependency Name="BL" />
+    </Segment>
+    <Segment Name="s4" Style="Line">
+      <Dependency Name="P" />
+      <Dependency Name="BR" />
+    </Segment>
+    <Segment Name="s5" Style="Line">
+      <Dependency Name="TL" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="s6" Style="Line">
+      <Dependency Name="TR" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Polygon Name="poly7" Style="Frame" Z="1">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <PointByCoordinates Name="at8" Style="Anchor" X="1" Y="0.32" />
+    <AttachedLabel Name="t9" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="2">
+      <Dependency Name="at8" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at10" Style="Anchor" X="3.5" Y="0.32" />
+    <AttachedLabel Name="t11" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="3">
+      <Dependency Name="at10" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

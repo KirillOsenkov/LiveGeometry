@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.0703193978" Top="4.7062177826" Right="5.8023702054" Bottom="-3.6062177826" />
+  <Scene Left="-4.0703193978" Top="4.7062177826" Right="5.8023702054" Bottom="-3.6062177826" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFEF862" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8E24A" />
+            <GradientStop Color="#FFC9C32B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF3887FC" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4484E2" />
+            <GradientStop Color="#FF2565C4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF73A65B" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF77C752" />
+            <GradientStop Color="#FF59A933" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Teal" Color="#FF2E7068" StrokeWidth="2.5">
+      <Dark Color="#FFB0E8E1" />
+    </LineStyle>
+    <TextStyle Name="TealMark" FontSize="32" Color="#FF2E7068" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB0E8E1" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-3.4641016151" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-3.4641016151 + 0.5 * 3.4641016151)" Y="0.8660254037844386 * 3.4641016151" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-3.4641016151 + 1.5 * 3.4641016151)" Y="0.8660254037844386 * 3.4641016151" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-3.4641016151 + 2 * 3.4641016151)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-3.4641016151 + 1.5 * 3.4641016151)" Y="-0.8660254037844386 * 3.4641016151" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-3.4641016151 + 0.5 * 3.4641016151)" Y="-0.8660254037844386 * 3.4641016151" />
+    <PointByCoordinates Name="p7" Visible="false" X="3.4641016151" Y="(2 + 2)" />
+    <PointByCoordinates Name="p8" Visible="false" X="(3.4641016151 - 1.7320508076)" Y="(2 + 1)" />
+    <PointByCoordinates Name="p9" Visible="false" X="(3.4641016151 - 1.7320508076)" Y="(2 - 1)" />
+    <PointByCoordinates Name="p10" Visible="false" X="(3.4641016151 - 0)" Y="(2 - 2)" />
+    <PointByCoordinates Name="p11" Visible="false" X="(3.4641016151 + 1.7320508076)" Y="(2 - 1)" />
+    <PointByCoordinates Name="p12" Visible="false" X="(3.4641016151 + 1.7320508076)" Y="(2 + 1)" />
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Blue">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Green">
+      <Dependency Name="p3" />
+      <Dependency Name="p9" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <AngleArc Name="angle16" Style="Teal" Radius="32">
+      <Dependency Name="p3" />
+      <Dependency Name="p2" />
+      <Dependency Name="p7" />
+    </AngleArc>
+    <PointByCoordinates Name="at17" Style="Anchor" X="(p3.X - 0.42)" Y="(p3.Y + 0.9)">
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t18" Style="TealMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.84" Top="4.84" Right="6.84" Bottom="-8.3041016151" />
+  <Scene Left="-6.84" Top="4.84" Right="6.84" Bottom="-8.3041016151" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FFBAE2FC" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF6FAFD9" />
+            <GradientStop Color="#FF5091BB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Circle" Color="#FF0A0AAA" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FF9F9FF9" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="30" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="-3.4641016151" />
+    <Circle Name="c1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="c2" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="c3" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Circle>
+    <Region Name="r4" Visible="false" Operation="Intersection">
+      <Dependency Name="c1" />
+      <Dependency Name="c2" />
+    </Region>
+    <Region Name="r5" Visible="false" Operation="Intersection">
+      <Dependency Name="c2" />
+      <Dependency Name="c3" />
+    </Region>
+    <Region Name="r6" Visible="false" Operation="Intersection">
+      <Dependency Name="c1" />
+      <Dependency Name="c3" />
+    </Region>
+    <Region Name="r7" Style="Blue" Operation="Difference">
+      <Dependency Name="r4" />
+      <Dependency Name="c3" />
+    </Region>
+    <Region Name="r8" Style="Blue" Operation="Difference">
+      <Dependency Name="r5" />
+      <Dependency Name="c1" />
+    </Region>
+    <Region Name="r9" Style="Blue" Operation="Difference">
+      <Dependency Name="r6" />
+      <Dependency Name="c2" />
+    </Region>
+    <PointByCoordinates Name="p10" Visible="false" X="-6" Y="0" />
+    <Circle Name="c11" Style="Circle">
+      <Dependency Name="A" />
+      <Dependency Name="p10" />
+    </Circle>
+    <PointByCoordinates Name="p12" Visible="false" X="6" Y="0" />
+    <Circle Name="c13" Style="Circle">
+      <Dependency Name="B" />
+      <Dependency Name="p12" />
+    </Circle>
+    <PointByCoordinates Name="p14" Visible="false" X="0" Y="-7.4641016151" />
+    <Circle Name="c15" Style="Circle">
+      <Dependency Name="C" />
+      <Dependency Name="p14" />
+    </Circle>
+    <PointByCoordinates Name="p16" Visible="false" X="-0.55" Y="0" />
+    <PointByCoordinates Name="p17" Visible="false" X="-2" Y="0" />
+    <Vector Name="v18" Style="Arrow">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Vector>
+    <PointByCoordinates Name="p19" Visible="false" X="0.55" Y="0" />
+    <PointByCoordinates Name="p20" Visible="false" X="2" Y="0" />
+    <Vector Name="v21" Style="Arrow">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Vector>
+    <PointByCoordinates Name="at22" Style="Anchor" X="0" Y="0" />
+    <AttachedLabel Name="t23" Style="Mark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="4">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

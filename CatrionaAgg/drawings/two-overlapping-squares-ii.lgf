@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.5634891303" Top="5.9300522763" Right="8.6133338493" Bottom="-1.1634891303" />
+  <Scene Left="-0.5634891303" Top="5.9300522763" Right="8.6133338493" Bottom="-1.1634891303" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFEC02" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDCD03D" />
+            <GradientStop Color="#FFBDB11F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFE9A10" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDD9B3F" />
+            <GradientStop Color="#FFBF7C21" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Q" Visible="false" X="4.472135955" Y="0" />
+    <PointByCoordinates Name="L" Visible="false" X="2.683281573" Y="3.577708764" />
+    <PointByCoordinates Name="U" Visible="false" X="6.260990337" Y="5.366563146" />
+    <PointByCoordinates Name="R" Visible="false" X="8.049844719" Y="1.788854382" />
+    <PointByCoordinates Name="X" Visible="false" X="4.472135955" Y="4.472135955" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="4.472135955" />
+    <Polygon Name="poly3" Style="Yellow">
+      <Dependency Name="p1" />
+      <Dependency Name="Q" />
+      <Dependency Name="L" />
+      <Dependency Name="X" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly4" Style="Orange">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+      <Dependency Name="U" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Frame" Z="1">
+      <Dependency Name="p1" />
+      <Dependency Name="Q" />
+      <Dependency Name="X" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Frame" Z="1">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+      <Dependency Name="U" />
+      <Dependency Name="L" />
+    </Polygon>
+  </Figures>
+</Drawing>

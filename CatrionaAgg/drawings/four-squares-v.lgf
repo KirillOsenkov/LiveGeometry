@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.599375" Top="6.599375" Right="9.161875" Bottom="-3.161875" />
+  <Scene Left="-0.599375" Top="6.599375" Right="9.161875" Bottom="-3.161875" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFDBCD4" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD97097" />
+            <GradientStop Color="#FFBA5178" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FF8565C3" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7B4AD9" />
+            <GradientStop Color="#FF5C2CBA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="LightBlue" Color="#FF7FC8F2" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFA2D7F6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Navy" Color="#FF262DAE" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFABAFED" />
+    </ShapeStyle>
+    <ShapeStyle Name="Magenta" Color="#FFE8509F" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF3A5CE" />
+    </ShapeStyle>
+    <ShapeStyle Name="DarkPurple" Color="#FF3A1470" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFC6A8F0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="K" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="6" />
+    <PointByCoordinates Name="p3" Visible="false" X="6" Y="-0.9" />
+    <PointByCoordinates Name="p4" Visible="false" X="6" Y="-2.9" />
+    <Segment Name="track5" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <PointOnFigure Name="P" Style="Handle" X="6" Y="-2.05" Parameter="0.575">
+      <Dependency Name="track5" />
+    </PointOnFigure>
+    <Number Name="c" Formula="1.25 * (-P.Y)">
+      <Dependency Name="P" />
+    </Number>
+    <PointByCoordinates Name="p6" Visible="false" X="(-P.Y)" Y="6">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="6 + (-P.Y)" Y="6 - (-P.Y)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="6 - (-P.Y)" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="6 - (-P.Y)" Y="0">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="6" Y="-c">
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="6 + c" Y="-c">
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="6 + c" Y="0">
+      <Dependency Name="c" />
+    </PointByCoordinates>
+    <Polygon Name="poly13" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="K" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly14" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Region Name="r15" Style="Pink" Operation="Difference">
+      <Dependency Name="poly13" />
+      <Dependency Name="poly14" />
+    </Region>
+    <Polygon Name="poly16" Visible="false">
+      <Dependency Name="p8" />
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly17" Visible="false">
+      <Dependency Name="K" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Region Name="r18" Style="Purple" Operation="Difference">
+      <Dependency Name="poly14" />
+      <Dependency Name="poly13" />
+      <Dependency Name="poly16" />
+      <Dependency Name="poly17" />
+    </Region>
+    <Polygon Name="poly19" Style="LightBlue">
+      <Dependency Name="K" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly20" Style="Navy">
+      <Dependency Name="p8" />
+      <Dependency Name="P" />
+      <Dependency Name="K" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly21" Style="Magenta">
+      <Dependency Name="O" />
+      <Dependency Name="K" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly22" Style="DarkPurple">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+      <Dependency Name="p7" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

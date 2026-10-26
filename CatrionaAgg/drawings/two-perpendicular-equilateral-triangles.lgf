@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.8465887282" Top="0.3824871131" Right="2.3824871131" Bottom="-4.3824871131" />
+  <Scene Left="-3.8465887282" Top="0.3824871131" Right="2.3824871131" Bottom="-4.3824871131" />
+  <Styles>
+    <ShapeStyle Name="LightOrange" Color="#FFEFA055" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFF6CBA2" />
+    </ShapeStyle>
+    <LineStyle Name="DarkOrange" Color="#FFE0681E" StrokeWidth="3.5">
+      <Dark Color="#FFF3C3A5" />
+    </LineStyle>
+    <ShapeStyle Name="Magenta" Color="#FFCC4C80" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE8B0C7" />
+    </ShapeStyle>
+    <TextStyle Name="MagentaText" FontSize="24" Color="#FFCC4C80" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8B0C7" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="MagentaQuestion" FontSize="32" Color="#FFCC4C80" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8B0C7" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="T" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="-3.4641016151" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="-3.4641016151" />
+    <PointByCoordinates Name="B" Visible="false" X="0" Y="-4" />
+    <PointByCoordinates Name="L" Visible="false" X="-3.4641016151" Y="-2" />
+    <PointByCoordinates Name="M" Visible="false" X="0" Y="-2" />
+    <Polygon Name="poly3" Style="LightOrange">
+      <Dependency Name="T" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Segment Name="s4" Style="DarkOrange">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s5" Style="DarkOrange">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s6" Style="DarkOrange">
+      <Dependency Name="B" />
+      <Dependency Name="T" />
+    </Segment>
+    <PointByCoordinates Name="p7" Visible="false" X="L.X" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(L.X + 0.0789473684 * (M.X - L.X))" Y="(L.Y + 0.0789473684 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s9" Style="DarkOrange">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Segment>
+    <PointByCoordinates Name="p10" Visible="false" X="(L.X + 0.1315789474 * (M.X - L.X))" Y="(L.Y + 0.1315789474 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="(L.X + 0.2105263158 * (M.X - L.X))" Y="(L.Y + 0.2105263158 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s12" Style="DarkOrange">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Segment>
+    <PointByCoordinates Name="p13" Visible="false" X="(L.X + 0.2631578947 * (M.X - L.X))" Y="(L.Y + 0.2631578947 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(L.X + 0.3421052632 * (M.X - L.X))" Y="(L.Y + 0.3421052632 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s15" Style="DarkOrange">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Segment>
+    <PointByCoordinates Name="p16" Visible="false" X="(L.X + 0.3947368421 * (M.X - L.X))" Y="(L.Y + 0.3947368421 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="(L.X + 0.4736842105 * (M.X - L.X))" Y="(L.Y + 0.4736842105 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s18" Style="DarkOrange">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Segment>
+    <PointByCoordinates Name="p19" Visible="false" X="(L.X + 0.5263157895 * (M.X - L.X))" Y="(L.Y + 0.5263157895 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(L.X + 0.6052631579 * (M.X - L.X))" Y="(L.Y + 0.6052631579 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s21" Style="DarkOrange">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Segment>
+    <PointByCoordinates Name="p22" Visible="false" X="(L.X + 0.6578947368 * (M.X - L.X))" Y="(L.Y + 0.6578947368 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p23" Visible="false" X="(L.X + 0.7368421053 * (M.X - L.X))" Y="(L.Y + 0.7368421053 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s24" Style="DarkOrange">
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+    </Segment>
+    <PointByCoordinates Name="p25" Visible="false" X="(L.X + 0.7894736842 * (M.X - L.X))" Y="(L.Y + 0.7894736842 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p26" Visible="false" X="(L.X + 0.8684210526 * (M.X - L.X))" Y="(L.Y + 0.8684210526 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s27" Style="DarkOrange">
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+    </Segment>
+    <PointByCoordinates Name="p28" Visible="false" X="(L.X + 0.9210526316 * (M.X - L.X))" Y="(L.Y + 0.9210526316 * (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p29" Visible="false" X="(L.X + (M.X - L.X))" Y="(L.Y + (M.Y - L.Y))">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <Segment Name="s30" Style="DarkOrange">
+      <Dependency Name="p28" />
+      <Dependency Name="p29" />
+    </Segment>
+    <PointByCoordinates Name="C1" Visible="false" X="-0.4226497308" Y="-1.5773502692" />
+    <PointByCoordinates Name="C2" Visible="false" X="0.7320508076" Y="-2.7320508076" />
+    <PointByCoordinates Name="p31" Visible="false" X="0" Y="-1.5773502692" />
+    <Circle Name="c32" Style="Magenta">
+      <Dependency Name="C1" />
+      <Dependency Name="p31" />
+    </Circle>
+    <PointByCoordinates Name="p33" Visible="false" X="0" Y="-2.7320508076" />
+    <Circle Name="c34" Style="Magenta">
+      <Dependency Name="C2" />
+      <Dependency Name="p33" />
+    </Circle>
+    <PointByCoordinates Name="at35" Style="Anchor" X="C1.X" Y="C1.Y">
+      <Dependency Name="C1" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t36" Style="MagentaText" Z="1" OffsetX="-10.44" OffsetY="-18.2" Text="1">
+      <Dependency Name="at35" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at37" Style="Anchor" X="C2.X" Y="C2.Y">
+      <Dependency Name="C2" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t38" Style="MagentaQuestion" Z="1" OffsetX="-12.92" OffsetY="-23.6" Text="?">
+      <Dependency Name="at37" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

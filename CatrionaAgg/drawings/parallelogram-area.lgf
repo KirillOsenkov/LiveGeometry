@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.6260990337" Top="5.0982349887" Right="9.5703709437" Bottom="-1.2260990337" />
+  <Scene Left="-0.6260990337" Top="5.0982349887" Right="9.5703709437" Bottom="-1.2260990337" />
+  <Styles>
+    <ShapeStyle Name="Lime" Color="#FF1E1E1E" StrokeWidth="3.5" Fill="#FFDAFC3A" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC7E244" />
+            <GradientStop Color="#FFA8C426" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Green" Color="#FF0ED018" StrokeWidth="3">
+      <Dark Color="#FF0A6E12" />
+    </LineStyle>
+    <LineStyle Name="Extension" Color="#FF0ED018" StrokeWidth="3">
+      <Dark Color="#FF9FF9A4" />
+    </LineStyle>
+    <LineStyle Name="MarkOnFill" Color="#FF0ED018" StrokeWidth="2.5">
+      <Dark Color="#FF0A6E12" />
+    </LineStyle>
+    <TextStyle Name="GreenMark" FontSize="36" Color="#FF0A9A14" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C4510" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="Mark" FontSize="36" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <TextStyle Name="GreenLetter" FontSize="24" Color="#FF0A9A14" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C4510" />
+    </TextStyle>
+    <TextStyle Name="GreenText" FontSize="24" Color="#FF0A9A14" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9FF9A5" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="6.7082039325" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="8.94427191" Y="4.472135955" />
+    <PointByCoordinates Name="D" Visible="false" X="2.2360679775" Y="4.472135955" />
+    <PointByCoordinates Name="p1" Visible="false" X="8.3082039325" Y="0" />
+    <Polygon Name="poly2" Style="Lime">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Segment Name="s3" Style="Green">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s4" Style="Extension">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Number Name="n5" Formula="distance(A, B)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Number>
+    <Number Name="n6" Formula="distance(A, C)">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="p7" Visible="false" X="(A.X + (B.X - A.X) / n5)" Y="(A.Y + (B.Y - A.Y) / n5)">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="n5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(A.X + (C.X - A.X) / n6)" Y="(A.Y + (C.Y - A.Y) / n6)">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="n6" />
+    </PointByCoordinates>
+    <CircleArc Name="a9" Style="MarkOnFill">
+      <Dependency Name="A" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </CircleArc>
+    <Number Name="n10" Formula="distance(B, p1)">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+    </Number>
+    <Number Name="n11" Formula="distance(B, C)">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="p12" Visible="false" X="(B.X + 0.65 * ((p1.X - B.X) / n10))" Y="(B.Y + 0.65 * ((p1.Y - B.Y) / n10))">
+      <Dependency Name="B" />
+      <Dependency Name="p1" />
+      <Dependency Name="n10" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(B.X + 0.65 * ((C.X - B.X) / n11))" Y="(B.Y + 0.65 * ((C.Y - B.Y) / n11))">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="n11" />
+    </PointByCoordinates>
+    <CircleArc Name="a14" Style="Extension">
+      <Dependency Name="B" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </CircleArc>
+    <PointByCoordinates Name="at15" Style="Anchor" X="4.35" Y="2.8" />
+    <AttachedLabel Name="t16" Style="GreenMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="10">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at17" Style="Anchor" X="0.7" Y="2.75" />
+    <AttachedLabel Name="t18" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="5">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at19" Style="Anchor" X="1.5" Y="0.32" />
+    <AttachedLabel Name="t20" Style="GreenLetter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="a">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at21" Style="Anchor" X="(B.X + 1)" Y="(B.Y + 0.36)">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t22" Style="GreenText" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="b">
+      <Dependency Name="at21" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

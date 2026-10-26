@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Scene Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Styles>
+    <LineStyle Name="Diagonal" Color="#FFF2C61A" StrokeWidth="3">
+      <Dark Color="#FFFAE79E" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFFFFE5C" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE7E649" />
+            <GradientStop Color="#FFC9C82B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="5" />
+    <PointByCoordinates Name="p2" Visible="false" X="5" Y="0" />
+    <Segment Name="s3" Style="Diagonal">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="5" Y="5" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="5" />
+    <Polygon Name="poly8" Style="Frame">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="p12" Visible="false" X="1" Y="2" />
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="1" Y="4" />
+    <PointByCoordinates Name="p15" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="p16" Visible="false" X="2" Y="5" />
+    <PointByCoordinates Name="p17" Visible="false" X="1" Y="5" />
+    <Polygon Name="poly18" Style="Yellow">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Polygon>
+    <PointByCoordinates Name="p19" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="p20" Visible="false" X="5" Y="3" />
+    <PointByCoordinates Name="p21" Visible="false" X="4" Y="5" />
+    <PointByCoordinates Name="p22" Visible="false" X="2" Y="4" />
+    <Polygon Name="poly23" Style="Yellow">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+  </Figures>
+</Drawing>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-4.56" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Yellow" Color="#FFDD2A05" StrokeWidth="2.5" Fill="#FFFBDA4F" Texture="Crayon">
+      <Dark Color="#FFFAAE9E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE5C747" />
+            <GradientStop Color="#FFC6A828" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFDD3874" StrokeWidth="2.5" Fill="#FFF8A0BB" Texture="Crayon">
+      <Dark Color="#FFF0A8C2" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE45D86" />
+            <GradientStop Color="#FFC53E67" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF0AA8DC" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FF9EE3FA" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="(C.X - 3.9780875815)" Y="(C.Y - 0.4181138531)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(C.X - 3.1085838458)" Y="(C.Y - 2.5172815642)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="A" Style="Handle" X="-3.6626503734" Y="-1.6077911066" Parameter="3.5552356863">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="a" Formula="A.Y - A.X">
+      <Dependency Name="A" />
+    </Number>
+    <Number Name="b" Formula="-A.X - A.Y">
+      <Dependency Name="A" />
+    </Number>
+    <PointByCoordinates Name="O" Visible="false" X="A.X + a" Y="A.Y - a">
+      <Dependency Name="A" />
+      <Dependency Name="a" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="A.X" Y="O.Y">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="O.X" Y="O.Y">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="O.X" Y="A.Y">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="A.X" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <Polygon Name="poly8" Style="Yellow">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="O.X" Y="O.Y">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="O.X + b" Y="O.Y">
+      <Dependency Name="O" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="O.X + b" Y="O.Y + b">
+      <Dependency Name="O" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="O.X" Y="O.Y + b">
+      <Dependency Name="O" />
+      <Dependency Name="b" />
+    </PointByCoordinates>
+    <Polygon Name="poly13" Style="Pink">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="4" Y="0" />
+    <Circle Name="c15" Style="Blue">
+      <Dependency Name="C" />
+      <Dependency Name="p14" />
+    </Circle>
+  </Figures>
+</Drawing>

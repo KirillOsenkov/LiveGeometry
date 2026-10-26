@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.76" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-0.76" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF74D67C" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4CE058" />
+            <GradientStop Color="#FF2DC13A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Teal" Color="#FF1D7F78" StrokeWidth="2">
+      <Dark Color="#FFACECE7" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <TextStyle Name="ShapeMark" FontSize="40" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="2.4" Y="3.2" />
+    <PointByCoordinates Name="M" Visible="false" X="3.2" Y="1.6" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.788854382" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-1.788854382" Y="0" />
+    <CircleSegment Name="a3" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+    <CircleSegment Name="a4" Style="Green">
+      <Dependency Name="M" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <Segment Name="s5" Style="Teal">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <CircleSegment Name="a6" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <PointByCoordinates Name="at7" Style="Anchor" X="0" Y="0.64" />
+    <AttachedLabel Name="t8" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at7" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at9" Style="Anchor" X="2.57" Y="1.08" />
+    <AttachedLabel Name="t10" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

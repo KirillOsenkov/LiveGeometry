@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-13.4295874717" Top="12.8295874717" Right="13.4295874717" Bottom="-1.6492475842" />
+  <Scene Left="-13.4295874717" Top="12.8295874717" Right="13.4295874717" Bottom="-1.6492475842" />
+  <Styles>
+    <ShapeStyle Name="Orange" Color="#FFF8B020" StrokeWidth="2.5" Fill="#FFFCDC28" Texture="FeltTip">
+      <Dark Color="#FFFADB9E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE0C842" />
+            <GradientStop Color="#FFC2AA23" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF3679CC" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFAEC9EA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF22D8E0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFA6EFF2" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFF08890" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFF4A4AB" />
+    </ShapeStyle>
+    <LineStyle Name="Ground" Color="#FFC8E820" StrokeWidth="3">
+      <Dark Color="#FFE8F5A3" />
+    </LineStyle>
+    <TextStyle Name="BlueMark" FontSize="36" Color="#FF3679CC" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFAEC9EA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="PinkMark" FontSize="36" Color="#FFE8606C" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF2A6AD" />
+    </TextStyle>
+    <TextStyle Name="CyanMark" FontSize="36" Color="#FF22D8E0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA6EFF2" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-6.7082039325" Y="4.472135955" />
+    <PointByCoordinates Name="p3" Visible="false" X="4.472135955" Y="6.7082039325" />
+    <PointByCoordinates Name="p4" Visible="false" X="-2.2360679775" Y="11.1803398875" />
+    <PointByCoordinates Name="p5" Visible="false" X="-11.1803398875" Y="4.472135955" />
+    <Polygon Name="poly6" Style="Orange">
+      <Dependency Name="p5" />
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="11.1803398875" Y="6.7082039325" />
+    <Polygon Name="poly8" Style="Orange">
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="-11.1803398875" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="-6.7082039325" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="-6.7082039325" Y="4.472135955" />
+    <PointByCoordinates Name="p12" Visible="false" X="-11.1803398875" Y="4.472135955" />
+    <Polygon Name="poly13" Style="Blue">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="4.472135955" Y="0" />
+    <PointByCoordinates Name="p15" Visible="false" X="11.1803398875" Y="0" />
+    <PointByCoordinates Name="p16" Visible="false" X="11.1803398875" Y="6.7082039325" />
+    <PointByCoordinates Name="p17" Visible="false" X="4.472135955" Y="6.7082039325" />
+    <Polygon Name="poly18" Style="Cyan">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Polygon>
+    <Polygon Name="poly19" Style="Pink">
+      <Dependency Name="p1" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <PointByCoordinates Name="p20" Visible="false" X="-11.7803398875" Y="0" />
+    <PointByCoordinates Name="p21" Visible="false" X="11.7803398875" Y="0" />
+    <Segment Name="s22" Style="Ground">
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </Segment>
+    <PointByCoordinates Name="at23" Style="Anchor" X="-8.94427191" Y="2.2360679775" />
+    <AttachedLabel Name="t24" Style="BlueMark" Z="1" OffsetX="-25.32" OffsetY="-26.3" Text="20">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at25" Style="Anchor" X="-1.1180339887" Y="6.1901699437" />
+    <AttachedLabel Name="t26" Style="PinkMark" Z="1" OffsetX="-25.32" OffsetY="-26.3" Text="65">
+      <Dependency Name="at25" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at27" Style="Anchor" X="7.8262379212" Y="3.3541019662" />
+    <AttachedLabel Name="t28" Style="CyanMark" Z="1" OffsetX="-25.32" OffsetY="-26.3" Text="45">
+      <Dependency Name="at27" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.1390878801" Top="6.1390878801" Right="6.1390878801" Bottom="-0.753923073" />
+  <Scene Left="-6.1390878801" Top="6.1390878801" Right="6.1390878801" Bottom="-0.753923073" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF0D5AD7" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FF9FC1F9" />
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF1AA8D0" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA4E2F4" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFE3424C" StrokeWidth="3" Fill="#FFFE584B" Texture="FeltTip">
+      <Dark Color="#FFF2A6AB" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE55247" />
+            <GradientStop Color="#FFC63428" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFF26A0E" StrokeWidth="3" Fill="#FFFE8D02" Texture="FeltTip">
+      <Dark Color="#FFFAC39E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB953D" />
+            <GradientStop Color="#FFBD761F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FFF5EE00" StrokeWidth="3" Fill="#FFFFFF01" Texture="FeltTip">
+      <Dark Color="#FFFAF79E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBDB3D" />
+            <GradientStop Color="#FFBDBD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Lime" Color="#FF62C51A" StrokeWidth="3" Fill="#FF9EF902" Texture="FeltTip">
+      <Dark Color="#FFC6F3A5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFA1DB3D" />
+            <GradientStop Color="#FF82BC1E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF0A8476" StrokeWidth="3" Fill="#FF02C76C" Texture="FeltTip">
+      <Dark Color="#FFA0F8EE" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF36D48B" />
+            <GradientStop Color="#FF18B66D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="5.3851648071" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-5.3851648071" Y="0" />
+    <CircleSegment Name="a3" Style="Blue">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleSegment>
+    <PointByCoordinates Name="p4" Visible="false" X="-5" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="5" Y="2" />
+    <PointByCoordinates Name="p7" Visible="false" X="-5" Y="2" />
+    <Polygon Name="poly8" Style="Cyan" Z="1">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="-4" Y="1" />
+    <PointByCoordinates Name="p10" Visible="false" X="-3" Y="1" />
+    <Circle Name="c11" Style="Red">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Circle>
+    <PointByCoordinates Name="p12" Visible="false" X="-2" Y="1" />
+    <PointByCoordinates Name="p13" Visible="false" X="-1" Y="1" />
+    <Circle Name="c14" Style="Orange">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Circle>
+    <PointByCoordinates Name="p15" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="p16" Visible="false" X="1" Y="1" />
+    <Circle Name="c17" Style="Yellow">
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </Circle>
+    <PointByCoordinates Name="p18" Visible="false" X="2" Y="1" />
+    <PointByCoordinates Name="p19" Visible="false" X="3" Y="1" />
+    <Circle Name="c20" Style="Lime">
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Circle>
+    <PointByCoordinates Name="p21" Visible="false" X="4" Y="1" />
+    <PointByCoordinates Name="p22" Visible="false" X="5" Y="1" />
+    <Circle Name="c23" Style="Green">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Circle>
+  </Figures>
+</Drawing>

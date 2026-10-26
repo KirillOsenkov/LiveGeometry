@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Scene Left="-4.56" Top="4.0241016151" Right="4.56" Bottom="-4.0241016151" />
+  <Styles>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFF4806A" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8634A" />
+            <GradientStop Color="#FFC9442B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Hexagon" Color="#FF1E1E1E" StrokeWidth="3.5" Fill="#FFF4806A" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE8634A" />
+            <GradientStop Color="#FFC9442B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="DarkRed" Color="#FF8A0A06" StrokeWidth="3">
+      <Dark Color="#FFFAA19E" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(-4 + 0.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p3" Visible="false" X="(-4 + 1.5 * 4)" Y="0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p4" Visible="false" X="(-4 + 2 * 4)" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="(-4 + 1.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <PointByCoordinates Name="p6" Visible="false" X="(-4 + 0.5 * 4)" Y="-0.8660254037844386 * 4" />
+    <Polygon Name="poly7" Style="Red">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Red">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="1.1547005384" />
+    <PointByCoordinates Name="p10" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="-2" Y="-2.3094010768" />
+    <PointByCoordinates Name="p12" Visible="false" X="-0" Y="-3.4641016151" />
+    <PointByCoordinates Name="p13" Visible="false" X="2" Y="-2.3094010768" />
+    <PointByCoordinates Name="p14" Visible="false" X="2" Y="-0" />
+    <Polygon Name="poly15" Style="Hexagon">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="0" Y="3.4641016151" />
+    <PointByCoordinates Name="p17" Visible="false" X="-1" Y="2.8867513459" />
+    <PointByCoordinates Name="p18" Visible="false" X="-1" Y="1.7320508076" />
+    <PointByCoordinates Name="p19" Visible="false" X="-0" Y="1.1547005384" />
+    <PointByCoordinates Name="p20" Visible="false" X="1" Y="1.7320508076" />
+    <PointByCoordinates Name="p21" Visible="false" X="1" Y="2.8867513459" />
+    <Polygon Name="poly22" Style="Hexagon">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </Polygon>
+    <Segment Name="s23" Style="DarkRed">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Segment Name="s24" Style="DarkRed">
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Polygon Name="poly25" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+  </Figures>
+</Drawing>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.7053198879" Top="6.7053198879" Right="10.7813182866" Bottom="-0.7053198879" />
+  <Scene Left="-0.7053198879" Top="6.7053198879" Right="10.7813182866" Bottom="-0.7053198879" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Cyan" Color="#FF04D8E8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9EF3FA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FFF7EE10" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFAF69E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF2A4FD0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFAAB9EE" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="34" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="1.05" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="2.46" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="L" Style="Handle" X="0" Y="2.08" Parameter="0.7304964539">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="S" Visible="false" X="L.Y" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bc" Visible="false" X="L.Y + 2 * sqrt(3 * L.Y)" Y="3">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T" Visible="false" X="(S.X + (L.Y / (3 + L.Y)) * (Bc.X - S.X))" Y="(S.Y + (L.Y / (3 + L.Y)) * (Bc.Y - S.Y))">
+      <Dependency Name="S" />
+      <Dependency Name="L" />
+      <Dependency Name="Bc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U" Visible="false" X="Bc.X" Y="6">
+      <Dependency Name="Bc" />
+    </PointByCoordinates>
+    <Circle Name="c4" Style="Cyan">
+      <Dependency Name="S" />
+      <Dependency Name="L" />
+    </Circle>
+    <Circle Name="c5" Style="Yellow">
+      <Dependency Name="Bc" />
+      <Dependency Name="U" />
+    </Circle>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="Bc.X + 3" Y="0">
+      <Dependency Name="Bc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="Bc.X + 3" Y="6">
+      <Dependency Name="Bc" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Segment>
+    <AngleArc Name="angle13" Style="Ink" Radius="30">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+      <Dependency Name="U" />
+    </AngleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="(T.X - 0.2)" Y="(T.Y + 1.05)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t15" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

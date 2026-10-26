@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.7" Top="10.7" Right="6.7" Bottom="-0.7" />
+  <Scene Left="-2.7" Top="10.7" Right="6.7" Bottom="-0.7" />
+  <Styles>
+    <ShapeStyle Name="Teal" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF02927F" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF2FCDB9" />
+            <GradientStop Color="#FF11AF9A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="M" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="BR" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="T" Visible="false" X="-2" Y="10" />
+    <Polygon Name="poly1" Style="Teal">
+      <Dependency Name="T" />
+      <Dependency Name="M" />
+      <Dependency Name="TR" />
+    </Polygon>
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="6" Y="6" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="6" />
+    <Polygon Name="poly6" Style="Frame">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Segment Name="s7" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="O" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="s8" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="M" />
+      <Dependency Name="BR" />
+    </Segment>
+  </Figures>
+</Drawing>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.099" Top="5.399" Right="3.099" Bottom="-1.099" />
+  <Scene Left="-2.099" Top="5.399" Right="3.099" Bottom="-1.099" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF4FB0D8" StrokeWidth="2" Fill="#FFA5D8F3" Texture="Crayon">
+      <Dark Color="#FFACDAEC" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF63B3DD" />
+            <GradientStop Color="#FF4594BE" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FFF2DA3A" StrokeWidth="2" Fill="#FFFFFFA4" Texture="Crayon">
+      <Dark Color="#FFF9ED9F" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE7E75C" />
+            <GradientStop Color="#FFC8C83E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FF1E1E1E" />
+    </LineStyle>
+    <LineStyle Name="AngleMark" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Color="#FF1E1E1E" />
+    </LineStyle>
+    <TextStyle Name="ShapeMark" FontSize="28" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="Mark" FontSize="30" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="-1" Y="5" />
+    <PointByCoordinates Name="Y" Visible="false" X="2" Y="3" />
+    <PointByCoordinates Name="p1" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="5" />
+    <PointByCoordinates Name="p4" Visible="false" X="-1" Y="5" />
+    <Polygon Name="poly5" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="2" Y="3" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="3" />
+    <Polygon Name="poly10" Style="Yellow">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+    </Segment>
+    <AngleArc Name="angle13" Style="AngleMark" Radius="30">
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+      <Dependency Name="B" />
+    </AngleArc>
+    <PointByCoordinates Name="at14" Style="Anchor" X="0.12" Y="0.85" />
+    <AttachedLabel Name="t15" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at14" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at16" Style="Anchor" X="-1.45" Y="2.5" />
+    <AttachedLabel Name="t17" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="5">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at18" Style="Anchor" X="2.42" Y="1.6" />
+    <AttachedLabel Name="t19" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="3">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at20" Style="Anchor" X="-0.5" Y="-0.4" />
+    <AttachedLabel Name="t21" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="1">
+      <Dependency Name="at20" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at22" Style="Anchor" X="1" Y="-0.4" />
+    <AttachedLabel Name="t23" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="2">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

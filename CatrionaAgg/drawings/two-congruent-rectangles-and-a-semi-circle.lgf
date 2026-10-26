@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="4.56" Right="4.56" Bottom="-1.7147005384" />
+  <Scene Left="-4.56" Top="4.56" Right="4.56" Bottom="-1.7147005384" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FF3CC97A" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3EDC83" />
+            <GradientStop Color="#FF1FBD65" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GreenLine" Color="#FF0A8F5E" StrokeWidth="2.5">
+      <Dark Color="#FFA0F8D8" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="CyanLine" Color="#FF22C8E8" StrokeWidth="3">
+      <Dark Color="#FFA3E8F5" />
+    </LineStyle>
+    <TextStyle Name="CyanMark" FontSize="36" Color="#FF22C8E8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA3E8F5" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="W" Visible="false" X="-4" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="-2" Y="3.4641016151" />
+    <PointByCoordinates Name="P" Visible="false" X="0" Y="2.3094010768" />
+    <PointByCoordinates Name="Q" Visible="false" X="4" Y="2.3094010768" />
+    <PointByCoordinates Name="F" Visible="false" X="-2" Y="-1.1547005384" />
+    <Polygon Name="poly1" Style="Green">
+      <Dependency Name="W" />
+      <Dependency Name="F" />
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Polygon>
+    <CircleArc Name="a3" Style="GreenLine">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </CircleArc>
+    <Segment Name="s4" Style="GreenLine">
+      <Dependency Name="W" />
+      <Dependency Name="O" />
+    </Segment>
+    <Polygon Name="poly5" Style="Frame" Z="1">
+      <Dependency Name="W" />
+      <Dependency Name="F" />
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="poly6" Style="Frame" Z="1">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Number Name="n7" Formula="distance(P, Q)">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Number>
+    <Number Name="n8" Formula="distance(P, T)">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </Number>
+    <PointByCoordinates Name="p9" Visible="false" X="(P.X + 0.5 * ((Q.X - P.X) / n7))" Y="(P.Y + 0.5 * ((Q.Y - P.Y) / n7))">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="n7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="(P.X + 0.5 * ((T.X - P.X) / n8))" Y="(P.Y + 0.5 * ((T.Y - P.Y) / n8))">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+      <Dependency Name="n8" />
+    </PointByCoordinates>
+    <CircleArc Name="a11" Style="CyanLine">
+      <Dependency Name="P" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </CircleArc>
+    <PointByCoordinates Name="at12" Style="Anchor" X="(P.X + 0.2)" Y="(P.Y + 0.9)">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t13" Style="CyanMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at12" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

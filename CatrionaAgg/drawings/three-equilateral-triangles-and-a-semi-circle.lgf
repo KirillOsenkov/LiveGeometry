@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.462" Top="12.2543048454" Right="25.862" Bottom="-1.862" />
+  <Scene Left="-4.462" Top="12.2543048454" Right="25.862" Bottom="-1.862" />
+  <Styles>
+    <ShapeStyle Name="LightGreen" Color="#FF8EE02A" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFD0F2A6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF0C9D4F" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA0F8C9" />
+    </ShapeStyle>
+    <ShapeStyle Name="Brown" Color="#FF3A1C14" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8BCB0" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1A78D8" StrokeWidth="3" Fill="#FF05DFFC" Texture="Crayon">
+      <Dark Color="#FFA4CCF4" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DC9DC" />
+            <GradientStop Color="#FF1FAABD" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <TextStyle Name="BlueMark" FontSize="36" Color="#FF1A60C8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C2345" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <LineStyle Name="LightGreenArrow" Color="#FF8EE02A" StrokeWidth="3">
+      <Dark Color="#FFD0F2A6" />
+    </LineStyle>
+    <TextStyle Name="LightGreenMark" FontSize="30" Color="#FF8EE02A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFD0F2A6" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="11" Y="5.1961524227" />
+    <PointByCoordinates Name="p2" Visible="false" X="11" Y="1.7320508076" />
+    <PointByCoordinates Name="p3" Visible="false" X="11" Y="8.6602540378" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="12" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="6" Y="10.3923048454" />
+    <Polygon Name="poly7" Style="LightGreen">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <PointByCoordinates Name="p8" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="18" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="12" Y="10.3923048454" />
+    <Polygon Name="poly11" Style="Green">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="24" Y="0" />
+    <PointByCoordinates Name="p13" Visible="false" X="18" Y="10.3923048454" />
+    <Polygon Name="poly14" Style="Brown">
+      <Dependency Name="p5" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Polygon>
+    <CircleSegment Name="a15" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <PointByCoordinates Name="at16" Style="Anchor" X="12.2" Y="5.1961524227" />
+    <AttachedLabel Name="t17" Style="BlueMark" Z="1" OffsetX="-14.16" OffsetY="-26.3" Text="?">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p18" Visible="false" X="(p4.X + 1.1 * -0.8660254038)" Y="(p4.Y + 1.1 * 0.5)">
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="(p6.X + 1.1 * -0.8660254038)" Y="(p6.Y + 1.1 * 0.5)">
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="(p18.X + p19.X) / 2" Y="(p18.Y + p19.Y) / 2">
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </PointByCoordinates>
+    <Vector Name="v21" Style="LightGreenArrow">
+      <Dependency Name="p20" />
+      <Dependency Name="p18" />
+    </Vector>
+    <Vector Name="v22" Style="LightGreenArrow">
+      <Dependency Name="p20" />
+      <Dependency Name="p19" />
+    </Vector>
+    <PointByCoordinates Name="at23" Style="Anchor" X="(3 + 2.3 * -0.8660254038)" Y="(5.1961524227 + 2.3 * 0.5)" />
+    <AttachedLabel Name="t24" Style="LightGreenMark" Z="1" OffsetX="-21.6" OffsetY="-22.25" Text="12">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

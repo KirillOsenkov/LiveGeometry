@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.28" Top="4.28" Right="4.28" Bottom="-0.28" />
+  <Scene Left="-0.28" Top="4.28" Right="4.28" Bottom="-0.28" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF22355E" StrokeWidth="2.5" Fill="#FF03A7EC" Texture="FeltTip">
+      <Dark Color="#FFB0C2E8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3BAAD9" />
+            <GradientStop Color="#FF1D8CBB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Navy" Color="#FF22355E" StrokeWidth="3">
+      <Dark Color="#FFB0C2E8" />
+    </LineStyle>
+    <TextStyle Name="NavyMark" FontSize="30" Color="#FF22355E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFB0C2E8" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p5" Visible="false" X="3.7320508076" Y="1" />
+    <PointByCoordinates Name="p6" Visible="false" X="3" Y="3.7320508076" />
+    <PointByCoordinates Name="p7" Visible="false" X="0.2679491924" Y="3" />
+    <PointByCoordinates Name="p8" Visible="false" X="1" Y="0.2679491924" />
+    <Polygon Name="poly9" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Segment Name="s10" Style="Navy">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s11" Style="Navy">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </Segment>
+    <Segment Name="s12" Style="Navy">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s13" Style="Navy">
+      <Dependency Name="p2" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Segment Name="s14" Style="Navy">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s15" Style="Navy">
+      <Dependency Name="p3" />
+      <Dependency Name="p7" />
+    </Segment>
+    <Segment Name="s16" Style="Navy">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s17" Style="Navy">
+      <Dependency Name="p4" />
+      <Dependency Name="p8" />
+    </Segment>
+    <Number Name="n18" Formula="distance(p1, p2)">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Number>
+    <Number Name="n19" Formula="distance(p1, p5)">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+    </Number>
+    <PointByCoordinates Name="p20" Visible="false" X="(p1.X + 1.4 * ((p2.X - p1.X) / n18))" Y="(p1.Y + 1.4 * ((p2.Y - p1.Y) / n18))">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="n18" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(p1.X + 1.4 * ((p5.X - p1.X) / n19))" Y="(p1.Y + 1.4 * ((p5.Y - p1.Y) / n19))">
+      <Dependency Name="p1" />
+      <Dependency Name="p5" />
+      <Dependency Name="n19" />
+    </PointByCoordinates>
+    <CircleArc Name="a22" Style="Navy">
+      <Dependency Name="p1" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </CircleArc>
+    <PointByCoordinates Name="at23" Style="Anchor" X="1.8" Y="0.28" />
+    <AttachedLabel Name="t24" Style="NavyMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

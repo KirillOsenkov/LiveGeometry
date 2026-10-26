@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.497" Top="4.197" Right="7.597" Bottom="-0.497" />
+  <Scene Left="-0.497" Top="4.197" Right="7.597" Bottom="-0.497" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFFC1A04" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB4B3D" />
+            <GradientStop Color="#FFBD2D1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#00000000" StrokeWidth="2.5" Fill="#FFFCA704" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBA53D" />
+            <GradientStop Color="#FFBD871F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFFFF01" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBDB3D" />
+            <GradientStop Color="#FFBDBD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Semicircle" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="BL" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="2.8284271247" />
+    <PointByCoordinates Name="p1" Visible="false" X="(A.X + 3.9975633081)" Y="(A.Y + 0.1395979868)">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(A.X + 3.7087354183)" Y="(A.Y + 1.4984263737)">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="B" Style="Handle" X="3.9416315939" Y="3.5092651214" Parameter="0.1710422667">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="R" Formula="(1.5 * 2 + 2.8284271247 * (B.Y - 2.8284271247) / 4) / (B.X / 4)">
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="O" Visible="false" X="R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" Visible="false" X="2 * R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M" Visible="false" X="(A.X + 2 * (B.X / 4))" Y="(A.Y + 2 * ((B.Y - 2.8284271247) / 4))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Dm" Visible="false" X="(M.X + 2 * ((B.Y - 2.8284271247) / 4))" Y="(M.Y + 2 * (-1 * B.X / 4))">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Da" Visible="false" X="(A.X + 2 * ((B.Y - 2.8284271247) / 4))" Y="(A.Y + 2 * (-1 * B.X / 4))">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Db" Visible="false" X="(B.X + 2 * ((B.Y - 2.8284271247) / 4))" Y="(B.Y + 2 * (-1 * B.X / 4))">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="2.8284271247" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="2.8284271247" Y="2.8284271247" />
+    <Polygon Name="poly6" Style="Red">
+      <Dependency Name="BL" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="poly7" Style="Orange">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="Dm" />
+      <Dependency Name="Da" />
+    </Polygon>
+    <Polygon Name="poly8" Style="Yellow">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+      <Dependency Name="Db" />
+      <Dependency Name="Dm" />
+    </Polygon>
+    <CircleSegment Name="a9" Style="Semicircle">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="BL" />
+    </CircleSegment>
+    <Polygon Name="poly10" Style="Frame" Z="1">
+      <Dependency Name="BL" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Frame" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="Dm" />
+      <Dependency Name="Da" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Frame" Z="1">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+      <Dependency Name="Db" />
+      <Dependency Name="Dm" />
+    </Polygon>
+  </Figures>
+</Drawing>

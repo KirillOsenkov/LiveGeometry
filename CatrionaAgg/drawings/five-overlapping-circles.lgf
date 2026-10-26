@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-2.28" Top="1.28" Right="2.28" Bottom="-1.28" />
+  <Scene Left="-2.28" Top="1.28" Right="2.28" Bottom="-1.28" />
+  <Styles>
+    <LineStyle Name="Magenta" Color="#FFDC1A7E" StrokeWidth="3.5">
+      <Dark Color="#FFF4A4CD" />
+    </LineStyle>
+    <LineStyle Name="Cyan" Color="#FF18CCE0" StrokeWidth="3.5">
+      <Dark Color="#FFA3EDF5" />
+    </LineStyle>
+    <LineStyle Name="Navy" Color="#FF0806A0" StrokeWidth="3.5">
+      <Dark Color="#FF9F9EFA" />
+    </LineStyle>
+    <TextStyle Name="CyanMark" FontSize="30" Color="#FF18CCE0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA3EDF5" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="NavyMark" FontSize="22" Color="#FF0806A0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9F9EFA" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <Circle Name="c3" Style="Magenta">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Circle>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="1" Y="0" />
+    <Circle Name="c6" Style="Magenta">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Circle>
+    <PointByCoordinates Name="p7" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="2" Y="0" />
+    <Circle Name="c9" Style="Magenta">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Circle>
+    <PointByCoordinates Name="p10" Visible="false" X="-0.5" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="0" Y="0" />
+    <Circle Name="c12" Style="Cyan">
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Circle>
+    <PointByCoordinates Name="p13" Visible="false" X="0" Y="-0.75" />
+    <PointByCoordinates Name="p14" Visible="false" X="0" Y="-1" />
+    <Circle Name="c15" Style="Navy">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Circle>
+    <PointByCoordinates Name="at16" Style="Anchor" X="p10.X" Y="p10.Y">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t17" Style="CyanMark" Z="1" OffsetX="-21.6" OffsetY="-22.25" Text="36">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at18" Style="Anchor" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="NavyMark" Z="1" OffsetX="-9.82" OffsetY="-16.85" Text="?">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

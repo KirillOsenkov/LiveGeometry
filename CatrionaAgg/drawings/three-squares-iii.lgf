@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.644" Top="9.844" Right="8.644" Bottom="-0.644" />
+  <Scene Left="-0.644" Top="9.844" Right="8.644" Bottom="-0.644" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFBCEAC4" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7ACA88" />
+            <GradientStop Color="#FF5BAB69" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FF67B2D1" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF45B4E3" />
+            <GradientStop Color="#FF2696C4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Teal" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFA6E3E6" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF6BCED2" />
+            <GradientStop Color="#FF4CAFB4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GreenLine" Color="#FF20935A" StrokeWidth="3">
+      <Dark Color="#FFABEDCC" />
+    </LineStyle>
+    <TextStyle Name="GreenMark" FontSize="34" Color="#FF20935A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0F4329" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="M" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="(M.X + 3.994518139)" Y="(M.Y + 0.209343825)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p2" Visible="false" X="(M.X + 1.2360679775)" Y="(M.Y + 3.8042260652)">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <CircleArc Name="track3" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </CircleArc>
+    <PointOnFigure Name="R" Style="Handle" X="7.7820743024" Y="5.3022726178" Parameter="0.3316125579">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="Lc" Visible="false" X="(M.X + M.Y - R.Y)" Y="(M.Y + R.X - M.X)">
+      <Dependency Name="M" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T" Visible="false" X="(R.X + M.Y - R.Y)" Y="(R.Y + R.X - M.X)">
+      <Dependency Name="R" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly8" Style="Green">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="8" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="8" Y="4" />
+    <PointByCoordinates Name="p12" Visible="false" X="4" Y="4" />
+    <Polygon Name="poly13" Style="Blue">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Teal">
+      <Dependency Name="M" />
+      <Dependency Name="R" />
+      <Dependency Name="T" />
+      <Dependency Name="Lc" />
+    </Polygon>
+    <Segment Name="s15" Style="GreenLine">
+      <Dependency Name="A" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s16" Style="GreenLine">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="angle17" Style="GreenLine" Radius="44">
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </AngleArc>
+    <Number Name="ta" Formula="distance(T, A)">
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+    </Number>
+    <Number Name="tb" Formula="distance(T, B)">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="at18" Style="Anchor" X="(T.X + 1.2 * ((A.X - T.X) / ta + (B.X - T.X) / tb))" Y="(T.Y + 1.2 * ((A.Y - T.Y) / ta + (B.Y - T.Y) / tb))">
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+      <Dependency Name="ta" />
+      <Dependency Name="B" />
+      <Dependency Name="tb" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t19" Style="GreenMark" Z="1" OffsetX="-13.54" OffsetY="-24.95" Text="?">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

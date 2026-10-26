@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.021" Top="5.521" Right="10.721" Bottom="-1.721" />
+  <Scene Left="-1.021" Top="5.521" Right="10.721" Bottom="-1.721" />
+  <Styles>
+    <ShapeStyle Name="Teal" Color="#00000000" StrokeWidth="2.5" Fill="#FF32C0C8" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3DD2DB" />
+            <GradientStop Color="#FF1EB4BC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Yellow" Color="#FFF4DE06" StrokeWidth="3.5">
+      <Dark Color="#FFFAF19E" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFD05A10" StrokeWidth="3.5">
+      <Dark Color="#FFF8C2A0" />
+    </LineStyle>
+    <LineStyle Name="Blue" Color="#FF6A98C4" StrokeWidth="3.5">
+      <Dark Color="#FFB0CDE8" />
+    </LineStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <TextStyle Name="YellowText" FontSize="26" Color="#FFE6C400" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFFAEC9E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="RedText" FontSize="26" Color="#FFD05A10" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFF8C2A0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="10" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="3.6" Y="4.8" />
+    <PointByCoordinates Name="M" Visible="false" X="1.8" Y="2.4" />
+    <PointByCoordinates Name="E" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="F" Visible="false" X="7.6" Y="1.8" />
+    <Number Name="n1" Formula="((T.X - M.X) * (E.Y - T.Y) - 1 * (T.Y - M.Y) * (E.X - T.X)) / (((C.X - M.X) * (E.Y - T.Y) - 1 * (C.Y - M.Y) * (E.X - T.X)))">
+      <Dependency Name="T" />
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="(M.X + n1 * (C.X - M.X))" Y="(M.Y + n1 * (C.Y - M.Y))">
+      <Dependency Name="M" />
+      <Dependency Name="n1" />
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <Polygon Name="poly2" Style="Teal">
+      <Dependency Name="T" />
+      <Dependency Name="M" />
+      <Dependency Name="X" />
+    </Polygon>
+    <Segment Name="s3" Style="Yellow">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="s4" Style="Yellow">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="s5" Style="Red">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="s6" Style="Red">
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s7" Style="Red">
+      <Dependency Name="T" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s8" Style="Yellow">
+      <Dependency Name="F" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s9" Style="Blue">
+      <Dependency Name="M" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s10" Style="Blue">
+      <Dependency Name="T" />
+      <Dependency Name="E" />
+    </Segment>
+    <PointByCoordinates Name="Md" Style="Dot" X="M.X" Y="M.Y">
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Ed" Style="Dot" X="E.X" Y="E.Y">
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at11" Style="Anchor" X="0.25" Y="1.85" />
+    <AttachedLabel Name="t12" Style="YellowText" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="3">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at13" Style="Anchor" X="2.5" Y="-0.65" />
+    <AttachedLabel Name="t14" Style="RedText" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="5">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

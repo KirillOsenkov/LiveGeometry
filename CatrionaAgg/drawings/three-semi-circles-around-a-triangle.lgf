@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.923" Top="5.823" Right="6.223" Bottom="-3.923" />
+  <Scene Left="-3.923" Top="5.823" Right="6.223" Bottom="-3.923" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF95F8FC" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF52E6EC" />
+            <GradientStop Color="#FF33C8CE" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Navy" Color="#FF000863" StrokeWidth="3">
+      <Dark Color="#FF9EA6FA" />
+    </LineStyle>
+    <ShapeStyle Name="Red" Color="#FFD40404" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFA9E9E" />
+    </ShapeStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+    <TextStyle Name="ShapeMark" FontSize="30" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="P2" Visible="false" X="3.25" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="1.3" Y="1.2" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.1" Y="1.2" />
+    <PointByCoordinates Name="p3" Visible="false" X="3.1" Y="1.7" />
+    <PointByCoordinates Name="p4" Visible="false" X="2.3" Y="2.1" />
+    <PointByCoordinates Name="p5" Visible="false" X="1.3" Y="2.35" />
+    <Polygon Name="poly6" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointInRegion Name="P3" Style="Handle" X="2.33" Y="2.05">
+      <Dependency Name="poly6" />
+    </PointInRegion>
+    <PointByCoordinates Name="A" Visible="false" X="(2 * P1.X - P2.X)" Y="(2 * P1.Y - P2.Y)">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B" Visible="false" X="(2 * P3.X - P1.X)" Y="(2 * P3.Y - P1.Y)">
+      <Dependency Name="P3" />
+      <Dependency Name="P1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C" Visible="false" X="(2 * P2.X - P3.X)" Y="(2 * P2.Y - P3.Y)">
+      <Dependency Name="P2" />
+      <Dependency Name="P3" />
+    </PointByCoordinates>
+    <Polygon Name="poly7" Style="Blue">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+      <Dependency Name="P3" />
+    </Polygon>
+    <CircleArc Name="a8" Style="Navy">
+      <Dependency Name="P1" />
+      <Dependency Name="A" />
+      <Dependency Name="P2" />
+    </CircleArc>
+    <CircleArc Name="a9" Style="Navy">
+      <Dependency Name="P3" />
+      <Dependency Name="B" />
+      <Dependency Name="P1" />
+    </CircleArc>
+    <CircleArc Name="a10" Style="Navy">
+      <Dependency Name="P2" />
+      <Dependency Name="C" />
+      <Dependency Name="P3" />
+    </CircleArc>
+    <Segment Name="s11" Style="Navy">
+      <Dependency Name="A" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Segment Name="s12" Style="Navy">
+      <Dependency Name="P1" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s13" Style="Navy">
+      <Dependency Name="P3" />
+      <Dependency Name="C" />
+    </Segment>
+    <Polygon Name="poly14" Style="Red" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Polygon>
+    <PointByCoordinates Name="Ad" Style="Dot" X="A.X" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Bd" Style="Dot" X="B.X" Y="B.Y">
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Cd" Style="Dot" X="C.X" Y="C.Y">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(P1.X + P2.X + P3.X) / 3" Y="(P1.Y + P2.Y + P3.Y) / 3">
+      <Dependency Name="P1" />
+      <Dependency Name="P2" />
+      <Dependency Name="P3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at16" Style="Anchor" X="p15.X" Y="p15.Y">
+      <Dependency Name="p15" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t17" Style="ShapeMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="6">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

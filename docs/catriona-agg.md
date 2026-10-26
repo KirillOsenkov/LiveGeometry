@@ -37,7 +37,13 @@ page shows it), never copied.
   puzzle saying what to drag, under the question, and a "Drag the white points" pop-up over
   the drawing were tried and dropped, 2026-10-25: they added nothing.)
 - **The drawings** are `drawings/<slug>.lgf`, written by `dotnet run
-  tools/catrionadrawings.cs -- [slug ...]`, one function per puzzle: her diagram as a
+  tools/catrionadrawings.cs -- [slug ...]`, one function per puzzle (`[Puzzle("<slug>")]` on a
+  function of the partial class `Puzzles`): the kit (`V`, `Lgf`) and the first 20 puzzles are
+  in that file, the rest in `tools/catrionadrawings/<year>[-<part>].cs`, pulled in by
+  `#:include catrionadrawings/*.cs` (an SDK new enough for `#:include` in file-based apps;
+  10.0.3xx has it). All 438 puzzles that have a page on Mathforge were drawn on 2026-10-25 (two
+  of the year pages' 440 have none and are left out; "circles in rhombii sequal" is a typo
+  there: its page is "...sequel", which catriona.cs tries next). Each is her diagram as a
   construction over one or two handles (points on hidden segments or arcs that keep them in
   range) so that what the puzzle says holds while it is dragged - for an invariance puzzle the
   answer stays put. Hidden points by coordinates over the handles carry the geometry; a puzzle
@@ -61,6 +67,19 @@ page shows it), never copied.
   angle mark (`AngleArc`) draws a square at 90°, which tells the answer when it is 90°: such a
   mark is a plain arc (`ArcMark`). Check them all at once in the page's console (load, then
   sweep every handle and look for visible figures that don't exist).
+  More traps, met drawing the 420: polygons and regions are drawn in a layer under circles,
+  arcs, sectors and segments whatever their order, so an outline inked over arcs is `Inked`
+  (a polygon at Z 1); a region nested in a region is fine, but a Union of two Difference
+  regions took the player minutes, so the drawings keep regions flat or one level deep; one
+  style name is one style (`IsNewStyle` throws when a `Line` reuses a `Fill`'s name);
+  `Angle`'s radius and texts are in pixels while `ArcMark`, `SectorMark` and the scene are in
+  units, so a big mark of hers is an `ArcMark` and texts are judged on the phone too; a
+  hand-written formula parenthesizes what it interpolates (`/ ({e.X})`). Hidden shapes that
+  only make up a region or bound a handle are a `Polygon`, `Circle` or `Region` with a null
+  style; a handle free in two directions is `HandleIn` (a PointInRegion). Where her picture
+  isn't to scale or her numbers fix a different shape, the drawing follows the numbers and its
+  comment says so; where the statement leaves the figure free and the answer doesn't depend on
+  it, that freedom is a handle.
 - **Tiles** are pictures: each drawing is played once off screen without its handles and kept
   as a PNG (an object URL) that every tile of it shows, only near the view, the nearest first;
   a theme change draws them again. Hovering a tile plays it and drifts its handles. A

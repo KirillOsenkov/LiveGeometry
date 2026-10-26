@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.052834047" Top="3.2244069222" Right="2.3959797975" Bottom="-1.2244069222" />
+  <Scene Left="-4.052834047" Top="3.2244069222" Right="2.3959797975" Bottom="-1.2244069222" />
+  <Styles>
+    <ShapeStyle Name="Pink" Color="#FF1E1E1E" StrokeWidth="3" Fill="#FFFFB8C6" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDD6C82" />
+            <GradientStop Color="#FFBE4D63" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="DarkPink" Color="#FF1E1E1E" StrokeWidth="3" Fill="#FFE56C81" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE64863" />
+            <GradientStop Color="#FFC72945" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Semicircle" Color="#FF8C2A78" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8B0DD" />
+    </ShapeStyle>
+    <LineStyle Name="Diameter" Color="#FF8C2A78" StrokeWidth="3">
+      <Dark Color="#FFE8B0DD" />
+    </LineStyle>
+    <TextStyle Name="ShapeMark" FontSize="36" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="D" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="A" Visible="false" X="-2.8284271247" Y="2" />
+    <PointByCoordinates Name="F" Visible="false" X="0" Y="-0.8284271247" />
+    <PointByCoordinates Name="M" Visible="false" X="-0.8284271247" Y="0" />
+    <PointByCoordinates Name="W" Visible="false" X="-3.6568542495" Y="0" />
+    <CircleSector Name="a1" Style="Pink">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </CircleSector>
+    <CircleSector Name="a2" Style="DarkPink">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+    </CircleSector>
+    <CircleSegment Name="a3" Style="Semicircle">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+      <Dependency Name="W" />
+    </CircleSegment>
+    <Segment Name="s4" Style="Diameter">
+      <Dependency Name="W" />
+      <Dependency Name="E" />
+    </Segment>
+    <PointByCoordinates Name="at5" Style="Anchor" X="(C.X - 1.05)" Y="(C.Y - 0.85)">
+      <Dependency Name="C" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t6" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at5" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at7" Style="Anchor" X="0.75" Y="0.85" />
+    <AttachedLabel Name="t8" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="2">
+      <Dependency Name="at7" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

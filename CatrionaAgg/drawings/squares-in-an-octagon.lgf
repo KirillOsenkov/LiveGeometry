@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.4488138444" Top="6.4488138444" Right="6.4488138444" Bottom="-6.4488138444" />
+  <Scene Left="-6.4488138444" Top="6.4488138444" Right="6.4488138444" Bottom="-6.4488138444" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FFB8C8DC" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7E9CC1" />
+            <GradientStop Color="#FF5F7DA3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Square" Color="#FF6E7484" StrokeWidth="2" IsFilled="false">
+      <Dark Color="#FFC7CAD1" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Pink" Color="#FFE0559F" StrokeWidth="3">
+      <Dark Color="#FFEFA9CE" />
+    </LineStyle>
+    <LineStyle Name="Dashes" Color="#FF2E8FC0" StrokeWidth="3">
+      <Dark Color="#FFADD6EB" />
+    </LineStyle>
+    <PointStyle Name="Dot7" Size="7" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE6E6E6" Color="#FFE6E6E6" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="5.6568542495" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="5.6568542495" />
+    <PointByCoordinates Name="p4" Visible="false" X="-4" Y="4" />
+    <PointByCoordinates Name="p5" Visible="false" X="-5.6568542495" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="-4" Y="-4" />
+    <PointByCoordinates Name="p7" Visible="false" X="-0" Y="-5.6568542495" />
+    <PointByCoordinates Name="p8" Visible="false" X="4" Y="-4" />
+    <PointByCoordinates Name="p9" Visible="false" X="-1.6568542495" Y="4" />
+    <PointByCoordinates Name="p10" Visible="false" X="2.3431457505" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="-1.6568542495" Y="-4" />
+    <PointByCoordinates Name="p12" Visible="false" X="1.6568542495" Y="-4" />
+    <PointByCoordinates Name="p13" Visible="false" X="-2.3431457505" Y="0" />
+    <PointByCoordinates Name="p14" Visible="false" X="1.6568542495" Y="4" />
+    <Polygon Name="poly15" Visible="false">
+      <Dependency Name="p5" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly16" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <Region Name="r17" Style="Blue" Operation="Union">
+      <Dependency Name="poly15" />
+      <Dependency Name="poly16" />
+    </Region>
+    <Polygon Name="poly18" Style="Square">
+      <Dependency Name="p5" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+    </Polygon>
+    <Polygon Name="poly19" Style="Square">
+      <Dependency Name="p1" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <Polygon Name="poly20" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Segment Name="s21" Style="Pink">
+      <Dependency Name="p4" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s22" Style="Pink">
+      <Dependency Name="p6" />
+      <Dependency Name="p8" />
+    </Segment>
+    <PointByCoordinates Name="p23" Visible="false" X="p5.X" Y="p5.Y">
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p24" Visible="false" X="(p5.X + 0.0441176471 * (p1.X - p5.X))" Y="(p5.Y + 0.0441176471 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s25" Style="Dashes">
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Segment>
+    <PointByCoordinates Name="p26" Visible="false" X="(p5.X + 0.0735294118 * (p1.X - p5.X))" Y="(p5.Y + 0.0735294118 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p27" Visible="false" X="(p5.X + 0.1176470588 * (p1.X - p5.X))" Y="(p5.Y + 0.1176470588 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s28" Style="Dashes">
+      <Dependency Name="p26" />
+      <Dependency Name="p27" />
+    </Segment>
+    <PointByCoordinates Name="p29" Visible="false" X="(p5.X + 0.1470588235 * (p1.X - p5.X))" Y="(p5.Y + 0.1470588235 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p30" Visible="false" X="(p5.X + 0.1911764706 * (p1.X - p5.X))" Y="(p5.Y + 0.1911764706 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s31" Style="Dashes">
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+    </Segment>
+    <PointByCoordinates Name="p32" Visible="false" X="(p5.X + 0.2205882353 * (p1.X - p5.X))" Y="(p5.Y + 0.2205882353 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p33" Visible="false" X="(p5.X + 0.2647058824 * (p1.X - p5.X))" Y="(p5.Y + 0.2647058824 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s34" Style="Dashes">
+      <Dependency Name="p32" />
+      <Dependency Name="p33" />
+    </Segment>
+    <PointByCoordinates Name="p35" Visible="false" X="(p5.X + 0.2941176471 * (p1.X - p5.X))" Y="(p5.Y + 0.2941176471 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p36" Visible="false" X="(p5.X + 0.3382352941 * (p1.X - p5.X))" Y="(p5.Y + 0.3382352941 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s37" Style="Dashes">
+      <Dependency Name="p35" />
+      <Dependency Name="p36" />
+    </Segment>
+    <PointByCoordinates Name="p38" Visible="false" X="(p5.X + 0.3676470588 * (p1.X - p5.X))" Y="(p5.Y + 0.3676470588 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p39" Visible="false" X="(p5.X + 0.4117647059 * (p1.X - p5.X))" Y="(p5.Y + 0.4117647059 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s40" Style="Dashes">
+      <Dependency Name="p38" />
+      <Dependency Name="p39" />
+    </Segment>
+    <PointByCoordinates Name="p41" Visible="false" X="(p5.X + 0.4411764706 * (p1.X - p5.X))" Y="(p5.Y + 0.4411764706 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p42" Visible="false" X="(p5.X + 0.4852941176 * (p1.X - p5.X))" Y="(p5.Y + 0.4852941176 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s43" Style="Dashes">
+      <Dependency Name="p41" />
+      <Dependency Name="p42" />
+    </Segment>
+    <PointByCoordinates Name="p44" Visible="false" X="(p5.X + 0.5147058824 * (p1.X - p5.X))" Y="(p5.Y + 0.5147058824 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p45" Visible="false" X="(p5.X + 0.5588235294 * (p1.X - p5.X))" Y="(p5.Y + 0.5588235294 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s46" Style="Dashes">
+      <Dependency Name="p44" />
+      <Dependency Name="p45" />
+    </Segment>
+    <PointByCoordinates Name="p47" Visible="false" X="(p5.X + 0.5882352941 * (p1.X - p5.X))" Y="(p5.Y + 0.5882352941 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p48" Visible="false" X="(p5.X + 0.6323529412 * (p1.X - p5.X))" Y="(p5.Y + 0.6323529412 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s49" Style="Dashes">
+      <Dependency Name="p47" />
+      <Dependency Name="p48" />
+    </Segment>
+    <PointByCoordinates Name="p50" Visible="false" X="(p5.X + 0.6617647059 * (p1.X - p5.X))" Y="(p5.Y + 0.6617647059 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p51" Visible="false" X="(p5.X + 0.7058823529 * (p1.X - p5.X))" Y="(p5.Y + 0.7058823529 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s52" Style="Dashes">
+      <Dependency Name="p50" />
+      <Dependency Name="p51" />
+    </Segment>
+    <PointByCoordinates Name="p53" Visible="false" X="(p5.X + 0.7352941176 * (p1.X - p5.X))" Y="(p5.Y + 0.7352941176 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p54" Visible="false" X="(p5.X + 0.7794117647 * (p1.X - p5.X))" Y="(p5.Y + 0.7794117647 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s55" Style="Dashes">
+      <Dependency Name="p53" />
+      <Dependency Name="p54" />
+    </Segment>
+    <PointByCoordinates Name="p56" Visible="false" X="(p5.X + 0.8088235294 * (p1.X - p5.X))" Y="(p5.Y + 0.8088235294 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p57" Visible="false" X="(p5.X + 0.8529411765 * (p1.X - p5.X))" Y="(p5.Y + 0.8529411765 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s58" Style="Dashes">
+      <Dependency Name="p56" />
+      <Dependency Name="p57" />
+    </Segment>
+    <PointByCoordinates Name="p59" Visible="false" X="(p5.X + 0.8823529412 * (p1.X - p5.X))" Y="(p5.Y + 0.8823529412 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p60" Visible="false" X="(p5.X + 0.9264705882 * (p1.X - p5.X))" Y="(p5.Y + 0.9264705882 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s61" Style="Dashes">
+      <Dependency Name="p59" />
+      <Dependency Name="p60" />
+    </Segment>
+    <PointByCoordinates Name="p62" Visible="false" X="(p5.X + 0.9558823529 * (p1.X - p5.X))" Y="(p5.Y + 0.9558823529 * (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p63" Visible="false" X="(p5.X + (p1.X - p5.X))" Y="(p5.Y + (p1.Y - p5.Y))">
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <Segment Name="s64" Style="Dashes">
+      <Dependency Name="p62" />
+      <Dependency Name="p63" />
+    </Segment>
+    <PointByCoordinates Name="d65" Style="Dot7" X="p1.X" Y="p1.Y">
+      <Dependency Name="p1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d66" Style="Dot7" X="p2.X" Y="p2.Y">
+      <Dependency Name="p2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d67" Style="Dot7" X="p3.X" Y="p3.Y">
+      <Dependency Name="p3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d68" Style="Dot7" X="p4.X" Y="p4.Y">
+      <Dependency Name="p4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d69" Style="Dot7" X="p5.X" Y="p5.Y">
+      <Dependency Name="p5" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d70" Style="Dot7" X="p6.X" Y="p6.Y">
+      <Dependency Name="p6" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d71" Style="Dot7" X="p7.X" Y="p7.Y">
+      <Dependency Name="p7" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d72" Style="Dot7" X="p8.X" Y="p8.Y">
+      <Dependency Name="p8" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d73" Style="Dot7" X="p9.X" Y="p9.Y">
+      <Dependency Name="p9" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d74" Style="Dot7" X="p10.X" Y="p10.Y">
+      <Dependency Name="p10" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d75" Style="Dot7" X="p11.X" Y="p11.Y">
+      <Dependency Name="p11" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d76" Style="Dot7" X="p12.X" Y="p12.Y">
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d77" Style="Dot7" X="p13.X" Y="p13.Y">
+      <Dependency Name="p13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="d78" Style="Dot7" X="p14.X" Y="p14.Y">
+      <Dependency Name="p14" />
+    </PointByCoordinates>
+  </Figures>
+</Drawing>

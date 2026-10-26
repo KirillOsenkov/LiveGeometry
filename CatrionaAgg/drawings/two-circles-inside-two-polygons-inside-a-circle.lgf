@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.56" Top="8.0241016151" Right="4.56" Bottom="-1.0958983849" />
+  <Scene Left="-4.56" Top="8.0241016151" Right="4.56" Bottom="-1.0958983849" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FF5EC43A" StrokeWidth="3" Fill="#FFE0FE76" Texture="FeltTip">
+      <Dark Color="#FFBFE8B0" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFC8EB4C" />
+            <GradientStop Color="#FFA9CC2E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Circle" Color="#FF0A500E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFA4F4A9" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="3.4641016151" />
+    <PointByCoordinates Name="p1" Visible="false" X="-2" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="-2" Y="4" />
+    <PointByCoordinates Name="Apex" Visible="false" X="0" Y="7.4641016151" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <Circle Name="c7" Style="Green">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Circle>
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="5.1547005384" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="4" />
+    <Circle Name="c10" Style="Green">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Circle>
+    <Segment Name="s11" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <Segment Name="s12" Style="Ink">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Segment Name="s13" Style="Ink">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s14" Style="Ink">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+    </Segment>
+    <Segment Name="s15" Style="Ink">
+      <Dependency Name="p4" />
+      <Dependency Name="Apex" />
+    </Segment>
+    <Segment Name="s16" Style="Ink">
+      <Dependency Name="Apex" />
+      <Dependency Name="p3" />
+    </Segment>
+    <Circle Name="c17" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="Apex" />
+    </Circle>
+  </Figures>
+</Drawing>

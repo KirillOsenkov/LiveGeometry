@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.8024871131" Top="10.2665887282" Right="12.2665887282" Bottom="-0.8024871131" />
+  <Scene Left="-0.8024871131" Top="10.2665887282" Right="12.2665887282" Bottom="-0.8024871131" />
+  <Styles>
+    <ShapeStyle Name="Purple" Color="#FF7F6AE8" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFB3A7F1" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FF2A0494" StrokeWidth="3.5" Fill="#FFFD5ED8" Texture="FeltTip">
+      <Dark Color="#FFB69EFA" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE749C2" />
+            <GradientStop Color="#FFC92BA4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Navy" Color="#FF2A0494" StrokeWidth="3.5">
+      <Dark Color="#FFB69EFA" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="Q" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="T" Visible="false" X="2" Y="7.4641016151" />
+    <PointByCoordinates Name="U" Visible="false" X="(T.X + 7.4641016151)" Y="(T.Y + 2)">
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Vb" Visible="false" X="(Q.X + 7.4641016151)" Y="(Q.Y + 2)">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W" Visible="false" X="(3 + 0.8660254038 * 7.4641016151)" Y="(3.7320508076 + 0.8660254038 * 2)" />
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly5" Style="Purple">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="p7" Visible="false" X="4" Y="4" />
+    <Polygon Name="poly8" Style="Purple">
+      <Dependency Name="p6" />
+      <Dependency Name="T" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Pink">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+      <Dependency Name="Vb" />
+      <Dependency Name="Q" />
+      <Dependency Name="W" />
+    </Polygon>
+    <Segment Name="s10" Style="Navy">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </Segment>
+  </Figures>
+</Drawing>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-10.272" Top="6.8258461538" Right="0.672" Bottom="-1.472" />
+  <Scene Left="-10.272" Top="6.8258461538" Right="0.672" Bottom="-1.472" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Cyan" Color="#FF3CB8C4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0E3E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FFF8DA10" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFAEE9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FFB4DC40" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFDDEFA9" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF3E90C0" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0D3E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Triangle" Color="#FF5A5030" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFC8C4BC" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-9.6" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-7.8" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="L" Style="Handle" X="-8.5" Y="0" Parameter="0.6111111111">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="w" Formula="-L.X">
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="h" Formula="48 / w">
+      <Dependency Name="w" />
+    </Number>
+    <PointByCoordinates Name="TL" Visible="false" X="-w" Y="h">
+      <Dependency Name="w" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="-2 * w / 3" Y="0">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" Visible="false" X="0" Y="18 / w">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="-w" Y="36 / w">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="36 / w">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="h">
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="-w" Y="h">
+      <Dependency Name="w" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <Polygon Name="poly8" Style="Cyan">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="L.X" Y="L.Y">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="-2 * w / 3" Y="L.Y">
+      <Dependency Name="w" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p11" Visible="false" X="-2 * w / 3" Y="36 / w">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p12" Visible="false" X="L.X" Y="36 / w">
+      <Dependency Name="L" />
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <PointByCoordinates Name="p14" Visible="false" X="(Q.X - 2 * w / 3)" Y="Q.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="0" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="0" Y="36 / w">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="(Q.X - 2 * w / 3)" Y="36 / w">
+      <Dependency Name="Q" />
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <Polygon Name="poly18" Style="Green">
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+    </Polygon>
+    <PointByCoordinates Name="p19" Visible="false" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p20" Visible="false" X="Q.X" Y="P.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="Q.X" Y="Q.Y">
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p22" Visible="false" X="P.X" Y="Q.Y">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Polygon Name="poly23" Style="Blue">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <Polygon Name="poly24" Style="Triangle">
+      <Dependency Name="TL" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Polygon>
+  </Figures>
+</Drawing>

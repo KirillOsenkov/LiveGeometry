@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.332" Top="4.932" Right="4.332" Bottom="-2.132" />
+  <Scene Left="-4.332" Top="4.932" Right="4.332" Bottom="-2.132" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FFA7DBFD" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF60B0E4" />
+            <GradientStop Color="#FF4191C5" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF1F6BC4" StrokeWidth="3">
+      <Dark Color="#FFA7C9F1" />
+    </LineStyle>
+    <LineStyle Name="Plum" Color="#FF803A71" StrokeWidth="3">
+      <Dark Color="#FFE8B0DC" />
+    </LineStyle>
+    <TextStyle Name="PlumMark" FontSize="34" Color="#FF803A71" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF381932" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="-3" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="-3" Y="2.5" />
+    <PointByCoordinates Name="p2" Visible="false" X="-3" Y="5.5" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="X" Style="Handle" X="-3" Y="4.33" Parameter="0.61">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="s" Formula="X.Y ^ 2 / (36 + X.Y ^ 2)">
+      <Dependency Name="X" />
+    </Number>
+    <PointByCoordinates Name="M" Visible="false" X="-3 + 6 * s" Y="X.Y - X.Y * s">
+      <Dependency Name="s" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(X.X + E.X) / 2" Y="(X.Y + E.Y) / 2">
+      <Dependency Name="X" />
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="(X.X + M.X) / 2" Y="(X.Y + M.Y) / 2">
+      <Dependency Name="X" />
+      <Dependency Name="M" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(M.X + E.X) / 2" Y="(M.Y + E.Y) / 2">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+    </PointByCoordinates>
+    <CircleSegment Name="a7" Visible="false">
+      <Dependency Name="p4" />
+      <Dependency Name="X" />
+      <Dependency Name="E" />
+    </CircleSegment>
+    <CircleSegment Name="a8" Visible="false">
+      <Dependency Name="p6" />
+      <Dependency Name="E" />
+      <Dependency Name="M" />
+    </CircleSegment>
+    <Region Name="r9" Visible="false" Operation="Union">
+      <Dependency Name="a7" />
+      <Dependency Name="a8" />
+    </Region>
+    <CircleSegment Name="a10" Visible="false">
+      <Dependency Name="p5" />
+      <Dependency Name="X" />
+      <Dependency Name="M" />
+    </CircleSegment>
+    <Region Name="r11" Style="Blue" Operation="Difference">
+      <Dependency Name="r9" />
+      <Dependency Name="a10" />
+    </Region>
+    <CircleArc Name="a12" Style="BlueLine">
+      <Dependency Name="p4" />
+      <Dependency Name="X" />
+      <Dependency Name="E" />
+    </CircleArc>
+    <CircleArc Name="a13" Style="BlueLine">
+      <Dependency Name="p5" />
+      <Dependency Name="X" />
+      <Dependency Name="M" />
+    </CircleArc>
+    <CircleArc Name="a14" Style="BlueLine">
+      <Dependency Name="p6" />
+      <Dependency Name="E" />
+      <Dependency Name="M" />
+    </CircleArc>
+    <Segment Name="s15" Style="BlueLine">
+      <Dependency Name="X" />
+      <Dependency Name="E" />
+    </Segment>
+    <CircleArc Name="a16" Style="Plum">
+      <Dependency Name="O" />
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <Segment Name="s17" Style="Plum">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+    <PointByCoordinates Name="at18" Style="Anchor" X="0" Y="-0.6" />
+    <AttachedLabel Name="t19" Style="PlumMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="6">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

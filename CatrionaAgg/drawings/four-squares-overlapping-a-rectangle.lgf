@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.4382693236" Top="4.9104052786" Right="6.6992596606" Bottom="-1.3326965146" />
+  <Scene Left="-0.4382693236" Top="4.9104052786" Right="6.6992596606" Bottom="-1.3326965146" />
+  <Styles>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF8858D6" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF8043E1" />
+            <GradientStop Color="#FF6125C3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF6AB0F0" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF499CE7" />
+            <GradientStop Color="#FF2A7DC9" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Cyan" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF4AD8F7" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF46C8E4" />
+            <GradientStop Color="#FF27A9C5" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF3CEA84" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF42E084" />
+            <GradientStop Color="#FF24C265" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Rectangle" Color="#FF0A1AA8" StrokeWidth="4" IsFilled="false">
+      <Dark Color="#FF9FA8F9" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.788854382" Y="-0.894427191" />
+    <PointByCoordinates Name="p3" Visible="false" X="2.683281573" Y="0.894427191" />
+    <PointByCoordinates Name="p4" Visible="false" X="0.894427191" Y="1.788854382" />
+    <Polygon Name="poly5" Style="Purple">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0.894427191" Y="1.788854382" />
+    <PointByCoordinates Name="p7" Visible="false" X="2.683281573" Y="0.894427191" />
+    <PointByCoordinates Name="p8" Visible="false" X="3.577708764" Y="2.683281573" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.788854382" Y="3.577708764" />
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="2.683281573" Y="0.894427191" />
+    <PointByCoordinates Name="p12" Visible="false" X="4.472135955" Y="0" />
+    <PointByCoordinates Name="p13" Visible="false" X="5.366563146" Y="1.788854382" />
+    <PointByCoordinates Name="p14" Visible="false" X="3.577708764" Y="2.683281573" />
+    <Polygon Name="poly15" Style="Cyan">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="3.577708764" Y="2.683281573" />
+    <PointByCoordinates Name="p17" Visible="false" X="5.366563146" Y="1.788854382" />
+    <PointByCoordinates Name="p18" Visible="false" X="6.260990337" Y="3.577708764" />
+    <PointByCoordinates Name="p19" Visible="false" X="4.472135955" Y="4.472135955" />
+    <Polygon Name="poly20" Style="Green">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Polygon>
+    <PointByCoordinates Name="p21" Visible="false" X="0" Y="-0.894427191" />
+    <PointByCoordinates Name="p22" Visible="false" X="6.260990337" Y="-0.894427191" />
+    <PointByCoordinates Name="p23" Visible="false" X="6.260990337" Y="3.577708764" />
+    <PointByCoordinates Name="p24" Visible="false" X="0" Y="3.577708764" />
+    <Polygon Name="poly25" Style="Rectangle">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+      <Dependency Name="p23" />
+      <Dependency Name="p24" />
+    </Polygon>
+  </Figures>
+</Drawing>

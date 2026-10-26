@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.28" Top="3.28" Right="4.28" Bottom="-0.28" />
+  <Scene Left="-0.28" Top="3.28" Right="4.28" Bottom="-0.28" />
+  <Styles>
+    <ShapeStyle Name="Orange" Color="#FFF04A45" StrokeWidth="4" Fill="#FFFE853A" Texture="FeltTip">
+      <Dark Color="#FFF7A3A1" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE38145" />
+            <GradientStop Color="#FFC46326" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="4">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <LineStyle Name="Mark" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <TextStyle Name="QuestionMark" FontSize="34" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="2" Y="1" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="1" />
+    <Polygon Name="poly5" Style="Orange">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="3" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="3" Y="2" />
+    <PointByCoordinates Name="p9" Visible="false" X="2" Y="2" />
+    <Polygon Name="poly10" Style="Orange">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p12" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="p13" Visible="false" X="4" Y="3" />
+    <PointByCoordinates Name="p14" Visible="false" X="2" Y="3" />
+    <Polygon Name="poly15" Style="Orange">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="K" Visible="false" X="4" Y="3" />
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="1" />
+    <PointByCoordinates Name="F" Visible="false" X="3" Y="0" />
+    <Segment Name="s16" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="s17" Style="Ink">
+      <Dependency Name="F" />
+      <Dependency Name="K" />
+    </Segment>
+    <AngleArc Name="angle18" Style="Mark" Radius="40">
+      <Dependency Name="K" />
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </AngleArc>
+    <PointByCoordinates Name="at19" Style="Anchor" X="3.42" Y="2.45" />
+    <AttachedLabel Name="t20" Style="QuestionMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

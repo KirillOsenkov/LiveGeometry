@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.42" Top="5.6161524227" Right="6.42" Bottom="-0.42" />
+  <Scene Left="-0.42" Top="5.6161524227" Right="6.42" Bottom="-0.42" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#FFA8D838" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFDAEEAA" />
+    </ShapeStyle>
+    <LineStyle Name="Blue" Color="#FF1EBFEA" StrokeWidth="3.5">
+      <Dark Color="#FFA2E4F6" />
+    </LineStyle>
+    <LineStyle Name="Base" Color="#FF10B030" StrokeWidth="3.5">
+      <Dark Color="#FFA2F6B3" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="3" Y="5.1961524227" />
+    <PointByCoordinates Name="p4" Visible="false" X="3" Y="4.2426406871" />
+    <PointByCoordinates Name="p5" Visible="false" X="0.5505102572" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="5.4494897428" Y="0" />
+    <Polygon Name="poly7" Style="Green">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Segment Name="s8" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p4" />
+    </Segment>
+    <Segment Name="s9" Style="Blue">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Segment Name="s10" Style="Base">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Segment>
+    <PointByCoordinates Name="p11" Visible="false" X="5.1961524227" Y="0" />
+    <PointByCoordinates Name="p12" Visible="false" X="2.5400889749" Y="4.5329844473" />
+    <CircleArc Name="a13" Style="Ink">
+      <Dependency Name="p1" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </CircleArc>
+    <PointByCoordinates Name="p14" Visible="false" X="3.4599110251" Y="4.5329844473" />
+    <PointByCoordinates Name="p15" Visible="false" X="0.8038475773" Y="0" />
+    <CircleArc Name="a16" Style="Ink">
+      <Dependency Name="p2" />
+      <Dependency Name="p14" />
+      <Dependency Name="p15" />
+    </CircleArc>
+  </Figures>
+</Drawing>

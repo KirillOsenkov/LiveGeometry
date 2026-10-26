@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.77" Top="6.27" Right="11.77" Bottom="-0.77" />
+  <Scene Left="-0.77" Top="6.27" Right="11.77" Bottom="-0.77" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFECFE68" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFD6E94B" />
+            <GradientStop Color="#FFB7CA2C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF5CE2F9" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF48CFE6" />
+            <GradientStop Color="#FF2AB1C8" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FFC990EA" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFAF58E1" />
+            <GradientStop Color="#FF9039C2" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="P" Visible="false" X="6" Y="0" />
+    <PointByCoordinates Name="M" Visible="false" X="9" Y="0" />
+    <PointByCoordinates Name="E" Visible="false" X="11" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="5.5" Y="0" />
+    <CircleSegment Name="a2" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <PointByCoordinates Name="p3" Visible="false" X="4.5" Y="0" />
+    <CircleSegment Name="a4" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <PointByCoordinates Name="p5" Visible="false" X="3" Y="0" />
+    <CircleSegment Name="a6" Visible="false">
+      <Dependency Name="p5" />
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <PointByCoordinates Name="p7" Visible="false" X="7.5" Y="0" />
+    <CircleSegment Name="a8" Visible="false">
+      <Dependency Name="p7" />
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </CircleSegment>
+    <PointByCoordinates Name="p9" Visible="false" X="10" Y="0" />
+    <CircleSegment Name="a10" Visible="false">
+      <Dependency Name="p9" />
+      <Dependency Name="E" />
+      <Dependency Name="M" />
+    </CircleSegment>
+    <Region Name="r11" Style="Yellow" Operation="Difference">
+      <Dependency Name="a2" />
+      <Dependency Name="a4" />
+      <Dependency Name="a10" />
+    </Region>
+    <Region Name="r12" Style="Blue" Operation="Difference">
+      <Dependency Name="a4" />
+      <Dependency Name="a6" />
+      <Dependency Name="a8" />
+    </Region>
+    <PointByCoordinates Name="p13" Visible="false" X="3" Y="0" />
+    <CircleSegment Name="a14" Style="Purple">
+      <Dependency Name="p13" />
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </CircleSegment>
+    <PointByCoordinates Name="p15" Visible="false" X="5.5" Y="0" />
+    <CircleArc Name="a16" Style="Ink">
+      <Dependency Name="p15" />
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointByCoordinates Name="p17" Visible="false" X="4.5" Y="0" />
+    <CircleArc Name="a18" Style="Ink">
+      <Dependency Name="p17" />
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointByCoordinates Name="p19" Visible="false" X="3" Y="0" />
+    <CircleArc Name="a20" Style="Ink">
+      <Dependency Name="p19" />
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointByCoordinates Name="p21" Visible="false" X="7.5" Y="0" />
+    <CircleArc Name="a22" Style="Ink">
+      <Dependency Name="p21" />
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </CircleArc>
+    <PointByCoordinates Name="p23" Visible="false" X="10" Y="0" />
+    <CircleArc Name="a24" Style="Ink">
+      <Dependency Name="p23" />
+      <Dependency Name="E" />
+      <Dependency Name="M" />
+    </CircleArc>
+    <Segment Name="s25" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </Segment>
+  </Figures>
+</Drawing>

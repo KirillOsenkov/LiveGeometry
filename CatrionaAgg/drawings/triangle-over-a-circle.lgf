@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.0302830923" Top="6.0302830923" Right="7.5541306696" Bottom="-6.0302830923" />
+  <Scene Left="-6.0302830923" Top="6.0302830923" Right="7.5541306696" Bottom="-6.0302830923" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="2.5" Fill="#FFC0E597" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFA0D960" />
+            <GradientStop Color="#FF81BB41" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Circle" Color="#FF087665" StrokeWidth="3">
+      <Dark Color="#FF9FF9EB" />
+    </LineStyle>
+    <LineStyle Name="GreenLine" Color="#FF169A45" StrokeWidth="2">
+      <Dark Color="#FFA6F2C1" />
+    </LineStyle>
+    <TextStyle Name="GreenMark" FontSize="30" Color="#FF169A45" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C4521" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="5.1961524227" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="(O.X - 4.2037756153)" Y="(O.Y - 3.0542217627)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p3" Visible="false" X="(O.X - 1.7771887964)" Y="(O.Y - 4.8827860881)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track4" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleArc>
+    <PointOnFigure Name="A" Style="Handle" X="-3.456638319" Y="-3.8796457998" Parameter="3.9845866823">
+      <Dependency Name="track4" />
+    </PointOnFigure>
+    <Number Name="s" Formula="-A.X - 1.7320508075688772 * A.Y">
+      <Dependency Name="A" />
+    </Number>
+    <PointByCoordinates Name="X" Visible="false" X="-A.X" Y="A.Y">
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B" Visible="false" X="A.X + s" Y="A.Y">
+      <Dependency Name="A" />
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C" Visible="false" X="A.X + s / 2" Y="A.Y + 0.8660254037844386 * s">
+      <Dependency Name="A" />
+      <Dependency Name="s" />
+    </PointByCoordinates>
+    <Polygon Name="poly5" Style="Green">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Circle Name="c6" Style="Circle">
+      <Dependency Name="O" />
+      <Dependency Name="p1" />
+    </Circle>
+    <Segment Name="s7" Style="GreenLine">
+      <Dependency Name="C" />
+      <Dependency Name="X" />
+    </Segment>
+    <PointByCoordinates Name="p8" Visible="false" X="(C.X + X.X) / 2" Y="(C.Y + X.Y) / 2">
+      <Dependency Name="C" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="at9" Style="Anchor" X="(p8.X - 0.5)" Y="(p8.Y + 0.15)">
+      <Dependency Name="p8" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t10" Style="GreenMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="9">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.6064871131" Top="8.0705887282" Right="9.2705887282" Bottom="-0.6064871131" />
+  <Scene Left="-0.6064871131" Top="8.0705887282" Right="9.2705887282" Bottom="-0.6064871131" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFE84F7F" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE34476" />
+            <GradientStop Color="#FFC42657" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFFFF877" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEBE34D" />
+            <GradientStop Color="#FFCCC42E" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF48C027" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF5CD83A" />
+            <GradientStop Color="#FF3EBA1B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FFBB8BF0" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF9951E8" />
+            <GradientStop Color="#FF7A32CA" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF037CF7" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF3D8BDB" />
+            <GradientStop Color="#FF1E6CBC" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <TextStyle Name="ShapeMark" FontSize="40" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1E1E1E" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="R" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p1" Visible="false" X="1" Y="5.7320508076" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.6" Y="6.7712812921" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="G" Style="Handle" X="1.24" Y="6.1477430014" Parameter="0.4">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <PointByCoordinates Name="F" Visible="false" X="2 * G.X" Y="4">
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P" Visible="false" X="2 + 2 * G.X" Y="7.4641016151">
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="4" />
+    <Polygon Name="poly8" Style="Red">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="4" Y="1.3333333333" />
+    <PointByCoordinates Name="p10" Visible="false" X="6.6666666667" Y="1.3333333333" />
+    <PointByCoordinates Name="p11" Visible="false" X="6.6666666667" Y="4" />
+    <PointByCoordinates Name="p12" Visible="false" X="4" Y="4" />
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Green">
+      <Dependency Name="TL" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+    </Polygon>
+    <Polygon Name="poly15" Style="Purple">
+      <Dependency Name="G" />
+      <Dependency Name="R" />
+      <Dependency Name="P" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="P.X" Y="4">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="P.X + 3.4641016151" Y="4">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p18" Visible="false" X="P.X + 3.4641016151" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p19" Visible="false" X="P.X" Y="P.Y">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Polygon Name="poly20" Style="Blue">
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </Polygon>
+    <PointByCoordinates Name="at21" Style="Anchor" X="2" Y="2" />
+    <AttachedLabel Name="t22" Style="ShapeMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="12">
+      <Dependency Name="at21" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at23" Style="Anchor" X="P.X + 1.7320508076" Y="5.7320508076">
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t24" Style="ShapeMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at23" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

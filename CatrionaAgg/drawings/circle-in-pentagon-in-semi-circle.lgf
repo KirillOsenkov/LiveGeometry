@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-3.5085592324" Top="3.5085592324" Right="3.5085592324" Bottom="-0.4308756952" />
+  <Scene Left="-3.5085592324" Top="3.5085592324" Right="3.5085592324" Bottom="-0.4308756952" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FFE8083A" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFA9EB3" />
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFF54515" StrokeWidth="3" Fill="#FFFCD29A" Texture="Crayon">
+      <Dark Color="#FFFAB29E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEAAA56" />
+            <GradientStop Color="#FFCB8C37" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pentagon" Color="#FF1E1E1E" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.0776835372" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="-3.0776835372" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="1.3763819205" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="3.0776835372" />
+    <PointByCoordinates Name="p6" Visible="false" X="-1.6180339887" Y="1.9021130326" />
+    <PointByCoordinates Name="p7" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.6180339887" Y="1.9021130326" />
+    <CircleSegment Name="a10" Style="Frame">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleSegment>
+    <Circle Name="c11" Style="Orange">
+      <Dependency Name="p4" />
+      <Dependency Name="p1" />
+    </Circle>
+    <Polygon Name="poly12" Style="Pentagon" Z="1">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+  </Figures>
+</Drawing>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.776" Top="6.776" Right="17.376" Bottom="-1.376" />
+  <Scene Left="-1.776" Top="6.776" Right="17.376" Bottom="-1.376" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Purple" Color="#00000000" StrokeWidth="2.5" Fill="#FFAF82EE" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF8E4CEA" />
+            <GradientStop Color="#FF6F2DCB" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="2.5" Fill="#FFFB7AA0" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEB4D7B" />
+            <GradientStop Color="#FFCC2E5D" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="PurpleLine" Color="#FF7A10C8" StrokeWidth="3">
+      <Dark Color="#FFD3A1F7" />
+    </LineStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p1" Visible="false" X="12" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="18" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="F" Style="Handle" X="14.8" Y="0" Parameter="0.4666666667">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="w" Formula="F.X / 2">
+      <Dependency Name="F" />
+    </Number>
+    <Number Name="h" Formula="80 / F.X">
+      <Dependency Name="F" />
+    </Number>
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="h">
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="TR" Visible="false" X="w" Y="h">
+      <Dependency Name="w" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" Visible="false" X="w" Y="h / 2">
+      <Dependency Name="w" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BR" Visible="false" X="w" Y="0">
+      <Dependency Name="w" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="ST" Visible="false" X="0.75 * F.X" Y="h / 2">
+      <Dependency Name="F" />
+      <Dependency Name="h" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="SF" Visible="false" X="0.75 * F.X" Y="0">
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Polygon Name="poly4" Style="Purple">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <Polygon Name="poly5" Style="Red">
+      <Dependency Name="TR" />
+      <Dependency Name="F" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <Segment Name="s6" Style="PurpleLine">
+      <Dependency Name="TL" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s7" Style="PurpleLine">
+      <Dependency Name="TR" />
+      <Dependency Name="F" />
+    </Segment>
+    <PointByCoordinates Name="p8" Visible="false" X="-0.6" Y="0" />
+    <PointByCoordinates Name="p9" Visible="false" X="F.X + 1.2" Y="0">
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Segment Name="s10" Style="Ink">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Segment>
+    <Polygon Name="poly11" Style="Frame" Z="1">
+      <Dependency Name="O" />
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="TL" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Frame" Z="1">
+      <Dependency Name="BR" />
+      <Dependency Name="SF" />
+      <Dependency Name="ST" />
+      <Dependency Name="Q" />
+    </Polygon>
+  </Figures>
+</Drawing>

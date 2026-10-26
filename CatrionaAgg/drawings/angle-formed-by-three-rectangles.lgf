@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.3417435565" Top="4.8737943641" Right="4.0737943641" Bottom="-0.6917435565" />
+  <Scene Left="-0.3417435565" Top="4.8737943641" Right="4.0737943641" Bottom="-0.6917435565" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF1A35FA" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FF9EA9FA" />
+    </ShapeStyle>
+    <ShapeStyle Name="Red" Color="#FFFC0202" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFA9E9E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Orange" Color="#FFFF8C10" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFFACE9E" />
+    </ShapeStyle>
+    <LineStyle Name="Purple" Color="#FFBF5FE3" StrokeWidth="3">
+      <Dark Color="#FFDCA8F0" />
+    </LineStyle>
+    <TextStyle Name="PurpleMark" FontSize="30" Color="#FFBF5FE3" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFDCA8F0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P" Visible="false" X="1" Y="3.7320508076" />
+    <PointByCoordinates Name="Q" Visible="false" X="3.7320508076" Y="1" />
+    <PointByCoordinates Name="A" Visible="false" X="1.8660254038" Y="4.2320508076" />
+    <PointByCoordinates Name="B" Visible="false" X="P.X + Q.X - A.X" Y="P.Y + Q.Y - A.Y">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="A" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p1" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="1" Y="3.7320508076" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="3.7320508076" />
+    <Polygon Name="poly5" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="3.7320508076" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="3.7320508076" Y="1" />
+    <PointByCoordinates Name="p9" Visible="false" X="0" Y="1" />
+    <Polygon Name="poly10" Style="Red">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Orange">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+      <Dependency Name="B" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="0" Y="3.7320508076" />
+    <Number Name="n13" Formula="distance(P, A)">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </Number>
+    <Number Name="n14" Formula="distance(P, p12)">
+      <Dependency Name="P" />
+      <Dependency Name="p12" />
+    </Number>
+    <PointByCoordinates Name="p15" Visible="false" X="(P.X + 0.3 * ((A.X - P.X) / n13))" Y="(P.Y + 0.3 * ((A.Y - P.Y) / n13))">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+      <Dependency Name="n13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(P.X + 0.3 * ((p12.X - P.X) / n14))" Y="(P.Y + 0.3 * ((p12.Y - P.Y) / n14))">
+      <Dependency Name="P" />
+      <Dependency Name="p12" />
+      <Dependency Name="n14" />
+    </PointByCoordinates>
+    <CircleArc Name="a17" Style="Purple">
+      <Dependency Name="P" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </CircleArc>
+    <PointByCoordinates Name="at18" Style="Anchor" X="0.88" Y="4.3520508076" />
+    <AttachedLabel Name="t19" Style="PurpleMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

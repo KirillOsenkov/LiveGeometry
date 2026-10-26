@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-4.0755" Top="2.5005" Right="4.0755" Bottom="-2.5005" />
+  <Scene Left="-4.0755" Top="2.5005" Right="4.0755" Bottom="-2.5005" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Cyan" Color="#FF14D8F4" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FF9EEEFA" />
+    </ShapeStyle>
+    <LineStyle Name="Diagonal" Color="#FF14D8F4" StrokeWidth="3.5">
+      <Dark Color="#FF9EEEFA" />
+    </LineStyle>
+    <ShapeStyle Name="Yellow" Color="#FFFAEA20" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFAF39E" />
+    </ShapeStyle>
+    <LineStyle Name="Blue" Color="#FF0A30EC" StrokeWidth="3.5">
+      <Dark Color="#FF9EAEFA" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFEE1A10" StrokeWidth="3.5">
+      <Dark Color="#FFF9A39F" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="1.375" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="3.575" Y="0" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="H" Style="Handle" X="2.715" Y="0" Parameter="0.6090909091">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="p" Formula="(H.X - 0.375) / 2">
+      <Dependency Name="H" />
+    </Number>
+    <Number Name="side" Formula="sqrt(p ^ 2 + 4)">
+      <Dependency Name="p" />
+    </Number>
+    <PointByCoordinates Name="L" Visible="false" X="-0.375 - p" Y="0">
+      <Dependency Name="p" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" Visible="false" X="0.375 + p" Y="0">
+      <Dependency Name="p" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p4" Visible="false" X="(L.X - p)" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="p" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="L.X" Y="(L.Y + 2)">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(L.X + p)" Y="L.Y">
+      <Dependency Name="L" />
+      <Dependency Name="p" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="L.X" Y="(L.Y - 2)">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p8" Visible="false" X="(R.X - p)" Y="R.Y">
+      <Dependency Name="R" />
+      <Dependency Name="p" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p9" Visible="false" X="R.X" Y="(R.Y + 2)">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p10" Visible="false" X="R.X" Y="(R.Y - 2)">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Polygon Name="poly11" Style="Cyan">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Segment Name="s12" Style="Diagonal">
+      <Dependency Name="p4" />
+      <Dependency Name="p6" />
+    </Segment>
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="H" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Number Name="rb" Formula="p * 2 / (p + side)">
+      <Dependency Name="p" />
+      <Dependency Name="side" />
+    </Number>
+    <PointByCoordinates Name="p14" Visible="false" X="L.X" Y="(L.Y + rb)">
+      <Dependency Name="L" />
+      <Dependency Name="rb" />
+    </PointByCoordinates>
+    <Circle Name="c15" Style="Blue">
+      <Dependency Name="p14" />
+      <Dependency Name="L" />
+    </Circle>
+    <PointByCoordinates Name="p16" Visible="false" X="L.X" Y="(L.Y - rb)">
+      <Dependency Name="L" />
+      <Dependency Name="rb" />
+    </PointByCoordinates>
+    <Circle Name="c17" Style="Blue">
+      <Dependency Name="p16" />
+      <Dependency Name="L" />
+    </Circle>
+    <Number Name="rr" Formula="p * 2 / side">
+      <Dependency Name="p" />
+      <Dependency Name="side" />
+    </Number>
+    <PointByCoordinates Name="p18" Visible="false" X="R.X" Y="(R.Y + rr)">
+      <Dependency Name="R" />
+      <Dependency Name="rr" />
+    </PointByCoordinates>
+    <Circle Name="c19" Style="Red">
+      <Dependency Name="R" />
+      <Dependency Name="p18" />
+    </Circle>
+  </Figures>
+</Drawing>

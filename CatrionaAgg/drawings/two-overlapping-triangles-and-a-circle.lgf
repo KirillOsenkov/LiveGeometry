@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-6.405" Top="6.105" Right="6.705" Bottom="-2.805" />
+  <Scene Left="-6.405" Top="6.105" Right="6.705" Bottom="-2.805" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="RedWedge" Color="#FFFC3569" StrokeWidth="1" Fill="#FFFC3569">
+      <Dark Color="#FFFA9EB6" Fill="#FFFA9EB6" />
+    </ShapeStyle>
+    <LineStyle Name="Green" Color="#FF3EDD72" StrokeWidth="3.5">
+      <Dark Color="#FFA8F0C0" />
+    </LineStyle>
+    <LineStyle Name="Teal" Color="#FF048CBA" StrokeWidth="4">
+      <Dark Color="#FF9EE3FA" />
+    </LineStyle>
+    <LineStyle Name="Blue" Color="#FF0695F6" StrokeWidth="4">
+      <Dark Color="#FF9ED5FA" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="O" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="T0" Visible="false" X="0" Y="-2" />
+    <PointByCoordinates Name="p1" Visible="false" X="-10" Y="-2" />
+    <PointByCoordinates Name="p2" Visible="false" X="10" Y="-2" />
+    <PointByCoordinates Name="p3" Visible="false" X="0.91" Y="5.28" />
+    <PointByCoordinates Name="p4" Visible="false" X="1.41" Y="5.28" />
+    <Circle Name="c5" Visible="false">
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Circle>
+    <PointInRegion Name="C" Style="Handle" X="0.91" Y="5.28">
+      <Dependency Name="c5" />
+    </PointInRegion>
+    <Number Name="dd" Formula="C.X ^ 2 + C.Y ^ 2">
+      <Dependency Name="C" />
+    </Number>
+    <Number Name="k1" Formula="4 / dd">
+      <Dependency Name="dd" />
+    </Number>
+    <Number Name="k2" Formula="2 * sqrt(dd - 4) / dd">
+      <Dependency Name="dd" />
+    </Number>
+    <PointByCoordinates Name="T1" Visible="false" X="k1 * C.X - k2 * C.Y" Y="k1 * C.Y + k2 * C.X">
+      <Dependency Name="k1" />
+      <Dependency Name="C" />
+      <Dependency Name="k2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T2" Visible="false" X="k1 * C.X + k2 * C.Y" Y="k1 * C.Y - k2 * C.X">
+      <Dependency Name="k1" />
+      <Dependency Name="C" />
+      <Dependency Name="k2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p6" Visible="false" X="(O.X - 0.0697989934)" Y="(O.Y + 1.998781654)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="(O.X - 1.1755705046)" Y="(O.Y + 1.6180339887)">
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <CircleArc Name="track8" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="-0.7167358991" Y="1.867160853" Parameter="1.9373154697">
+      <Dependency Name="track8" />
+    </PointOnFigure>
+    <Number Name="n9" Formula="((p1.X - C.X) * (p2.Y - p1.Y) - 1 * (p1.Y - C.Y) * (p2.X - p1.X)) / (((T1.X - C.X) * (p2.Y - p1.Y) - 1 * (T1.Y - C.Y) * (p2.X - p1.X)))">
+      <Dependency Name="p1" />
+      <Dependency Name="C" />
+      <Dependency Name="p2" />
+      <Dependency Name="T1" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="(C.X + n9 * (T1.X - C.X))" Y="(C.Y + n9 * (T1.Y - C.Y))">
+      <Dependency Name="C" />
+      <Dependency Name="n9" />
+      <Dependency Name="T1" />
+    </PointByCoordinates>
+    <Number Name="n10" Formula="((p1.X - C.X) * (p2.Y - p1.Y) - 1 * (p1.Y - C.Y) * (p2.X - p1.X)) / (((T2.X - C.X) * (p2.Y - p1.Y) - 1 * (T2.Y - C.Y) * (p2.X - p1.X)))">
+      <Dependency Name="p1" />
+      <Dependency Name="C" />
+      <Dependency Name="p2" />
+      <Dependency Name="T2" />
+    </Number>
+    <PointByCoordinates Name="B" Visible="false" X="(C.X + n10 * (T2.X - C.X))" Y="(C.Y + n10 * (T2.Y - C.Y))">
+      <Dependency Name="C" />
+      <Dependency Name="n10" />
+      <Dependency Name="T2" />
+    </PointByCoordinates>
+    <Number Name="n11" Formula="((p1.X - P.X) * (p2.Y - p1.Y) - 1 * (p1.Y - P.Y) * (p2.X - p1.X)) / (((T1.X - P.X) * (p2.Y - p1.Y) - 1 * (T1.Y - P.Y) * (p2.X - p1.X)))">
+      <Dependency Name="p1" />
+      <Dependency Name="P" />
+      <Dependency Name="p2" />
+      <Dependency Name="T1" />
+    </Number>
+    <PointByCoordinates Name="E" Visible="false" X="(P.X + n11 * (T1.X - P.X))" Y="(P.Y + n11 * (T1.Y - P.Y))">
+      <Dependency Name="P" />
+      <Dependency Name="n11" />
+      <Dependency Name="T1" />
+    </PointByCoordinates>
+    <Number Name="n12" Formula="((p1.X - P.X) * (p2.Y - p1.Y) - 1 * (p1.Y - P.Y) * (p2.X - p1.X)) / (((T2.X - P.X) * (p2.Y - p1.Y) - 1 * (T2.Y - P.Y) * (p2.X - p1.X)))">
+      <Dependency Name="p1" />
+      <Dependency Name="P" />
+      <Dependency Name="p2" />
+      <Dependency Name="T2" />
+    </Number>
+    <PointByCoordinates Name="F" Visible="false" X="(P.X + n12 * (T2.X - P.X))" Y="(P.Y + n12 * (T2.Y - P.Y))">
+      <Dependency Name="P" />
+      <Dependency Name="n12" />
+      <Dependency Name="T2" />
+    </PointByCoordinates>
+    <Number Name="n13" Formula="sqrt((E.X - T1.X) ^ 2 + (E.Y - T1.Y) ^ 2)">
+      <Dependency Name="E" />
+      <Dependency Name="T1" />
+    </Number>
+    <Number Name="n14" Formula="sqrt((A.X - T1.X) ^ 2 + (A.Y - T1.Y) ^ 2)">
+      <Dependency Name="A" />
+      <Dependency Name="T1" />
+    </Number>
+    <PointByCoordinates Name="p15" Visible="false" X="(T1.X + 0.55 * ((E.X - T1.X) / n13))" Y="(T1.Y + 0.55 * ((E.Y - T1.Y) / n13))">
+      <Dependency Name="T1" />
+      <Dependency Name="E" />
+      <Dependency Name="n13" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(T1.X + 0.55 * ((A.X - T1.X) / n14))" Y="(T1.Y + 0.55 * ((A.Y - T1.Y) / n14))">
+      <Dependency Name="T1" />
+      <Dependency Name="A" />
+      <Dependency Name="n14" />
+    </PointByCoordinates>
+    <CircleSector Name="a17" Style="RedWedge">
+      <Dependency Name="T1" />
+      <Dependency Name="p15" />
+      <Dependency Name="p16" />
+    </CircleSector>
+    <Number Name="n18" Formula="sqrt((T1.X - P.X) ^ 2 + (T1.Y - P.Y) ^ 2)">
+      <Dependency Name="T1" />
+      <Dependency Name="P" />
+    </Number>
+    <Number Name="n19" Formula="sqrt((T2.X - P.X) ^ 2 + (T2.Y - P.Y) ^ 2)">
+      <Dependency Name="T2" />
+      <Dependency Name="P" />
+    </Number>
+    <PointByCoordinates Name="p20" Visible="false" X="(P.X + 0.55 * ((T1.X - P.X) / n18))" Y="(P.Y + 0.55 * ((T1.Y - P.Y) / n18))">
+      <Dependency Name="P" />
+      <Dependency Name="T1" />
+      <Dependency Name="n18" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p21" Visible="false" X="(P.X + 0.55 * ((T2.X - P.X) / n19))" Y="(P.Y + 0.55 * ((T2.Y - P.Y) / n19))">
+      <Dependency Name="P" />
+      <Dependency Name="T2" />
+      <Dependency Name="n19" />
+    </PointByCoordinates>
+    <CircleSector Name="a22" Style="RedWedge">
+      <Dependency Name="P" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+    </CircleSector>
+    <Number Name="n23" Formula="sqrt((B.X - T2.X) ^ 2 + (B.Y - T2.Y) ^ 2)">
+      <Dependency Name="B" />
+      <Dependency Name="T2" />
+    </Number>
+    <Number Name="n24" Formula="sqrt((F.X - T2.X) ^ 2 + (F.Y - T2.Y) ^ 2)">
+      <Dependency Name="F" />
+      <Dependency Name="T2" />
+    </Number>
+    <PointByCoordinates Name="p25" Visible="false" X="(T2.X + 0.55 * ((B.X - T2.X) / n23))" Y="(T2.Y + 0.55 * ((B.Y - T2.Y) / n23))">
+      <Dependency Name="T2" />
+      <Dependency Name="B" />
+      <Dependency Name="n23" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p26" Visible="false" X="(T2.X + 0.55 * ((F.X - T2.X) / n24))" Y="(T2.Y + 0.55 * ((F.Y - T2.Y) / n24))">
+      <Dependency Name="T2" />
+      <Dependency Name="F" />
+      <Dependency Name="n24" />
+    </PointByCoordinates>
+    <CircleSector Name="a27" Style="RedWedge">
+      <Dependency Name="T2" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+    </CircleSector>
+    <Circle Name="c28" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="T0" />
+    </Circle>
+    <Segment Name="s29" Style="Teal">
+      <Dependency Name="E" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="s30" Style="Teal">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s31" Style="Teal">
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="s32" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="s33" Style="Blue">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="s34" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+  </Figures>
+</Drawing>

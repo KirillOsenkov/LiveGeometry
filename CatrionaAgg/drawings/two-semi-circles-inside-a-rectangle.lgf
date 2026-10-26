@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7.704" Top="4.504" Right="0.504" Bottom="-0.504" />
+  <Scene Left="-7.704" Top="4.504" Right="0.504" Bottom="-0.504" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFCA6A8" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFE45F62" />
+            <GradientStop Color="#FFC54144" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="4">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+    <LineStyle Name="Red" Color="#FFE30A22" StrokeWidth="3">
+      <Dark Color="#FFFA9EA8" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="-5.85" Y="4" />
+    <PointByCoordinates Name="p2" Visible="false" X="-7.8" Y="4" />
+    <Segment Name="track3" Visible="false">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+    </Segment>
+    <PointOnFigure Name="L" Style="Handle" X="-6.72" Y="4" Parameter="0.4461538462">
+      <Dependency Name="track3" />
+    </PointOnFigure>
+    <Number Name="D" Formula="8 / (-L.X)">
+      <Dependency Name="L" />
+    </Number>
+    <Number Name="R" Formula="(D + sqrt(D ^ 2 + 16)) / 2">
+      <Dependency Name="D" />
+    </Number>
+    <Number Name="r" Formula="R - D">
+      <Dependency Name="R" />
+      <Dependency Name="D" />
+    </Number>
+    <PointByCoordinates Name="BL" Visible="false" X="L.X" Y="0">
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="BR" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="MR" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly4" Style="Pink">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="MR" />
+      <Dependency Name="L" />
+    </Polygon>
+    <PointByCoordinates Name="CB" Visible="false" X="-R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="CS" Visible="false" X="-r" Y="4">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p5" Visible="false" X="-2 * R" Y="0">
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <CircleArc Name="a6" Style="Ink">
+      <Dependency Name="CB" />
+      <Dependency Name="BR" />
+      <Dependency Name="p5" />
+    </CircleArc>
+    <PointByCoordinates Name="p7" Visible="false" X="-2 * r" Y="4">
+      <Dependency Name="r" />
+    </PointByCoordinates>
+    <CircleArc Name="a8" Style="Ink">
+      <Dependency Name="CS" />
+      <Dependency Name="p7" />
+      <Dependency Name="TR" />
+    </CircleArc>
+    <Segment Name="s9" Style="Red">
+      <Dependency Name="L" />
+      <Dependency Name="MR" />
+    </Segment>
+    <Polygon Name="poly10" Style="Frame" Z="1">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="L" />
+    </Polygon>
+  </Figures>
+</Drawing>

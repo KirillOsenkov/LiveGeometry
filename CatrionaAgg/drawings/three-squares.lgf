@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.7984621202" Top="11.405063838" Right="10.6979570569" Bottom="-1.5984621202" />
+  <Scene Left="-0.7984621202" Top="11.405063838" Right="10.6979570569" Bottom="-1.5984621202" />
+  <Styles>
+    <ShapeStyle Name="Cyan" Color="#FF1E1E1E" StrokeWidth="4" Fill="#FF38EEFB" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF44D8E2" />
+            <GradientStop Color="#FF25B9C3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFDA0318" StrokeWidth="3">
+      <Dark Color="#FFFA9EA7" />
+    </LineStyle>
+    <TextStyle Name="RedMark" FontSize="32" Color="#FFDA0318" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF450C12" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="BlueMark" FontSize="36" Color="#FF0A28E0" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF0C1445" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="P" Visible="false" X="5.6568542495" Y="5.6568542495" />
+    <PointByCoordinates Name="Q" Visible="false" X="0" Y="5.6568542495" />
+    <PointByCoordinates Name="U" Visible="false" X="5.6568542495" Y="9.8994949366" />
+    <PointByCoordinates Name="V" Visible="false" X="0.7071067812" Y="10.6066017178" />
+    <PointByCoordinates Name="p1" Visible="false" X="4.9497474683" Y="4.9497474683" />
+    <PointByCoordinates Name="p2" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="5.6568542495" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="5.6568542495" Y="5.6568542495" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="5.6568542495" />
+    <Polygon Name="poly6" Style="Cyan">
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <PointByCoordinates Name="p7" Visible="false" X="5.6568542495" Y="5.6568542495" />
+    <PointByCoordinates Name="p8" Visible="false" X="9.8994949366" Y="5.6568542495" />
+    <PointByCoordinates Name="p9" Visible="false" X="9.8994949366" Y="9.8994949366" />
+    <PointByCoordinates Name="p10" Visible="false" X="5.6568542495" Y="9.8994949366" />
+    <Polygon Name="poly11" Style="Cyan">
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Cyan">
+      <Dependency Name="Q" />
+      <Dependency Name="p1" />
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </Polygon>
+    <PointByCoordinates Name="p13" Visible="false" X="(V.X + P.X) / 2" Y="(V.Y + P.Y) / 2">
+      <Dependency Name="V" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Vector Name="v14" Style="Red">
+      <Dependency Name="p13" />
+      <Dependency Name="V" />
+    </Vector>
+    <Vector Name="v15" Style="Red">
+      <Dependency Name="p13" />
+      <Dependency Name="P" />
+    </Vector>
+    <PointByCoordinates Name="at16" Style="Anchor" X="3.65" Y="8.6" />
+    <AttachedLabel Name="t17" Style="RedMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="?">
+      <Dependency Name="at16" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at18" Style="Anchor" X="1.9" Y="7.3" />
+    <AttachedLabel Name="t19" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="25">
+      <Dependency Name="at18" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at20" Style="Anchor" X="7.7781745931" Y="7.7781745931" />
+    <AttachedLabel Name="t21" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="18">
+      <Dependency Name="at20" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at22" Style="Anchor" X="2.8284271247" Y="2.8284271247" />
+    <AttachedLabel Name="t23" Style="BlueMark" Z="1" OffsetX="-19.12" OffsetY="-19.55" Text="32">
+      <Dependency Name="at22" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

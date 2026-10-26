@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-9.2128858447" Top="15.639826484" Right="9.2128858447" Bottom="-4.1128858447" />
+  <Scene Left="-9.2128858447" Top="15.639826484" Right="9.2128858447" Bottom="-4.1128858447" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#FFF5DC00" StrokeWidth="3" Fill="#FFFDE902" Texture="FeltTip">
+      <Dark Color="#FFFAF19E" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBCF3D" />
+            <GradientStop Color="#FFBDB01F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Arrow" Color="#FF00A0C3" StrokeWidth="2.5">
+      <Dark Color="#FF9EE9FA" />
+    </LineStyle>
+    <TextStyle Name="CyanMark" FontSize="30" Color="#FF00A0C3" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF9EE9FA" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="B" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="L" Visible="false" X="-6.0273972603" Y="5.2602739726" />
+    <PointByCoordinates Name="R" Visible="false" X="8" Y="9.1666666667" />
+    <PointByCoordinates Name="T" Visible="false" X="1.9726027397" Y="14.4269406393" />
+    <PointByCoordinates Name="p1" Visible="false" X="-8" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="-6.0273972603" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="-6.0273972603" Y="12.1666666667" />
+    <PointByCoordinates Name="p4" Visible="false" X="-8" Y="12.1666666667" />
+    <Polygon Name="poly5" Style="Yellow">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p6" Visible="false" X="-8" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="12.1666666667" />
+    <PointByCoordinates Name="p9" Visible="false" X="-8" Y="12.1666666667" />
+    <Polygon Name="poly10" Style="Frame">
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Frame">
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="0.3835616438" Y="13.8228310502" />
+    <PointByCoordinates Name="p13" Visible="false" X="-0.602739726" Y="12.6926940639" />
+    <Vector Name="v14" Style="Arrow">
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Vector>
+    <PointByCoordinates Name="p15" Visible="false" X="1.3698630137" Y="14.9529680365" />
+    <Vector Name="v16" Style="Arrow">
+      <Dependency Name="p12" />
+      <Dependency Name="p15" />
+    </Vector>
+    <PointByCoordinates Name="at17" Style="Anchor" X="-0.9" Y="14.5666666667" />
+    <AttachedLabel Name="t18" Style="CyanMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="3">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="p19" Visible="false" X="0" Y="-1.2" />
+    <PointByCoordinates Name="p20" Visible="false" X="-8" Y="-1.2" />
+    <Vector Name="v21" Style="Arrow">
+      <Dependency Name="p19" />
+      <Dependency Name="p20" />
+    </Vector>
+    <PointByCoordinates Name="p22" Visible="false" X="8" Y="-1.2" />
+    <Vector Name="v23" Style="Arrow">
+      <Dependency Name="p19" />
+      <Dependency Name="p22" />
+    </Vector>
+    <PointByCoordinates Name="at24" Style="Anchor" X="0" Y="-2.3" />
+    <AttachedLabel Name="t25" Style="CyanMark" Z="1" OffsetX="-21.6" OffsetY="-22.25" Text="16">
+      <Dependency Name="at24" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.839" Top="6.239" Right="6.939" Bottom="-1.439" />
+  <Scene Left="-1.839" Top="6.239" Right="6.939" Bottom="-1.439" />
+  <Styles>
+    <ShapeStyle Name="Red" Color="#FFD0140A" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFFAA39E" />
+    </ShapeStyle>
+    <ShapeStyle Name="Blue" Color="#FF6A4CDE" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB7A9EF" />
+    </ShapeStyle>
+    <LineStyle Name="Orange" Color="#FFFA9208" StrokeWidth="3.5">
+      <Dark Color="#FFFAD29E" />
+    </LineStyle>
+    <TextStyle Name="Letter" FontSize="28" Color="#FF1E1E1E" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE6E6E6" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="B" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="5" Y="5" />
+    <PointByCoordinates Name="D" Visible="false" X="0" Y="5" />
+    <PointByCoordinates Name="E" Visible="false" X="5.6" Y="4.2" />
+    <PointByCoordinates Name="F" Visible="false" X="-0.6" Y="0.8" />
+    <Polygon Name="poly1" Style="Red">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="poly2" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="C" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="s3" Style="Orange">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </Segment>
+    <Number Name="n4" Formula="distance(E, A)">
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+    </Number>
+    <Number Name="n5" Formula="distance(E, B)">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </Number>
+    <PointByCoordinates Name="p6" Visible="false" X="(E.X + 0.45 * ((A.X - E.X) / n4))" Y="(E.Y + 0.45 * ((A.Y - E.Y) / n4))">
+      <Dependency Name="E" />
+      <Dependency Name="A" />
+      <Dependency Name="n4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p7" Visible="false" X="(E.X + 0.45 * ((B.X - E.X) / n5))" Y="(E.Y + 0.45 * ((B.Y - E.Y) / n5))">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+      <Dependency Name="n5" />
+    </PointByCoordinates>
+    <CircleArc Name="a8" Style="Orange">
+      <Dependency Name="E" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </CircleArc>
+    <PointByCoordinates Name="at9" Style="Anchor" X="-0.05" Y="-0.55" />
+    <AttachedLabel Name="t10" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="A">
+      <Dependency Name="at9" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at11" Style="Anchor" X="5.15" Y="-0.55" />
+    <AttachedLabel Name="t12" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="B">
+      <Dependency Name="at11" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at13" Style="Anchor" X="5.35" Y="5.3" />
+    <AttachedLabel Name="t14" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="C">
+      <Dependency Name="at13" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at15" Style="Anchor" X="-0.45" Y="5.35" />
+    <AttachedLabel Name="t16" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="D">
+      <Dependency Name="at15" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at17" Style="Anchor" X="6" Y="4.15" />
+    <AttachedLabel Name="t18" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="E">
+      <Dependency Name="at17" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at19" Style="Anchor" X="-1" Y="0.95" />
+    <AttachedLabel Name="t20" Style="Letter" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="F">
+      <Dependency Name="at19" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

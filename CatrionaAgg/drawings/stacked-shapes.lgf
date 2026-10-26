@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.5445" Top="6.2586016151" Right="11.3945" Bottom="-1.0945" />
+  <Scene Left="-1.5445" Top="6.2586016151" Right="11.3945" Bottom="-1.0945" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF102190" StrokeWidth="3" Fill="#FFE6ECFB" Texture="Crayon">
+      <Dark Color="#FFA3AEF5" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF929FC1" />
+            <GradientStop Color="#FF7381A3" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Green" Color="#FF86C060" StrokeWidth="3" Fill="#FFF0F8D2" Texture="Crayon">
+      <Dark Color="#FFC6E8B0" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFBBCA84" />
+            <GradientStop Color="#FF9CAB65" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Purple" Color="#FF7A6AC4" StrokeWidth="3" Fill="#FFE4E0F8" Texture="Crayon">
+      <Dark Color="#FFBAB0E8" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF978FC2" />
+            <GradientStop Color="#FF7970A4" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#FFA1008A" StrokeWidth="3" Fill="#FFF7E6F3" Texture="Crayon">
+      <Dark Color="#FFFA9EED" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFBE94B4" />
+            <GradientStop Color="#FFA07596" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Shelf" Color="#FF057CB3" StrokeWidth="3">
+      <Dark Color="#FF9EDDFA" />
+    </LineStyle>
+    <TextStyle Name="MagentaMark" FontSize="30" Color="#FFA1008A" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF450C3D" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+    <TextStyle Name="PurpleMark" FontSize="26" Color="#FF6A58B8" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FF1F1839" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="p2" Visible="false" X="5" Y="3.7320508076" />
+    <PointByCoordinates Name="p3" Visible="false" X="7.4641016151" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="8.4641016151" Y="1.7320508076" />
+    <PointByCoordinates Name="p5" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="p7" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="p8" Visible="false" X="0" Y="2" />
+    <Polygon Name="poly9" Style="Blue">
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+      <Dependency Name="p8" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Blue">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p4" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <PointByCoordinates Name="p11" Visible="false" X="0" Y="2" />
+    <PointByCoordinates Name="p12" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p13" Visible="false" X="1" Y="3.7320508076" />
+    <Polygon Name="poly14" Style="Green">
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+    </Polygon>
+    <PointByCoordinates Name="p15" Visible="false" X="9.4641016151" Y="0" />
+    <Polygon Name="poly16" Style="Green">
+      <Dependency Name="p3" />
+      <Dependency Name="p15" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <PointByCoordinates Name="p17" Visible="false" X="5.1547005384" Y="0" />
+    <PointByCoordinates Name="p18" Visible="false" X="6.3094010768" Y="0" />
+    <PointByCoordinates Name="p19" Visible="false" X="4" Y="0" />
+    <CircleSegment Name="a20" Style="Purple">
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+      <Dependency Name="p19" />
+    </CircleSegment>
+    <PointByCoordinates Name="p21" Visible="false" X="3" Y="3.7320508076" />
+    <PointByCoordinates Name="p22" Visible="false" X="3" Y="2" />
+    <Circle Name="c23" Style="Pink">
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Circle>
+    <PointByCoordinates Name="p24" Visible="false" X="-0.75" Y="0" />
+    <PointByCoordinates Name="p25" Visible="false" X="10.6" Y="0" />
+    <Segment Name="s26" Style="Shelf">
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+    </Segment>
+    <PointByCoordinates Name="at27" Style="Anchor" X="p21.X" Y="p21.Y">
+      <Dependency Name="p21" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t28" Style="MagentaMark" Z="1" OffsetX="-12.3" OffsetY="-22.25" Text="?">
+      <Dependency Name="at27" />
+    </AttachedLabel>
+    <PointByCoordinates Name="at29" Style="Anchor" X="5.1547005384" Y="0.5196152423" />
+    <AttachedLabel Name="t30" Style="PurpleMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="4">
+      <Dependency Name="at29" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

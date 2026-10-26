@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.28" Top="4.28" Right="4.28" Bottom="-0.28" />
+  <Scene Left="-0.28" Top="4.28" Right="4.28" Bottom="-0.28" />
+  <Styles>
+    <ShapeStyle Name="Yellow" Color="#00000000" StrokeWidth="2.5" Fill="#FFFEF202" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBD43D" />
+            <GradientStop Color="#FFBDB51F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Red" Color="#FFCC0835" StrokeWidth="7">
+      <Dark Color="#FFF0405F" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FFCC0835" StrokeWidth="7" IsFilled="false">
+      <Dark Color="#FFF0405F" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="BL" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="BR" Visible="false" X="4" Y="0" />
+    <PointByCoordinates Name="TR" Visible="false" X="4" Y="4" />
+    <PointByCoordinates Name="TL" Visible="false" X="0" Y="4" />
+    <PointByCoordinates Name="Tm" Visible="false" X="2" Y="4" />
+    <PointByCoordinates Name="Rm" Visible="false" X="4" Y="2" />
+    <PointByCoordinates Name="Bm" Visible="false" X="2" Y="0" />
+    <PointByCoordinates Name="Ct" Visible="false" X="2" Y="2" />
+    <PointByCoordinates Name="p1" Visible="false" X="1" Y="2" />
+    <PointByCoordinates Name="p2" Visible="false" X="1.6" Y="3.2" />
+    <PointByCoordinates Name="p3" Visible="false" X="1.6" Y="0.8" />
+    <PointByCoordinates Name="p4" Visible="false" X="1.3333333333" Y="2.6666666667" />
+    <PointByCoordinates Name="p5" Visible="false" X="1.3333333333" Y="1.3333333333" />
+    <PointByCoordinates Name="p6" Visible="false" X="2.6666666667" Y="2.6666666667" />
+    <PointByCoordinates Name="p7" Visible="false" X="2.6666666667" Y="1.3333333333" />
+    <Polygon Name="poly8" Style="Yellow">
+      <Dependency Name="TL" />
+      <Dependency Name="BL" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly9" Style="Yellow">
+      <Dependency Name="Tm" />
+      <Dependency Name="TR" />
+      <Dependency Name="p6" />
+      <Dependency Name="p2" />
+    </Polygon>
+    <Polygon Name="poly10" Style="Yellow">
+      <Dependency Name="Bm" />
+      <Dependency Name="BR" />
+      <Dependency Name="p7" />
+      <Dependency Name="p3" />
+    </Polygon>
+    <Polygon Name="poly11" Style="Yellow">
+      <Dependency Name="TL" />
+      <Dependency Name="p2" />
+      <Dependency Name="p4" />
+    </Polygon>
+    <Polygon Name="poly12" Style="Yellow">
+      <Dependency Name="BL" />
+      <Dependency Name="p3" />
+      <Dependency Name="p5" />
+    </Polygon>
+    <Polygon Name="poly13" Style="Yellow">
+      <Dependency Name="p4" />
+      <Dependency Name="Ct" />
+      <Dependency Name="p5" />
+      <Dependency Name="p1" />
+    </Polygon>
+    <Polygon Name="poly14" Style="Yellow">
+      <Dependency Name="Rm" />
+      <Dependency Name="p6" />
+      <Dependency Name="Ct" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <Segment Name="s15" Style="Red">
+      <Dependency Name="TL" />
+      <Dependency Name="BR" />
+    </Segment>
+    <Segment Name="s16" Style="Red">
+      <Dependency Name="BL" />
+      <Dependency Name="TR" />
+    </Segment>
+    <Segment Name="s17" Style="Red">
+      <Dependency Name="TL" />
+      <Dependency Name="Rm" />
+    </Segment>
+    <Segment Name="s18" Style="Red">
+      <Dependency Name="BL" />
+      <Dependency Name="Rm" />
+    </Segment>
+    <Segment Name="s19" Style="Red">
+      <Dependency Name="TL" />
+      <Dependency Name="Bm" />
+    </Segment>
+    <Segment Name="s20" Style="Red">
+      <Dependency Name="BL" />
+      <Dependency Name="Tm" />
+    </Segment>
+    <Polygon Name="poly21" Style="Frame" Z="1">
+      <Dependency Name="BL" />
+      <Dependency Name="BR" />
+      <Dependency Name="TR" />
+      <Dependency Name="TL" />
+    </Polygon>
+  </Figures>
+</Drawing>

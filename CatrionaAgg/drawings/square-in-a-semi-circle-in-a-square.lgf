@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Scene Left="-0.35" Top="5.35" Right="5.35" Bottom="-0.35" />
+  <Styles>
+    <ShapeStyle Name="Frame" Color="#FF6A14D8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFC7A2F6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Pink" Color="#00000000" StrokeWidth="2.5" Fill="#FFFC9AB2" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFEA567A" />
+            <GradientStop Color="#FFCB375C" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="Arc" Color="#FF1010F0" StrokeWidth="3.5">
+      <Dark Color="#FF9F9FF9" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="2.5" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p3" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p4" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p6" Visible="false" X="5" Y="5" />
+    <PointByCoordinates Name="p7" Visible="false" X="0" Y="5" />
+    <Polygon Name="poly8" Style="Frame">
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+      <Dependency Name="p7" />
+    </Polygon>
+    <PointByCoordinates Name="p9" Visible="false" X="1.3819660113" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="3.6180339887" Y="0" />
+    <PointByCoordinates Name="p11" Visible="false" X="3.6180339887" Y="2.2360679775" />
+    <PointByCoordinates Name="p12" Visible="false" X="1.3819660113" Y="2.2360679775" />
+    <Polygon Name="poly13" Style="Pink">
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+      <Dependency Name="p11" />
+      <Dependency Name="p12" />
+    </Polygon>
+    <CircleArc Name="a14" Style="Arc">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+    </CircleArc>
+  </Figures>
+</Drawing>

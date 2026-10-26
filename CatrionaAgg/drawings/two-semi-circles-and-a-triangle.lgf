@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-0.8149613392" Top="8.3149613392" Right="12.4572661846" Bottom="-0.8149613392" />
+  <Scene Left="-0.8149613392" Top="8.3149613392" Right="12.4572661846" Bottom="-0.8149613392" />
+  <Styles>
+    <ShapeStyle Name="Teal" Color="#00000000" StrokeWidth="2.5" Fill="#FF74E8CA" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF49E7BF" />
+            <GradientStop Color="#FF2BC9A0" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="TealLine" Color="#FF0B9796" StrokeWidth="3">
+      <Dark Color="#FFA0F8F7" />
+    </LineStyle>
+    <ShapeStyle Name="Dot" Color="#FF1E1E1E" StrokeWidth="1" Fill="#FF1E1E1E" Texture="Crayon">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF7D6969" />
+            <GradientStop Color="#FF5E4A4A" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Triangle" Color="#FF1E1E1E" StrokeWidth="4.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="TealArrow" Color="#FF0B9796" StrokeWidth="3">
+      <Dark Color="#FFA0F8F7" />
+    </LineStyle>
+    <TextStyle Name="TealMark" FontSize="32" Color="#FF0B9796" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFA0F8F7" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="0" />
+    <PointByCoordinates Name="Q" Visible="false" X="2.5980762114" Y="1.5" />
+    <PointByCoordinates Name="P1" Visible="false" X="5.1961524227" Y="3" />
+    <PointByCoordinates Name="P2" Visible="false" X="7.7942286341" Y="4.5" />
+    <PointByCoordinates Name="B" Visible="false" X="10.3923048454" Y="6" />
+    <PointByCoordinates Name="C" Visible="false" X="10.3923048454" Y="0" />
+    <CircleSegment Name="a1" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="Q" />
+      <Dependency Name="P2" />
+    </CircleSegment>
+    <CircleSegment Name="a2" Visible="false">
+      <Dependency Name="P2" />
+      <Dependency Name="B" />
+      <Dependency Name="P1" />
+    </CircleSegment>
+    <Region Name="r3" Style="Teal" Operation="Union">
+      <Dependency Name="a1" />
+      <Dependency Name="a2" />
+    </Region>
+    <CircleArc Name="a4" Style="TealLine">
+      <Dependency Name="P1" />
+      <Dependency Name="Q" />
+      <Dependency Name="P2" />
+    </CircleArc>
+    <CircleArc Name="a5" Style="TealLine">
+      <Dependency Name="P2" />
+      <Dependency Name="B" />
+      <Dependency Name="P1" />
+    </CircleArc>
+    <PointByCoordinates Name="p6" Visible="false" X="5.3961524227" Y="3" />
+    <Circle Name="c7" Style="Dot">
+      <Dependency Name="P1" />
+      <Dependency Name="p6" />
+    </Circle>
+    <PointByCoordinates Name="p8" Visible="false" X="7.9942286341" Y="4.5" />
+    <Circle Name="c9" Style="Dot">
+      <Dependency Name="P2" />
+      <Dependency Name="p8" />
+    </Circle>
+    <Polygon Name="poly10" Style="Triangle" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Number Name="n11" Formula="distance(B, C)">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Number>
+    <PointByCoordinates Name="p12" Visible="false" X="(C.X - B.X) / n11" Y="(C.Y - B.Y) / n11">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="n11" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p13" Visible="false" X="(B.X - p12.Y)" Y="(B.Y + p12.X)">
+      <Dependency Name="B" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p14" Visible="false" X="(C.X - p12.Y)" Y="(C.Y + p12.X)">
+      <Dependency Name="C" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p15" Visible="false" X="(p13.X + p14.X) / 2" Y="(p13.Y + p14.Y) / 2">
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p16" Visible="false" X="(p15.X - 1 * 0.75 * p12.X)" Y="(p15.Y - 1 * 0.75 * p12.Y)">
+      <Dependency Name="p15" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="p17" Visible="false" X="(p15.X + 0.75 * p12.X)" Y="(p15.Y + 0.75 * p12.Y)">
+      <Dependency Name="p15" />
+      <Dependency Name="p12" />
+    </PointByCoordinates>
+    <Vector Name="v18" Style="TealArrow">
+      <Dependency Name="p16" />
+      <Dependency Name="p13" />
+    </Vector>
+    <Vector Name="v19" Style="TealArrow">
+      <Dependency Name="p17" />
+      <Dependency Name="p14" />
+    </Vector>
+    <PointByCoordinates Name="at20" Style="Anchor" X="p15.X" Y="p15.Y">
+      <Dependency Name="p15" />
+    </PointByCoordinates>
+    <AttachedLabel Name="t21" Style="TealMark" Z="1" OffsetX="-11.06" OffsetY="-19.55" Text="6">
+      <Dependency Name="at20" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

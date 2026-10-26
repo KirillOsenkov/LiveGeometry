@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-5.7" Top="5.0301270189" Right="5.7" Bottom="-5.0301270189" />
+  <Scene Left="-5.7" Top="5.0301270189" Right="5.7" Bottom="-5.0301270189" />
+  <Styles>
+    <ShapeStyle Name="Hexagon" Color="#FF4A9CBE" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB0D8E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Square" Color="#FF2A2840" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFB5B0E8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Rectangle" Color="#FF2E6CC8" StrokeWidth="3.5" IsFilled="false">
+      <Dark Color="#FFACC6EC" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <PointByCoordinates Name="p1" Visible="false" X="5" Y="0" />
+    <PointByCoordinates Name="p2" Visible="false" X="2.5" Y="4.3301270189" />
+    <PointByCoordinates Name="p3" Visible="false" X="-2.5" Y="4.3301270189" />
+    <PointByCoordinates Name="p4" Visible="false" X="-5" Y="0" />
+    <PointByCoordinates Name="p5" Visible="false" X="-2.5" Y="-4.3301270189" />
+    <PointByCoordinates Name="p6" Visible="false" X="2.5" Y="-4.3301270189" />
+    <Polygon Name="poly7" Style="Hexagon">
+      <Dependency Name="p1" />
+      <Dependency Name="p2" />
+      <Dependency Name="p3" />
+      <Dependency Name="p4" />
+      <Dependency Name="p5" />
+      <Dependency Name="p6" />
+    </Polygon>
+    <PointByCoordinates Name="p8" Visible="false" X="3.1698729811" Y="1.8301270189" />
+    <PointByCoordinates Name="p9" Visible="false" X="1.3397459622" Y="0" />
+    <PointByCoordinates Name="p10" Visible="false" X="3.1698729811" Y="-1.8301270189" />
+    <Polygon Name="poly11" Style="Square">
+      <Dependency Name="p1" />
+      <Dependency Name="p8" />
+      <Dependency Name="p9" />
+      <Dependency Name="p10" />
+    </Polygon>
+    <PointByCoordinates Name="p12" Visible="false" X="0" Y="3.6602540378" />
+    <PointByCoordinates Name="p13" Visible="false" X="0.6698729811" Y="1.1602540378" />
+    <PointByCoordinates Name="p14" Visible="false" X="3.1698729811" Y="1.8301270189" />
+    <Polygon Name="poly15" Style="Square">
+      <Dependency Name="p2" />
+      <Dependency Name="p12" />
+      <Dependency Name="p13" />
+      <Dependency Name="p14" />
+    </Polygon>
+    <PointByCoordinates Name="p16" Visible="false" X="-3.1698729811" Y="1.8301270189" />
+    <PointByCoordinates Name="p17" Visible="false" X="-0.6698729811" Y="1.1602540378" />
+    <PointByCoordinates Name="p18" Visible="false" X="0" Y="3.6602540378" />
+    <Polygon Name="poly19" Style="Square">
+      <Dependency Name="p3" />
+      <Dependency Name="p16" />
+      <Dependency Name="p17" />
+      <Dependency Name="p18" />
+    </Polygon>
+    <PointByCoordinates Name="p20" Visible="false" X="-3.1698729811" Y="-1.8301270189" />
+    <PointByCoordinates Name="p21" Visible="false" X="-1.3397459622" Y="0" />
+    <PointByCoordinates Name="p22" Visible="false" X="-3.1698729811" Y="1.8301270189" />
+    <Polygon Name="poly23" Style="Square">
+      <Dependency Name="p4" />
+      <Dependency Name="p20" />
+      <Dependency Name="p21" />
+      <Dependency Name="p22" />
+    </Polygon>
+    <PointByCoordinates Name="p24" Visible="false" X="-0" Y="-3.6602540378" />
+    <PointByCoordinates Name="p25" Visible="false" X="-0.6698729811" Y="-1.1602540378" />
+    <PointByCoordinates Name="p26" Visible="false" X="-3.1698729811" Y="-1.8301270189" />
+    <Polygon Name="poly27" Style="Square">
+      <Dependency Name="p5" />
+      <Dependency Name="p24" />
+      <Dependency Name="p25" />
+      <Dependency Name="p26" />
+    </Polygon>
+    <PointByCoordinates Name="p28" Visible="false" X="3.1698729811" Y="-1.8301270189" />
+    <PointByCoordinates Name="p29" Visible="false" X="0.6698729811" Y="-1.1602540378" />
+    <PointByCoordinates Name="p30" Visible="false" X="0" Y="-3.6602540378" />
+    <Polygon Name="poly31" Style="Square">
+      <Dependency Name="p6" />
+      <Dependency Name="p28" />
+      <Dependency Name="p29" />
+      <Dependency Name="p30" />
+    </Polygon>
+    <PointByCoordinates Name="p32" Visible="false" X="1.3397459622" Y="0" />
+    <PointByCoordinates Name="p33" Visible="false" X="0.6698729811" Y="1.1602540378" />
+    <PointByCoordinates Name="p34" Visible="false" X="-1.3397459622" Y="0" />
+    <PointByCoordinates Name="p35" Visible="false" X="-0.6698729811" Y="-1.1602540378" />
+    <Polygon Name="poly36" Style="Rectangle">
+      <Dependency Name="p32" />
+      <Dependency Name="p33" />
+      <Dependency Name="p34" />
+      <Dependency Name="p35" />
+    </Polygon>
+  </Figures>
+</Drawing>
