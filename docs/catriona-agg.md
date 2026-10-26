@@ -12,11 +12,15 @@ icons, each drawn by `<use href="/CatrionaAgg/icons.svg#icon-back">`; the mark i
 (revalidated, not cached for good: web.config's mutable set), so a page carries its markup
 alone. Until 2026-10-25 both were one page with two views, the gallery kept behind the puzzle;
 now a step from one to the other is a page load, and what carried over is kept for the tab
-(`sessionStorage`): the gallery's arrangement (grouping, search, order), which the puzzle's
-arrows step through (date order when there is none, or it leaves the puzzle out), and the
-gallery's scroll, put back when "All puzzles" or Escape (a flag) or Back brings the reader to
-it. The address of the gallery says the arrangement too, and wins when it says one: a puzzle's
-tag is `/CatrionaAgg?by=topic#group-circle-theorems`. Browser Back usually restores the
+(`sessionStorage`): the gallery's arrangement (grouping, the one section shown alone, search,
+order), which the puzzle's arrows step through (date order when there is none, or it leaves
+the puzzle out), and the gallery's scroll, put back when "All puzzles" or Escape (a flag) or
+Back brings the reader to it. The buttons under a grouping are filters (2026-10-25: with 440
+puzzles, scrolling to a section in one long page wasn't enough): one shows its section alone
+until it is pressed again or All is, and another grouping takes the filter off. The address of
+the gallery says the arrangement too, and wins when it says one: a puzzle's tag is
+`/CatrionaAgg?by=topic&only=circle-theorems` (the older `#group-circle-theorems` is read as
+the same). Browser Back usually restores the
 gallery from memory, tiles and all; otherwise the tiles draw again. A puzzle's Edit (the pencil
 of the start page, inline for its gradient) opens the drawing in the editor in a new tab, handed
 over as /web's Edit does (`LiveGeometry.Handoff` in `sessionStorage`): a tab opened by

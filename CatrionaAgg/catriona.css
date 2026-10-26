@@ -426,6 +426,10 @@ svg { display: block; }
 .jump button:hover { background: var(--line-strong); }
 .jump button span { color: var(--ink-faint); margin-left: 4px; font-weight: 400; }
 
+/* the section shown alone, or All when none is */
+.jump button[aria-pressed="true"] { background: var(--ink); color: var(--page); font-weight: 600; }
+.jump button[aria-pressed="true"] span { color: inherit; opacity: 0.7; }
+
 .groups { padding-bottom: 30px; }
 
 .group { padding-top: 18px; scroll-margin-top: 130px; }

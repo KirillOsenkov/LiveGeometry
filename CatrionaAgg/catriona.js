@@ -209,7 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ---------- the arrangement of the gallery, kept for the tab ----------
 
-  var DefaultState = { group: 'none', query: '', oldestFirst: false };
+  // only: one section of the arrangement shown alone (its slug), or '' for all of them
+  var DefaultState = { group: 'none', query: '', oldestFirst: false, only: '' };
   var StateKey = 'CatrionaAgg.Arrangement';
   var ScrollKey = 'CatrionaAgg.GalleryScroll';
   var ReturnKey = 'CatrionaAgg.Returning';
@@ -230,10 +231,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function validState(state) {
+    var group = ['none', 'year', 'topic', 'shape', 'question'].indexOf(state.group) >= 0 ? state.group : 'none';
     return {
-      group: ['none', 'year', 'topic', 'shape', 'question'].indexOf(state.group) >= 0 ? state.group : 'none',
+      group: group,
       query: typeof state.query === 'string' ? state.query : '',
-      oldestFirst: state.oldestFirst === true
+      oldestFirst: state.oldestFirst === true,
+      only: group !== 'none' && typeof state.only === 'string' && /^[a-z0-9-]+$/.test(state.only) ? state.only : ''
     };
   }
 
@@ -283,7 +286,14 @@ document.addEventListener('DOMContentLoaded', function () {
       Questions.forEach(function (question) { add(question === 'Other' ? 'Something else' : 'What’s the ' + question.toLowerCase() + '?', shown.filter(function (puzzle) { return puzzle.question === question; })); });
     }
 
-    return { shown: shown, sections: sections };
+    // one section alone: the others are left out until the filter is taken off
+    var all = sections;
+    if (state.only !== '') {
+      sections = all.filter(function (section) { return sectionSlug(section.name) === state.only; });
+      shown = sections.length > 0 ? sections[0].puzzles : [];
+    }
+
+    return { shown: shown, sections: sections, all: all };
   }
 
   // the puzzles as the gallery shows them for a state, each once (a puzzle may be in several sections)
@@ -301,8 +311,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return order;
   }
 
+  // a section's name in an address: "Circle Theorems" is circle-theorems, "What’s the angle?" what-s-the-angle
+  function sectionSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
   function sectionId(name) {
-    return 'group-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return 'group-' + sectionSlug(name);
   }
 
   // ---------- the pictures of the tiles ----------
@@ -718,7 +733,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function readGalleryState() {
     var query = new URLSearchParams(location.search);
     if (query.has('by') || query.has('q') || query.has('order')) {
-      return validState({ group: query.get('by'), query: query.get('q') || '', oldestFirst: query.get('order') === 'oldest' });
+      // a tag's link before the filter named its section in the hash: /CatrionaAgg?by=topic#group-circle-theorems
+      var only = (query.get('only') || (/^#group-/.test(location.hash) ? decodeURIComponent(location.hash.substring(7)) : '')).replace(/^-+|-+$/g, '');
+      return validState({ group: query.get('by'), query: query.get('q') || '', oldestFirst: query.get('order') === 'oldest', only: only });
     }
 
     return storedState() || Object.assign({}, DefaultState);
@@ -727,10 +744,11 @@ document.addEventListener('DOMContentLoaded', function () {
   function galleryAddress() {
     var query = new URLSearchParams();
     if (state.group !== 'none') { query.set('by', state.group); }
+    if (state.only !== '') { query.set('only', state.only); }
     if (state.query.trim() !== '') { query.set('q', state.query.trim()); }
     if (state.oldestFirst) { query.set('order', 'oldest'); }
     var text = query.toString();
-    return Base + (text !== '' ? '?' + text : '') + location.hash;
+    return Base + (text !== '' ? '?' + text : '');
   }
 
   // the arrangement goes into the address (to be shared) and into the tab (for the puzzles' arrows)
@@ -821,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     countText.textContent = shownCount === puzzles.length
-      ? puzzles.length + ' puzzles redrawn so far, of ' + everything.length + ' in the catalogue'
+      ? puzzles.length + ' puzzles'
       : shownCount + ' of ' + puzzles.length + ' puzzles';
     emptyText.hidden = shownCount > 0;
     if (shownCount === 0) {
@@ -830,7 +848,7 @@ document.addEventListener('DOMContentLoaded', function () {
         : 'Nothing here yet.';
     }
 
-    updateJump(result.sections);
+    updateJump(result.all);
 
     if (before.size > 0) {
       var viewHeight = window.innerHeight;
@@ -865,35 +883,58 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function scrollToSection(id) {
-    var target = document.getElementById(id);
-    if (target != null) {
-      window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY - 120);
+  // the top of the results just under the sticky controls, when the page is below it or when asked
+  function scrollToResults(always) {
+    var controls = document.getElementById('controls');
+    var top = jump.getBoundingClientRect().top + window.scrollY - parseFloat(getComputedStyle(controls).top) - controls.offsetHeight - 4;
+    if (always || window.scrollY > top) {
+      window.scrollTo(0, Math.max(0, top));
     }
   }
 
+  // The sections of the arrangement, each a filter: one shows that section alone, All the
+  // whole arrangement again (a section a search leaves empty keeps its button while chosen)
   function updateJump(sections) {
     jump.replaceChildren();
-    jump.hidden = state.group === 'none' || sections.length < 2;
+    jump.hidden = state.group === 'none' || (sections.length < 2 && state.only === '');
     if (jump.hidden) {
       return;
     }
 
-    sections.forEach(function (section) {
+    var choose = function (only) {
+      if (only === state.only) {
+        return;
+      }
+
+      state.only = only;
+      stateChanged(true);
+      scrollToResults(false);
+    };
+    var add = function (text, count, only) {
       var button = document.createElement('button');
       button.type = 'button';
-      button.textContent = section.name;
-      var count = document.createElement('span');
-      count.textContent = section.puzzles.length;
-      button.appendChild(count);
-      button.addEventListener('click', function () {
-        var target = document.getElementById(sectionId(section.name));
-        if (target != null) {
-          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        }
-      });
+      button.textContent = text;
+      button.setAttribute('aria-pressed', only === state.only ? 'true' : 'false');
+      if (count != null) {
+        var number = document.createElement('span');
+        number.textContent = count;
+        button.appendChild(number);
+      }
+
+      // the chosen section's button takes the filter off again
+      button.addEventListener('click', function () { choose(only === state.only ? '' : only); });
       jump.appendChild(button);
+    };
+    add('All', null, '');
+    var chosenFound = false;
+    sections.forEach(function (section) {
+      var slug = sectionSlug(section.name);
+      chosenFound = chosenFound || slug === state.only;
+      add(section.name, section.puzzles.length, slug);
     });
+    if (state.only !== '' && !chosenFound) {
+      add(state.only.replace(/-/g, ' '), 0, state.only);
+    }
   }
 
   function updateControls() {
@@ -969,9 +1010,9 @@ document.addEventListener('DOMContentLoaded', function () {
     render(false);
     showFeature();
 
-    if (location.hash.length > 1) {
-      // a puzzle's tag: the section it names
-      scrollToSection(decodeURIComponent(location.hash.substring(1)));
+    if (state.only !== '' && !returning) {
+      // a puzzle's tag: its section alone, the results in view
+      scrollToResults(true);
     } else if (returning) {
       var scroll = parseFloat(readSession(ScrollKey));
       if (scroll > 0) {
@@ -985,7 +1026,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
+      // another arrangement has other sections: the filter goes
       state.group = button.getAttribute('data-group');
+      state.only = '';
       stateChanged(true);
     });
 
@@ -1079,7 +1122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     tags.replaceChildren();
     var addTag = function (text, group) {
       var tag = element('a', null, text);
-      tag.href = Base + '?by=' + group + '#' + sectionId(text);
+      tag.href = Base + '?by=' + group + '&only=' + sectionSlug(text);
       tag.title = 'Show the puzzles by ' + group;
       tags.appendChild(tag);
     };
