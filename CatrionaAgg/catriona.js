@@ -1079,22 +1079,6 @@ document.addEventListener('DOMContentLoaded', function () {
     addTag(String(puzzle.year), 'year');
     topicsOf(puzzle).forEach(function (topic) { addTag(topic, 'topic'); });
     puzzle.shapes.forEach(function (shape) { addTag(shape, 'shape'); });
-
-    var credit = document.getElementById('p-credit');
-    credit.innerHTML = '';
-    credit.append('Puzzle and original drawing by Catriona Agg. Catalogue, techniques and solution by Andrew Stacey at ');
-    var notes = element('a', null, 'Mathforge Notes');
-    notes.href = Mathforge + 'HomePage';
-    notes.target = '_blank';
-    notes.rel = 'noopener';
-    credit.appendChild(notes);
-    credit.append('. Redrawn as a live construction for Live Geometry; something wrong? ');
-    var issue = element('a', null, 'Tell us');
-    issue.href = 'https://github.com/KirillOsenkov/LiveGeometry/issues';
-    issue.target = '_blank';
-    issue.rel = 'noopener';
-    credit.appendChild(issue);
-    credit.append('.');
   }
 
   // The arrows step through the puzzles in the order the gallery showed them in this tab;

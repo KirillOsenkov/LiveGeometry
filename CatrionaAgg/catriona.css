@@ -208,6 +208,8 @@ svg { display: block; }
   color: var(--ink-soft);
 }
 
+.lede + .lede { margin-top: 14px; }
+
 .lede strong { color: var(--ink); font-weight: 600; }
 
 .people {
@@ -712,6 +714,8 @@ svg { display: block; }
   line-height: 1.6;
   color: var(--ink-faint);
 }
+
+.credit + .credit { margin-top: 8px; padding-top: 0; border-top: 0; }
 
 .credit a { color: var(--ink-soft); text-underline-offset: 2px; }
 
