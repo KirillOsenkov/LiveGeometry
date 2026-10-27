@@ -153,7 +153,7 @@ public class PointPlacement
             }
         }
 
-        var linear = OrderForPoint(underCursor);
+        var linear = OrderForPoint(drawing, underCursor, coordinates);
         var maxDistance = 3 * drawing.CoordinateSystem.CursorTolerance;
         var crossings = new List<PointPlacement>();
         for (int i = 0; i < linear.Length; i++)
@@ -191,16 +191,36 @@ public class PointPlacement
 
     /// <summary>
     /// The figures under the cursor a point can go on, an axis last: a line drawn along it is
-    /// what the point goes on. A side of a Bezier path stands for the path.
+    /// what the point goes on. A side of a Bezier path stands for the path. A figure drawn as
+    /// one shape with its inside (a circle, an ellipse, a sector, a circular segment) is under
+    /// the cursor anywhere on its fill, a sector on its radii too and a segment on its chord:
+    /// it holds a point only within the cursor's reach of the curve the point would slide
+    /// along, so that a click deep inside makes a free point, as inside a polygon, instead of
+    /// a point snapped to the edge (a path's inside is a figure of its own, never the holder).
     /// </summary>
-    static IFigure[] OrderForPoint(IFigure[] underCursor)
+    static IFigure[] OrderForPoint(Drawing drawing, IFigure[] underCursor, Point coordinates)
     {
         return underCursor
             .Select(BezierPath.PointHolder)
             .Distinct()
             .Where(PointOnFigure.CanBeOnFigure)
+            .Where(figure => !(figure is IRegion && figure is IHasShape) || IsNearCurve(drawing, (ILinearFigure)figure, coordinates))
             .OrderBy(figure => figure is AxisLine)
             .ToArray();
+    }
+
+    /// <summary>True if the coordinates are within the cursor's reach of the figure's curve, stroke width counted as in its hit test</summary>
+    static bool IsNearCurve(Drawing drawing, ILinearFigure figure, Point coordinates)
+    {
+        var nearest = figure.GetPointFromParameter(figure.GetNearestParameterFromPoint(coordinates));
+        if (!nearest.Exists())
+        {
+            return false;
+        }
+
+        double strokeThickness = figure is IHasShape has && has.Shape is Avalonia.Controls.Shapes.Shape shape ? shape.StrokeThickness : 0;
+        var reach = drawing.CoordinateSystem.CursorTolerance + drawing.CoordinateSystem.ToLogical(strokeThickness / 2);
+        return nearest.Distance(coordinates) <= reach;
     }
 
     /// <summary>
@@ -256,7 +276,7 @@ public class PointPlacement
         bool snapToMidpoint,
         bool reuseMidpoint)
     {
-        var linear = OrderForPoint(underCursor);
+        var linear = OrderForPoint(drawing, underCursor, coordinates);
         if (linear.Length == 0)
         {
             return null;

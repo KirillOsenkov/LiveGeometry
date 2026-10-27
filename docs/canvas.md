@@ -58,7 +58,13 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   around a point.
 - **What a click makes of a point** is decided in one place, `Behaviors/PointPlacement.Find`
   (existing point / free / on a figure / intersection / midpoint; an existing midpoint is reused,
-  never duplicated). Every tool uses it for the click and `Behavior.GetClickPreview` feeds the
+  never duplicated). A click inside a shape makes a free point - a point kept inside is the
+  Point inside tool's, else there would be no way to a free point there - and so does one on
+  a sector's radii or a circular segment's chord: a figure drawn as one shape with its inside
+  (a circle, an ellipse, a sector, a segment) is hit anywhere on its fill, so it holds a point
+  only within the cursor's reach of the curve the point would slide along
+  (`OrderForPoint`, 2026-10-26: the hover over a filled sector snapped the point to the arc
+  from anywhere inside). Every tool uses it for the click and `Behavior.GetClickPreview` feeds the
   same answer to `Behaviors/ClickPreview` on hover (ghost point, halo on the sources), so cursor,
   preview and click agree. Halos need a case per figure kind in `ClickPreview.CreateHalo`. A
   tool that takes a figure where it would otherwise expect a point (Length, Circle by Radius)
