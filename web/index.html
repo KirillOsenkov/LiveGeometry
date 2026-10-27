@@ -323,12 +323,77 @@
 
   .brand svg { width: 68px; height: 68px; }
 
-  h1 {
+  /* the heading and, a gap to its right, a chip per puzzle library of the site
+     (GalleryView.HeadingRow); where they don't fit on one line the chips go under it */
+  .heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 28px;
     margin: 30px 0 12px 2px;
+  }
+
+  h1 {
+    margin: 0;
     font-size: 24px;
     font-weight: 600;
     color: var(--text);
   }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+  }
+
+  /* on a phone the chips go one under another */
+  @media (max-width: 480px) {
+    .chips { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* a chip (GalleryTile in its chip mode): a small tile with the miniature at the left and
+     the caption beside it, the count after the caption in a faint shade */
+  .tile.chip {
+    flex-direction: row;
+    align-items: center;
+    aspect-ratio: auto;
+  }
+
+  .tile.chip .picture { flex: none; margin: 0 0 0 10px; }
+  .tile.chip .picture svg { height: 26px; width: auto; }
+  .tile.chip .caption { margin: 7px 13px 8px 8px; text-align: left; }
+  .tile.chip .badge { font-weight: 400; opacity: 0.56; }
+
+  /* the hexagons miniature (GalleryView.HexagonsPicture): yellow, red, blue, the overlaps
+     green, purple, orange, the hole; the maintainer's fills with a hairline of ink on every
+     edge under the light theme, deep vivid fills and no ink under the dark one */
+  .hexagons {
+    --hex-0: #F5F551; --hex-1: #E97FA8; --hex-2: #77D5FB;
+    --hex-3: #AFF73C; --hex-4: #9975FF; --hex-5: #FFBC7C; --hex-6: #FFFFFF;
+  }
+
+  :root[data-theme="dark"] .hexagons {
+    --hex-0: #F2C000; --hex-1: #E02A66; --hex-2: #1B8FE6;
+    --hex-3: #5FC02A; --hex-4: #5E34E8; --hex-5: #F27D1E; --hex-6: #2B2B2B;
+  }
+
+  .hexagons .f0 { fill: var(--hex-0); }
+  .hexagons .f1 { fill: var(--hex-1); }
+  .hexagons .f2 { fill: var(--hex-2); }
+  .hexagons .f3 { fill: var(--hex-3); }
+  .hexagons .f4 { fill: var(--hex-4); }
+  .hexagons .f5 { fill: var(--hex-5); }
+  .hexagons .f6 { fill: var(--hex-6); }
+
+  .hexagons .edge {
+    fill: none;
+    stroke: #1E1E1E;
+    stroke-width: 0.5px;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  :root[data-theme="dark"] .hexagons .edge { display: none; }
 
   .tiles {
     display: grid;
@@ -531,7 +596,36 @@
           <div class="brand" id="brand"><svg><use href="#icon-app"/></svg><span>Live Geometry</span></div>
         </div>
       </div>
-      <h1>Gallery</h1>
+      <div class="heading-row">
+        <h1>Gallery</h1>
+        <div class="chips">
+          <!-- the library's page in a new tab; the plate is that page's paper. The miniature is
+               the three hexagons of "Three Regular Hexagons and a Semicircle", laid out as the
+               drawing is (tools/catrionadrawings.cs, the blue one's corner at 73° on the arc,
+               y flipped); an overlap is a hexagon clipped by another -->
+          <a class="tile chip" href="/CatrionaAgg" target="_blank" rel="noopener" style="--tile-plate: #F7F5F0" title="Catriona Agg's geometry puzzles, redrawn live">
+            <div class="picture">
+              <svg class="hexagons" viewBox="-0.15 -0.15 6.146 5.588" aria-hidden="true">
+                <defs>
+                  <clipPath id="hex-blue"><polygon points="4.742,1.463 3.378,0.000 1.429,0.450 0.844,2.363 2.208,3.825 4.157,3.375"/></clipPath>
+                  <clipPath id="hex-red"><polygon points="2.533,5.288 0.844,5.288 0.000,3.825 0.844,2.363 2.533,2.363 3.378,3.825"/></clipPath>
+                </defs>
+                <polygon class="f0" points="2.533,5.288 4.742,5.288 5.846,3.375 4.742,1.463 2.533,1.463 1.429,3.375"/>
+                <polygon class="f1" points="2.533,5.288 0.844,5.288 0.000,3.825 0.844,2.363 2.533,2.363 3.378,3.825"/>
+                <polygon class="f2" points="4.742,1.463 3.378,0.000 1.429,0.450 0.844,2.363 2.208,3.825 4.157,3.375"/>
+                <polygon class="f3" clip-path="url(#hex-blue)" points="2.533,5.288 4.742,5.288 5.846,3.375 4.742,1.463 2.533,1.463 1.429,3.375"/>
+                <polygon class="f4" clip-path="url(#hex-blue)" points="2.533,5.288 0.844,5.288 0.000,3.825 0.844,2.363 2.533,2.363 3.378,3.825"/>
+                <polygon class="f5" clip-path="url(#hex-red)" points="2.533,5.288 4.742,5.288 5.846,3.375 4.742,1.463 2.533,1.463 1.429,3.375"/>
+                <g clip-path="url(#hex-blue)"><polygon class="f6" clip-path="url(#hex-red)" points="2.533,5.288 4.742,5.288 5.846,3.375 4.742,1.463 2.533,1.463 1.429,3.375"/></g>
+                <polygon class="edge" points="2.533,5.288 4.742,5.288 5.846,3.375 4.742,1.463 2.533,1.463 1.429,3.375"/>
+                <polygon class="edge" points="2.533,5.288 0.844,5.288 0.000,3.825 0.844,2.363 2.533,2.363 3.378,3.825"/>
+                <polygon class="edge" points="4.742,1.463 3.378,0.000 1.429,0.450 0.844,2.363 2.208,3.825 4.157,3.375"/>
+              </svg>
+            </div>
+            <div class="caption">Catriona Agg's Puzzles <span class="badge">440</span></div>
+          </a>
+        </div>
+      </div>
       <div class="tiles" id="tiles"></div>
       <p class="status" id="gallery-status" hidden></p>
     </div>
@@ -969,8 +1063,8 @@
         tilesHost.appendChild(tile.element);
       });
 
-      // the start tiles have plates too, deepened under the dark theme like the others
-      document.querySelectorAll('.tile.start').forEach(function (element) {
+      // the start tiles and the chips have plates too, deepened under the dark theme like the others
+      document.querySelectorAll('.tile.start, .tile.chip').forEach(function (element) {
         var pastel = parseColor(element.style.getPropertyValue('--tile-plate').trim());
         startTiles.push({ element: element, pastel: pastel });
         applyPlate(element, pastel, true);

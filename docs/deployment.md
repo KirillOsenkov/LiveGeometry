@@ -83,7 +83,10 @@
   an `index.html` with that file (a publish has `web/<slug>.html` per drawing for the link
   previews, see "Link previews", which both serve first). The catalog comes from `/gallery/index.json`, which now
   also carries `stackedFigureShare`, passed to the player as an option. The player exports
-  `AppTheme`, `GalleryDrawing`, `Label`, `ControlBase` and `LabelPin` for it. The page
+  `AppTheme`, `GalleryDrawing`, `Label`, `ControlBase` and `LabelPin` for it. The chip
+  beside the Gallery heading (2026-10-27, see "The puzzle libraries" in gallery.md) is on
+  this page too: an inline SVG of the three hexagons, the overlaps as clipped polygons, the
+  fills and the ink switched by `data-theme`, the plate derived like the start tiles'. The page
   logs its timings to the console (`web: ...` lines: a drawing's fetch and load, each
   tile, and when the tiles in view are in), which is what it is for: a feel for the
   speed without .NET before deciding whether the gallery should move. To work on it:

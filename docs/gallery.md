@@ -38,7 +38,9 @@
   clutter at that size. A click opens the library's page through the launcher: a new tab in
   the browser head, the browser on the desktop. `HeadingRow` lays the line out: the chips
   in a line after the heading while all fit, else under the heading, one under another (a
-  phone). A second library is one more line of the table and a miniature of its own.
+  phone). A second library is one more line of the table and a miniature of its own. The
+  `/web` page has the same chip in HTML and SVG (`web/index.html`, see "`/web`" in
+  deployment.md): a change here goes there too.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly. They were forked once from the
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must
