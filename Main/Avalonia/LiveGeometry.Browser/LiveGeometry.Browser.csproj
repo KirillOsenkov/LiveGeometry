@@ -349,6 +349,8 @@
                     html = ReplaceOnce(html, "<meta property=\"og:type\" content=\"[^\"]*\">", m => "<meta property=\"og:type\" content=\"article\">", catrionaTemplatePath);
                     html = ReplaceOnce(html, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/CatrionaAgg/previews/" + slug + ".png\">", catrionaTemplatePath);
                     html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">", catrionaTemplatePath);
+                    // the drawing on its way with the scripts, as the catalog is
+                    html = ReplaceOnce(html, "<link rel=\"preload\" href=\"/CatrionaAgg/puzzles.json\"[^>]*>", m => m.Value + "\n<link rel=\"preload\" href=\"/CatrionaAgg/drawings/" + Escape(field(entry.Value, "drawing")) + "\" as=\"fetch\" crossorigin>", catrionaTemplatePath);
                     // the title and the question are on the page before the script fills in the rest
                     html = ReplaceOnce(html, "<h1 id=\"p-title\"></h1>", m => "<h1 id=\"p-title\">" + escapedTitle + "</h1>", catrionaTemplatePath);
                     html = ReplaceOnce(html, "<p id=\"p-question\"></p>", m => "<p id=\"p-question\">" + Escape(question) + "</p>", catrionaTemplatePath);

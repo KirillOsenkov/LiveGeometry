@@ -4,7 +4,10 @@
        the order of files.txt, concatenated into one script, wrapped so that the host page
        sees one global (LiveGeometry). Imported by the Browser project (served as
        /player/<version>/player.js) and the Desktop project (copied beside the exe, for
-       Save as .html). Built before the build itself, only when a source changed. -->
+       Save as .html). Built before the build itself, only when a source changed.
+       Comment lines, block comments that start a line and the indentation are left out
+       (2026-10-27: 244 KB brotli with them, 198 without; the code is otherwise as written,
+       no minifier). A comment at the end of a code line stays: a string may hold "//". -->
 
   <PropertyGroup>
     <PlayerRoot>$(MSBuildThisFileDirectory)</PlayerRoot>
@@ -27,7 +30,27 @@
       <Using Namespace="System" />
       <Using Namespace="System.IO" />
       <Using Namespace="System.Text" />
+      <Using Namespace="System.Text.RegularExpressions" />
       <Code Type="Fragment" Language="cs"><![CDATA[
+        // a source without its comment lines, block comments at the start of a line, indentation
+        // and blank lines (the player has no template literal, so no string spans lines)
+        string Strip(string source)
+        {
+            // a comment ends at its first */ (never beyond it, into code); one with code after it on its line stays
+            source = Regex.Replace(source, @"(?m)^[ \t]*/\*(?:(?!\*/).)*\*/[ \t]*$\n?", "", RegexOptions.Singleline);
+            var kept = new StringBuilder();
+            foreach (var line in source.Split('\n'))
+            {
+                var trimmed = line.TrimStart();
+                if (trimmed.Length > 0 && !trimmed.StartsWith("//"))
+                {
+                    kept.Append(trimmed).Append('\n');
+                }
+            }
+
+            return kept.ToString();
+        }
+
         var text = new StringBuilder();
         text.Append("// Live Geometry player ").Append(Version).Append(" - https://livegeometry.com - built ").Append(DateTime.UtcNow.ToString("yyyy-MM-dd")).Append('\n');
         text.Append("(() => {\n");
@@ -47,13 +70,8 @@
                 return false;
             }
 
-            text.Append("\n// ---- ").Append(line).Append(" ----\n");
-            text.Append(File.ReadAllText(path).Replace("\r\n", "\n"));
-            if (text[text.Length - 1] != '\n')
-            {
-                text.Append('\n');
-            }
-
+            text.Append("// ---- ").Append(line).Append(" ----\n");
+            text.Append(Strip(File.ReadAllText(path).Replace("\r\n", "\n")));
             count++;
         }
 

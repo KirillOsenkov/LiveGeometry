@@ -325,7 +325,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Each drawing is played once, off screen, at 300 x 300 drawn at 2.4 times the pixels, and
   // its picture kept as a PNG the tiles show (an image the browser can let go of when it is
   // far out of view, and one picture for every tile of the same puzzle). Only tiles near the
-  // view are drawn, a few per frame, the closest first. A change of theme draws them again.
+  // view are drawn, one at a time, the closest first; their texts are fetched as soon as they
+  // come near, all at once (2026-10-27: a fetch per draw was 70 ms a tile on a warm cache, and
+  // a round trip each on a cold one). A change of theme draws them again.
   var ThumbSize = 300;
   var ThumbScale = 2.4;
 
@@ -395,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     want: function (tile) {
       this.wanted.add(tile);
+      // the text on its way while the tiles before it are drawn (a failure is reported when it is drawn)
+      fetchText(tile.puzzle).catch(function () { });
       this.schedule();
     },
 

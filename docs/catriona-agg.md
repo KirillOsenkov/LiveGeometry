@@ -9,8 +9,12 @@ Two pages, played by the player (`/player/1/player.js`), no .NET: the gallery `i
 They share `catriona.css`, `catriona.js` (each page runs its part) and `icons.svg` (the
 icons, each drawn by `<use href="/CatrionaAgg/icons.svg#icon-back">`; the mark is the site's
 `/logo.svg`, whose gradients an icon referenced from another file may not find), linked by name
-(revalidated, not cached for good: web.config's mutable set), so a page carries its markup
-alone. Until 2026-10-25 both were one page with two views, the gallery kept behind the puzzle;
+(not cached for good: web.config serves them, the catalog, the drawings and the player with
+`max-age=0, stale-while-revalidate=86400`, 2026-10-27, so a page load uses the copies it has
+and revalidates them in the background, and a deployment reaches a returning reader one page
+load late), so a page carries its markup alone. The head of each page preloads
+`puzzles.json`, and the page written for a puzzle its drawing too, so that both are on their
+way with the scripts instead of after them (two round trips fewer before the first drawing). Until 2026-10-25 both were one page with two views, the gallery kept behind the puzzle;
 now a step from one to the other is a page load, and what carried over is kept for the tab
 (`sessionStorage`): the gallery's arrangement (grouping, the one section shown alone, search,
 order), which the puzzle's arrows step through (date order when there is none, or it leaves
@@ -90,6 +94,8 @@ page shows it), never copied.
   it, that freedom is a handle.
 - **Tiles** are pictures: each drawing is played once off screen without its handles and kept
   as a PNG (an object URL) that every tile of it shows, only near the view, the nearest first;
+  the texts of every tile near the view are fetched at once, the drawing is one tile at a time
+  (2026-10-27: before, each fetch waited for the previous draw, about 70 ms a tile warm);
   a theme change draws them again. Hovering a tile plays it and drifts its handles. A
   rearrangement glides the tiles to their new places (FLIP, tiles reused per puzzle).
 - **Link previews**: the `WriteGalleryIndex` task writes `CatrionaAgg/<slug>.html` (`puzzle.html`

@@ -36,7 +36,10 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
   emits LF: new files are converted to CRLF afterwards, like the C#.
 - **The bundle**: `Player.targets`, imported by the Browser and the Desktop projects,
   concatenates `files.txt` into `obj/player/<version>/player.js` before the build (an
-  inline task, dotnet only), wrapped in a function so that the host page sees one global,
+  inline task, dotnet only; comment lines, block comments at the start of a line and the
+  indentation are left out, 2026-10-27, which took the file from 244 KB brotli to 198: no
+  minifier, the code reads as written, and the dev page loads the sources whole), wrapped
+  in a function so that the host page sees one global,
   `LiveGeometry` (`play(element, options)`, `playAll`, `players`, and the classes for a
   page that builds on it). The Browser serves it as `/player/1/player.js`, every
   gallery drawing as `/gallery/<file>.lgf` and every Catriona Agg puzzle as
@@ -49,7 +52,8 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
   player's major version. A snippet pasted into a post pins `/player/1/`; when the format
   breaks that player, `/player/2/` starts and the last `/player/1/player.js` is committed
   as a static file and served forever. Within a version the file revalidates, so fixes
-  reach old embeds.
+  reach old embeds (since 2026-10-27 in the background, `stale-while-revalidate`: an embed
+  plays the copy it has and gets the fix on its next load).
 - **Embedding** (`PlayerEmbed.cs`; Export > "Copy embed code" and "Save as .html"): a
   script tag plus `<div class="livegeometry">` with the drawing's XML inside a `<script
   type="text/x-livegeometry">` (inline, works from a disk too; the XML can't contain

@@ -78,7 +78,11 @@
   LiveGeometry.Browser.csproj "-t:BuildPlayer;WriteGalleryIndex"` makes them in `obj/`),
   then `webauto start http://localhost:5007/web/`.
 - **web.config**: `LiveGeometry.Browser/web.config` is hand-written (serves the precompressed
-  `.br` files, sets immutable caching on fingerprinted assets, `no-cache` on entry files). The
+  `.br` files, sets immutable caching on fingerprinted assets, `no-cache` on entry files, and
+  `max-age=0, stale-while-revalidate=86400` on the player, the logo and the Catriona Agg
+  library's files, which a browser then uses from its cache while it revalidates them in the
+  background: a page of the library renders without a round trip per file, and a deployment
+  reaches a returning reader one page load late). The
   wasm SDK drops a project web.config from publish, so the csproj copies it with an explicit
   `AfterTargets="Publish"` target. It sits at the publish root and rewrites into `wwwroot\`.
   There is no IIS locally: verify changes after deploy with
