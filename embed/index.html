@@ -153,17 +153,15 @@
   /* ---------- layout ---------- */
   main { max-width: 1040px; margin: 0 auto; padding: 0 24px 80px; }
 
-  .hero { padding: 56px 0 8px; }
-
-  .hero h1 {
+  h1 {
     font-size: 44px;
     line-height: 1.1;
     letter-spacing: -0.02em;
     font-weight: 700;
-    margin: 0 0 14px;
+    margin: 56px 0 14px;
   }
 
-  .hero p.lead { font-size: 20px; color: var(--ink-soft); max-width: 720px; margin: 0 0 28px; }
+  .hero { padding: 0 0 8px; }
 
   h2 { font-size: 26px; letter-spacing: -0.01em; margin: 56px 0 10px; }
   h3 { font-size: 18px; margin: 28px 0 8px; }
@@ -267,7 +265,7 @@
 
   @media (max-width: 700px) {
     .two { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 34px; }
+    h1 { font-size: 34px; }
     .livegeometry { height: 360px; }
   }
 
@@ -338,35 +336,34 @@
 <main>
 
   <h1>A live drawing on your own page</h1>
-    <p>Use this snippet to embed drawings into your own blog or web page:</p>
-    <div class="snippet">
-      <pre><code id="snippet"></code></pre>
-      <button class="copy" type="button" data-for="snippet">Copy</button>
-    </div>
-    <p>Specify the link to the drawing in data-src. The div element can be any size. Content will resize to fit.</p>
-    <p>You can copy player.js to your own website and then you won't depend on the Live Geometry website at all.</p>
+  <p>Use this snippet to embed a drawing into your own blog or web page:</p>
+  <div class="snippet">
+    <pre><code id="snippet"></code></pre>
+    <button class="copy" type="button" data-for="snippet">Copy</button>
+  </div>
+  <p>Put the link to the drawing in <code>data-src</code>. When linking to a drawing from livegeometry.com the .lgf extension is optional. The element can be any size, the drawing resizes to fit it; just give it a height, an empty element has none. Readers can drag the points but can't edit the drawing.</p>
+  <p>You can copy <code>player.js</code> to your own website too. With the drawing next to it (see below), your page won't depend on the Live Geometry website at all.</p>
 
-  <h2 id="snippet-section">Example</h2>
-
+  <h2 id="example">Example</h2>
   <section class="hero">
     <div class="livegeometry" id="hero"></div>
     <div class="picker">
       <label for="drawing">Drawing</label>
       <select id="drawing" aria-label="Drawing"></select>
       <label for="share">or a share link</label>
-      <input id="share" type="text" inputmode="url"placeholder="https://livegeometry.com/s/…" spellcheck="false" autocomplete="off">
+      <input id="share" type="text" inputmode="url" placeholder="https://livegeometry.com/s/…" spellcheck="false" autocomplete="off">
       <a id="open" href="/gallery/stretchy-slime">Open in Live Geometry →</a>
       <p class="message" id="share-message" aria-live="polite"></p>
     </div>
   </section>
 
-  <p>Pick any drawing of the <a href="/">gallery</a> above, or paste your own link.</p>
+  <p>Pick any drawing of the <a href="/">gallery</a>, or paste the share link of one of your own: the snippet at the top is updated to show it.</p>
 
   <h2 id="your-own">Exporting your own drawings</h2>
   <ol class="steps">
-    <li><strong>Export › Copy share link</strong> stores the drawing on this site and copies the link to clipboard. A shared drawing never changes. If you edit a drawing you can get a new share link.</li>
-    <li><strong>Export › Copy embed code</strong> puts the same snippet on the clipboard with the drawing itself written into the element, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste into any HTML. Only player.js is fetched, so this works in a page opened from disk too.</li>
-    <li><strong>Export › Save as .html</strong> writes a self-contained page with the player included: it doesn't need to download anything.</li>
+    <li><strong>Export › Copy share link</strong> stores the drawing on this site and copies the link to clipboard. Paste the link into the box above to get the snippet, or use it as <code>data-src</code> directly. A shared drawing never changes: share it again after an edit and use the new link.</li>
+    <li><strong>Export › Copy embed code</strong> puts the same snippet on the clipboard with the drawing itself written into the element, between a <code>&lt;script type="text/x-livegeometry"&gt;</code> tag and its end. Paste it into any HTML. Only <code>player.js</code> is fetched, so this works in a page opened from disk too.</li>
+    <li><strong>Export › Save as .html</strong> writes a self-contained page with the player inside. It downloads nothing, so it can be opened from a shared folder or an email attachment.</li>
   </ol>
   <p>Or keep the drawing as a file beside your page, saved with <strong>Save as .lgf</strong>, and point at it: <code>data-src="my-drawing.lgf"</code>. A file next to your page needs no permission to be read; one on another site plays only if that site allows it (see below).</p>
 
@@ -374,7 +371,7 @@
   <p>Attributes on the element, all optional. The two drawings below are the first two in use.</p>
   <table>
     <tr><th>Attribute</th><th>What it does</th></tr>
-    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, a share link, or a URL to a drawing.</td></tr>
+    <tr><td><code>data-src</code></td><td>The address of the drawing to display: an <code>.lgf</code> file, a share link, or a URL to a drawing. Leave it out when the drawing is written into the element.</td></tr>
     <tr><td><code>data-theme</code></td><td><code>light</code>, <code>dark</code>, or <code>auto</code> (the reader's system setting, the default). The drawing keeps its own colors; the paper and the default styles follow the theme.</td></tr>
     <tr><td><code>data-wheel</code></td><td><code>zoom</code> makes the mouse wheel zoom the drawing. By default it zooms only with Ctrl held, so a drawing in a post doesn't take the page's scrolling; pinching and a double click (zoom to fit) always work.</td></tr>
     <tr><td><code>data-fit</code></td><td><code>content</code> fits the figures into the element instead of the view the drawing was saved with.</td></tr>
@@ -393,13 +390,13 @@
 
   <h2 id="good-to-know">Good to know</h2>
   <h3>Hosting drawings</h3>
-  <p>A drawing can be served on any website, but that site needs to send the <code>Access-Control-Allow-Origin</code> header, which is the browser's rule, not ours: GitHub Pages and most static hosts do, and a file in a GitHub repository can be reached through <code>raw.githubusercontent.com</code>, which does too. A page opened from a disk can't read a file beside it, though it can fetch from this site, which is why the exported code carries the drawing inside.</p>
+  <p>A drawing next to your page needs no permission to be read, and neither do the drawings on this site. A drawing on another website can be displayed only if that site sends the <code>Access-Control-Allow-Origin</code> header, which is the browser's rule, not ours: GitHub Pages and most static hosts do, and a file in a GitHub repository can be reached through <code>raw.githubusercontent.com</code>, which does too. A page opened from a disk can't read a file beside it, though it can fetch from this site, which is why the exported code carries the drawing inside.</p>
   <h3>Drawings can't always be hosted</h3>
-  <p>Drawings won't work in places such as GitHub READMEs, issues and wikis. JavaScript isn't allowed there. You can save a picture (<strong>Export › Save as .png</strong>) or copy the image to clipboard.</p>
+  <p>GitHub READMEs, issues and wikis don't allow JavaScript, and neither do most comment boxes, so a drawing can't be displayed there. Save a picture instead (<strong>Export › Save as .png</strong>, or <strong>Export › Copy image</strong>) and link it to a page that holds the embed.</p>
   <h3>Fonts and emoji</h3>
-  <p>The text in a drawing is drawn in your page's font, and the emoji some drawings use come from the reader's own device. The player itself is about 100 KB compressed, loaded once per page however many drawings it has.</p>
+  <p>The text in a drawing is drawn in your page's font, and the emoji some drawings use come from the reader's own device. The player itself is about 250 KB compressed, loaded once per page however many drawings it has.</p>
   <h3>Versions</h3>
-  <p>The address <code>/player/1/player.js</code> names the player's major version. Currently it is 1.</p>
+  <p>The 1 in <code>/player/1/player.js</code> is the player's major version. Fixes are published there as they are made. If the file format ever outgrows it, a <code>/player/2/</code> will be published, and <code>/player/1/</code> will keep displaying what was pasted with it.</p>
   <h3>From a script</h3>
   <p>The player is a global, <code>LiveGeometry</code>. <code>LiveGeometry.play(element, { src, theme, wheel, fit })</code> plays a drawing into an element you made, <code>LiveGeometry.players</code> holds every player on the page by element, and a player's <code>applyTheme("dark")</code>, <code>fit()</code> and <code>load(text)</code> do what their names say. The sun and moon in the corner of this page use the first two.</p>
 
