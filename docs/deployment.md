@@ -29,8 +29,11 @@
   draws them). `wwwroot/index.html` names it, with the whole set of tags the Catriona Agg
   pages have (`og:site_name`, the picture and its size, `twitter:card`, a canonical link),
   and the per-drawing pages are written by replacing the picture and the canonical link in
-  it. `/embed` names the same picture. A page of its own (`/web`, `/history`) has only the
-  title, description and the `og:` basics unless it says otherwise. To draw the pictures
+  it. `/embed` and `/web` name the same picture, and `/web/<slug>` gets a page of its own
+  like `/gallery/<slug>` (`web/index.html` with the drawing's tags, `obj/web/pages`,
+  linked into `wwwroot/web/`, a `web.config` rule before the one that answers every
+  `/web` path with the page); the `/web` pages are not in the sitemap, `/gallery/<slug>`
+  being the drawing's address. `/history` has only the title and description. To draw the pictures
   locally the tool wants a folder with `gallery/index.json` and the `.lgf` files,
   `player/1/player.js`, `fonts/Twemoji.Mozilla.ttf` and `logo-512.png`: a publish's
   `wwwroot`, or one put together from `obj/` and `wwwroot/` of the Browser project.
@@ -77,7 +80,8 @@
   player can't do (no ribbon, Save, Export, Undo, Settings, status bar). Routes are the
   page's own (`pushState`); `web.config` answers every extensionless path under `/web`
   with the file, and `tools/serve.cs` answers an extensionless path under any folder with
-  an `index.html` with that file. The catalog comes from `/gallery/index.json`, which now
+  an `index.html` with that file (a publish has `web/<slug>.html` per drawing for the link
+  previews, see "Link previews", which both serve first). The catalog comes from `/gallery/index.json`, which now
   also carries `stackedFigureShare`, passed to the player as an option. The player exports
   `AppTheme`, `GalleryDrawing`, `Label`, `ControlBase` and `LabelPin` for it. The page
   logs its timings to the console (`web: ...` lines: a drawing's fetch and load, each

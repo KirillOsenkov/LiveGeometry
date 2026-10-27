@@ -86,12 +86,14 @@
     <SitemapOutput>$(MSBuildProjectDirectory)\obj\gallery\sitemap.xml</SitemapOutput>
     <CatrionaFolder>$(MSBuildProjectDirectory)\..\..\..\CatrionaAgg</CatrionaFolder>
     <CatrionaPagesOutput>$(MSBuildProjectDirectory)\obj\catriona\pages</CatrionaPagesOutput>
+    <WebTemplate>$(MSBuildProjectDirectory)\..\..\..\web\index.html</WebTemplate>
+    <WebPagesOutput>$(MSBuildProjectDirectory)\obj\web\pages</WebPagesOutput>
     <!-- where the site is, for the absolute addresses link previews and the sitemap need -->
     <SiteUrl Condition="'$(SiteUrl)' == ''">https://livegeometry.com</SiteUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\puzzle.html;$(CatrionaFolder)\puzzles.json" />
+    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;$(WebTemplate);..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\puzzle.html;$(CatrionaFolder)\puzzles.json" />
   </ItemGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
@@ -103,6 +105,8 @@
        made after the publish by tools/previews.cs) in the head and on the splash. Sites that
        show a link's preview read only the page's HTML, never what its script draws, and
        every /gallery/<slug> was the same page (web.config serves these in its place).
+       /web/<slug>.html: the same for the gallery without .NET, web/index.html with the
+       drawing's tags (web.config serves it for /web/<slug> when it is there).
        /sitemap.xml: the site's pages, the drawings among them.
        /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
        (CatrionaAgg/puzzles.json): the library's puzzle.html with the puzzle's title, its question
@@ -119,6 +123,8 @@
       <SiteUrl ParameterType="System.String" Required="true" />
       <CatrionaFolder ParameterType="System.String" Required="true" />
       <CatrionaPagesFolder ParameterType="System.String" Required="true" />
+      <WebTemplate ParameterType="System.String" Required="true" />
+      <WebPagesFolder ParameterType="System.String" Required="true" />
     </ParameterGroup>
     <Task>
       <Using Namespace="System" />
@@ -233,10 +239,14 @@
         });
 
         string template = File.ReadAllText(Template);
-        Directory.CreateDirectory(PagesFolder);
-        foreach (string stale in Directory.GetFiles(PagesFolder, "*.html"))
+        string webTemplate = File.ReadAllText(WebTemplate);
+        foreach (string folder in new[] { PagesFolder, WebPagesFolder })
         {
-            File.Delete(stale);
+            Directory.CreateDirectory(folder);
+            foreach (string stale in Directory.GetFiles(folder, "*.html"))
+            {
+                File.Delete(stale);
+            }
         }
 
         var sitemap = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
@@ -269,6 +279,18 @@
                 html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">");
                 // the splash says what the drawing is while the app loads, and is the text a search engine indexes
                 html = ReplaceOnce(html, "<h1>[^<]*</h1>(\\s*)<p>.*?</p>", m => "<h1>" + escapedTitle + "</h1>" + m.Groups[1].Value + "<p>" + description + "</p>");
+
+                // the same drawing at /web/<slug>: the page's tags say which drawing, with its picture
+                string webUrl = SiteUrl + "/web/" + slug;
+                string webHtml = webTemplate;
+                webHtml = ReplaceOnce(webHtml, "<title>[^<]*</title>", m => "<title>" + escapedTitle + " · Live Geometry</title>", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<meta name=\"description\" content=\"[^\"]*\">", m => "<meta name=\"description\" content=\"" + description + "\">", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<meta property=\"og:title\" content=\"[^\"]*\">", m => "<meta property=\"og:title\" content=\"" + escapedTitle + "\">", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<meta property=\"og:description\" content=\"[^\"]*\">", m => "<meta property=\"og:description\" content=\"" + description + "\">", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<meta property=\"og:url\" content=\"[^\"]*\">", m => "<meta property=\"og:url\" content=\"" + webUrl + "\">", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/gallery/previews/" + file + ".png\">", WebTemplate);
+                webHtml = ReplaceOnce(webHtml, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + webUrl + "\">", WebTemplate);
+                File.WriteAllText(Path.Combine(WebPagesFolder, slug + ".html"), webHtml, new UTF8Encoding(false));
             }
             catch (InvalidOperationException ex)
             {
@@ -374,15 +396,20 @@
       SitemapFile="$(SitemapOutput)"
       SiteUrl="$(SiteUrl)"
       CatrionaFolder="$(CatrionaFolder)"
-      CatrionaPagesFolder="$(CatrionaPagesOutput)" />
+      CatrionaPagesFolder="$(CatrionaPagesOutput)"
+      WebTemplate="$(WebTemplate)"
+      WebPagesFolder="$(WebPagesOutput)" />
   </Target>
 
   <!-- the pages are known only once they are written, so they are taken in here and not with
-       the other files above: as /gallery/<slug>.html beside the drawings' files -->
+       the other files above: as /gallery/<slug>.html beside the drawings' files, and as
+       /web/<slug>.html beside the /web page -->
   <Target Name="IncludeGalleryPages" DependsOnTargets="WriteGalleryIndex" BeforeTargets="BeforeBuild;AssignTargetPaths">
     <ItemGroup>
       <GalleryPage Include="$(GalleryPagesOutput)\*.html" />
       <Content Include="@(GalleryPage)" Link="wwwroot\gallery\%(GalleryPage.Filename)%(GalleryPage.Extension)" />
+      <WebPage Include="$(WebPagesOutput)\*.html" />
+      <Content Include="@(WebPage)" Link="wwwroot\web\%(WebPage.Filename)%(WebPage.Extension)" />
       <CatrionaPage Include="$(CatrionaPagesOutput)\*.html" />
       <Content Include="@(CatrionaPage)" Link="wwwroot\CatrionaAgg\%(CatrionaPage.Filename)%(CatrionaPage.Extension)" />
     </ItemGroup>
