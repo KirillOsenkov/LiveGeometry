@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Controls.Documents;
 using Avalonia.Layout;
 using Avalonia.Media;
 
@@ -108,6 +109,43 @@ public class GalleryTile : Border
         }
     }
 
+    /// <summary>
+    /// A chip: a small tile with the picture (if any) at the left and the caption beside it,
+    /// for a link beside a heading; the corners are the tiles' own
+    /// </summary>
+    public bool IsChip
+    {
+        set
+        {
+            ((Panel)Child).Children.Clear();
+            caption.HorizontalAlignment = HorizontalAlignment.Left;
+            caption.VerticalAlignment = VerticalAlignment.Center;
+            caption.Margin = new Thickness(8, 7, 13, 8);
+            Child = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal,
+                Children = { Picture, caption }
+            };
+        }
+    }
+
+    Run badge;
+
+    /// <summary>A small number after the caption, in a faint shade of its color</summary>
+    public string Badge
+    {
+        set
+        {
+            string text = caption.Text;
+            caption.Text = null;
+            caption.Inlines.Clear();
+            caption.Inlines.Add(new Run(text));
+            badge = new Run("  " + value) { FontWeight = FontWeight.Normal };
+            caption.Inlines.Add(badge);
+            Update();
+        }
+    }
+
     /// <summary>A pastel plate, as the light theme shows it; the dark theme shows it deepened</summary>
     public void SetPlate(Color pastel)
     {
@@ -188,6 +226,11 @@ public class GalleryTile : Border
         if (caption != null)
         {
             caption.Foreground = IsDark(BottomColor(background)) ? Brushes.White : DarkCaption;
+            if (badge != null)
+            {
+                var color = ((ISolidColorBrush)caption.Foreground).Color;
+                badge.Foreground = new SolidColorBrush(AppTheme.WithAlpha(color, 0x90));
+            }
         }
     }
 

@@ -23,6 +23,22 @@
   92 wide so that all three fit across a phone 360 wide; the brand beside them gets what
   room is left, which on a phone with three tiles is none. A caption longer than
   "My Drawing" would be cut short.
+- **The puzzle libraries** (2026-10-27): the "Gallery" heading shares its line with a chip per
+  library of the site (`GalleryView.Libraries`: title, address, the chip's pastel, the count
+  and a miniature), a gap to its right, where the room beside the heading was empty. A chip
+  is a `GalleryTile` in its chip mode (a pill: the picture at the left, the caption beside
+  it, the count as a faint `Badge`), so it has the tiles' plate, border and hover. The
+  miniature of Catriona Agg's library is the three hexagons of her "Three Regular Hexagons
+  and a Semicircle" (without the semicircle) drawn as vector shapes from the drawing's own
+  construction (`HexagonsPicture`: the overlaps as `CombinedGeometry` intersections, the
+  hole in the middle white; under the light theme the maintainer's fills with a hairline of
+  ink on every edge, under the dark theme deep vivid fills and no ink, the colors telling
+  the regions apart - `hexagonLightFills` / `hexagonDarkFills`); a mosaic of four colored
+  cells was tried first and read as the Microsoft logo, and the semicircle was dropped as
+  clutter at that size. A click opens the library's page through the launcher: a new tab in
+  the browser head, the browser on the desktop. `HeadingRow` lays the line out: the chips
+  in a line after the heading while all fit, else under the heading, one under another (a
+  phone). A second library is one more line of the table and a miniature of its own.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly. They were forked once from the
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must

@@ -112,17 +112,23 @@ public class GalleryView : DockPanel
             Margin = new Thickness(32, 24, 32, 40)
         };
         content.Children.Add(startRow);
-        var heading = new TextBlock()
+        if (arrange)
         {
-            Text = arrange
-                ? "Arrange the gallery: drag a tile into place. Every drop rewrites the order in GalleryCatalog.cs; rebuild to see it in the app."
-                : "Gallery",
-            FontSize = arrange ? 16 : 24,
-            FontWeight = FontWeight.SemiBold,
-            Margin = new Thickness(2, 30, 0, 12)
-        };
-        heading.BindTheme(TextBlock.ForegroundProperty, arrange ? nameof(AppTheme.Accent) : nameof(AppTheme.Text));
-        content.Children.Add(heading);
+            var heading = new TextBlock()
+            {
+                Text = "Arrange the gallery: drag a tile into place. Every drop rewrites the order in GalleryCatalog.cs; rebuild to see it in the app.",
+                FontSize = 16,
+                FontWeight = FontWeight.SemiBold,
+                Margin = HeadingMargin
+            };
+            heading.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Accent));
+            content.Children.Add(heading);
+        }
+        else
+        {
+            content.Children.Add(CreateHeadingRow());
+        }
+
         content.Children.Add(galleryTiles);
         if (arrange)
         {
@@ -427,6 +433,266 @@ public class GalleryView : DockPanel
         get => continueTile.IsVisible;
         set => continueTile.IsVisible = value;
     }
+
+    static readonly Thickness HeadingMargin = new Thickness(2, 30, 0, 12);
+
+    /// <summary>A puzzle library of the site, a page of its own, as the start page links it</summary>
+    /// <param name="Plate">The tint of its chip</param>
+    /// <param name="Count">How many puzzles it holds</param>
+    /// <param name="Picture">The miniature on its chip</param>
+    public record Library(string Title, string Url, Color Plate, string Count, Func<Control> Picture);
+
+    static Library[] Libraries()
+    {
+        const string catriona = "https://livegeometry.com/CatrionaAgg";
+        // the paper of the /CatrionaAgg page
+        var paper = Color.Parse("#F7F5F0");
+
+        return
+        [
+            new Library("Catriona Agg's Puzzles", catriona, paper, "440", HexagonsPicture)
+        ];
+    }
+
+    /// <summary>The library's page, in a new tab in the browser head and in the browser on the desktop</summary>
+    void OpenLibrary(string url)
+    {
+        TopLevel.GetTopLevel(this)?.Launcher.LaunchUriAsync(new Uri(url));
+    }
+
+    /// <summary>The "Gallery" heading with a chip per puzzle library to its right</summary>
+    Control CreateHeadingRow()
+    {
+        var row = new HeadingRow()
+        {
+            Margin = HeadingMargin
+        };
+        row.Children.Add(CreateHeading());
+        row.Children.Add(CreateChips());
+        return row;
+    }
+
+    /// <summary>
+    /// The heading and, a gap to its right, the chips in a line - or, where the line is too
+    /// narrow for all of them (a phone), the chips under the heading, one under another
+    /// </summary>
+    public class HeadingRow : Panel
+    {
+        const double Gap = 28;
+        const double LineGap = 12;
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var heading = Children[0];
+            var chips = (StackPanel)Children[1];
+            heading.Measure(Size.Infinity);
+            double chipsWidth = 0;
+            foreach (var chip in chips.Children)
+            {
+                chip.Measure(Size.Infinity);
+                chipsWidth += chip.DesiredSize.Width;
+            }
+
+            bool oneLine = double.IsInfinity(availableSize.Width)
+                || heading.DesiredSize.Width + Gap + chipsWidth <= availableSize.Width;
+            chips.Orientation = oneLine ? Orientation.Horizontal : Orientation.Vertical;
+            chips.Measure(Size.Infinity);
+            double width = double.IsInfinity(availableSize.Width)
+                ? heading.DesiredSize.Width + Gap + chips.DesiredSize.Width
+                : availableSize.Width;
+            double height = oneLine
+                ? System.Math.Max(heading.DesiredSize.Height, chips.DesiredSize.Height)
+                : heading.DesiredSize.Height + LineGap + chips.DesiredSize.Height;
+            return new Size(width, height);
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            var heading = Children[0];
+            var chips = (StackPanel)Children[1];
+            var headingSize = heading.DesiredSize;
+            var chipsSize = chips.DesiredSize;
+            if (chips.Orientation == Orientation.Horizontal)
+            {
+                heading.Arrange(new Rect(0, (finalSize.Height - headingSize.Height) / 2, headingSize.Width, headingSize.Height));
+                chips.Arrange(new Rect(headingSize.Width + Gap, (finalSize.Height - chipsSize.Height) / 2, chipsSize.Width, chipsSize.Height));
+            }
+            else
+            {
+                heading.Arrange(new Rect(0, 0, headingSize.Width, headingSize.Height));
+                chips.Arrange(new Rect(0, headingSize.Height + LineGap, chipsSize.Width, chipsSize.Height));
+            }
+
+            return finalSize;
+        }
+    }
+
+    static TextBlock CreateHeading()
+    {
+        var heading = new TextBlock()
+        {
+            Text = "Gallery",
+            FontSize = 24,
+            FontWeight = FontWeight.SemiBold,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        heading.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+        return heading;
+    }
+
+    /// <summary>
+    /// A pill per library on a pastel plate like the tiles: its miniature, its title and its
+    /// count. In a line, or one under another (<see cref="HeadingRow"/> decides).
+    /// </summary>
+    Control CreateChips()
+    {
+        var panel = new StackPanel()
+        {
+            Orientation = Orientation.Horizontal
+        };
+        foreach (var library in Libraries())
+        {
+            var chip = new GalleryTile(library.Picture(), library.Title, library.Plate, () => OpenLibrary(library.Url))
+            {
+                IsChip = true,
+                Badge = library.Count,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                // the same above and below, so that a line of chips is centered on the
+                // heading as the chip itself would be, and stacked chips stand apart
+                Margin = new Thickness(0, 4, 10, 4)
+            };
+            panel.Children.Add(chip);
+        }
+
+        return panel;
+    }
+
+    // The fills of the hexagons miniature under the light and the dark theme: yellow, red,
+    // blue, then the overlaps green (blue and yellow), purple (blue and red), orange (red and
+    // yellow), and the hole inside all three. The light ones are the maintainer's own
+    // (2026-10-27), with a hairline of ink on every edge; the dark ones are deep and vivid,
+    // and tell the regions apart without ink.
+    static readonly string[] hexagonLightFills = ["#F5F551", "#E97FA8", "#77D5FB", "#AFF73C", "#9975FF", "#FFBC7C", "#FFFFFF"];
+    static readonly string[] hexagonDarkFills = ["#F2C000", "#E02A66", "#1B8FE6", "#5FC02A", "#5E34E8", "#F27D1E", "#2B2B2B"];
+    static readonly IBrush hexagonInk = new SolidColorBrush(Color.Parse("#1E1E1E"));
+
+    /// <summary>
+    /// The three hexagons of Catriona Agg's "Three Regular Hexagons and a Semicircle" in
+    /// miniature, laid out as the drawing is (the blue one's corner at 73° on the arc of the
+    /// semicircle, which isn't drawn): the hexagons, their overlaps and the hole in the middle,
+    /// every edge in a hairline of ink under the light theme, the height of a chip's picture,
+    /// a pixel of room around for the ink.
+    /// </summary>
+    static Control HexagonsPicture()
+    {
+        const double radius = 4;
+        const double sqrt3 = 1.7320508075688772;
+        const double s3 = sqrt3 / 2;
+        const double size = 26;
+        Point Polar(double degrees)
+        {
+            return new Point(radius * System.Math.Cos(degrees * System.Math.PI / 180), radius * System.Math.Sin(degrees * System.Math.PI / 180));
+        }
+
+        Point Turned(Point point, double degrees)
+        {
+            double cos = System.Math.Cos(degrees * System.Math.PI / 180);
+            double sin = System.Math.Sin(degrees * System.Math.PI / 180);
+            return new Point(point.X * cos - point.Y * sin, point.X * sin + point.Y * cos);
+        }
+
+        var y = Polar(73);
+        var r = Polar(133);
+        var p = new Point(y.X - y.Y / sqrt3, 0);
+        double ys = y.Y / sqrt3;
+        double rs = r.Y / sqrt3;
+        Point[] yellowCorners =
+        [
+            p,
+            p + new Point(ys, 0),
+            p + new Point(1.5 * ys, s3 * ys),
+            p + new Point(ys, 2 * s3 * ys),
+            p + new Point(0, 2 * s3 * ys),
+            p + new Point(-0.5 * ys, s3 * ys)
+        ];
+        Point[] redCorners =
+        [
+            p,
+            p + new Point(-rs, 0),
+            p + new Point(-1.5 * rs, s3 * rs),
+            r,
+            p + new Point(0, 2 * s3 * rs),
+            p + new Point(0.5 * rs, s3 * rs)
+        ];
+        var center = new Point((y.X + r.X) / 2, (y.Y + r.Y) / 2);
+        var arm = y - center;
+        Point[] blueCorners = Enumerable.Range(0, 6).Select(i => center + Turned(arm, 60 * i)).ToArray();
+
+        // the drawing's y goes up; the canvas's goes down, in pixels, from a pixel above the top
+        var corners = yellowCorners.Concat(redCorners).Concat(blueCorners).ToList();
+        double left = corners.Min(corner => corner.X);
+        double top = corners.Max(corner => corner.Y);
+        double scale = (size - 2) / (top - corners.Min(corner => corner.Y));
+        Geometry Hexagon(Point[] hexagon)
+        {
+            return new PolylineGeometry(hexagon.Select(corner => new Point((corner.X - left) * scale + 1, (top - corner.Y) * scale + 1)).ToList(), isFilled: true);
+        }
+
+        var yellow = Hexagon(yellowCorners);
+        var red = Hexagon(redCorners);
+        var blue = Hexagon(blueCorners);
+        var blueAndRed = new CombinedGeometry(GeometryCombineMode.Intersect, blue, red);
+        var canvas = new Canvas()
+        {
+            Width = (corners.Max(corner => corner.X) - left) * scale + 2,
+            Height = size,
+            Margin = new Thickness(10, 0, 0, 0),
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        Path[] fills =
+        [
+            new Path() { Data = yellow },
+            new Path() { Data = red },
+            new Path() { Data = blue },
+            new Path() { Data = new CombinedGeometry(GeometryCombineMode.Intersect, blue, yellow) },
+            new Path() { Data = blueAndRed },
+            new Path() { Data = new CombinedGeometry(GeometryCombineMode.Intersect, red, yellow) },
+            new Path() { Data = new CombinedGeometry(GeometryCombineMode.Intersect, blueAndRed, yellow) }
+        ];
+        canvas.Children.AddRange(fills);
+        Path[] edges = [Inked(yellow), Inked(red), Inked(blue)];
+        canvas.Children.AddRange(edges);
+
+        // the fills follow the theme on screen; the ink is the light theme's alone
+        canvas.ObserveTheme(nameof(AppTheme.Page), page =>
+        {
+            bool dark = AppTheme.Current == AppTheme.Dark;
+            string[] colors = dark ? hexagonDarkFills : hexagonLightFills;
+            for (int i = 0; i < fills.Length; i++)
+            {
+                fills[i].Fill = new SolidColorBrush(Color.Parse(colors[i]));
+            }
+
+            foreach (var edge in edges)
+            {
+                edge.IsVisible = !dark;
+            }
+        });
+        return canvas;
+    }
+
+    /// <summary>A hairline of ink along the geometry: a device pixel on a 200% screen</summary>
+    static Path Inked(Geometry geometry)
+    {
+        return new Path()
+        {
+            Data = geometry,
+            Stroke = hexagonInk,
+            StrokeThickness = 0.5,
+            StrokeJoin = PenLineJoin.Round
+        };
+    }
+
 
     /// <summary>The icon and the name, floating on a soft shadow</summary>
     static Control CreateBrand()
