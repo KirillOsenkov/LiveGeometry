@@ -33,6 +33,10 @@ public partial class MainView
         MimeTypes = new[] { "text/html" }
     };
 
+    /// <summary>The page on the site that explains the embed snippet, where the menu and the hint send</summary>
+    public const string EmbedPageUrl = "https://livegeometry.com/embed";
+    const string EmbedPageName = "livegeometry.com/embed";
+
     MainToolbarButton ExportButton;
 
     /// <summary>
@@ -64,6 +68,8 @@ public partial class MainView
 
         Add("Copy image", CopyImage);
         Add("Copy embed code", CopyEmbedCode);
+        menu.Items.Add(new Separator());
+        Add("How to embed", OpenEmbedPage);
 
         // the button stays down while its menu is open
         menu.Closed += (s, e) => ExportButton.IsChecked = false;
@@ -183,12 +189,21 @@ public partial class MainView
             // as tall as the drawing is on screen now, in the page's pixels
             int height = (int)System.Math.Max(240, System.Math.Round(DrawingHost.DrawingControl.Bounds.Height));
             Clipboard.SetText(PlayerEmbed.CreateSnippet(DrawingTextToSave(), height));
-            DrawingHost.ShowHint("Embed code copied: paste it into any HTML page.");
+            DrawingHost.ShowHint(
+                "Embed code copied: paste it into any HTML page. Read more at " + EmbedPageName + ".",
+                EmbedPageName,
+                new Uri(EmbedPageUrl));
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
+    }
+
+    /// <summary>The embed page in the browser (a new tab, in the browser head)</summary>
+    void OpenEmbedPage()
+    {
+        TopLevel.GetTopLevel(this)?.Launcher.LaunchUriAsync(new Uri(EmbedPageUrl));
     }
 
     async void CopyImage()

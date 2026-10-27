@@ -66,6 +66,12 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   family name Skia wrote: the emoji font, Avalonia's `fonts:Inter` collection, then the
   installed ones; a new embedded font wants an entry in `FontFaces.OpenEmbedded`. To check
   an SVG, open it in headless Edge (`webauto start file:///...svg`) next to the PNG.
+  The last item of the menu is How to embed (2026-10-26): /embed is opened in the browser
+  (`Launcher.LaunchUriAsync`: a new tab in the browser head). The hint after Copy embed
+  code has a link to the same page: `DrawingHost.ShowHint(text, linkText, link)` is shown
+  with a link in it (`StatusBar.Show`: a `HyperlinkButton` in an `InlineUIContainer`; the
+  press is handled there, otherwise the bar would be hidden by its own click-to-dismiss
+  handler before the release).
 - **Share links** (2026-10-14; `MainView.Share.cs`, Export > Copy share link): the drawing
   as Save writes it is posted to the site's API, which stores it under an id made from its
   content and answers it; the link is `https://livegeometry.com/s/<id>`. The API is a

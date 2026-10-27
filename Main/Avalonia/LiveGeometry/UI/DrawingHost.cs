@@ -639,6 +639,10 @@ public partial class DrawingHost : Grid
     string hint;
     string choiceHint;
 
+    // the part of the hint that is a link, and where it leads
+    string hintLinkText;
+    Uri hintLink;
+
     void mCurrentDrawing_ChoiceStatus(string text)
     {
         choiceHint = text;
@@ -648,6 +652,17 @@ public partial class DrawingHost : Grid
     public virtual void ShowHint(string text)
     {
         hint = text;
+        hintLinkText = null;
+        hintLink = null;
+        UpdateStatusBar();
+    }
+
+    /// <summary>A hint with a link in it: linkText, a part of text, opens link in the browser</summary>
+    public void ShowHint(string text, string linkText, Uri link)
+    {
+        hint = text;
+        hintLinkText = linkText;
+        hintLink = link;
         UpdateStatusBar();
     }
 
@@ -665,7 +680,15 @@ public partial class DrawingHost : Grid
         }
         else
         {
-            StatusBar.Text = text;
+            if (choiceHint == null && hintLink != null)
+            {
+                StatusBar.Show(text, hintLinkText, hintLink);
+            }
+            else
+            {
+                StatusBar.Text = text;
+            }
+
             StatusBar.Visibility = Visibility.Visible;
         }
     }
