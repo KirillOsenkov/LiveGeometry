@@ -42,7 +42,13 @@
   writes at build from `GalleryCatalog.cs` (`WriteGalleryIndex`: the `Item("slug",
   "Title"[, "File"])` lines, in order), so the list never has to be kept in step by hand.
   Its sun and moon read and write the app's `LiveGeometry.Theme` entry, so the choice is
-  one for the site, and set every player on the page (`applyTheme`). To work on it it
+  one for the site, and set every player on the page (`applyTheme`). **The player plays
+  before DOMContentLoaded** (a deferred script runs once the parser is done, and the
+  player plays every element right then), so nothing of the page may be left to a
+  DOMContentLoaded listener that must come first: the drawings' `data-theme` is set by the
+  page's inline script as it runs, and the hero's load waits for the player when the
+  catalog's fetch comes back first (2026-10-26: the two finish within a millisecond of
+  each other on the site, and the hero was blank on about one reload in a few). To work on it it
   needs the player and the drawings at those absolute paths: serve a publish's `wwwroot`
   with the repo's folder overlaid and live reload,
   `dotnet run tools/serve.cs -- <publish>\wwwroot 5006 --overlay embed=embed --reload`,

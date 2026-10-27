@@ -426,18 +426,20 @@
       }
     }
 
-    // the drawings take the page's theme, not the reader's system setting, before they play
-    function themeDrawings() {
+    // The drawings take the page's theme, not the reader's system setting, before they play.
+    // Now, not on DOMContentLoaded: the player's script is deferred, and a deferred script
+    // runs after the parser is done and before DOMContentLoaded, so the player plays every
+    // element the moment its script runs. This script runs while the page is still parsed,
+    // with every element above it there, so it is in time; the DOMContentLoaded listener
+    // this once was ran after the drawings were played, and they took the system's theme.
+    (function themeDrawings() {
       var theme = root.getAttribute('data-theme');
       document.querySelectorAll('.livegeometry').forEach(function (element) {
         if (!element.hasAttribute('data-theme')) {
           element.dataset.theme = theme;
         }
       });
-    }
-
-    // (before the player's own listener, which was registered later: the deferred script)
-    document.addEventListener('DOMContentLoaded', themeDrawings);
+    })();
 
     document.getElementById('theme').addEventListener('click', function () {
       var theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -473,10 +475,29 @@
       open.href = page;
     }
 
+    // The hero's player, once there is one. The catalog's fetch and the player's deferred
+    // script race (both revalidate, and finish within a millisecond of each other on the
+    // site), and when the catalog came first there was no player to load into yet, and the
+    // hero stayed blank until a lucky reload. The deferred script has run - and played the
+    // hero - by DOMContentLoaded, so a catalog that is early waits for that.
+    function heroPlayer() {
+      var hero = document.getElementById('hero');
+      if (window.LiveGeometry) {
+        return Promise.resolve(LiveGeometry.players.get(hero));
+      }
+
+      return new Promise(function (resolve) {
+        document.addEventListener('DOMContentLoaded', function () {
+          resolve(window.LiveGeometry && LiveGeometry.players.get(hero));
+        });
+      });
+    }
+
     // the hero plays the drawing at file; a promise that fails when it can't be had
     function play(file) {
-      var player = window.LiveGeometry && LiveGeometry.players.get(document.getElementById('hero'));
-      return player ? player.loadFrom(file) : Promise.resolve();
+      return heroPlayer().then(function (player) {
+        return player ? player.loadFrom(file) : undefined;
+      });
     }
 
     function choose(slug) {
