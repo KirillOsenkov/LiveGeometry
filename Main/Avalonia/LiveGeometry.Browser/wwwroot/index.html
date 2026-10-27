@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Live Geometry</title>
     <meta charset="UTF-8">
-    <!-- What a search engine shows under the title (the splash below says the same). -->
+    <!-- What a search engine shows under the title (the splash below says the same). The
+         link preview's picture is the gallery page as it opens (tools/previews.cs renders it
+         after the publish, with each drawing's own). The WriteGalleryIndex task of the csproj
+         writes a copy of this page per gallery drawing with its own title, description,
+         address and picture in these tags. -->
     <meta name="description" content="Live Geometry is a free and open source interactive geometry website: a colorful gallery of drawings illustrating geometry concepts, interactive ruler and compass constructions, coordinates, and figures you can drag around.">
     <meta property="og:title" content="Live Geometry">
     <meta property="og:description" content="Free and open source interactive geometry: a gallery of drawings, ruler and compass constructions, coordinates, and figures you can drag around.">
     <meta property="og:url" content="https://livegeometry.com/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Live Geometry">
+    <meta property="og:image" content="https://livegeometry.com/gallery/previews/index.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://livegeometry.com/">
     <!-- The app has routes (/gallery/morley) that all serve this page: without a base the
          relative urls below would be looked up under /gallery/. -->
     <base href="/">

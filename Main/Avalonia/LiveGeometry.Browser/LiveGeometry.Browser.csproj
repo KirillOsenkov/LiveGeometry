@@ -264,17 +264,9 @@
                 html = ReplaceOnce(html, "<meta property=\"og:title\" content=\"[^\"]*\">", m => "<meta property=\"og:title\" content=\"" + escapedTitle + "\">");
                 html = ReplaceOnce(html, "<meta property=\"og:description\" content=\"[^\"]*\">", m => "<meta property=\"og:description\" content=\"" + description + "\">");
                 html = ReplaceOnce(html, "<meta property=\"og:url\" content=\"[^\"]*\">", m => "<meta property=\"og:url\" content=\"" + url + "\">");
-                html = ReplaceOnce(html, "(\\s*)<meta property=\"og:type\" content=\"[^\"]*\">", m =>
-                {
-                    string indent = m.Groups[1].Value;
-                    return m.Value
-                        + indent + "<meta property=\"og:site_name\" content=\"Live Geometry\">"
-                        + indent + "<meta property=\"og:image\" content=\"" + SiteUrl + "/gallery/previews/" + file + ".png\">"
-                        + indent + "<meta property=\"og:image:width\" content=\"1200\">"
-                        + indent + "<meta property=\"og:image:height\" content=\"630\">"
-                        + indent + "<meta name=\"twitter:card\" content=\"summary_large_image\">"
-                        + indent + "<link rel=\"canonical\" href=\"" + url + "\">";
-                });
+                // the homepage's picture gives way to the drawing's own (the rest of the tags, og:type to twitter:card, are the homepage's)
+                html = ReplaceOnce(html, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/gallery/previews/" + file + ".png\">");
+                html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">");
                 // the splash says what the drawing is while the app loads, and is the text a search engine indexes
                 html = ReplaceOnce(html, "<h1>[^<]*</h1>(\\s*)<p>.*?</p>", m => "<h1>" + escapedTitle + "</h1>" + m.Groups[1].Value + "<p>" + description + "</p>");
             }
@@ -336,8 +328,8 @@
                 string url = SiteUrl + "/CatrionaAgg/" + slug;
                 string escapedTitle = Escape(title);
                 string description = Escape(statement != null
-                    ? "Catriona Agg's puzzle: " + question + " Her diagram redrawn as live geometry you can drag, with Andrew Stacey's techniques and solution at Mathforge Notes."
-                    : "Catriona Agg's puzzle, her diagram redrawn as live geometry you can drag.");
+                    ? "Catriona Agg's puzzle: " + question + " With links to Andrew Stacey's techniques and solutions at Mathforge Notes."
+                    : "Catriona Agg's puzzle, redrawn as live geometry you can drag.");
                 string html = catrionaTemplate;
                 try
                 {

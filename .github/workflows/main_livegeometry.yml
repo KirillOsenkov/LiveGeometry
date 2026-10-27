@@ -40,8 +40,9 @@ jobs:
 
       - name: Render the gallery's link previews
         # The picture each drawing's page (/gallery/<slug>) names as its og:image, into
-        # wwwroot/gallery/previews: the drawings played by the JavaScript player in the
-        # runner's Chrome (tools/previews.cs).
+        # wwwroot/gallery/previews, and the homepage's (index.png, the gallery as it opens):
+        # the drawings played by the JavaScript player in the runner's Chrome
+        # (tools/previews.cs). The Catriona Agg library's pictures are made here too.
         timeout-minutes: 10
         run: dotnet run tools/previews.cs -- "${{ github.workspace }}/publish/wwwroot"
 

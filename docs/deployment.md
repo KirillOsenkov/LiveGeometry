@@ -23,7 +23,17 @@
   drawing needs nothing more than its catalog line. A local publish has the pages but no
   pictures until the tool is run on it. To see what a site sees after a deploy: the
   page's source (`curl -s https://livegeometry.com/gallery/<slug>`) and each site's card
-  validator.
+  validator. The homepage's own picture (2026-10-27) is `gallery/previews/index.png`,
+  drawn by the same tool: the gallery page as it opens under the light theme, the brand
+  over the first eight tiles (their plates, pictures and captions as `web/index.html`
+  draws them). `wwwroot/index.html` names it, with the whole set of tags the Catriona Agg
+  pages have (`og:site_name`, the picture and its size, `twitter:card`, a canonical link),
+  and the per-drawing pages are written by replacing the picture and the canonical link in
+  it. `/embed` names the same picture. A page of its own (`/web`, `/history`) has only the
+  title, description and the `og:` basics unless it says otherwise. To draw the pictures
+  locally the tool wants a folder with `gallery/index.json` and the `.lgf` files,
+  `player/1/player.js`, `fonts/Twemoji.Mozilla.ttf` and `logo-512.png`: a publish's
+  `wwwroot`, or one put together from `obj/` and `wwwroot/` of the Browser project.
 - **`/history`** is a static page of its own (`history/index.html` at the repo root, no build
   step, everything inline but the Google Fonts; a relative URL in it would resolve against
   `/`, since `/history` has no trailing slash): the Browser csproj links the folder into
