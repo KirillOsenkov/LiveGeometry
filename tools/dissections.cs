@@ -38,7 +38,7 @@ for (int i = 1; i < args.Length; i++)
 
 Directory.CreateDirectory(args[0]);
 Dissections.Haberdasher(Path.Combine(args[0], "HaberdashersPuzzle.lgf"), value: 0);
-Dissections.FivePieces(Path.Combine(args[0], "TriangleToSquare.lgf"), value: 0.8);
+Dissections.FivePieces(Path.Combine(args[0], "TriangleToSquare.lgf"), value: 0);
 if (probe != null)
 {
     Directory.CreateDirectory(probe);

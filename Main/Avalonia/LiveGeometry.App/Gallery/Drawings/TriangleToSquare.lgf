@@ -8,7 +8,7 @@
     </PointStyle>
   </Styles>
   <Figures>
-    <Slider Name="move" X="-1.499945" Y="-0.45" Value="0.8" Maximum="2" />
+    <Slider Name="move" X="-1.499945" Y="-0.45" Value="0" Maximum="2" />
     <Number Name="fold" Formula="180 * clamp(move, 0, 1)">
       <Dependency Name="move" />
     </Number>
