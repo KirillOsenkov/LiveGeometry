@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.802881" Top="2.050794" Right="1.976984" Bottom="-2.581646" />
+  <Scene Left="-1.802881" Top="2.050794" Right="1.976984" Bottom="-2.581646" />
+  <Styles>
+    <PointStyle Name="Hinge" Size="8" Fill="#FF4A4F58" Color="#FFFFFFFF" StrokeWidth="1.5">
+      <Dark Fill="#FFE0E4EC" Color="#FF202428" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="swing" X="-1.602881" Y="-2.281646" Value="0" Maximum="2" />
+    <Number Name="settle" Formula="5.575168 * swing">
+      <Dependency Name="swing" />
+    </Number>
+    <Number Name="aboutD" Formula="90 * swing">
+      <Dependency Name="swing" />
+    </Number>
+    <Number Name="aboutE" Formula="-84.424832 * swing">
+      <Dependency Name="swing" />
+    </Number>
+    <Number Name="aboutK" Formula="-90 * swing">
+      <Dependency Name="swing" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="1.732051" />
+    <PointByCoordinates Name="B" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="D" Visible="false" X="-0.5" Y="0.866025" />
+    <PointByCoordinates Name="E" Style="Hinge" X="0" Y="0" />
+    <PointByCoordinates Name="J" Visible="false" X="0.254508" Y="1.291231" />
+    <PointByCoordinates Name="K" Visible="false" X="0.754508" Y="0.425205" />
+    <PointByCoordinates Name="L" Visible="false" X="0.145615" Y="0.738772" />
+    <PointByCoordinates Name="M" Visible="false" X="0.108892" Y="0.552459" />
+    <RotatedPoint Name="D1" Style="Hinge">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="L1" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="B1" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="A1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="aboutD" />
+    </RotatedPoint>
+    <RotatedPoint Name="J1" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="D" />
+      <Dependency Name="aboutD" />
+    </RotatedPoint>
+    <RotatedPoint Name="L2" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="D" />
+      <Dependency Name="aboutD" />
+    </RotatedPoint>
+    <RotatedPoint Name="A2" Visible="false">
+      <Dependency Name="A1" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="J2" Visible="false">
+      <Dependency Name="J1" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="L3" Visible="false">
+      <Dependency Name="L2" />
+      <Dependency Name="E" />
+      <Dependency Name="settle" />
+    </RotatedPoint>
+    <RotatedPoint Name="M1" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="E" />
+      <Dependency Name="aboutE" />
+    </RotatedPoint>
+    <RotatedPoint Name="K1" Style="Hinge">
+      <Dependency Name="K" />
+      <Dependency Name="E" />
+      <Dependency Name="aboutE" />
+    </RotatedPoint>
+    <RotatedPoint Name="C1" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+      <Dependency Name="aboutE" />
+    </RotatedPoint>
+    <RotatedPoint Name="J3" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="aboutK" />
+    </RotatedPoint>
+    <RotatedPoint Name="M2" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="K" />
+      <Dependency Name="aboutK" />
+    </RotatedPoint>
+    <RotatedPoint Name="J4" Visible="false">
+      <Dependency Name="J3" />
+      <Dependency Name="E" />
+      <Dependency Name="aboutE" />
+    </RotatedPoint>
+    <RotatedPoint Name="M3" Visible="false">
+      <Dependency Name="M2" />
+      <Dependency Name="E" />
+      <Dependency Name="aboutE" />
+    </RotatedPoint>
+    <Polygon Name="PieceB" Style="GradientBlueOutline">
+      <Dependency Name="D1" />
+      <Dependency Name="L1" />
+      <Dependency Name="E" />
+      <Dependency Name="B1" />
+    </Polygon>
+    <Polygon Name="PieceA" Style="GradientRedOutline">
+      <Dependency Name="A2" />
+      <Dependency Name="J2" />
+      <Dependency Name="L3" />
+      <Dependency Name="D1" />
+    </Polygon>
+    <Polygon Name="PieceC" Style="GradientGreenOutline">
+      <Dependency Name="M1" />
+      <Dependency Name="K1" />
+      <Dependency Name="C1" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="PieceK" Style="GradientOrangeOutline">
+      <Dependency Name="J4" />
+      <Dependency Name="K1" />
+      <Dependency Name="M3" />
+    </Polygon>
+    <Label Name="Title" Style="Heading" Text="The Haberdasher's Puzzle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Cut an equilateral triangle into four pieces that fit together into a square. Drag the slider: the pieces swing on three hinges, like links of a bracelet, and the triangle becomes the square. Swing them back and it is a triangle again.\n\nHenry Dudeney, an English puzzle maker, set this problem in 1902 and asked for the fewest pieces. His own answer took five (see Triangle to Square in Five Pieces). A reader, C. W. McElroy, sent in this one with four, and Dudeney liked it so much that he had a model made of mahogany with brass hinges. For a hundred years nobody knew whether three pieces could do it. In 2024 it was proved that they can't.\n\nThe cuts hide a surprise. In the square, the three corners of the triangle meet at one point on a cut, and it looks like the middle of that cut. It isn't quite: the two parts are 51 and 49 hundredths of it. A model made by guessing the middle never closes." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>

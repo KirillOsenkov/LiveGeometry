@@ -184,6 +184,8 @@ public static class GalleryCatalog
         Item("counting-overlaps", "Counting Overlaps"),
         Item("pizza-theorem", "The Pizza Theorem"),
         Item("square-around-four-points", "Square Around Four Points"),
+        Item("haberdashers-puzzle", "The Haberdasher's Puzzle", stackedFigureShare: 0.5),
+        Item("triangle-to-square", "Triangle to Square in Five Pieces", stackedFigureShare: 0.5),
     };
 
     /// <summary>

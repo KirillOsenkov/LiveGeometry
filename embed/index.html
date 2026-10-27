@@ -372,7 +372,7 @@
   <p>Attributes on the element, all optional. The two drawings below are the first two in use.</p>
   <table>
     <tr><th>Attribute</th><th>What it does</th></tr>
-    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, or a share link, when the drawing is not written into the element.</td></tr>
+    <tr><td><code>data-src</code></td><td>The address of an <code>.lgf</code> to play, a share link, or the link of a <a href="/CatrionaAgg">Catriona Agg puzzle</a>, when the drawing is not written into the element.</td></tr>
     <tr><td><code>data-theme</code></td><td><code>light</code>, <code>dark</code>, or <code>auto</code> (the reader's system setting, the default). The drawing keeps its own colors; the paper and the default styles follow the theme.</td></tr>
     <tr><td><code>data-wheel</code></td><td><code>zoom</code> makes the mouse wheel zoom the drawing. By default it zooms only with Ctrl held, so a drawing in a post doesn't take the page's scrolling; pinching and a double click (zoom to fit) always work.</td></tr>
     <tr><td><code>data-fit</code></td><td><code>content</code> fits the figures into the element instead of the view the drawing was saved with.</td></tr>
@@ -391,7 +391,7 @@
 
   <h2 id="good-to-know">Good to know</h2>
   <h3>Where the drawing can come from</h3>
-  <p>The gallery's drawings are served for this at <code>https://livegeometry.com/gallery/&lt;Name&gt;.lgf</code>, and any page anywhere may fetch them. A drawing of your own next to your page is fine as well. A drawing on a third site plays only if that site sends the <code>Access-Control-Allow-Origin</code> header, which is the browser's rule, not ours: GitHub Pages and most static hosts do, and a file in a GitHub repository can be reached through <code>raw.githubusercontent.com</code>, which does too. A page opened from a disk can't fetch files at all, which is why the exported code carries the drawing inside.</p>
+  <p>The gallery's drawings are served for this at <code>https://livegeometry.com/gallery/&lt;Name&gt;.lgf</code>, and any page anywhere may fetch them. So may it fetch <a href="/CatrionaAgg">Catriona Agg's puzzles</a>: the link of a puzzle's page is its <code>data-src</code>. A drawing of your own next to your page is fine as well. A drawing on a third site plays only if that site sends the <code>Access-Control-Allow-Origin</code> header, which is the browser's rule, not ours: GitHub Pages and most static hosts do, and a file in a GitHub repository can be reached through <code>raw.githubusercontent.com</code>, which does too. A page opened from a disk can't read a file beside it, though it can fetch from this site, which is why the exported code carries the drawing inside.</p>
   <h3>Where it can't go</h3>
   <p>GitHub READMEs, issues and wikis strip scripts, as do most comment boxes. There, save a picture (<strong>Export › Save as .png</strong>) and link it to a page that holds the embed.</p>
   <h3>Fonts and emoji</h3>

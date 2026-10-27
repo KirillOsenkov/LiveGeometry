@@ -99,6 +99,9 @@ page shows it), never copied.
   `tools/previews.cs` renders those pictures and `previews/index.png`, a mosaic, for the
   gallery. web.config routes /CatrionaAgg to the gallery and /CatrionaAgg/<slug> to the
   puzzle's page, else to `puzzle.html`.
+- **Embedding**: a puzzle plays on another page like a gallery drawing (see "The JavaScript
+  player"): `data-src` takes the puzzle's own link, `https://livegeometry.com/CatrionaAgg/<slug>`,
+  which the player turns into `/CatrionaAgg/drawings/<slug>.lgf`, served with CORS.
 - **Working on it**: `.claude/launch.json` has "catriona-dev": `tools/serve.cs` over a folder
   holding `player/1/player.js` (copied from a build's `obj/player/1/`) with
   `--overlay CatrionaAgg=CatrionaAgg --route CatrionaAgg=CatrionaAgg/puzzle.html --reload`

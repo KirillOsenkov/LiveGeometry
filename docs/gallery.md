@@ -241,6 +241,28 @@
   middle was a point on a fixed axis could not be dragged at all: its roots were points by
   coordinates); and with a gradient paper a caption has no plate, so drawings with rays
   that run under the caption have a plain paper.
+- **The dissections** (2026-10-26, two drawings at the end of the gallery, both written by
+  `dotnet tools/dissections.cs -- <the Drawings folder>` and a `--rewrite`; `--probe
+  <folder>` writes copies with the slider at 0, 0.5, 1, 1.5 and 2 for `--check`): The
+  Haberdasher's Puzzle (`HaberdashersPuzzle.lgf`: Dudeney's four pieces of 1902 as
+  polygons on `RotatedPoint`s, hinged at the midpoints D of AB and E of BC and at K on
+  AC, each a half turn through the outside of the triangle so that none passes over
+  another, all three from one slider through hidden `Number`s with formulas (a
+  `RotatedPoint` takes a Number's value as degrees); the whole turns about E by 11° more
+  so that the square comes out level - without that it ends tilted, as in every book) and
+  Triangle to Square in Five Pieces (`TriangleToSquare.lgf`: the top folds down about D and
+  E into the corners, a rectangle, then the P-slide: the piece above the slant slides
+  along it, which opens the notch at the top right, and then the small triangle glides
+  along the slant into it, listed last so that it passes over the base; the three moves
+  take turns on one slider, since the small triangle would pass through the sliding piece
+  if they went together). Both the tool checks: the pieces at the slider's end are in the
+  square and reach its four corners. The sweep of the pieces is the `<Scene>` (the fit is
+  taken at open time, so a piece swinging past the figure's box at rest would leave the
+  screen), and the slider goes at the left, as low as the sweep leaves its track and
+  caption clear at every step, else under the sweep. Dudeney's own five-piece answer of
+  April 1902 is not described anywhere found (his column gave it; the four-piece one came
+  from C. W. McElroy two weeks later), so the five-piece drawing is the natural one, not
+  his.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

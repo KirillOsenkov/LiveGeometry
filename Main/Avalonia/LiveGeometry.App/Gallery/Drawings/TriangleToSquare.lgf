@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-1.699945" Top="2.065971" Right="1.699945" Bottom="-0.75" />
+  <Scene Left="-1.699945" Top="2.065971" Right="1.699945" Bottom="-0.75" />
+  <Styles>
+    <PointStyle Name="Hinge" Size="8" Fill="#FF4A4F58" Color="#FFFFFFFF" StrokeWidth="1.5">
+      <Dark Fill="#FFE0E4EC" Color="#FF202428" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <Slider Name="move" X="-1.499945" Y="-0.45" Value="0.8" Maximum="2" />
+    <Number Name="fold" Formula="180 * clamp(move, 0, 1)">
+      <Dependency Name="move" />
+    </Number>
+    <Number Name="foldBack" Formula="-180 * clamp(move, 0, 1)">
+      <Dependency Name="move" />
+    </Number>
+    <Number Name="slide" Formula="clamp(2 * (move - 1), 0, 1)">
+      <Dependency Name="move" />
+    </Number>
+    <Number Name="slideSmall" Formula="clamp(2 * (move - 1.5), 0, 1)">
+      <Dependency Name="move" />
+    </Number>
+    <PointByCoordinates Name="A" Visible="false" X="0" Y="1.732051" />
+    <PointByCoordinates Name="B" Visible="false" X="-1" Y="0" />
+    <PointByCoordinates Name="C" Visible="false" X="1" Y="0" />
+    <PointByCoordinates Name="D" Visible="false" X="-0.5" Y="0.866025" />
+    <PointByCoordinates Name="E" Style="Hinge" X="0.5" Y="0.866025" />
+    <PointByCoordinates Name="G" Visible="false" X="0" Y="0.866025" />
+    <PointByCoordinates Name="Q" Visible="false" X="0.316074" Y="0.866025" />
+    <PointByCoordinates Name="V" Visible="false" X="-0.316074" Y="0" />
+    <PointByCoordinates Name="R" Visible="false" X="-0.316074" Y="0.450049" />
+    <RotatedPoint Name="A1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="fold" />
+    </RotatedPoint>
+    <RotatedPoint Name="G1" Visible="false">
+      <Dependency Name="G" />
+      <Dependency Name="D" />
+      <Dependency Name="fold" />
+    </RotatedPoint>
+    <PointByCoordinates Name="A2" Visible="false" X="A1.X + 0.683926 * slide" Y="A1.Y + 0.450049 * slide">
+      <Dependency Name="A1" />
+      <Dependency Name="slide" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G2" Visible="false" X="G1.X + 0.683926 * slide" Y="G1.Y + 0.450049 * slide">
+      <Dependency Name="G1" />
+      <Dependency Name="slide" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D2" Style="Hinge" X="D.X + 0.683926 * slide" Y="D.Y + 0.450049 * slide">
+      <Dependency Name="D" />
+      <Dependency Name="slide" />
+    </PointByCoordinates>
+    <RotatedPoint Name="A3" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+      <Dependency Name="foldBack" />
+    </RotatedPoint>
+    <RotatedPoint Name="G3" Visible="false">
+      <Dependency Name="G" />
+      <Dependency Name="E" />
+      <Dependency Name="foldBack" />
+    </RotatedPoint>
+    <PointByCoordinates Name="B2" Visible="false" X="B.X + 0.683926 * slide" Y="B.Y + 0.450049 * slide">
+      <Dependency Name="B" />
+      <Dependency Name="slide" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q2" Visible="false" X="Q.X + 0.683926 * slide" Y="Q.Y + 0.450049 * slide">
+      <Dependency Name="Q" />
+      <Dependency Name="slide" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B3" Visible="false" X="B.X + 1.316074 * slideSmall" Y="B.Y + 0.866025 * slideSmall">
+      <Dependency Name="B" />
+      <Dependency Name="slideSmall" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V3" Visible="false" X="V.X + 1.316074 * slideSmall" Y="V.Y + 0.866025 * slideSmall">
+      <Dependency Name="V" />
+      <Dependency Name="slideSmall" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R3" Visible="false" X="R.X + 1.316074 * slideSmall" Y="R.Y + 0.866025 * slideSmall">
+      <Dependency Name="R" />
+      <Dependency Name="slideSmall" />
+    </PointByCoordinates>
+    <Polygon Name="LeftHalf" Style="GradientRedOutline">
+      <Dependency Name="A2" />
+      <Dependency Name="D2" />
+      <Dependency Name="G2" />
+    </Polygon>
+    <Polygon Name="RightHalf" Style="GradientPurpleOutline">
+      <Dependency Name="A3" />
+      <Dependency Name="G3" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="Slant" Style="GradientOrangeOutline">
+      <Dependency Name="B2" />
+      <Dependency Name="Q2" />
+      <Dependency Name="D2" />
+    </Polygon>
+    <Polygon Name="Base" Style="GradientBlueOutline">
+      <Dependency Name="V" />
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Polygon Name="Small" Style="GradientGreenOutline">
+      <Dependency Name="B3" />
+      <Dependency Name="V3" />
+      <Dependency Name="R3" />
+    </Polygon>
+    <Label Name="Title" Style="Heading" Text="Triangle to Square in Five Pieces" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Another way to turn an equilateral triangle into a square, with five pieces and three moves. Drag the slider. First the top of the triangle splits in two, and the halves swing down on hinges into the corners: the triangle is now a rectangle, twice as wide as it is tall. Then the piece above the slanted cut slides up along it, the red corner riding along, which opens a notch at the top right, and the small triangle from the bottom left glides along the cut into the notch. The rectangle has squared up.\n\nThe slide is an old trick for turning any rectangle into another of the same area, as long as the new one is at least half as wide. Cut from a corner to the point on the far side where the new width ends, cut a small triangle off the bottom, and slide.\n\nFour pieces can do it too, with cleverer cuts: see The Haberdasher's Puzzle. Three can't, as was proved in 2024." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
