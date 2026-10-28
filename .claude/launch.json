@@ -20,6 +20,12 @@
       "port": 5006
     },
     {
+      "name": "splash-dev",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "Main/Avalonia/LiveGeometry.Browser/wwwroot", "5010"],
+      "port": 5010
+    },
+    {
       "name": "web-dev",
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/publish-rename/wwwroot", "5008", "--overlay", "web=web", "--reload"],

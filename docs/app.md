@@ -169,6 +169,10 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   default loading (a Response for `dotnetjs` leaves the site spinning on the splash forever).
   A change to `main.js` needs the publish smoke test below before deploying. `?splash` on
   the url shows the splash without starting the app: serve the source `wwwroot` with
-  `tools/serve.cs` and open `http://localhost:<port>/index.html?splash`. It animates
+  `tools/serve.cs` (`.claude/launch.json` has "splash-dev") and open
+  `http://localhost:<port>/index.html?splash`. The intro's last paragraph links
+  /CatrionaAgg, /web and /embed (2026-10-27): the app is a canvas, so these are the only
+  links from the homepage a crawler can follow, and the per-drawing pages carry them too;
+  /history is left out on purpose. It animates
   regardless of `prefers-reduced-motion` on purpose: the query follows the Windows "Animation
   effects" setting, which many machines have off, and a still splash looks stuck.
