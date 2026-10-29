@@ -423,7 +423,7 @@ public class Slider : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
                 return;
             }
 
-            Text = NameDisplay.Format(slider.Name) + " = " + Math.Round(slider.Value, DecimalsToShow).ToString();
+            Text = NameDisplay.Format(slider.Name) + " = " + NumberText(slider.Value, DecimalsToShow);
             var size = MeasureSize();
 
             // left-aligned with the anchor, and above the bigger of the two points: a knob

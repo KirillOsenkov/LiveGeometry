@@ -277,7 +277,7 @@ const FunctionCatalog = {
         { name: "mod" }, { name: "min", variadic: true }, { name: "max", variadic: true }, { name: "clamp" },
         { name: "gcd", variadic: true }, { name: "lcm", variadic: true }, { name: "deg" }, { name: "rad" },
         { name: "if", counts: [2, 3] },
-        { name: "distance" }, { name: "angle" }, { name: "directedangle" }, { name: "direction" }, { name: "area" }
+        { name: "distance" }, { name: "angle", aliases: ["∠"] }, { name: "directedangle" }, { name: "direction" }, { name: "area" }
     ],
 
     byName: null,

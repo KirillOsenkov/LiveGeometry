@@ -97,6 +97,14 @@ const NumberFormat = {
         return /^-0(\.0*)?$/.test(text) ? text.substring(1) : text;
     },
 
+    /** LabelBase.NumberText: a caption's number with every decimal it shows (56.30), a whole number whole (90) */
+    numberText(value, decimals) {
+        const rounded = NumberFormat.round(value, decimals);
+        return !isValidValue(rounded) || Number.isInteger(rounded)
+            ? NumberFormat.toString(rounded)
+            : NumberFormat.toFixed(rounded, decimals);
+    },
+
     /** ToDegreeString: "{0:F0}°" */
     toDegreeString(degrees) {
         return NumberFormat.toFixed(degrees, 0) + "°";

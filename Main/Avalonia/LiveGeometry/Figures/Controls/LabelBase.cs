@@ -368,6 +368,20 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     }
 
     /// <summary>
+    /// A number as a measurement, a number's or a slider's caption shows it: with as many
+    /// decimals as its Decimals row says, zeros at the end included (56.30), and a whole
+    /// number whole (90°, n = 5). With the zeros dropped, the row seemed to do nothing: 56.30
+    /// showed as 56.3 at 2 decimals and at 1.
+    /// </summary>
+    public static string NumberText(double value, int decimals)
+    {
+        double rounded = Math.Round(value, decimals);
+        return rounded == System.Math.Floor(rounded)
+            ? rounded.ToString(CultureInfo.InvariantCulture)
+            : rounded.ToString("F" + decimals, CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
     /// The names in the [...] parts follow renamed figures. Only the text changes: the
     /// compiled parts already hold the figures, and recompiling here, in the middle of a
     /// rename, would re-register the dependencies being walked.
@@ -598,6 +612,14 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
             if (value >= 0 && value <= 10)
             {
                 mDecimalsToShow = value;
+
+                // a text's [...] parts are written out when it is worked out, not when it is
+                // drawn: the Decimals row changed nothing until a figure moved
+                if (ShouldProcessText && textChunks != null)
+                {
+                    Recalculate();
+                }
+
                 UpdateVisual();
             }
         }

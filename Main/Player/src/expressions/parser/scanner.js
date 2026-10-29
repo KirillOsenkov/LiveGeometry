@@ -44,6 +44,10 @@ class Scanner {
                 case "|":
                     this.addTokenOfType(TokenType.Pipe);
                     break;
+                // ∠ABC, the angle at B, as in class
+                case "∠":
+                    this.addTokenOfType(TokenType.Angle);
+                    break;
                 case "<":
                     this.addTokenOfType(this.nextChar() === "=" ? TokenType.LessOrEqual : TokenType.Less, this.nextChar() === "=" ? 2 : 1);
                     break;

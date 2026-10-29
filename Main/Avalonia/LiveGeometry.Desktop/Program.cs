@@ -108,5 +108,6 @@ sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
+            .WithMathFont()
             .LogToTrace();
 }

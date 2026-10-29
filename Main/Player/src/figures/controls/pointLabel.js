@@ -136,9 +136,9 @@ class PointLabel extends NameLabel {
 
         if (this.showCoordinates) {
             const coordinates = this.point(0);
-            const x = GeometryMath.round(coordinates.x, this.decimalsToShow);
-            const y = GeometryMath.round(coordinates.y, this.decimalsToShow);
-            const coordinatesText = "(" + NumberFormat.toString(x) + ", " + NumberFormat.toString(y) + ")";
+            const x = NumberFormat.numberText(coordinates.x, this.decimalsToShow);
+            const y = NumberFormat.numberText(coordinates.y, this.decimalsToShow);
+            const coordinatesText = "(" + x + ", " + y + ")";
             if (text !== "") {
                 text += " ";
             }

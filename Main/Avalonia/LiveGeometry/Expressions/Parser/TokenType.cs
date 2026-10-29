@@ -21,5 +21,6 @@ public enum TokenType
     GreaterOrEqual,
     Equal,
     NotEqual,
+    Angle,
     Unknown
 }

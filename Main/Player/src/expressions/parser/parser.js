@@ -100,7 +100,7 @@ class Parser {
     isImplicitMultiplication() {
         return this.current > 0
             && this.tokens[this.current - 1].kind === TokenType.NumericLiteral
-            && (this.currentToken.kind === TokenType.Identifier || this.currentToken.kind === TokenType.OpenParen);
+            && (this.currentToken.kind === TokenType.Identifier || this.currentToken.kind === TokenType.OpenParen || this.currentToken.kind === TokenType.Angle);
     }
 
     get eof() {
@@ -184,6 +184,8 @@ class Parser {
                 result = new SyntaxNode(NodeType.AbsoluteValue, [this.parseExpression(0)]);
                 this.expectToken(TokenType.Pipe);
                 break;
+            case TokenType.Angle:
+                return this.parseAngle();
             default:
                 this.reportError("Expected a number, a variable, a function or a parenthesized expression");
                 break;
@@ -203,6 +205,24 @@ class Parser {
         }
 
         this.expectToken(TokenType.CloseParen);
+        return result;
+    }
+
+    /** ∠ABC: a call of angle (the sign is one of its names) with the three points' names in one, as angle(ABC); ∠(A, B, C) is angle(A, B, C) */
+    parseAngle() {
+        if (this.next?.kind === TokenType.OpenParen) {
+            return this.parseFunctionCall();
+        }
+
+        const result = new SyntaxNode(NodeType.FunctionCall, this.currentToken);
+        this.advanceToken();
+        if (this.currentTokenKind !== TokenType.Identifier) {
+            this.reportError("Expected the names of three points after ∠: ∠ABC");
+            return null;
+        }
+
+        result.children.push(this.variable());
+        this.advanceToken();
         return result;
     }
 

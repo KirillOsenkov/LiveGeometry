@@ -269,7 +269,7 @@ class LengthMeasurement extends Measurement {
             return;
         }
 
-        this.setText(this.prefix + NumberFormat.toString(GeometryMath.round(this.length, this.decimalsToShow)));
+        this.setText(this.prefix + NumberFormat.numberText(this.length, this.decimalsToShow));
         super.updateVisual();
     }
 

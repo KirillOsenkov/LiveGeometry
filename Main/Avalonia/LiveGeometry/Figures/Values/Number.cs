@@ -193,6 +193,9 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
     {
         Expression.RenameInExpression(renamer);
         RaiseConstructionChanged();
+
+        // (a caption that shows the formula says the new names)
+        RefreshCaption();
     }
 
     public void RebindExpressions()
@@ -285,13 +288,45 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         }
     }
 
-    /// <summary>What the caption says: the name and the number, or "undefined" for a formula without a value right now</summary>
+    bool showFormula;
+
+    /// <summary>Whether the caption says the formula too: "a = angle(A, B, C) = 27", or "a = 27"</summary>
+    [PropertyGridVisible]
+    [ContextMenu]
+    [PropertyGridName("Show formula")]
+    [PropertyGridSection(PropertyGridSection.Display, 11)]
+    [PropertyGridCondition(nameof(HasFormula))]
+    public bool ShowFormula
+    {
+        get => showFormula;
+        set
+        {
+            showFormula = value;
+            RefreshCaption();
+        }
+    }
+
+    /// <summary>Whether the number is worked out by a formula, which the caption can say</summary>
+    public bool HasFormula()
+    {
+        return !IsTyped;
+    }
+
+    /// <summary>
+    /// What the caption says: the name, the formula and the number, or "undefined" for a
+    /// formula without a value right now
+    /// </summary>
     public string CaptionText
     {
         get
         {
-            string number = value.IsValidValue() ? Math.Round(value, Decimals).ToString() : LabelBase.UndefinedText;
-            return showName ? NameDisplay.Format(Name) + " = " + number : number;
+            string text = value.IsValidValue() ? LabelBase.NumberText(value, Decimals) : LabelBase.UndefinedText;
+            if (showFormula && !IsTyped)
+            {
+                text = Expression.Text + " = " + text;
+            }
+
+            return showName ? NameDisplay.Format(Name) + " = " + text : text;
         }
     }
 
@@ -527,6 +562,11 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
             writer.WriteAttributeBool("ShowName", false);
         }
 
+        if (showFormula)
+        {
+            writer.WriteAttributeBool("ShowFormula", true);
+        }
+
         if (Decimals != Settings.DisplayDecimals)
         {
             writer.WriteAttributeDouble("Decimals", Decimals);
@@ -542,6 +582,7 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         }
 
         showName = element.ReadBool("ShowName", true);
+        showFormula = element.ReadBool("ShowFormula", false);
         if (element.Attribute("X") != null)
         {
             Position = new Point(element.ReadDouble("X"), element.ReadDouble("Y"));

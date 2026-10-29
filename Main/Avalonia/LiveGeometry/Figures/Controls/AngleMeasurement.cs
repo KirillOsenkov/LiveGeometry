@@ -52,7 +52,7 @@ public class AngleMeasurementBase : Measurement, IAngleProvider
     public override void UpdateVisual()
     {
         // the text first: where a number that places itself goes depends on its size
-        var text = Math.Round(Measure, DecimalsToShow).ToString();
+        var text = NumberText(Measure, DecimalsToShow);
         Text = (Radians) ? text + " rad" : text + "°";
         Arrange();
         base.UpdateVisual();

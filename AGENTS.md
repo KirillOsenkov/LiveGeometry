@@ -123,7 +123,8 @@ topic gets a file of its own, listed here.
 - `docs/app.md` - the Figure List, Save, Export, share links, the toolbar, settings between
   runs, the ribbon's look, the splash.
 - `docs/avalonia.md` - Avalonia and browser traps: trimming, inherited attributes, input and
-  touch, collections, infinite coordinates, layout at no size, render-pass freezes, fonts,
+  touch, collections, infinite coordinates, layout at no size, render-pass freezes, fonts
+  (and the math symbols' font),
   culture, files in the browser, focus and keyboard shortcuts, how every exception is shown
   and reported.
 - `docs/file-format.md` - the `.lgf` format: colors, versions, styles in files, reading a

@@ -141,6 +141,18 @@
   `FontManager.DefaultFontFamily` too - renders as Noto Mono in the browser. So `TextStyle` sets
   the font a drawing names (Arial, Segoe UI) only when it really resolves, and naming "Inter"
   in a drawing doesn't work (embedded, not installed).
+- **Math symbols come from a font of their own** (2026-10-28): Inter lacks ∠ ⊥ ∥ ≅ ∼ ∈ ∩ ∪ ⌒
+  and most of the Mathematical Operators, which the browser drew as boxes (the desktop
+  found them in the system's fonts). `MathFont.WithMathFont` (both heads, and
+  `tools/regression.cs`) registers `Main/Avalonia/Fonts/NotoSansMath.ttf`, an Avalonia
+  resource of LiveGeometry.App, as the collection `fonts:Math` and as the first of
+  `FontManagerOptions.FontFallbacks`: every text takes a character Inter lacks from it, on
+  every platform, before the system's fonts. The file is a 27 KB subset of Noto Sans Math
+  (OFL, `NotoSansMath.OFL.txt` beside it) made by `tools/mathfont.cs` from the unhinted
+  TTF of notofonts.github.io, leaving out what Inter has; to add characters, add them to
+  its list and run it again. The SVG export finds the font in `fonts:Math`
+  (`SvgTextOutlines`). The JavaScript player ships no font: a page's browser has system
+  fonts to fall back on.
 - **The app runs under the invariant culture** (`App.UseInvariantCulture`, first thing in
   both `Main`s; the Browser project also builds with `InvariantGlobalization`, so no ICU
   data is downloaded). Numbers use a point everywhere: the expression language, `.lgf` and

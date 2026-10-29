@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <!-- the math symbols Inter lacks, the font every text falls back on (MathFont) -->
+    <AvaloniaResource Include="..\Fonts\NotoSansMath.ttf" Link="Assets\Fonts\NotoSansMath.ttf" />
     <!-- read by GalleryItem.LoadText as LiveGeometry.Gallery.Drawings.<file> -->
     <EmbeddedResource Include="Gallery\Drawings\*.lgf" />
   </ItemGroup>

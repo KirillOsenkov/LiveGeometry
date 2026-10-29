@@ -26,7 +26,7 @@ class AreaMeasurement extends Measurement {
             return;
         }
 
-        this.setText(NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow)));
+        this.setText(NumberFormat.numberText(this.measure, this.decimalsToShow));
         super.updateVisual();
     }
 

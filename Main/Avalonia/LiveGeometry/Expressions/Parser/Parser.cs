@@ -157,7 +157,7 @@ public class Parser
     {
         return current > 0
             && tokens[current - 1].Kind == TokenType.NumericLiteral
-            && (Current.Kind == TokenType.Identifier || Current.Kind == TokenType.OpenParen);
+            && (Current.Kind == TokenType.Identifier || Current.Kind == TokenType.OpenParen || Current.Kind == TokenType.Angle);
     }
 
     private bool EOF => current >= length;
@@ -261,6 +261,8 @@ public class Parser
                 result = new Node(NodeType.AbsoluteValue, ParseExpression(0));
                 AdvanceToken(TokenType.Pipe);
                 break;
+            case TokenType.Angle:
+                return ParseAngle();
             default:
                 ReportError("Expected a number, a variable, a function or a parenthesized expression");
                 break;
@@ -281,6 +283,30 @@ public class Parser
             AddArgument(result, ParseExpression());
         }
         AdvanceToken(TokenType.CloseParen);
+        return result;
+    }
+
+    /// <summary>
+    /// ∠ABC: a call of angle (the sign is one of its names) with the three points' names run
+    /// together into one, as angle(ABC) is; ∠(A, B, C) is angle(A, B, C)
+    /// </summary>
+    private Node ParseAngle()
+    {
+        if (Next?.Kind == TokenType.OpenParen)
+        {
+            return ParseFunctionCall();
+        }
+
+        var result = new Node(NodeType.FunctionCall, Current);
+        AdvanceToken();
+        if (CurrentTokenKind != TokenType.Identifier)
+        {
+            ReportError("Expected the names of three points after ∠: ∠ABC");
+            return null;
+        }
+
+        AddArgument(result, Variable());
+        AdvanceToken();
         return result;
     }
 

@@ -21,6 +21,7 @@ const TokenType = {
     GreaterOrEqual: "GreaterOrEqual",
     Equal: "Equal",
     NotEqual: "NotEqual",
+    Angle: "Angle",
     Unknown: "Unknown"
 };
 

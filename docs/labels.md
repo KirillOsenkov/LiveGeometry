@@ -81,6 +81,12 @@ Default names, subscripts, labels that say numbers, wrapping, names of lines and
   undo, redo) recalculates what is built on it (`LabelBase.Text`); a file read or a
   re-binding doesn't come through the setter. Without it, a circle and a point on the
   label's value kept the old one until the next recalculation, and undo left them there.
+  **Decimals** (2026-10-28): a text's `[...]` parts show every decimal (9.00), and are
+  written out again when the row changes (it changed nothing until a figure moved). A
+  measurement, a Number, a slider and coordinates show them too, but a whole number whole
+  (56.30°, 90°, n = 5: `LabelBase.NumberText`, `NumberFormat.numberText` in the player);
+  with the zeros dropped, 56.30 showed as 56.3 at 2 decimals and at 1, and the row seemed
+  to do nothing.
 - **Wrapped text keeps an expression on one line** (`Figures/Controls/LineBreaks.cs`,
   2026-10-17): a label with a wrap width (a caption) shows each space next to a word that
   is all operators (`= ≠ ≈ < > ≤ ≥ + − - ± × · ÷ * /`) as a no-break space, so "AP = 8 − r"

@@ -37,7 +37,7 @@ class AngleMeasurementBase extends Measurement {
 
     updateVisual() {
         // the text first: where a number that places itself goes depends on its size
-        const text = NumberFormat.toString(GeometryMath.round(this.measure, this.decimalsToShow));
+        const text = NumberFormat.numberText(this.measure, this.decimalsToShow);
         this.setText(this.radians ? text + " rad" : text + "°");
         this.arrange();
         super.updateVisual();

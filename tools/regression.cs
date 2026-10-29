@@ -22,7 +22,7 @@ public class Program
     public static int Main()
     {
         App.UseInvariantCulture();
-        AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().SetupWithoutStarting();
+        AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().WithMathFont().SetupWithoutStarting();
         Settings.Instance.AutoLabelPoints = false;
         var tests = new (string Name, Action Run)[]
         {
@@ -63,6 +63,8 @@ public class Program
             ("GeoGebra constant slider stays a slider", GeoGebraConstantSlider),
             ("GeoGebra worksheet rejects unrelated XML", RejectUnrelatedWorksheet),
             ("A point renamed A' stays named in expressions", PrimeNames),
+            ("∠ABC follows renamed points; a caption shows its decimals and formula", AngleSignNames),
+            ("Math symbols Inter lacks come from the math font, also in an SVG", MathSymbolsFont),
             ("A square takes the side drawn already", SquareOnSegment),
             ("A square on a side running the other way keeps its side", SquareOnReversedSide),
             ("Squares grown into a lattice share their corners and sides", SquareLattice),
@@ -606,14 +608,16 @@ public class Program
             ("round(3.14159, 2)", 3.14), ("round(1234, -2)", 1200), ("gcd(12, 18, 8)", 2), ("lcm(4, 6)", 12), ("nthroot(-8, 3)", -2),
             ("if(AB > 4, 1, 2)", 1), ("if(AB = 5, 7, 0)", 7), ("if(AB == 5, 7)", 7), ("(1 < 2) + (2 <= 2) + (3 ≥ 4) + (1 != 1) + (1 ≠ 2)", 3),
             ("2AB", 10), ("2(3 + 4)", 14), ("3pi", 3 * pi), ("2 A.X + 1", 1), ("1/2B.X", 1.5), ("2B.X^2", 18), ("-2B.X", -6),
-            ("6 ÷ 2 × 3 − 1", 8), ("0.1 + 0.2 = 0.3", 1)
+            ("6 ÷ 2 × 3 − 1", 8), ("0.1 + 0.2 = 0.3", 1), ("∠ACB", 90), ("angle(ACB)", 90), ("angle(∠ACB)", 90),
+            ("∠(A, C, B)", 90), ("2∠ACB", 180), ("∠acb", 90), ("∠ACB°", pi / 2), ("directedangle(ACB)", 270), ("distance(AB)", 5)
         };
         var undefined = new[] { "clamp(5, 1, 0)", "sign(0 / 0)", "sqrt(-4)", "if(AB < 1, 3)", "log_10(-1)", "gcd(1.5, 3)", "mod(1, 0)", "0 / 0 < 1" };
         var wrong = new[]
         {
             "foo(1)", "A.Name", "A.X +", "distance(1, 2)", "unknown", "AB(", "max(1)", "A.Visible", "angle(A, B)",
             "sin(angle(A, C, B))", "cos(-direction(A, B))", "|A.X", "2 3", "log_2(1, 2)", "if(1)", "round(1, 2, 3)", "A!B",
-            "dist(A, B)", "ang(A, C, B)", "sqr(9)", "lg(100)", "BitIncrement(1)", "IEEERemainder(5, 3)", "distance(A°, B)"
+            "dist(A, B)", "ang(A, C, B)", "sqr(9)", "lg(100)", "BitIncrement(1)", "IEEERemainder(5, 3)", "distance(A°, B)",
+            "∠", "∠AB", "∠ABD", "∠`ACB`", "sin(∠ACB)", "angle(∠AB)", "∠1"
         };
         var functions = new (string Text, double X, double Expected)[]
         {
@@ -1617,6 +1621,74 @@ public class Program
             editor.TextBox.RaiseEvent(new KeyEventArgs { RoutedEvent = InputElement.KeyDownEvent, Key = Key.Enter });
             return string.IsNullOrEmpty(editor.ErrorText) ? null : editor.ErrorText;
         }
+    }
+
+    /// <summary>
+    /// ∠ACB, angle(ACB) and ∠(A, C, B) follow renamed points, run together while the new
+    /// names read back the same, apart otherwise. A number's caption shows its decimals,
+    /// zeros at the end included but a whole number whole, and its formula when asked.
+    /// </summary>
+    static void AngleSignNames()
+    {
+        var drawing = NewDrawing();
+        AddPoint(drawing, x: 0, y: 0);
+        AddPoint(drawing, x: 3, y: 4);
+        var c = AddPoint(drawing, x: 3, y: 0);
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "[∠ACB] [angle(ACB)] [∠(A, C, B)] [angle(∠ACB)]";
+        Set(drawing, c, nameof(IFigure.Name), value: "Q");
+        Require(label.Text == "[∠AQB] [angle(AQB)] [∠(A, Q, B)] [angle(∠AQB)]", "The label says " + label.Text);
+        Set(drawing, c, nameof(IFigure.Name), value: "my point");
+        Require(
+            label.Text == "[∠(A, `my point`, B)] [angle(A, `my point`, B)] [∠(A, `my point`, B)] [angle(∠(A, `my point`, B))]",
+            "The label says " + label.Text);
+        Require(label.ProcessedText == "90.00 90.00 90.00 90.00", "The label shows " + label.ProcessedText);
+        Set(drawing, label, nameof(LabelBase.DecimalsToShow), value: 3);
+        Require(label.ProcessedText == "90.000 90.000 90.000 90.000", "With 3 decimals the label shows " + label.ProcessedText);
+
+        Require(LabelBase.NumberText(56.2958, 2) == "56.30" && LabelBase.NumberText(56.2958, 1) == "56.3", "56.2958 with 2 and 1 decimals");
+        Require(LabelBase.NumberText(90, 2) == "90" && LabelBase.NumberText(89.999, 2) == "90", "A whole number with decimals");
+
+        var number = new Number() { Drawing = drawing };
+        number.SetFormula("∠(A, `my point`, B) / 7");
+        Actions.Add(drawing, number);
+        number.ShowFormula = true;
+        Require(number.CaptionText == number.Name + " = ∠(A, `my point`, B) / 7 = 12.86", "The number says " + number.CaptionText);
+        var copy = ReadLgf(drawing.SaveAsText()).Figures.OfType<Number>().Single();
+        Require(copy.ShowFormula && copy.CaptionText == number.CaptionText, "The number read back says " + copy.CaptionText);
+    }
+
+    /// <summary>
+    /// ∠ and ⊥, which Inter doesn't have, come from the math font the app embeds (MathFont),
+    /// before any font of the system: the browser has none. An SVG export outlines them too.
+    /// </summary>
+    static void MathSymbolsFont()
+    {
+        bool matched = Avalonia.Media.FontManager.Current.TryMatchCharacter(
+            '∠',
+            Avalonia.Media.FontStyle.Normal,
+            Avalonia.Media.FontWeight.Normal,
+            Avalonia.Media.FontStretch.Normal,
+            new Avalonia.Media.FontFamily("fonts:Inter#Inter"),
+            System.Globalization.CultureInfo.InvariantCulture,
+            out var typeface);
+        Require(matched && typeface.FontFamily.Name == "Noto Sans Math", "∠ falls back on " + typeface.FontFamily?.Name);
+
+        var drawing = NewDrawing();
+        using var window = new TestWindow(drawing.Canvas);
+        var label = Factory.CreateLabel(drawing);
+        Actions.Add(drawing, label);
+        label.Text = "∠ABC, AB ⊥ CD";
+        Dispatcher.UIThread.RunJobs();
+        var svg = ViewportImage.ToSvg(drawing.Canvas);
+        while (!svg.IsCompleted)
+        {
+            Dispatcher.UIThread.RunJobs();
+        }
+
+        var text = Encoding.UTF8.GetString(svg.Result);
+        Require(text.Contains("<path") && !text.Contains("<text"), "The SVG kept text: " + text);
     }
 
     static void VectorMidpoint()

@@ -319,6 +319,24 @@ public class ExpressionTreeBuilder
             return null;
         }
 
+        // ∠ABC, angle(ABC): the points in one name, run together as the two of a distance are (AB)
+        int joinedCount = JoinedPointCount(root);
+        if (joinedCount > 0)
+        {
+            Status.Classify(root.Token, ExpressionClass.Function);
+            return CreateJoinedPointsCallExpression(function, joinedCount, arguments[0].Token);
+        }
+
+        // angle(∠ABC) is ∠ABC
+        if (function.Name == "angle"
+            && arguments.Count == 1
+            && arguments[0] is { Kind: NodeType.FunctionCall } inner
+            && inner.Token.Kind == TokenType.Angle)
+        {
+            Status.Classify(root.Token, ExpressionClass.Function);
+            return CreateExpressionCore(inner);
+        }
+
         MethodInfo method = Binder.ResolveMethod(functionName, arguments.Count);
         if (method == null)
         {
@@ -449,6 +467,106 @@ public class ExpressionTreeBuilder
         return AsNumber(method.ReturnType, method.Name) ? new BoundPointCall(method, points) : null;
     }
 
+    /// <summary>
+    /// How many points a call names in its one argument, their names run together: 3 for
+    /// ∠ABC and angle(ABC), 2 for distance(AB). 0 for any other call (angle(A, B, C), sin(x),
+    /// a name in backticks, which is one figure's).
+    /// </summary>
+    public static int JoinedPointCount(Node call)
+    {
+        if (call.Kind != NodeType.FunctionCall
+            || call.Children.Count != 1
+            || call.Children[0] is not { Kind: NodeType.Variable } argument
+            || argument.Token == null
+            || argument.Token.IsQuoted)
+        {
+            return 0;
+        }
+
+        var function = FunctionCatalog.Find(call.Token.Text);
+        if (function == null || function.IsVariadic || function.ArgumentCount < 2)
+        {
+            return 0;
+        }
+
+        return ExpressionReflection.TakesPoints(function.Name, function.ArgumentCount) ? function.ArgumentCount : 0;
+    }
+
+    /// <summary>
+    /// The text read as the names of <paramref name="count"/> of the items run together, in
+    /// order (ABC: A, B and C): as written first, then in any case, as two points are read;
+    /// a longer name before a shorter one. Null when it doesn't read so.
+    /// </summary>
+    public static List<T> SplitNames<T>(string text, int count, IEnumerable<T> items, Func<T, string> nameOf)
+    {
+        var named = items
+            .Where(item => !string.IsNullOrEmpty(nameOf(item)))
+            .OrderByDescending(item => nameOf(item).Length)
+            .ToList();
+        foreach (var comparison in new[] { StringComparison.Ordinal, StringComparison.OrdinalIgnoreCase })
+        {
+            var found = new List<T>();
+            if (Split(0))
+            {
+                return found;
+            }
+
+            bool Split(int start)
+            {
+                if (found.Count == count)
+                {
+                    return start == text.Length;
+                }
+
+                foreach (var item in named)
+                {
+                    var name = nameOf(item);
+                    if (start + name.Length <= text.Length && string.Compare(text, start, name, 0, name.Length, comparison) == 0)
+                    {
+                        found.Add(item);
+                        if (Split(start + name.Length))
+                        {
+                            return true;
+                        }
+
+                        found.RemoveAt(found.Count - 1);
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>∠ABC, angle(ABC): a function of points called with their names run together into one</summary>
+    BoundExpression CreateJoinedPointsCallExpression(FunctionInfo function, int count, Token joined)
+    {
+        var names = SplitNames(joined.Text, count, Binder.PointNames, name => name);
+        if (names == null)
+        {
+            Status.AddError(string.Format("'{0}' is not the names of {1} points run together: {2}", joined.Text, count, function.Signature));
+            return null;
+        }
+
+        var points = new List<IPoint>();
+        foreach (var name in names)
+        {
+            var point = ResolvePoint(Binder.ResolveFigure(name), name);
+            if (point == null)
+            {
+                return null;
+            }
+
+            points.Add(point);
+        }
+
+        Status.Classify(joined, ExpressionClass.Figure);
+        var method = Binder.ResolveMethod(function.Name, count);
+        return AsNumber(method.ReturnType, method.Name) ? new BoundPointCall(method, points) : null;
+    }
+
     /// <summary>The figure a name stands for: in backticks, the one called exactly that</summary>
     IFigure ResolveFigure(Token token)
     {
@@ -457,8 +575,17 @@ public class ExpressionTreeBuilder
 
     IPoint ResolvePoint(Token token)
     {
-        string pointName = token.Text;
-        IFigure figure = ResolveFigure(token);
+        var point = ResolvePoint(ResolveFigure(token), token.Text);
+        if (point != null)
+        {
+            Status.Classify(token, ExpressionClass.Figure);
+        }
+
+        return point;
+    }
+
+    IPoint ResolvePoint(IFigure figure, string pointName)
+    {
         if (figure == null)
         {
             Status.AddUnknownIdentifierError(pointName);
@@ -478,7 +605,6 @@ public class ExpressionTreeBuilder
         }
 
         Status.Dependencies.Add(point);
-        Status.Classify(token, ExpressionClass.Figure);
         return point;
     }
 

@@ -77,7 +77,7 @@ public static class FunctionCatalog
         new("rad", "x", "An angle x in degrees, in radians, the same as x°: rad(180) is pi."),
         new("if", "condition, a, b", "a where the condition holds, else b: if(x < 0, -x, x). Without b, nothing where it doesn't."),
         new("distance", "A, B", "The distance between points A and B; AB says the same."),
-        new("angle", "A, B, C", "The angle ABC at B in degrees, the smaller one, as the Angle tool measures it."),
+        new("angle", "A, B, C", "The angle ABC at B in degrees, the smaller one, as the Angle tool measures it. ∠ABC and angle(ABC) say the same.", ["∠"]),
         new("directedangle", "A, B, C", "The angle ABC at B in degrees, counterclockwise from BA to BC: from 0 up to 360."),
         new("direction", "A, B", "The direction from A to B in degrees, counterclockwise from the x axis."),
         new("area", "A, B, C, ...", "The area of the polygon on these points.")

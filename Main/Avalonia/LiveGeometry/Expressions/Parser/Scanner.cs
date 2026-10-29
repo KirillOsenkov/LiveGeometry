@@ -56,6 +56,10 @@ public class Scanner
                 case '|':
                     AddToken(TokenType.Pipe);
                     break;
+                // ∠ABC, the angle at B, as in class
+                case '∠':
+                    AddToken(TokenType.Angle);
+                    break;
                 case '<':
                     if (NextChar() == '=')
                     {

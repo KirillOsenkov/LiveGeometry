@@ -121,6 +121,13 @@ public class ExpressionRenamer
                 RenameFigure(node.Children[0].Token, replacements);
                 return;
             case NodeType.FunctionCall:
+                int joinedCount = ExpressionTreeBuilder.JoinedPointCount(node);
+                if (joinedCount > 0)
+                {
+                    RenameJoinedPoints(node, joinedCount, replacements);
+                    return;
+                }
+
                 if (!ExpressionReflection.TakesPoints(node.Token.Text, node.Children.Count))
                 {
                     foreach (var argument in node.Children)
@@ -221,6 +228,40 @@ public class ExpressionRenamer
         }
 
         RenameFigure(token, replacements);
+    }
+
+    /// <summary>
+    /// ∠ABC, angle(ABC): the points in one name, the ones renamed given their new names. Where
+    /// the new names run together would read differently, or one needs backticks, the names
+    /// go apart: ∠(P, B, C), angle(P, B, C).
+    /// </summary>
+    void RenameJoinedPoints(Node call, int count, List<(int Start, int Length, string Text)> replacements)
+    {
+        var token = call.Children[0].Token;
+        var points = ExpressionTreeBuilder.SplitNames(token.Text, count, TopLevel.OfType<PointBase>().ToArray(), OldName);
+        if (points == null || !points.Any(IsRenamed))
+        {
+            return;
+        }
+
+        var texts = new List<string>();
+        int start = 0;
+        foreach (var point in points)
+        {
+            int length = OldName(point).Length;
+            texts.Add(IsRenamed(point) ? point.Name : token.Text.Substring(start, length));
+            start += length;
+        }
+
+        var joined = string.Concat(texts);
+        var check = ExpressionTreeBuilder.SplitNames(joined, count, TopLevel.OfType<PointBase>().ToArray(), figure => figure.Name);
+        if (check == null || !check.SequenceEqual(points) || !points.All(point => Scanner.IsName(point.Name)))
+        {
+            var apart = string.Join(", ", points.Select(point => Scanner.NameInExpression(point.Name)));
+            joined = call.Token.Kind == TokenType.Angle ? "(" + apart + ")" : apart;
+        }
+
+        replacements.Add((token.Start, token.Length, joined));
     }
 
     void RenameFigure(Token token, List<(int Start, int Length, string Text)> replacements)

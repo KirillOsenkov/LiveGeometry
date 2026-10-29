@@ -69,7 +69,7 @@ public class AreaMeasurement : Measurement
             return;
         }
 
-        Text = Math.Round(Measure, DecimalsToShow).ToString();
+        Text = NumberText(Measure, DecimalsToShow);
         base.UpdateVisual();
     }
 

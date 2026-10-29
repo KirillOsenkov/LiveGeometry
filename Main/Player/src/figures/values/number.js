@@ -12,6 +12,7 @@ class NumberFigure extends CompositeFigure {
         this.placed = false;
         this.positionValue = new Point();
         this.showName = true;
+        this.showFormula = false;
         this.expression = new DrawingExpression(this, "Formula", "");
         this.caption = new NumberCaption(this);
         this.caption.name = "number caption";
@@ -149,12 +150,16 @@ class NumberFigure extends CompositeFigure {
         this.caption.decimalsToShow = value;
     }
 
-    /** What the caption says: the name and the number, or "undefined" for a formula without a value right now */
+    /** What the caption says: the name, the formula (ShowFormula) and the number, or "undefined" for a formula without a value right now */
     get captionText() {
-        const number = isValidValue(this.valueField)
-            ? NumberFormat.toString(GeometryMath.round(this.valueField, this.decimals))
+        let text = isValidValue(this.valueField)
+            ? NumberFormat.numberText(this.valueField, this.decimals)
             : LabelBase.UndefinedText;
-        return this.showName ? NameDisplay.format(this.name) + " = " + number : number;
+        if (this.showFormula && !this.isTyped) {
+            text = this.expression.text + " = " + text;
+        }
+
+        return this.showName ? NameDisplay.format(this.name) + " = " + text : text;
     }
 
     /** The caption says the number anew, where it is on the paper; a hidden one waits until it shows */
@@ -268,6 +273,7 @@ class NumberFigure extends CompositeFigure {
         }
 
         this.showName = Xml.readBool(element, "ShowName", true);
+        this.showFormula = Xml.readBool(element, "ShowFormula", false);
         if (element.hasAttribute("X")) {
             this.position = new Point(Xml.readDouble(element, "X"), Xml.readDouble(element, "Y"));
         }

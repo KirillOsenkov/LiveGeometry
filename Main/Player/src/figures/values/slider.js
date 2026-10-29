@@ -290,7 +290,7 @@ class SliderCaption extends LabelWithOffset {
             return;
         }
 
-        this.setText(NameDisplay.format(this.slider.name) + " = " + NumberFormat.toString(GeometryMath.round(this.slider.value, this.decimalsToShow)));
+        this.setText(NameDisplay.format(this.slider.name) + " = " + NumberFormat.numberText(this.slider.value, this.decimalsToShow));
         const size = this.measureSize();
 
         // left-aligned with the anchor, and above the bigger of the two points

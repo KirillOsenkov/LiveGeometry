@@ -62,9 +62,10 @@ Lengths and directions set or fixed, Numbers, sliders, the typed or tied values 
   of the window; hidden, it is a variable of the Figure List. Typing a Value into a number
   with a formula makes it typed again (`ValueState` restores the formula on undo); a
   formula that doesn't compile makes the number not exist, one without a value right now
-  says "a = undefined". File: `<Number Name="a" Formula="d.ArcLength + f.ArcLength" X Y
-  Visible="true" ShowName="false" Decimals />`, `Value` instead of `Formula` for a typed
-  one. The player has the twin (`number.js`). `Auxiliary` (any figure) marks one
+  says "a = undefined". "Show formula" (2026-10-28, a row only while there is a formula)
+  puts the formula in the caption: "a = angle(A, B, C) = 27". File: `<Number Name="a"
+  Formula="d.ArcLength + f.ArcLength" X Y Visible="true" ShowName="false" ShowFormula="true"
+  Decimals />`, `Value` instead of `Formula` for a typed one. The player has the twin (`number.js`). `Auxiliary` (any figure) marks one
   created on demand for another: it is removed with its last dependent and comes back on undo.
   Every deletion goes through `RemoveFigureAction`, one figure per action inside a transaction,
   so undo restores labels and a polygon loses a vertex rather than dying.

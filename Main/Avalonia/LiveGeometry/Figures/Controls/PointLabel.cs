@@ -186,8 +186,8 @@ public class PointLabel : NameLabel
         if (ShowCoordinates)
         {
             var coordinates = Point(0);
-            var x = Math.Round(coordinates.X, DecimalsToShow);
-            var y = Math.Round(coordinates.Y, DecimalsToShow);
+            var x = NumberText(coordinates.X, DecimalsToShow);
+            var y = NumberText(coordinates.Y, DecimalsToShow);
             // as a textbook writes them (it was "(3;4)", the way of the countries that
             // write a decimal comma; numbers here have a point)
             var coordinatesText = string.Format("({0}, {1})", x, y);

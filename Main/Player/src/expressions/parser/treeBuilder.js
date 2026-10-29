@@ -234,6 +234,17 @@ class ExpressionTreeBuilder {
             return null;
         }
 
+        // ∠ABC, angle(ABC): the points in one name, run together as the two of a distance are (AB)
+        const joinedCount = ExpressionTreeBuilder.joinedPointCount(root);
+        if (joinedCount > 0) {
+            return this.createJoinedPointsCallExpression(function_, joinedCount, args[0].token);
+        }
+
+        // angle(∠ABC) is ∠ABC
+        if (function_.name === "angle" && args.length === 1 && args[0]?.kind === NodeType.FunctionCall && args[0].token.kind === TokenType.Angle) {
+            return this.createExpressionCore(args[0]);
+        }
+
         const method = this.binder.resolveMethod(functionName, args.length);
         if (method == null) {
             this.status.addIncorrectNumberOfArgumentsError(function_.name, args.length);
@@ -308,14 +319,88 @@ class ExpressionTreeBuilder {
         return new BoundPointCall(method, points);
     }
 
+    /**
+     * How many points a call names in its one argument, their names run together: 3 for ∠ABC
+     * and angle(ABC), 2 for distance(AB). 0 for any other call.
+     */
+    static joinedPointCount(call) {
+        const argument = call.children.length === 1 ? call.children[0] : null;
+        if (argument == null || argument.kind !== NodeType.Variable || argument.token == null || argument.token.isQuoted) {
+            return 0;
+        }
+
+        const function_ = FunctionCatalog.find(call.token.text);
+        const pointCount = function_ == null ? undefined : PointFunctionNames[function_.name[0].toUpperCase() + function_.name.substring(1)];
+        return pointCount >= 2 ? pointCount : 0;
+    }
+
+    /**
+     * The text read as the names of count points run together, in order (ABC: A, B and C):
+     * as written first, then in any case; a longer name before a shorter one. Null when it
+     * doesn't read so.
+     */
+    static splitNames(text, count, names) {
+        const sorted = names.filter(name => name != null && name !== "").sort((a, b) => b.length - a.length);
+        for (const ignoreCase of [false, true]) {
+            const found = [];
+            const same = (part, name) => ignoreCase ? part.toLowerCase() === name.toLowerCase() : part === name;
+            const split = start => {
+                if (found.length === count) {
+                    return start === text.length;
+                }
+
+                for (const name of sorted) {
+                    if (start + name.length <= text.length && same(text.substring(start, start + name.length), name)) {
+                        found.push(name);
+                        if (split(start + name.length)) {
+                            return true;
+                        }
+
+                        found.pop();
+                    }
+                }
+
+                return false;
+            };
+            if (split(0)) {
+                return found;
+            }
+        }
+
+        return null;
+    }
+
+    /** ∠ABC, angle(ABC): a function of points called with their names run together into one */
+    createJoinedPointsCallExpression(function_, count, joined) {
+        const names = ExpressionTreeBuilder.splitNames(joined.text, count, this.binder.pointNames);
+        if (names == null) {
+            this.status.addError("'" + joined.text + "' is not the names of " + count + " points run together");
+            return null;
+        }
+
+        const points = [];
+        for (const name of names) {
+            const point = this.resolvePointFigure(this.binder.resolveFigure(name), name);
+            if (point == null) {
+                return null;
+            }
+
+            points.push(point);
+        }
+
+        return new BoundPointCall(this.binder.resolveMethod(function_.name, count), points);
+    }
+
     /** The figure a name stands for: in backticks, the one called exactly that */
     resolveFigure(token) {
         return token.isQuoted ? this.binder.resolveFigureExactly(token.text) : this.binder.resolveFigure(token.text);
     }
 
     resolvePoint(token) {
-        const pointName = token.text;
-        const figure = this.resolveFigure(token);
+        return this.resolvePointFigure(this.resolveFigure(token), token.text);
+    }
+
+    resolvePointFigure(figure, pointName) {
         if (figure == null) {
             this.status.addUnknownIdentifierError(pointName);
             return null;

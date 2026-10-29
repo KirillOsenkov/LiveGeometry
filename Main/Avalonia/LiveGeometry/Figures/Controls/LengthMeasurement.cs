@@ -562,7 +562,7 @@ public class LengthMeasurement : Measurement, ILengthProvider, IConditionalPrope
             return;
         }
 
-        Text = Prefix + Math.Round(Length, DecimalsToShow).ToString();
+        Text = Prefix + NumberText(Length, DecimalsToShow);
         base.UpdateVisual();
     }
 

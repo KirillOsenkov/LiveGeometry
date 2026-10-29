@@ -208,8 +208,9 @@ public static class SvgTextOutlines
     /// <summary>The fonts of one document, each opened once</summary>
     class FontFaces : IDisposable
     {
-        // where Avalonia keeps the Inter it embeds (WithInterFont)
-        const string InterCollection = "fonts:Inter#";
+        // where Avalonia keeps the fonts the app embeds: Inter (WithInterFont) and the math
+        // symbols Inter lacks (MathFont)
+        static readonly string[] EmbeddedCollections = ["fonts:Inter#", "fonts:Math#"];
 
         readonly Dictionary<(string, int, bool), FontFace> faces = new Dictionary<(string, int, bool), FontFace>();
 
@@ -247,11 +248,21 @@ public static class SvgTextOutlines
             GlyphTypeface found = LiveGeometry.EmojiFont.Typeface;
             if (found == null || found.PlatformTypeface.FamilyName != family)
             {
-                var typeface = new Typeface(
-                    InterCollection + family,
-                    isItalic ? FontStyle.Italic : FontStyle.Normal,
-                    (FontWeight)weight);
-                if (!FontManager.Current.TryGetGlyphTypeface(typeface, out found) || found.PlatformTypeface.FamilyName != family)
+                found = null;
+                foreach (var collection in EmbeddedCollections)
+                {
+                    var typeface = new Typeface(
+                        collection + family,
+                        isItalic ? FontStyle.Italic : FontStyle.Normal,
+                        (FontWeight)weight);
+                    if (FontManager.Current.TryGetGlyphTypeface(typeface, out var embedded) && embedded.PlatformTypeface.FamilyName == family)
+                    {
+                        found = embedded;
+                        break;
+                    }
+                }
+
+                if (found == null)
                 {
                     return null;
                 }

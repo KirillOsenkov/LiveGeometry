@@ -51,7 +51,13 @@ The expression language: renames, cycles, the language itself, exact forms, bind
   `≤` `>` `>=` `≥` `=` `==` `≠` `!=` come last and give 1 or 0, numbers equal but for
   rounding being equal (`Math.TangencyTolerance`), for `if(condition, a, b)` -
   `if(condition, a)` has no value where it doesn't hold. `−`, `×`, `·`, `÷` are the
-  operators they look like. **The functions are a closed list** (2026-10-18:
+  operators they look like. **`∠ABC` is `angle(A, B, C)`** (2026-10-28): ∠ is another name
+  of angle (`∠(A, B, C)` too), and a function of a fixed number of points also takes their
+  names run together into one name, as AB is a distance: `angle(ABC)`,
+  `directedangle(ABC)`, `distance(AB)` (`ExpressionTreeBuilder.JoinedPointCount` and
+  `SplitNames`: names as written first, then in any case, a longer name before a shorter
+  one). `angle(∠ABC)` is ∠ABC. The renamer keeps the names run together while the new ones
+  read back the same, else writes them apart, `∠(P, B, C)`. **The functions are a closed list** (2026-10-18:
   `FunctionCatalog`, a method of `Functions` each, by name in any case and its other names;
   until then every method of System.Math with doubles compiled, BitIncrement and
   Log(a, newBase) too), named as the American classroom and Desmos name them: `log` is base
