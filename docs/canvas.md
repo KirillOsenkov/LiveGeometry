@@ -277,7 +277,16 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   Bezier curve changed while selected vanished when it was unselected. Selected figures used to be drawn 3 px thicker or bigger and polygons got a striped
   fill, which hid the very thickness, size and fill being edited in the side panel: a style
   must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false`.
-  Labels keep their own selection plate.
+  Labels keep their own selection plate. While a style of a selected figure is being
+  edited (a property of the style changed, `FigureBase.style_PropertyChanged`; a theme
+  refresh doesn't count) or another style is picked for it (the `FigureBase.Style`
+  setter), the halos are out of the way, so that the figure shows as it
+  will look (`SelectionHalo.HideWhileStyleEdited`, 2026-11-01): every layer at opacity 0,
+  and a label's own tint off too (`LabelBase.ShowsSelection`, told by
+  `HiddenForStyleEditChanged`). They come back `StyleEditHideTime` (2 s) after the last
+  edit (a `Throttle` with `FullIntervalAfterLastRequest`, posted back to the UI thread,
+  and not if an edit came after the wait it ends was started), or at once when a figure
+  is selected (`SelectionHalo.AddTo`). Undo of a style edit hides them the same way.
 - **A figure picked in the Figure List flashes** (`Figures/Shapes/SelectionFlash.cs`,
   2026-11-01): its row may be far from where it is on the canvas, and the halo alone was
   hard to find. A band along the figure twice as wide as the halo, in sharp black and white

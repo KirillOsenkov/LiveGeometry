@@ -74,7 +74,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         }
 
         this.Apply(TextBlock, Style);
-        selection.Background = Selected ? selectionBrush : null;
+        selection.Background = ShowsSelection ? selectionBrush : null;
         if (backdrop)
         {
             ApplyBackdrop();
@@ -123,9 +123,32 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
 
         // selected, the plate takes the tint of the selection, which it covers (a selected
         // caption looked like any other)
-        TextBlock.Background = paper != null && Selected
+        TextBlock.Background = paper != null && ShowsSelection
             ? new SolidColorBrush(Blend(paper.Color, SelectionColor))
             : paper;
+    }
+
+    /// <summary>Selected, and the selection not out of the way for a style edit (as the halos are, <see cref="SelectionHalo.HiddenForStyleEdit"/>)</summary>
+    bool ShowsSelection => Selected && !SelectionHalo.HiddenForStyleEdit;
+
+    public override void OnAddingToCanvas(Canvas newContainer)
+    {
+        base.OnAddingToCanvas(newContainer);
+        SelectionHalo.HiddenForStyleEditChanged += SelectionHalo_HiddenForStyleEditChanged;
+    }
+
+    public override void OnRemovingFromCanvas(Canvas leavingContainer)
+    {
+        SelectionHalo.HiddenForStyleEditChanged -= SelectionHalo_HiddenForStyleEditChanged;
+        base.OnRemovingFromCanvas(leavingContainer);
+    }
+
+    void SelectionHalo_HiddenForStyleEditChanged()
+    {
+        if (Selected)
+        {
+            ApplyStyle();
+        }
     }
 
     /// <summary>A color as it shows over the paper</summary>

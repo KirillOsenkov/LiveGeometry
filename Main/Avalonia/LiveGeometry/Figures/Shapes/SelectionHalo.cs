@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using Avalonia.Threading;
 using AvaloniaShapes = Avalonia.Controls.Shapes;
 
 namespace LiveGeometry;
@@ -75,6 +76,61 @@ public class SelectionHalo : Control
 
     /// <summary>The halos on screen, all drawn again when the brush changes</summary>
     static readonly HashSet<SelectionHalo> shown = new HashSet<SelectionHalo>();
+
+    /// <summary>How long after the last edit of a style the halos stay out of the way</summary>
+    public static TimeSpan StyleEditHideTime = TimeSpan.FromSeconds(2);
+
+    static bool hiddenForStyleEdit;
+    static DateTime lastStyleEditUtc;
+    static readonly object styleEditSubject = new object();
+
+    /// <summary>Whether the halos are out of the way while a style is being edited (<see cref="HideWhileStyleEdited"/>)</summary>
+    public static bool HiddenForStyleEdit => hiddenForStyleEdit;
+
+    /// <summary>The halos went out of the way, or came back: a label's own selection tint follows (<see cref="LabelBase"/>)</summary>
+    public static event Action HiddenForStyleEditChanged;
+
+    /// <summary>
+    /// A style of a selected figure was edited (a color, a width, a fill): the halos go out
+    /// of the way, so that the figure shows as it will look, and come back
+    /// <see cref="StyleEditHideTime"/> after the last edit (every edit meanwhile starts the
+    /// wait again). A new selection brings them back at once (<see cref="AddTo"/>).
+    /// </summary>
+    public static void HideWhileStyleEdited()
+    {
+        lastStyleEditUtc = DateTime.UtcNow;
+        SetHiddenForStyleEdit(true);
+        Throttle.Schedule(
+            styleEditSubject,
+            _ => Dispatcher.UIThread.Post(ShowAfterStyleEdit),
+            StyleEditHideTime,
+            ThrottleOptions.FullIntervalAfterLastRequest);
+    }
+
+    /// <summary>Unless an edit came after the wait that ends here was started: that edit's own wait brings them back</summary>
+    static void ShowAfterStyleEdit()
+    {
+        if (DateTime.UtcNow - lastStyleEditUtc >= StyleEditHideTime - TimeSpan.FromMilliseconds(50))
+        {
+            SetHiddenForStyleEdit(false);
+        }
+    }
+
+    static void SetHiddenForStyleEdit(bool hidden)
+    {
+        if (hiddenForStyleEdit == hidden)
+        {
+            return;
+        }
+
+        hiddenForStyleEdit = hidden;
+        foreach (var layer in shown.Select(halo => halo.Parent).OfType<Layer>().Distinct().ToList())
+        {
+            layer.Opacity = Layer.CurrentOpacity;
+        }
+
+        HiddenForStyleEditChanged?.Invoke();
+    }
 
     static SelectionHalo()
     {
@@ -222,9 +278,12 @@ public class SelectionHalo : Control
     {
         public static double LayerOpacity = 0.5;
 
+        /// <summary>The layer's opacity right now: none while a style is being edited</summary>
+        public static double CurrentOpacity => hiddenForStyleEdit ? 0 : LayerOpacity;
+
         public Layer()
         {
-            Opacity = LayerOpacity;
+            Opacity = CurrentOpacity;
             IsHitTestVisible = false;
             ZIndex = ZOrders.Default(ZOrder.SelectionHalos);
         }
@@ -242,9 +301,17 @@ public class SelectionHalo : Control
         }
     }
 
+    /// <summary>
+    /// A halo added is a figure just selected: halos out of the way for a style edit come
+    /// back. This layer's opacity is set here too: with no halo on it at the moment (the
+    /// figure before was unselected first) the change of state finds no layer to set.
+    /// </summary>
     public void AddTo(Canvas canvas)
     {
-        Layer.Get(canvas).Children.Add(this);
+        SetHiddenForStyleEdit(false);
+        var layer = Layer.Get(canvas);
+        layer.Opacity = Layer.CurrentOpacity;
+        layer.Children.Add(this);
     }
 
     public void Remove()

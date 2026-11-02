@@ -1025,6 +1025,14 @@ public abstract partial class FigureBase :
             {
                 style.PropertyChanged += style_PropertyChanged;
             }
+
+            // another style picked for a selected figure: the selection out of the way,
+            // to see the style as it will look (as for an edit of the style)
+            if (Selected)
+            {
+                SelectionHalo.HideWhileStyleEdited();
+            }
+
             ApplyStyle();
         }
     }
@@ -1079,6 +1087,12 @@ public abstract partial class FigureBase :
         if (Drawing != null && Drawing.IsRefreshingTheme)
         {
             return;
+        }
+
+        // the selection out of the way, to see the style as it will look
+        if (Selected)
+        {
+            SelectionHalo.HideWhileStyleEdited();
         }
 
         ApplyStyle();
