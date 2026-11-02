@@ -20,7 +20,10 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   X and Y of points by coordinates and the parts of a circle's equation (expression rows,
   left out by type in `CompositePropertyProvider`, since the row is the expression and
   carries no attributes), a function, a label's text, a line's equation
-  (`[PropertyGridDisallowMultiEdit]`, as Name has). One text made every selected figure
+  (`[PropertyGridDisallowMultiEdit]`, as Name has), and from 2026-11-01 a length, a
+  radius and a direction (left out by the type of their value, `LengthPropertyValue` and
+  `DirectionPropertyValue`: two segments selected showed empty Length and Direction
+  boxes, and a value typed there stretched or turned each). One text made every selected figure
   the same, and each needs its own checks; the X row threw, the function row saved
   "sin(" into both graphs. How figures look, Visible, Locked, Z and Delete stay.
 - **The order of a page is declared** (2026-10-18; `PropertyGridSectionAttribute`): every row
