@@ -278,3 +278,21 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   fill, which hid the very thickness, size and fill being edited in the side panel: a style
   must not depend on `Selected`. A part never drawn says `ShowsSelectionHalo = false`.
   Labels keep their own selection plate.
+- **A figure picked in the Figure List flashes** (`Figures/Shapes/SelectionFlash.cs`,
+  2026-11-01): its row may be far from where it is on the canvas, and the halo alone was
+  hard to find. A band along the figure twice as wide as the halo, in sharp black and white
+  stripes (`BandWidth`, `PointBandWidth`, `StripeWidth`; contrast with any figure color and
+  any paper, in both themes, so no theme entry), faded out from the click on over `Fade`
+  (700 ms; a hold of 300 ms before the fade was tried first and dropped) by a `Glide` (`UI/Glide.cs`, the timer the side panel's reveal glides by
+  too, moved out of it) while the halo stays. In its own layer over every figure and point
+  (`SelectionFlash.Layer`, `ZOrder.SelectionFlash`): the halo is under them, and a filled
+  shape over the figure hides it, which is the very case where the figure is hard to find.
+  The band is clear of the figure's own stroke and fill: the outline widened by the band
+  on each side of the stroke (`GetWidenedGeometry`), less the stroke and the fill
+  (`CombinedGeometry` Exclude), made again only when the geometry or the thickness changed
+  and redrawn every tick (the shapes move while the view glides). A shape without a
+  geometry (a character point, a label, a box) gets a ring or a rounded frame around its
+  box. Started by `FigureExplorer.Select` only (a figure picked on the canvas is under the
+  cursor); one at a time, a new one finishes the one before. Once the row is picked, a figure
+  none of which is on the screen is also brought onto it: see "Where it goes" in
+  `docs/property-grid.md`.

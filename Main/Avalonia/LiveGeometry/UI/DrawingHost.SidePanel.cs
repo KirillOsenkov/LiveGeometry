@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -202,6 +201,14 @@ public partial class DrawingHost
             }
         }
 
+        // What was picked in the Figure List may be off the screen altogether: the view
+        // moves to put it in the middle of the room beside the panel first, and the rest
+        // is judged from there. What shows even in part stays where it is.
+        var centering = plane != null && reveal
+            ? FindCenteringMove(plane.Value, PanelRect(defaultSide, size, canvasSize), canvasSize)
+            : default(Avalonia.Vector);
+        plane = plane?.Translate(centering);
+
         double Covered(PanelSide candidate, Rect? bounds) => bounds == null ? 0 : Area(PanelRect(candidate, size, canvasSize).Intersect(bounds.Value));
 
         // the text pinned to the screen, which the view can't move out from under (a caption
@@ -231,12 +238,35 @@ public partial class DrawingHost
         ApplySide(side, stacked);
         if (plane != null && reveal)
         {
-            var move = FindRevealMove(plane.Value, PanelRect(side, size, canvasSize), canvasSize, obstacles);
-            if (move != null && move.Value != default)
+            var move = FindRevealMove(plane.Value, PanelRect(side, size, canvasSize), canvasSize, obstacles) ?? default;
+            if (move != default || centering != default)
             {
-                RevealInPlane(move.Value);
+                RevealInPlane(move, centering);
             }
         }
+    }
+
+    /// <summary>
+    /// The move of the view that puts what was picked in the middle of the room the panel
+    /// leaves, when none of it is on the screen (picked in the Figure List); zero when any
+    /// of it shows
+    /// </summary>
+    static Avalonia.Vector FindCenteringMove(Rect bounds, Rect panel, Size canvas)
+    {
+        if (bounds.Intersects(new Rect(canvas)))
+        {
+            return default;
+        }
+
+        // the widest strip the panel leaves: beside it, or above or below it
+        var room = new[]
+        {
+            new Rect(0, 0, System.Math.Max(0, panel.Left), canvas.Height),
+            new Rect(panel.Right, 0, System.Math.Max(0, canvas.Width - panel.Right), canvas.Height),
+            new Rect(0, 0, canvas.Width, System.Math.Max(0, panel.Top)),
+            new Rect(0, panel.Bottom, canvas.Width, System.Math.Max(0, canvas.Height - panel.Bottom))
+        }.OrderByDescending(Area).First();
+        return room.Center - bounds.Center;
     }
 
     /// <summary>Text pinned to the screen, which stays put while the view moves</summary>
@@ -315,12 +345,14 @@ public partial class DrawingHost
     }
 
     /// <summary>
-    /// Moves the view to bring what was picked out from under the panel (gliding there). Not
-    /// an undo step: the app moved the view to show what was picked, as a fit to a resized
-    /// window does, and undo after a click would first undo a move the user never made. (A
-    /// view's move in the history is an offset, so one left out of it upsets nothing.)
+    /// Moves the view to bring what was picked out from under the panel (gliding there), after
+    /// the move that brings it onto the screen at all, if it was off it. Not an undo step: the
+    /// app moved the view to show what was picked, as a fit to a resized window does, and undo
+    /// after a click would first undo a move the user never made. (A view's move in the
+    /// history is an offset, so one left out of it upsets nothing.) Only the first part goes
+    /// back when the panel goes: what was brought onto the screen stays on it.
     /// </summary>
-    void RevealInPlane(Avalonia.Vector move)
+    void RevealInPlane(Avalonia.Vector move, Avalonia.Vector centering)
     {
         var coordinateSystem = CurrentDrawing.CoordinateSystem;
         viewGlide?.Finish();
@@ -330,7 +362,7 @@ public partial class DrawingHost
         }
 
         revealedBy += move;
-        MoveViewSmoothly(move, () =>
+        MoveViewSmoothly(centering + move, () =>
         {
             viewAfterReveal = coordinateSystem.Origin;
             zoomAfterReveal = coordinateSystem.UnitLength;
@@ -366,63 +398,19 @@ public partial class DrawingHost
         var drawing = CurrentDrawing;
         var coordinateSystem = drawing.CoordinateSystem;
         var start = coordinateSystem.Origin;
-        viewGlide = new Glide(progress =>
+        viewGlide = new Glide(Glide.ViewDuration, t =>
         {
             if (drawing != CurrentDrawing)
             {
                 return;
             }
 
-            coordinateSystem.MoveTo(coordinateSystem.ToLogical(start + move * progress));
-            if (progress >= 1)
+            coordinateSystem.MoveTo(coordinateSystem.ToLogical(start + move * Glide.EaseOut(t)));
+            if (t >= 1)
             {
                 done?.Invoke();
             }
         });
-    }
-
-    /// <summary>A short eased movement: the step is told how far along it is, from 0 to 1</summary>
-    class Glide
-    {
-        static readonly TimeSpan duration = TimeSpan.FromMilliseconds(220);
-
-        readonly Action<double> step;
-        readonly Stopwatch watch = Stopwatch.StartNew();
-        DispatcherTimer timer;
-
-        public Glide(Action<double> step)
-        {
-            this.step = step;
-            timer = new DispatcherTimer(TimeSpan.FromMilliseconds(15), DispatcherPriority.Render, (s, e) => Tick());
-            timer.Start();
-            Tick();
-        }
-
-        void Tick()
-        {
-            double t = System.Math.Min(1, watch.Elapsed.TotalMilliseconds / duration.TotalMilliseconds);
-            if (t >= 1)
-            {
-                Finish();
-                return;
-            }
-
-            // ease out: quick at first, settling at the end
-            step(1 - System.Math.Pow(1 - t, 3));
-        }
-
-        /// <summary>To the end at once</summary>
-        public void Finish()
-        {
-            if (timer == null)
-            {
-                return;
-            }
-
-            timer.Stop();
-            timer = null;
-            step(1);
-        }
     }
 
     #endregion

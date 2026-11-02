@@ -398,6 +398,12 @@ public class FigureExplorer : Border
         lastSelection = SelectedFigures();
         UpdateLook();
         ScrollIntoView(figure);
+
+        // where it is on the canvas, which may be far from the row
+        if (figure.Selected)
+        {
+            SelectionFlash.Show(figure);
+        }
     }
 
     /// <summary>Without raising SelectionChanged: the new selection is raised once, whole</summary>

@@ -105,7 +105,14 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   shows it whole, `RevealGap` from the panel, clear of text pinned to the screen. Not an
   undo step (the app's move, as a fit after a resize; the history keeps a view's moves as
   offsets, so one left out upsets nothing), and the view goes back when the panel goes,
-  unless something moved it since. What the view can't move - a caption, any label pinned to
+  unless something moved it since. A figure none of which is on the screen (picked in the
+  Figure List; 2026-11-01) is first put in the middle of the widest strip the panel leaves
+  (`FindCenteringMove`, at the same zoom; a figure that shows even in part stays where it
+  is), and the reveal is judged from there; one glide does both, and only the reveal's
+  part goes back when the panel goes. A hidden figure shows ghosted while selected, and
+  `SelectionRegion.FindShownBounds` counts it (it refused every hidden figure before). A
+  line or a graph has no bounds and is not brought on; a figure larger than the strip is
+  centered, not zoomed out to. What the view can't move - a caption, any label pinned to
   the screen - or what has no room to go to, gets the panel on the other side for that page
   (on a phone the bottom half); right after the button the panel stays where the user
   put it. The panel is placed once the page has settled (posted at Background, unseen

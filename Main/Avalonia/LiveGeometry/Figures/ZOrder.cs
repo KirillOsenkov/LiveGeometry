@@ -38,6 +38,9 @@ public enum ZOrder : int
     /// <summary>Points dragged anywhere</summary>
     FreePoints = 64,
 
+    /// <summary>Over every figure and point: the flash of a figure picked in the Figure List, over whatever covers the figure</summary>
+    SelectionFlash = 66,
+
     PointLabels = 70,
     Controls = 80,
 

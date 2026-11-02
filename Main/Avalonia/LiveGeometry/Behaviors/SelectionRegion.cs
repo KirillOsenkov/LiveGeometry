@@ -289,11 +289,12 @@ public class SelectionRegion
 
     /// <summary>
     /// Where the figure is drawn on the canvas, in pixels, the stroke included; null for one
-    /// not drawn, or one that goes on past the window (a line has no place to be shown whole)
+    /// not drawn (hidden, unless it is shown ghosted while selected), or one that goes on past
+    /// the window (a line has no place to be shown whole)
     /// </summary>
     public static Rect? FindShownBounds(IFigure figure, Canvas canvas)
     {
-        if (IsEndless(figure) || !figure.Visible || !figure.Exists)
+        if (IsEndless(figure) || !figure.Exists)
         {
             return null;
         }
@@ -412,7 +413,7 @@ public class SelectionRegion
         return IsEmpty(clipped.Bounds) ? null : clipped;
     }
 
-    static bool IsPainted(IBrush brush)
+    public static bool IsPainted(IBrush brush)
     {
         return brush != null
             && brush.Opacity > 0
