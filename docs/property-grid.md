@@ -120,8 +120,10 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   `Dragger.MouseRightClick`): fixed sections in a fixed order, a separator only between two
   that have items (`ContextMenus.Section`). A figure: Choose figure (where figures overlap),
   Show (check items), Verbs, Arrange (Bring to front, Send to back), State (Hide, Lock),
-  Edit (Copy, then Delete, always last). The paper: Zoom to fit, Axes, Grid lines; Paste,
-  Select all; Background…. Show and Verbs are the property grid's own rows and buttons
+  Edit (Copy, then Delete, always last). The paper: Zoom to fit, Axes, Grid lines, Toggle
+  point names (every visible point's Show name at once, one undo step: on when none of
+  them shows its name, off otherwise; not offered without a point); Paste, Select all;
+  Background…. Show and Verbs are the property grid's own rows and buttons
   marked `[ContextMenu]`, found and vetoed as the grid finds them
   (`PropertyGrid.GetCallableMethods`, the discovery strategy, `IConditionalProperties`,
   `[PropertyGridCondition]`) with the grid's captions and icons, so a verb never needs

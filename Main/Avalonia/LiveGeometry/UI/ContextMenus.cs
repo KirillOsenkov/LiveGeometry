@@ -139,6 +139,7 @@ public class ContextMenus
             menu.Add(Section.View, item);
         }
 
+        menu.AddTogglePointNames();
         menu.Add(Section.Edit, "Paste", drawing.Paste, gesture: Command(Key.V));
         menu.Add(Section.Edit, "Select all", () =>
         {
@@ -166,6 +167,33 @@ public class ContextMenus
     {
         grid.SetShown(axes, lines);
         CommandToolButton.UpdateToggles();
+    }
+
+    /// <summary>
+    /// The names of all the points on the paper at once: shown when none of the visible
+    /// points shows its name, hidden otherwise, one undo step; not offered without a point
+    /// </summary>
+    void AddTogglePointNames()
+    {
+        var points = drawing.Figures.OfType<PointBase>()
+            .Where(point => point.Visible && point.IsHitTestVisible)
+            .ToList();
+        if (points.Count == 0)
+        {
+            return;
+        }
+
+        bool show = points.All(point => !point.ShowName);
+        Add(Section.View, "Toggle point names", () =>
+        {
+            using (Transaction.Create(drawing.ActionManager, false))
+            {
+                foreach (var point in points.Where(point => point.ShowName != show))
+                {
+                    SetProperty(point, nameof(PointBase.ShowName), show);
+                }
+            }
+        });
     }
 
     #endregion

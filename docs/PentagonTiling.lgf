@@ -1,0 +1,1556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-20.7108050847" Top="8.6376303781" Right="20.9058833116" Bottom="-8.6593057366" />
+  <Styles />
+  <Figures>
+    <FreePoint Name="A" X="-3.8257007823" Y="1.246333116" />
+    <FreePoint Name="B" X="-2.7527705345" Y="1.0620925684" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Circle Name="c" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <PerpendicularLine Name="g" Visible="false" RightAngleCorner="0">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectEllipseAndLine1">
+      <Dependency Name="c" />
+      <Dependency Name="g" />
+    </IntersectionPoint>
+    <MidPoint Name="D" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <Circle Name="d" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="E" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="g" />
+      <Dependency Name="d" />
+    </IntersectionPoint>
+    <Circle Name="f" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </Circle>
+    <IntersectionPoint Name="F" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="c" />
+      <Dependency Name="f" />
+    </IntersectionPoint>
+    <Circle Name="h" Visible="false">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="G" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="f" />
+    </IntersectionPoint>
+    <Circle Name="k" Visible="false">
+      <Dependency Name="G" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="H" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="c" />
+      <Dependency Name="h" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <Polygon Name="BFHIG">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+    </Polygon>
+    <Segment Name="BF">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="FH">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="HI">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="GI">
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="BG">
+      <Dependency Name="G" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointByCoordinates Name="J" X="-0.309016994374947 * B.X + 0.951056516295154 * B.Y + 1.30901699437495 * G.X - 0.951056516295154 * G.Y" Y="-0.951056516295154 * B.X - 0.309016994374947 * B.Y + 0.951056516295154 * G.X + 1.30901699437495 * G.Y">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K" X="0.5 * B.X + 1.53884176858763 * B.Y + 0.5 * G.X - 1.53884176858763 * G.Y" Y="-1.53884176858763 * B.X + 0.5 * B.Y + 1.53884176858763 * G.X + 0.5 * G.Y">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" X="1.30901699437495 * B.X + 0.951056516295154 * B.Y - 0.309016994374947 * G.X - 0.951056516295154 * G.Y" Y="-0.951056516295154 * B.X + 1.30901699437495 * B.Y + 0.951056516295154 * G.X - 0.309016994374947 * G.Y">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <Segment Name="GJ">
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="JK">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="KL">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="BL">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </Segment>
+    <Polygon Name="BGJKL">
+      <Dependency Name="B" />
+      <Dependency Name="G" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </Polygon>
+    <PointByCoordinates Name="M" X="-0.309016994374947 * G.X + 0.951056516295154 * G.Y + 1.30901699437495 * I.X - 0.951056516295154 * I.Y" Y="-0.951056516295154 * G.X - 0.309016994374947 * G.Y + 0.951056516295154 * I.X + 1.30901699437495 * I.Y">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N" X="0.5 * G.X + 1.53884176858763 * G.Y + 0.5 * I.X - 1.53884176858763 * I.Y" Y="-1.53884176858763 * G.X + 0.5 * G.Y + 1.53884176858763 * I.X + 0.5 * I.Y">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O" X="1.30901699437495 * G.X + 0.951056516295154 * G.Y - 0.309016994374947 * I.X - 0.951056516295154 * I.Y" Y="-0.951056516295154 * G.X + 1.30901699437495 * G.Y + 0.951056516295154 * I.X - 0.309016994374947 * I.Y">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <Segment Name="IM">
+      <Dependency Name="I" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="MN">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </Segment>
+    <Segment Name="NO">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="GO">
+      <Dependency Name="O" />
+      <Dependency Name="G" />
+    </Segment>
+    <Polygon Name="GIMNO">
+      <Dependency Name="G" />
+      <Dependency Name="I" />
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </Polygon>
+    <PointByCoordinates Name="P" X="1.30901699437495 * H.X - 0.951056516295154 * H.Y - 0.309016994374947 * I.X + 0.951056516295154 * I.Y" Y="0.951056516295154 * H.X + 1.30901699437495 * H.Y - 0.951056516295154 * I.X - 0.309016994374947 * I.Y">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" X="0.5 * H.X - 1.53884176858763 * H.Y + 0.5 * I.X + 1.53884176858763 * I.Y" Y="1.53884176858763 * H.X + 0.5 * H.Y - 1.53884176858763 * I.X + 0.5 * I.Y">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R" X="-0.309016994374947 * H.X - 0.951056516295154 * H.Y + 1.30901699437495 * I.X + 0.951056516295154 * I.Y" Y="0.951056516295154 * H.X - 0.309016994374947 * H.Y - 0.951056516295154 * I.X + 1.30901699437495 * I.Y">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </PointByCoordinates>
+    <Segment Name="HP">
+      <Dependency Name="H" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="PQ">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="QR">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="IR">
+      <Dependency Name="R" />
+      <Dependency Name="I" />
+    </Segment>
+    <Polygon Name="HIRQP">
+      <Dependency Name="I" />
+      <Dependency Name="H" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </Polygon>
+    <PointByCoordinates Name="S" X="1.30901699437495 * F.X - 0.951056516295154 * F.Y - 0.309016994374947 * H.X + 0.951056516295154 * H.Y" Y="0.951056516295154 * F.X + 1.30901699437495 * F.Y - 0.951056516295154 * H.X - 0.309016994374947 * H.Y">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T" X="0.5 * F.X - 1.53884176858763 * F.Y + 0.5 * H.X + 1.53884176858763 * H.Y" Y="1.53884176858763 * F.X + 0.5 * F.Y - 1.53884176858763 * H.X + 0.5 * H.Y">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U" X="-0.309016994374947 * F.X - 0.951056516295154 * F.Y + 1.30901699437495 * H.X + 0.951056516295154 * H.Y" Y="0.951056516295154 * F.X - 0.309016994374947 * F.Y - 0.951056516295154 * H.X + 1.30901699437495 * H.Y">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Segment Name="FS">
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="ST">
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="TU">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Segment>
+    <Segment Name="HU">
+      <Dependency Name="U" />
+      <Dependency Name="H" />
+    </Segment>
+    <Polygon Name="FHUTS">
+      <Dependency Name="H" />
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Polygon>
+    <PointByCoordinates Name="V" X="1.30901699437495 * B.X - 0.951056516295154 * B.Y - 0.309016994374947 * F.X + 0.951056516295154 * F.Y" Y="0.951056516295154 * B.X + 1.30901699437495 * B.Y - 0.951056516295154 * F.X - 0.309016994374947 * F.Y">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W" X="0.5 * B.X - 1.53884176858763 * B.Y + 0.5 * F.X + 1.53884176858763 * F.Y" Y="1.53884176858763 * B.X + 0.5 * B.Y - 1.53884176858763 * F.X + 0.5 * F.Y">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X" X="-0.309016994374947 * B.X - 0.951056516295154 * B.Y + 1.30901699437495 * F.X + 0.951056516295154 * F.Y" Y="0.951056516295154 * B.X - 0.309016994374947 * B.Y - 0.951056516295154 * F.X + 1.30901699437495 * F.Y">
+      <Dependency Name="B" />
+      <Dependency Name="F" />
+    </PointByCoordinates>
+    <Segment Name="BV">
+      <Dependency Name="B" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="VW">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="WX">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="FX">
+      <Dependency Name="X" />
+      <Dependency Name="F" />
+    </Segment>
+    <Polygon Name="BFXWV">
+      <Dependency Name="F" />
+      <Dependency Name="B" />
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </Polygon>
+    <PointByCoordinates Name="Y" X="1.30901699437495 * J.X - 0.951056516295154 * J.Y - 0.309016994374947 * K.X + 0.951056516295154 * K.Y" Y="0.951056516295154 * J.X + 1.30901699437495 * J.Y - 0.951056516295154 * K.X - 0.309016994374947 * K.Y">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z" X="0.5 * J.X - 1.53884176858763 * J.Y + 0.5 * K.X + 1.53884176858763 * K.Y" Y="1.53884176858763 * J.X + 0.5 * J.Y - 1.53884176858763 * K.X + 0.5 * K.Y">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A1" X="-0.309016994374947 * J.X - 0.951056516295154 * J.Y + 1.30901699437495 * K.X + 0.951056516295154 * K.Y" Y="0.951056516295154 * J.X - 0.309016994374947 * J.Y - 0.951056516295154 * K.X + 1.30901699437495 * K.Y">
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+    </PointByCoordinates>
+    <Segment Name="JY">
+      <Dependency Name="J" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="YZ">
+      <Dependency Name="Y" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="ZA1">
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Segment>
+    <Segment Name="KA1">
+      <Dependency Name="A1" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="JKA1ZY">
+      <Dependency Name="K" />
+      <Dependency Name="J" />
+      <Dependency Name="Y" />
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Polygon>
+    <PointByCoordinates Name="B1" X="1.30901699437495 * N.X - 0.951056516295154 * N.Y - 0.309016994374947 * O.X + 0.951056516295154 * O.Y" Y="0.951056516295154 * N.X + 1.30901699437495 * N.Y - 0.951056516295154 * O.X - 0.309016994374947 * O.Y">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C1" X="0.5 * N.X - 1.53884176858763 * N.Y + 0.5 * O.X + 1.53884176858763 * O.Y" Y="1.53884176858763 * N.X + 0.5 * N.Y - 1.53884176858763 * O.X + 0.5 * O.Y">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D1" X="-0.309016994374947 * N.X - 0.951056516295154 * N.Y + 1.30901699437495 * O.X + 0.951056516295154 * O.Y" Y="0.951056516295154 * N.X - 0.309016994374947 * N.Y - 0.951056516295154 * O.X + 1.30901699437495 * O.Y">
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <Segment Name="NB1">
+      <Dependency Name="N" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="B1C1">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </Segment>
+    <Segment Name="C1D1">
+      <Dependency Name="C1" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="OD1">
+      <Dependency Name="D1" />
+      <Dependency Name="O" />
+    </Segment>
+    <Polygon Name="NOD1C1B1">
+      <Dependency Name="O" />
+      <Dependency Name="N" />
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+      <Dependency Name="D1" />
+    </Polygon>
+    <PointByCoordinates Name="E1" X="1.30901699437495 * M.X - 0.951056516295154 * M.Y - 0.309016994374947 * N.X + 0.951056516295154 * N.Y" Y="0.951056516295154 * M.X + 1.30901699437495 * M.Y - 0.951056516295154 * N.X - 0.309016994374947 * N.Y">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F1" X="0.5 * M.X - 1.53884176858763 * M.Y + 0.5 * N.X + 1.53884176858763 * N.Y" Y="1.53884176858763 * M.X + 0.5 * M.Y - 1.53884176858763 * N.X + 0.5 * N.Y">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G1" X="-0.309016994374947 * M.X - 0.951056516295154 * M.Y + 1.30901699437495 * N.X + 0.951056516295154 * N.Y" Y="0.951056516295154 * M.X - 0.309016994374947 * M.Y - 0.951056516295154 * N.X + 1.30901699437495 * N.Y">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </PointByCoordinates>
+    <Segment Name="ME1">
+      <Dependency Name="M" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Segment Name="E1F1">
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Segment Name="F1G1">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Segment Name="NG1">
+      <Dependency Name="G1" />
+      <Dependency Name="N" />
+    </Segment>
+    <Polygon Name="MNG1F1E1">
+      <Dependency Name="N" />
+      <Dependency Name="M" />
+      <Dependency Name="E1" />
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </Polygon>
+    <PointByCoordinates Name="H1" X="1.30901699437495 * K.X - 0.951056516295154 * K.Y - 0.309016994374947 * L.X + 0.951056516295154 * L.Y" Y="0.951056516295154 * K.X + 1.30901699437495 * K.Y - 0.951056516295154 * L.X - 0.309016994374947 * L.Y">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I1" X="0.5 * K.X - 1.53884176858763 * K.Y + 0.5 * L.X + 1.53884176858763 * L.Y" Y="1.53884176858763 * K.X + 0.5 * K.Y - 1.53884176858763 * L.X + 0.5 * L.Y">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J1" X="-0.309016994374947 * K.X - 0.951056516295154 * K.Y + 1.30901699437495 * L.X + 0.951056516295154 * L.Y" Y="0.951056516295154 * K.X - 0.309016994374947 * K.Y - 0.951056516295154 * L.X + 1.30901699437495 * L.Y">
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+    </PointByCoordinates>
+    <Segment Name="KH1">
+      <Dependency Name="K" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Segment Name="H1I1">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </Segment>
+    <Segment Name="I1J1">
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="LJ1">
+      <Dependency Name="J1" />
+      <Dependency Name="L" />
+    </Segment>
+    <Polygon Name="KLJ1I1H1">
+      <Dependency Name="L" />
+      <Dependency Name="K" />
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </Polygon>
+    <PointByCoordinates Name="K1" X="1.30901699437495 * V.X - 0.951056516295154 * V.Y - 0.309016994374947 * W.X + 0.951056516295154 * W.Y" Y="0.951056516295154 * V.X + 1.30901699437495 * V.Y - 0.951056516295154 * W.X - 0.309016994374947 * W.Y">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L1" X="0.5 * V.X - 1.53884176858763 * V.Y + 0.5 * W.X + 1.53884176858763 * W.Y" Y="1.53884176858763 * V.X + 0.5 * V.Y - 1.53884176858763 * W.X + 0.5 * W.Y">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M1" X="-0.309016994374947 * V.X - 0.951056516295154 * V.Y + 1.30901699437495 * W.X + 0.951056516295154 * W.Y" Y="0.951056516295154 * V.X - 0.309016994374947 * V.Y - 0.951056516295154 * W.X + 1.30901699437495 * W.Y">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </PointByCoordinates>
+    <Segment Name="VK1">
+      <Dependency Name="V" />
+      <Dependency Name="K1" />
+    </Segment>
+    <Segment Name="K1L1">
+      <Dependency Name="K1" />
+      <Dependency Name="L1" />
+    </Segment>
+    <Segment Name="L1M1">
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+    </Segment>
+    <Segment Name="WM1">
+      <Dependency Name="M1" />
+      <Dependency Name="W" />
+    </Segment>
+    <Polygon Name="VWM1L1K1">
+      <Dependency Name="W" />
+      <Dependency Name="V" />
+      <Dependency Name="K1" />
+      <Dependency Name="L1" />
+      <Dependency Name="M1" />
+    </Polygon>
+    <PointByCoordinates Name="N1" X="1.30901699437495 * W.X - 0.951056516295154 * W.Y - 0.309016994374947 * X.X + 0.951056516295154 * X.Y" Y="0.951056516295154 * W.X + 1.30901699437495 * W.Y - 0.951056516295154 * X.X - 0.309016994374947 * X.Y">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O1" X="0.5 * W.X - 1.53884176858763 * W.Y + 0.5 * X.X + 1.53884176858763 * X.Y" Y="1.53884176858763 * W.X + 0.5 * W.Y - 1.53884176858763 * X.X + 0.5 * X.Y">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P1" X="-0.309016994374947 * W.X - 0.951056516295154 * W.Y + 1.30901699437495 * X.X + 0.951056516295154 * X.Y" Y="0.951056516295154 * W.X - 0.309016994374947 * W.Y - 0.951056516295154 * X.X + 1.30901699437495 * X.Y">
+      <Dependency Name="W" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Segment Name="WN1">
+      <Dependency Name="W" />
+      <Dependency Name="N1" />
+    </Segment>
+    <Segment Name="N1O1">
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="O1P1">
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Segment Name="XP1">
+      <Dependency Name="P1" />
+      <Dependency Name="X" />
+    </Segment>
+    <Polygon Name="WXP1O1N1">
+      <Dependency Name="X" />
+      <Dependency Name="W" />
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+    </Polygon>
+    <PointByCoordinates Name="Q1" X="1.30901699437495 * S.X - 0.951056516295154 * S.Y - 0.309016994374947 * T.X + 0.951056516295154 * T.Y" Y="0.951056516295154 * S.X + 1.30901699437495 * S.Y - 0.951056516295154 * T.X - 0.309016994374947 * T.Y">
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R1" X="0.5 * S.X - 1.53884176858763 * S.Y + 0.5 * T.X + 1.53884176858763 * T.Y" Y="1.53884176858763 * S.X + 0.5 * S.Y - 1.53884176858763 * T.X + 0.5 * T.Y">
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1" X="-0.309016994374947 * S.X - 0.951056516295154 * S.Y + 1.30901699437495 * T.X + 0.951056516295154 * T.Y" Y="0.951056516295154 * S.X - 0.309016994374947 * S.Y - 0.951056516295154 * T.X + 1.30901699437495 * T.Y">
+      <Dependency Name="S" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Segment Name="SQ1">
+      <Dependency Name="S" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Segment Name="Q1R1">
+      <Dependency Name="Q1" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Segment Name="R1S1">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </Segment>
+    <Segment Name="TS1">
+      <Dependency Name="S1" />
+      <Dependency Name="T" />
+    </Segment>
+    <Polygon Name="STS1R1Q1">
+      <Dependency Name="T" />
+      <Dependency Name="S" />
+      <Dependency Name="Q1" />
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </Polygon>
+    <PointByCoordinates Name="T1" X="1.30901699437495 * T.X - 0.951056516295154 * T.Y - 0.309016994374947 * U.X + 0.951056516295154 * U.Y" Y="0.951056516295154 * T.X + 1.30901699437495 * T.Y - 0.951056516295154 * U.X - 0.309016994374947 * U.Y">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U1" X="0.5 * T.X - 1.53884176858763 * T.Y + 0.5 * U.X + 1.53884176858763 * U.Y" Y="1.53884176858763 * T.X + 0.5 * T.Y - 1.53884176858763 * U.X + 0.5 * U.Y">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V1" X="-0.309016994374947 * T.X - 0.951056516295154 * T.Y + 1.30901699437495 * U.X + 0.951056516295154 * U.Y" Y="0.951056516295154 * T.X - 0.309016994374947 * T.Y - 0.951056516295154 * U.X + 1.30901699437495 * U.Y">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </PointByCoordinates>
+    <Segment Name="TT1">
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="T1U1">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="U1V1">
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Segment Name="UV1">
+      <Dependency Name="V1" />
+      <Dependency Name="U" />
+    </Segment>
+    <Polygon Name="TUV1U1T1">
+      <Dependency Name="U" />
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+      <Dependency Name="V1" />
+    </Polygon>
+    <PointByCoordinates Name="W1" X="1.30901699437495 * P.X - 0.951056516295154 * P.Y - 0.309016994374947 * Q.X + 0.951056516295154 * Q.Y" Y="0.951056516295154 * P.X + 1.30901699437495 * P.Y - 0.951056516295154 * Q.X - 0.309016994374947 * Q.Y">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X1" X="0.5 * P.X - 1.53884176858763 * P.Y + 0.5 * Q.X + 1.53884176858763 * Q.Y" Y="1.53884176858763 * P.X + 0.5 * P.Y - 1.53884176858763 * Q.X + 0.5 * Q.Y">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Y1" X="-0.309016994374947 * P.X - 0.951056516295154 * P.Y + 1.30901699437495 * Q.X + 0.951056516295154 * Q.Y" Y="0.951056516295154 * P.X - 0.309016994374947 * P.Y - 0.951056516295154 * Q.X + 1.30901699437495 * Q.Y">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </PointByCoordinates>
+    <Segment Name="PW1">
+      <Dependency Name="P" />
+      <Dependency Name="W1" />
+    </Segment>
+    <Segment Name="W1X1">
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Segment Name="X1Y1">
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Segment Name="QY1">
+      <Dependency Name="Y1" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Polygon Name="PQY1X1W1">
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+      <Dependency Name="W1" />
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+    </Polygon>
+    <PointByCoordinates Name="Z1" X="1.30901699437495 * Q.X - 0.951056516295154 * Q.Y - 0.309016994374947 * R.X + 0.951056516295154 * R.Y" Y="0.951056516295154 * Q.X + 1.30901699437495 * Q.Y - 0.951056516295154 * R.X - 0.309016994374947 * R.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A2" X="0.5 * Q.X - 1.53884176858763 * Q.Y + 0.5 * R.X + 1.53884176858763 * R.Y" Y="1.53884176858763 * Q.X + 0.5 * Q.Y - 1.53884176858763 * R.X + 0.5 * R.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B2" X="-0.309016994374947 * Q.X - 0.951056516295154 * Q.Y + 1.30901699437495 * R.X + 0.951056516295154 * R.Y" Y="0.951056516295154 * Q.X - 0.309016994374947 * Q.Y - 0.951056516295154 * R.X + 1.30901699437495 * R.Y">
+      <Dependency Name="Q" />
+      <Dependency Name="R" />
+    </PointByCoordinates>
+    <Segment Name="QZ1">
+      <Dependency Name="Q" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="Z1A2">
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="A2B2">
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Segment Name="RB2">
+      <Dependency Name="B2" />
+      <Dependency Name="R" />
+    </Segment>
+    <Polygon Name="QRB2A2Z1">
+      <Dependency Name="R" />
+      <Dependency Name="Q" />
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+      <Dependency Name="B2" />
+    </Polygon>
+    <PointByCoordinates Name="C2" X="1.30901699437495 * O1.X - 0.951056516295154 * O1.Y - 0.309016994374947 * Q1.X + 0.951056516295154 * Q1.Y" Y="0.951056516295154 * O1.X + 1.30901699437495 * O1.Y - 0.951056516295154 * Q1.X - 0.309016994374947 * Q1.Y">
+      <Dependency Name="O1" />
+      <Dependency Name="Q1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D2" X="0.5 * O1.X - 1.53884176858763 * O1.Y + 0.5 * Q1.X + 1.53884176858763 * Q1.Y" Y="1.53884176858763 * O1.X + 0.5 * O1.Y - 1.53884176858763 * Q1.X + 0.5 * Q1.Y">
+      <Dependency Name="O1" />
+      <Dependency Name="Q1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E2" X="-0.309016994374947 * O1.X - 0.951056516295154 * O1.Y + 1.30901699437495 * Q1.X + 0.951056516295154 * Q1.Y" Y="0.951056516295154 * O1.X - 0.309016994374947 * O1.Y - 0.951056516295154 * Q1.X + 1.30901699437495 * Q1.Y">
+      <Dependency Name="O1" />
+      <Dependency Name="Q1" />
+    </PointByCoordinates>
+    <Segment Name="O1Q1">
+      <Dependency Name="Q1" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="O1C2">
+      <Dependency Name="O1" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="C2D2">
+      <Dependency Name="C2" />
+      <Dependency Name="D2" />
+    </Segment>
+    <Segment Name="D2E2">
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+    </Segment>
+    <Segment Name="Q1E2">
+      <Dependency Name="E2" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Polygon Name="O1Q1E2D2C2">
+      <Dependency Name="Q1" />
+      <Dependency Name="O1" />
+      <Dependency Name="C2" />
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+    </Polygon>
+    <PointByCoordinates Name="F2" X="1.30901699437495 * I1.X - 0.951056516295154 * I1.Y - 0.309016994374947 * J1.X + 0.951056516295154 * J1.Y" Y="0.951056516295154 * I1.X + 1.30901699437495 * I1.Y - 0.951056516295154 * J1.X - 0.309016994374947 * J1.Y">
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G2" X="0.5 * I1.X - 1.53884176858763 * I1.Y + 0.5 * J1.X + 1.53884176858763 * J1.Y" Y="1.53884176858763 * I1.X + 0.5 * I1.Y - 1.53884176858763 * J1.X + 0.5 * J1.Y">
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H2" X="-0.309016994374947 * I1.X - 0.951056516295154 * I1.Y + 1.30901699437495 * J1.X + 0.951056516295154 * J1.Y" Y="0.951056516295154 * I1.X - 0.309016994374947 * I1.Y - 0.951056516295154 * J1.X + 1.30901699437495 * J1.Y">
+      <Dependency Name="I1" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <Segment Name="I1F2">
+      <Dependency Name="I1" />
+      <Dependency Name="F2" />
+    </Segment>
+    <Segment Name="F2G2">
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Segment Name="G2H2">
+      <Dependency Name="G2" />
+      <Dependency Name="H2" />
+    </Segment>
+    <Segment Name="J1H2">
+      <Dependency Name="H2" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Polygon Name="I1J1H2G2F2">
+      <Dependency Name="J1" />
+      <Dependency Name="I1" />
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+      <Dependency Name="H2" />
+    </Polygon>
+    <PointByCoordinates Name="I2" X="1.30901699437495 * D1.X - 0.951056516295154 * D1.Y - 0.309016994374947 * Z.X + 0.951056516295154 * Z.Y" Y="0.951056516295154 * D1.X + 1.30901699437495 * D1.Y - 0.951056516295154 * Z.X - 0.309016994374947 * Z.Y">
+      <Dependency Name="D1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J2" X="0.5 * D1.X - 1.53884176858763 * D1.Y + 0.5 * Z.X + 1.53884176858763 * Z.Y" Y="1.53884176858763 * D1.X + 0.5 * D1.Y - 1.53884176858763 * Z.X + 0.5 * Z.Y">
+      <Dependency Name="D1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K2" X="-0.309016994374947 * D1.X - 0.951056516295154 * D1.Y + 1.30901699437495 * Z.X + 0.951056516295154 * Z.Y" Y="0.951056516295154 * D1.X - 0.309016994374947 * D1.Y - 0.951056516295154 * Z.X + 1.30901699437495 * Z.Y">
+      <Dependency Name="D1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Segment Name="ZD1">
+      <Dependency Name="Z" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="D1I2">
+      <Dependency Name="D1" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="I2J2">
+      <Dependency Name="I2" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Segment Name="J2K2">
+      <Dependency Name="J2" />
+      <Dependency Name="K2" />
+    </Segment>
+    <Segment Name="ZK2">
+      <Dependency Name="K2" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Polygon Name="ZD1I2J2K2">
+      <Dependency Name="Z" />
+      <Dependency Name="D1" />
+      <Dependency Name="I2" />
+      <Dependency Name="J2" />
+      <Dependency Name="K2" />
+    </Polygon>
+    <PointByCoordinates Name="L2" X="1.30901699437495 * A2.X - 0.951056516295154 * A2.Y - 0.309016994374947 * E1.X + 0.951056516295154 * E1.Y" Y="0.951056516295154 * A2.X + 1.30901699437495 * A2.Y - 0.951056516295154 * E1.X - 0.309016994374947 * E1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="E1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M2" X="0.5 * A2.X - 1.53884176858763 * A2.Y + 0.5 * E1.X + 1.53884176858763 * E1.Y" Y="1.53884176858763 * A2.X + 0.5 * A2.Y - 1.53884176858763 * E1.X + 0.5 * E1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="E1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N2" X="-0.309016994374947 * A2.X - 0.951056516295154 * A2.Y + 1.30901699437495 * E1.X + 0.951056516295154 * E1.Y" Y="0.951056516295154 * A2.X - 0.309016994374947 * A2.Y - 0.951056516295154 * E1.X + 1.30901699437495 * E1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="E1" />
+    </PointByCoordinates>
+    <Segment Name="E1A2">
+      <Dependency Name="E1" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="A2L2">
+      <Dependency Name="A2" />
+      <Dependency Name="L2" />
+    </Segment>
+    <Segment Name="L2M2">
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+    </Segment>
+    <Segment Name="M2N2">
+      <Dependency Name="M2" />
+      <Dependency Name="N2" />
+    </Segment>
+    <Segment Name="E1N2">
+      <Dependency Name="N2" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Polygon Name="E1A2L2M2N2">
+      <Dependency Name="E1" />
+      <Dependency Name="A2" />
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+      <Dependency Name="N2" />
+    </Polygon>
+    <PointByCoordinates Name="O2" X="1.30901699437495 * U1.X - 0.951056516295154 * U1.Y - 0.309016994374947 * W1.X + 0.951056516295154 * W1.Y" Y="0.951056516295154 * U1.X + 1.30901699437495 * U1.Y - 0.951056516295154 * W1.X - 0.309016994374947 * W1.Y">
+      <Dependency Name="U1" />
+      <Dependency Name="W1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P2" X="0.5 * U1.X - 1.53884176858763 * U1.Y + 0.5 * W1.X + 1.53884176858763 * W1.Y" Y="1.53884176858763 * U1.X + 0.5 * U1.Y - 1.53884176858763 * W1.X + 0.5 * W1.Y">
+      <Dependency Name="U1" />
+      <Dependency Name="W1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q2" X="-0.309016994374947 * U1.X - 0.951056516295154 * U1.Y + 1.30901699437495 * W1.X + 0.951056516295154 * W1.Y" Y="0.951056516295154 * U1.X - 0.309016994374947 * U1.Y - 0.951056516295154 * W1.X + 1.30901699437495 * W1.Y">
+      <Dependency Name="U1" />
+      <Dependency Name="W1" />
+    </PointByCoordinates>
+    <Segment Name="U1W1">
+      <Dependency Name="W1" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="U1O2">
+      <Dependency Name="U1" />
+      <Dependency Name="O2" />
+    </Segment>
+    <Segment Name="O2P2">
+      <Dependency Name="O2" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Segment Name="P2Q2">
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+    </Segment>
+    <Segment Name="W1Q2">
+      <Dependency Name="Q2" />
+      <Dependency Name="W1" />
+    </Segment>
+    <Polygon Name="U1W1Q2P2O2">
+      <Dependency Name="W1" />
+      <Dependency Name="U1" />
+      <Dependency Name="O2" />
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+    </Polygon>
+    <PointByCoordinates Name="R2" X="1.30901699437495 * N1.X - 0.951056516295154 * N1.Y - 0.309016994374947 * O1.X + 0.951056516295154 * O1.Y" Y="0.951056516295154 * N1.X + 1.30901699437495 * N1.Y - 0.951056516295154 * O1.X - 0.309016994374947 * O1.Y">
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S2" X="0.5 * N1.X - 1.53884176858763 * N1.Y + 0.5 * O1.X + 1.53884176858763 * O1.Y" Y="1.53884176858763 * N1.X + 0.5 * N1.Y - 1.53884176858763 * O1.X + 0.5 * O1.Y">
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T2" X="-0.309016994374947 * N1.X - 0.951056516295154 * N1.Y + 1.30901699437495 * O1.X + 0.951056516295154 * O1.Y" Y="0.951056516295154 * N1.X - 0.309016994374947 * N1.Y - 0.951056516295154 * O1.X + 1.30901699437495 * O1.Y">
+      <Dependency Name="N1" />
+      <Dependency Name="O1" />
+    </PointByCoordinates>
+    <Segment Name="N1R2">
+      <Dependency Name="N1" />
+      <Dependency Name="R2" />
+    </Segment>
+    <Segment Name="R2S2">
+      <Dependency Name="R2" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Segment Name="S2T2">
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+    </Segment>
+    <Segment Name="O1T2">
+      <Dependency Name="T2" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Polygon Name="N1O1T2S2R2">
+      <Dependency Name="O1" />
+      <Dependency Name="N1" />
+      <Dependency Name="R2" />
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+    </Polygon>
+    <PointByCoordinates Name="U2" X="1.30901699437495 * H2.X - 0.951056516295154 * H2.Y - 0.309016994374947 * M1.X + 0.951056516295154 * M1.Y" Y="0.951056516295154 * H2.X + 1.30901699437495 * H2.Y - 0.951056516295154 * M1.X - 0.309016994374947 * M1.Y">
+      <Dependency Name="H2" />
+      <Dependency Name="M1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V2" X="0.5 * H2.X - 1.53884176858763 * H2.Y + 0.5 * M1.X + 1.53884176858763 * M1.Y" Y="1.53884176858763 * H2.X + 0.5 * H2.Y - 1.53884176858763 * M1.X + 0.5 * M1.Y">
+      <Dependency Name="H2" />
+      <Dependency Name="M1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W2" X="-0.309016994374947 * H2.X - 0.951056516295154 * H2.Y + 1.30901699437495 * M1.X + 0.951056516295154 * M1.Y" Y="0.951056516295154 * H2.X - 0.309016994374947 * H2.Y - 0.951056516295154 * M1.X + 1.30901699437495 * M1.Y">
+      <Dependency Name="H2" />
+      <Dependency Name="M1" />
+    </PointByCoordinates>
+    <Segment Name="M1H2">
+      <Dependency Name="M1" />
+      <Dependency Name="H2" />
+    </Segment>
+    <Segment Name="H2U2">
+      <Dependency Name="H2" />
+      <Dependency Name="U2" />
+    </Segment>
+    <Segment Name="U2V2">
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </Segment>
+    <Segment Name="V2W2">
+      <Dependency Name="V2" />
+      <Dependency Name="W2" />
+    </Segment>
+    <Segment Name="M1W2">
+      <Dependency Name="W2" />
+      <Dependency Name="M1" />
+    </Segment>
+    <Polygon Name="M1H2U2V2W2">
+      <Dependency Name="M1" />
+      <Dependency Name="H2" />
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+      <Dependency Name="W2" />
+    </Polygon>
+    <PointByCoordinates Name="X2" X="1.30901699437495 * F2.X - 0.951056516295154 * F2.Y - 0.309016994374947 * G2.X + 0.951056516295154 * G2.Y" Y="0.951056516295154 * F2.X + 1.30901699437495 * F2.Y - 0.951056516295154 * G2.X - 0.309016994374947 * G2.Y">
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Y2" X="0.5 * F2.X - 1.53884176858763 * F2.Y + 0.5 * G2.X + 1.53884176858763 * G2.Y" Y="1.53884176858763 * F2.X + 0.5 * F2.Y - 1.53884176858763 * G2.X + 0.5 * G2.Y">
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z2" X="-0.309016994374947 * F2.X - 0.951056516295154 * F2.Y + 1.30901699437495 * G2.X + 0.951056516295154 * G2.Y" Y="0.951056516295154 * F2.X - 0.309016994374947 * F2.Y - 0.951056516295154 * G2.X + 1.30901699437495 * G2.Y">
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </PointByCoordinates>
+    <Segment Name="F2X2">
+      <Dependency Name="F2" />
+      <Dependency Name="X2" />
+    </Segment>
+    <Segment Name="X2Y2">
+      <Dependency Name="X2" />
+      <Dependency Name="Y2" />
+    </Segment>
+    <Segment Name="Y2Z2">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+    </Segment>
+    <Segment Name="G2Z2">
+      <Dependency Name="Z2" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Polygon Name="F2G2Z2Y2X2">
+      <Dependency Name="G2" />
+      <Dependency Name="F2" />
+      <Dependency Name="X2" />
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+    </Polygon>
+    <PointByCoordinates Name="A3" X="1.30901699437495 * U2.X - 0.951056516295154 * U2.Y - 0.309016994374947 * V2.X + 0.951056516295154 * V2.Y" Y="0.951056516295154 * U2.X + 1.30901699437495 * U2.Y - 0.951056516295154 * V2.X - 0.309016994374947 * V2.Y">
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B3" X="0.5 * U2.X - 1.53884176858763 * U2.Y + 0.5 * V2.X + 1.53884176858763 * V2.Y" Y="1.53884176858763 * U2.X + 0.5 * U2.Y - 1.53884176858763 * V2.X + 0.5 * V2.Y">
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C3" X="-0.309016994374947 * U2.X - 0.951056516295154 * U2.Y + 1.30901699437495 * V2.X + 0.951056516295154 * V2.Y" Y="0.951056516295154 * U2.X - 0.309016994374947 * U2.Y - 0.951056516295154 * V2.X + 1.30901699437495 * V2.Y">
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <Segment Name="U2A3">
+      <Dependency Name="U2" />
+      <Dependency Name="A3" />
+    </Segment>
+    <Segment Name="A3B3">
+      <Dependency Name="A3" />
+      <Dependency Name="B3" />
+    </Segment>
+    <Segment Name="B3C3">
+      <Dependency Name="B3" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="V2C3">
+      <Dependency Name="C3" />
+      <Dependency Name="V2" />
+    </Segment>
+    <Polygon Name="U2V2C3B3A3">
+      <Dependency Name="V2" />
+      <Dependency Name="U2" />
+      <Dependency Name="A3" />
+      <Dependency Name="B3" />
+      <Dependency Name="C3" />
+    </Polygon>
+    <PointByCoordinates Name="D3" X="1.30901699437495 * H1.X - 0.951056516295154 * H1.Y - 0.309016994374947 * I1.X + 0.951056516295154 * I1.Y" Y="0.951056516295154 * H1.X + 1.30901699437495 * H1.Y - 0.951056516295154 * I1.X - 0.309016994374947 * I1.Y">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E3" X="0.5 * H1.X - 1.53884176858763 * H1.Y + 0.5 * I1.X + 1.53884176858763 * I1.Y" Y="1.53884176858763 * H1.X + 0.5 * H1.Y - 1.53884176858763 * I1.X + 0.5 * I1.Y">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F3" X="-0.309016994374947 * H1.X - 0.951056516295154 * H1.Y + 1.30901699437495 * I1.X + 0.951056516295154 * I1.Y" Y="0.951056516295154 * H1.X - 0.309016994374947 * H1.Y - 0.951056516295154 * I1.X + 1.30901699437495 * I1.Y">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </PointByCoordinates>
+    <Segment Name="H1D3">
+      <Dependency Name="H1" />
+      <Dependency Name="D3" />
+    </Segment>
+    <Segment Name="D3E3">
+      <Dependency Name="D3" />
+      <Dependency Name="E3" />
+    </Segment>
+    <Segment Name="E3F3">
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Segment Name="I1F3">
+      <Dependency Name="F3" />
+      <Dependency Name="I1" />
+    </Segment>
+    <Polygon Name="H1I1F3E3D3">
+      <Dependency Name="I1" />
+      <Dependency Name="H1" />
+      <Dependency Name="D3" />
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+    </Polygon>
+    <PointByCoordinates Name="G3" X="-0.309016994374947 * A1.X + 0.951056516295154 * A1.Y + 1.30901699437495 * Z.X - 0.951056516295154 * Z.Y" Y="-0.951056516295154 * A1.X - 0.309016994374947 * A1.Y + 0.951056516295154 * Z.X + 1.30901699437495 * Z.Y">
+      <Dependency Name="A1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H3" X="0.5 * A1.X + 1.53884176858763 * A1.Y + 0.5 * Z.X - 1.53884176858763 * Z.Y" Y="-1.53884176858763 * A1.X + 0.5 * A1.Y + 1.53884176858763 * Z.X + 0.5 * Z.Y">
+      <Dependency Name="A1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I3" X="1.30901699437495 * A1.X + 0.951056516295154 * A1.Y - 0.309016994374947 * Z.X - 0.951056516295154 * Z.Y" Y="-0.951056516295154 * A1.X + 1.30901699437495 * A1.Y + 0.951056516295154 * Z.X - 0.309016994374947 * Z.Y">
+      <Dependency Name="A1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Segment Name="ZG3">
+      <Dependency Name="Z" />
+      <Dependency Name="G3" />
+    </Segment>
+    <Segment Name="G3H3">
+      <Dependency Name="G3" />
+      <Dependency Name="H3" />
+    </Segment>
+    <Segment Name="H3I3">
+      <Dependency Name="H3" />
+      <Dependency Name="I3" />
+    </Segment>
+    <Segment Name="A1I3">
+      <Dependency Name="I3" />
+      <Dependency Name="A1" />
+    </Segment>
+    <Polygon Name="ZA1I3H3G3">
+      <Dependency Name="A1" />
+      <Dependency Name="Z" />
+      <Dependency Name="G3" />
+      <Dependency Name="H3" />
+      <Dependency Name="I3" />
+    </Polygon>
+    <PointByCoordinates Name="J3" X="1.30901699437495 * B1.X - 0.951056516295154 * B1.Y - 0.309016994374947 * C1.X + 0.951056516295154 * C1.Y" Y="0.951056516295154 * B1.X + 1.30901699437495 * B1.Y - 0.951056516295154 * C1.X - 0.309016994374947 * C1.Y">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K3" X="0.5 * B1.X - 1.53884176858763 * B1.Y + 0.5 * C1.X + 1.53884176858763 * C1.Y" Y="1.53884176858763 * B1.X + 0.5 * B1.Y - 1.53884176858763 * C1.X + 0.5 * C1.Y">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L3" X="-0.309016994374947 * B1.X - 0.951056516295154 * B1.Y + 1.30901699437495 * C1.X + 0.951056516295154 * C1.Y" Y="0.951056516295154 * B1.X - 0.309016994374947 * B1.Y - 0.951056516295154 * C1.X + 1.30901699437495 * C1.Y">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </PointByCoordinates>
+    <Segment Name="B1J3">
+      <Dependency Name="B1" />
+      <Dependency Name="J3" />
+    </Segment>
+    <Segment Name="J3K3">
+      <Dependency Name="J3" />
+      <Dependency Name="K3" />
+    </Segment>
+    <Segment Name="K3L3">
+      <Dependency Name="K3" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Segment Name="C1L3">
+      <Dependency Name="L3" />
+      <Dependency Name="C1" />
+    </Segment>
+    <Polygon Name="B1C1L3K3J3">
+      <Dependency Name="C1" />
+      <Dependency Name="B1" />
+      <Dependency Name="J3" />
+      <Dependency Name="K3" />
+      <Dependency Name="L3" />
+    </Polygon>
+    <PointByCoordinates Name="M3" X="1.30901699437495 * F1.X - 0.951056516295154 * F1.Y - 0.309016994374947 * G1.X + 0.951056516295154 * G1.Y" Y="0.951056516295154 * F1.X + 1.30901699437495 * F1.Y - 0.951056516295154 * G1.X - 0.309016994374947 * G1.Y">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N3" X="0.5 * F1.X - 1.53884176858763 * F1.Y + 0.5 * G1.X + 1.53884176858763 * G1.Y" Y="1.53884176858763 * F1.X + 0.5 * F1.Y - 1.53884176858763 * G1.X + 0.5 * G1.Y">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O3" X="-0.309016994374947 * F1.X - 0.951056516295154 * F1.Y + 1.30901699437495 * G1.X + 0.951056516295154 * G1.Y" Y="0.951056516295154 * F1.X - 0.309016994374947 * F1.Y - 0.951056516295154 * G1.X + 1.30901699437495 * G1.Y">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </PointByCoordinates>
+    <Segment Name="F1M3">
+      <Dependency Name="F1" />
+      <Dependency Name="M3" />
+    </Segment>
+    <Segment Name="M3N3">
+      <Dependency Name="M3" />
+      <Dependency Name="N3" />
+    </Segment>
+    <Segment Name="N3O3">
+      <Dependency Name="N3" />
+      <Dependency Name="O3" />
+    </Segment>
+    <Segment Name="G1O3">
+      <Dependency Name="O3" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Polygon Name="F1G1O3N3M3">
+      <Dependency Name="G1" />
+      <Dependency Name="F1" />
+      <Dependency Name="M3" />
+      <Dependency Name="N3" />
+      <Dependency Name="O3" />
+    </Polygon>
+    <PointByCoordinates Name="P3" X="-0.309016994374947 * A2.X + 0.951056516295154 * A2.Y + 1.30901699437495 * Z1.X - 0.951056516295154 * Z1.Y" Y="-0.951056516295154 * A2.X - 0.309016994374947 * A2.Y + 0.951056516295154 * Z1.X + 1.30901699437495 * Z1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q3" X="0.5 * A2.X + 1.53884176858763 * A2.Y + 0.5 * Z1.X - 1.53884176858763 * Z1.Y" Y="-1.53884176858763 * A2.X + 0.5 * A2.Y + 1.53884176858763 * Z1.X + 0.5 * Z1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R3" X="1.30901699437495 * A2.X + 0.951056516295154 * A2.Y - 0.309016994374947 * Z1.X - 0.951056516295154 * Z1.Y" Y="-0.951056516295154 * A2.X + 1.30901699437495 * A2.Y + 0.951056516295154 * Z1.X - 0.309016994374947 * Z1.Y">
+      <Dependency Name="A2" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <Segment Name="Z1P3">
+      <Dependency Name="Z1" />
+      <Dependency Name="P3" />
+    </Segment>
+    <Segment Name="P3Q3">
+      <Dependency Name="P3" />
+      <Dependency Name="Q3" />
+    </Segment>
+    <Segment Name="Q3R3">
+      <Dependency Name="Q3" />
+      <Dependency Name="R3" />
+    </Segment>
+    <Segment Name="A2R3">
+      <Dependency Name="R3" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Polygon Name="Z1A2R3Q3P3">
+      <Dependency Name="A2" />
+      <Dependency Name="Z1" />
+      <Dependency Name="P3" />
+      <Dependency Name="Q3" />
+      <Dependency Name="R3" />
+    </Polygon>
+    <PointByCoordinates Name="S3" X="1.30901699437495 * Q2.X - 0.951056516295154 * Q2.Y - 0.309016994374947 * Y1.X + 0.951056516295154 * Y1.Y" Y="0.951056516295154 * Q2.X + 1.30901699437495 * Q2.Y - 0.951056516295154 * Y1.X - 0.309016994374947 * Y1.Y">
+      <Dependency Name="Q2" />
+      <Dependency Name="Y1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T3" X="0.5 * Q2.X - 1.53884176858763 * Q2.Y + 0.5 * Y1.X + 1.53884176858763 * Y1.Y" Y="1.53884176858763 * Q2.X + 0.5 * Q2.Y - 1.53884176858763 * Y1.X + 0.5 * Y1.Y">
+      <Dependency Name="Q2" />
+      <Dependency Name="Y1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U3" X="-0.309016994374947 * Q2.X - 0.951056516295154 * Q2.Y + 1.30901699437495 * Y1.X + 0.951056516295154 * Y1.Y" Y="0.951056516295154 * Q2.X - 0.309016994374947 * Q2.Y - 0.951056516295154 * Y1.X + 1.30901699437495 * Y1.Y">
+      <Dependency Name="Q2" />
+      <Dependency Name="Y1" />
+    </PointByCoordinates>
+    <Segment Name="Y1Q2">
+      <Dependency Name="Y1" />
+      <Dependency Name="Q2" />
+    </Segment>
+    <Segment Name="Q2S3">
+      <Dependency Name="Q2" />
+      <Dependency Name="S3" />
+    </Segment>
+    <Segment Name="S3T3">
+      <Dependency Name="S3" />
+      <Dependency Name="T3" />
+    </Segment>
+    <Segment Name="T3U3">
+      <Dependency Name="T3" />
+      <Dependency Name="U3" />
+    </Segment>
+    <Segment Name="Y1U3">
+      <Dependency Name="U3" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Polygon Name="Y1Q2S3T3U3">
+      <Dependency Name="Y1" />
+      <Dependency Name="Q2" />
+      <Dependency Name="S3" />
+      <Dependency Name="T3" />
+      <Dependency Name="U3" />
+    </Polygon>
+    <PointByCoordinates Name="V3" X="1.30901699437495 * T1.X - 0.951056516295154 * T1.Y - 0.309016994374947 * U1.X + 0.951056516295154 * U1.Y" Y="0.951056516295154 * T1.X + 1.30901699437495 * T1.Y - 0.951056516295154 * U1.X - 0.309016994374947 * U1.Y">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W3" X="0.5 * T1.X - 1.53884176858763 * T1.Y + 0.5 * U1.X + 1.53884176858763 * U1.Y" Y="1.53884176858763 * T1.X + 0.5 * T1.Y - 1.53884176858763 * U1.X + 0.5 * U1.Y">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X3" X="-0.309016994374947 * T1.X - 0.951056516295154 * T1.Y + 1.30901699437495 * U1.X + 0.951056516295154 * U1.Y" Y="0.951056516295154 * T1.X - 0.309016994374947 * T1.Y - 0.951056516295154 * U1.X + 1.30901699437495 * U1.Y">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </PointByCoordinates>
+    <Segment Name="T1V3">
+      <Dependency Name="T1" />
+      <Dependency Name="V3" />
+    </Segment>
+    <Segment Name="V3W3">
+      <Dependency Name="V3" />
+      <Dependency Name="W3" />
+    </Segment>
+    <Segment Name="W3X3">
+      <Dependency Name="W3" />
+      <Dependency Name="X3" />
+    </Segment>
+    <Segment Name="U1X3">
+      <Dependency Name="X3" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Polygon Name="T1U1X3W3V3">
+      <Dependency Name="U1" />
+      <Dependency Name="T1" />
+      <Dependency Name="V3" />
+      <Dependency Name="W3" />
+      <Dependency Name="X3" />
+    </Polygon>
+    <PointByCoordinates Name="Y3" X="1.30901699437495 * R1.X - 0.951056516295154 * R1.Y - 0.309016994374947 * S1.X + 0.951056516295154 * S1.Y" Y="0.951056516295154 * R1.X + 1.30901699437495 * R1.Y - 0.951056516295154 * S1.X - 0.309016994374947 * S1.Y">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z3" X="0.5 * R1.X - 1.53884176858763 * R1.Y + 0.5 * S1.X + 1.53884176858763 * S1.Y" Y="1.53884176858763 * R1.X + 0.5 * R1.Y - 1.53884176858763 * S1.X + 0.5 * S1.Y">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A4" X="-0.309016994374947 * R1.X - 0.951056516295154 * R1.Y + 1.30901699437495 * S1.X + 0.951056516295154 * S1.Y" Y="0.951056516295154 * R1.X - 0.309016994374947 * R1.Y - 0.951056516295154 * S1.X + 1.30901699437495 * S1.Y">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </PointByCoordinates>
+    <Segment Name="R1Y3">
+      <Dependency Name="R1" />
+      <Dependency Name="Y3" />
+    </Segment>
+    <Segment Name="Y3Z3">
+      <Dependency Name="Y3" />
+      <Dependency Name="Z3" />
+    </Segment>
+    <Segment Name="Z3A4">
+      <Dependency Name="Z3" />
+      <Dependency Name="A4" />
+    </Segment>
+    <Segment Name="S1A4">
+      <Dependency Name="A4" />
+      <Dependency Name="S1" />
+    </Segment>
+    <Polygon Name="R1S1A4Z3Y3">
+      <Dependency Name="S1" />
+      <Dependency Name="R1" />
+      <Dependency Name="Y3" />
+      <Dependency Name="Z3" />
+      <Dependency Name="A4" />
+    </Polygon>
+    <PointByCoordinates Name="B4" X="-0.309016994374947 * R2.X + 0.951056516295154 * R2.Y + 1.30901699437495 * V2.X - 0.951056516295154 * V2.Y" Y="-0.951056516295154 * R2.X - 0.309016994374947 * R2.Y + 0.951056516295154 * V2.X + 1.30901699437495 * V2.Y">
+      <Dependency Name="R2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C4" X="0.5 * R2.X + 1.53884176858763 * R2.Y + 0.5 * V2.X - 1.53884176858763 * V2.Y" Y="-1.53884176858763 * R2.X + 0.5 * R2.Y + 1.53884176858763 * V2.X + 0.5 * V2.Y">
+      <Dependency Name="R2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D4" X="1.30901699437495 * R2.X + 0.951056516295154 * R2.Y - 0.309016994374947 * V2.X - 0.951056516295154 * V2.Y" Y="-0.951056516295154 * R2.X + 1.30901699437495 * R2.Y + 0.951056516295154 * V2.X - 0.309016994374947 * V2.Y">
+      <Dependency Name="R2" />
+      <Dependency Name="V2" />
+    </PointByCoordinates>
+    <Segment Name="R2V2">
+      <Dependency Name="R2" />
+      <Dependency Name="V2" />
+    </Segment>
+    <Segment Name="V2B4">
+      <Dependency Name="V2" />
+      <Dependency Name="B4" />
+    </Segment>
+    <Segment Name="B4C4">
+      <Dependency Name="B4" />
+      <Dependency Name="C4" />
+    </Segment>
+    <Segment Name="C4D4">
+      <Dependency Name="C4" />
+      <Dependency Name="D4" />
+    </Segment>
+    <Segment Name="R2D4">
+      <Dependency Name="D4" />
+      <Dependency Name="R2" />
+    </Segment>
+    <Polygon Name="R2V2B4C4D4">
+      <Dependency Name="R2" />
+      <Dependency Name="V2" />
+      <Dependency Name="B4" />
+      <Dependency Name="C4" />
+      <Dependency Name="D4" />
+    </Polygon>
+    <PointByCoordinates Name="E4" X="1.30901699437495 * N3.X - 0.951056516295154 * N3.Y - 0.309016994374947 * O3.X + 0.951056516295154 * O3.Y" Y="0.951056516295154 * N3.X + 1.30901699437495 * N3.Y - 0.951056516295154 * O3.X - 0.309016994374947 * O3.Y">
+      <Dependency Name="N3" />
+      <Dependency Name="O3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F4" X="0.5 * N3.X - 1.53884176858763 * N3.Y + 0.5 * O3.X + 1.53884176858763 * O3.Y" Y="1.53884176858763 * N3.X + 0.5 * N3.Y - 1.53884176858763 * O3.X + 0.5 * O3.Y">
+      <Dependency Name="N3" />
+      <Dependency Name="O3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G4" X="-0.309016994374947 * N3.X - 0.951056516295154 * N3.Y + 1.30901699437495 * O3.X + 0.951056516295154 * O3.Y" Y="0.951056516295154 * N3.X - 0.309016994374947 * N3.Y - 0.951056516295154 * O3.X + 1.30901699437495 * O3.Y">
+      <Dependency Name="N3" />
+      <Dependency Name="O3" />
+    </PointByCoordinates>
+    <Segment Name="N3E4">
+      <Dependency Name="N3" />
+      <Dependency Name="E4" />
+    </Segment>
+    <Segment Name="E4F4">
+      <Dependency Name="E4" />
+      <Dependency Name="F4" />
+    </Segment>
+    <Segment Name="F4G4">
+      <Dependency Name="F4" />
+      <Dependency Name="G4" />
+    </Segment>
+    <Segment Name="O3G4">
+      <Dependency Name="G4" />
+      <Dependency Name="O3" />
+    </Segment>
+    <Polygon Name="N3O3G4F4E4">
+      <Dependency Name="O3" />
+      <Dependency Name="N3" />
+      <Dependency Name="E4" />
+      <Dependency Name="F4" />
+      <Dependency Name="G4" />
+    </Polygon>
+    <PointByCoordinates Name="H4" X="-0.309016994374947 * Q3.X + 0.951056516295154 * Q3.Y + 1.30901699437495 * U3.X - 0.951056516295154 * U3.Y" Y="-0.951056516295154 * Q3.X - 0.309016994374947 * Q3.Y + 0.951056516295154 * U3.X + 1.30901699437495 * U3.Y">
+      <Dependency Name="Q3" />
+      <Dependency Name="U3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I4" X="0.5 * Q3.X + 1.53884176858763 * Q3.Y + 0.5 * U3.X - 1.53884176858763 * U3.Y" Y="-1.53884176858763 * Q3.X + 0.5 * Q3.Y + 1.53884176858763 * U3.X + 0.5 * U3.Y">
+      <Dependency Name="Q3" />
+      <Dependency Name="U3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J4" X="1.30901699437495 * Q3.X + 0.951056516295154 * Q3.Y - 0.309016994374947 * U3.X - 0.951056516295154 * U3.Y" Y="-0.951056516295154 * Q3.X + 1.30901699437495 * Q3.Y + 0.951056516295154 * U3.X - 0.309016994374947 * U3.Y">
+      <Dependency Name="Q3" />
+      <Dependency Name="U3" />
+    </PointByCoordinates>
+    <Segment Name="Q3U3">
+      <Dependency Name="Q3" />
+      <Dependency Name="U3" />
+    </Segment>
+    <Segment Name="U3H4">
+      <Dependency Name="U3" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Segment Name="H4I4">
+      <Dependency Name="H4" />
+      <Dependency Name="I4" />
+    </Segment>
+    <Segment Name="I4J4">
+      <Dependency Name="I4" />
+      <Dependency Name="J4" />
+    </Segment>
+    <Segment Name="Q3J4">
+      <Dependency Name="J4" />
+      <Dependency Name="Q3" />
+    </Segment>
+    <Polygon Name="Q3U3H4I4J4">
+      <Dependency Name="Q3" />
+      <Dependency Name="U3" />
+      <Dependency Name="H4" />
+      <Dependency Name="I4" />
+      <Dependency Name="J4" />
+    </Polygon>
+    <PointByCoordinates Name="K4" X="-0.309016994374947 * D3.X + 0.951056516295154 * D3.Y + 1.30901699437495 * H3.X - 0.951056516295154 * H3.Y" Y="-0.951056516295154 * D3.X - 0.309016994374947 * D3.Y + 0.951056516295154 * H3.X + 1.30901699437495 * H3.Y">
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L4" X="0.5 * D3.X + 1.53884176858763 * D3.Y + 0.5 * H3.X - 1.53884176858763 * H3.Y" Y="-1.53884176858763 * D3.X + 0.5 * D3.Y + 1.53884176858763 * H3.X + 0.5 * H3.Y">
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M4" X="1.30901699437495 * D3.X + 0.951056516295154 * D3.Y - 0.309016994374947 * H3.X - 0.951056516295154 * H3.Y" Y="-0.951056516295154 * D3.X + 1.30901699437495 * D3.Y + 0.951056516295154 * H3.X - 0.309016994374947 * H3.Y">
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+    </PointByCoordinates>
+    <Segment Name="D3H3">
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+    </Segment>
+    <Segment Name="H3K4">
+      <Dependency Name="H3" />
+      <Dependency Name="K4" />
+    </Segment>
+    <Segment Name="K4L4">
+      <Dependency Name="K4" />
+      <Dependency Name="L4" />
+    </Segment>
+    <Segment Name="L4M4">
+      <Dependency Name="L4" />
+      <Dependency Name="M4" />
+    </Segment>
+    <Segment Name="D3M4">
+      <Dependency Name="M4" />
+      <Dependency Name="D3" />
+    </Segment>
+    <Polygon Name="D3H3K4L4M4">
+      <Dependency Name="D3" />
+      <Dependency Name="H3" />
+      <Dependency Name="K4" />
+      <Dependency Name="L4" />
+      <Dependency Name="M4" />
+    </Polygon>
+    <PointByCoordinates Name="N4" X="-0.309016994374947 * F3.X + 0.951056516295154 * F3.Y + 1.30901699437495 * M4.X - 0.951056516295154 * M4.Y" Y="-0.951056516295154 * F3.X - 0.309016994374947 * F3.Y + 0.951056516295154 * M4.X + 1.30901699437495 * M4.Y">
+      <Dependency Name="F3" />
+      <Dependency Name="M4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O4" X="0.5 * F3.X + 1.53884176858763 * F3.Y + 0.5 * M4.X - 1.53884176858763 * M4.Y" Y="-1.53884176858763 * F3.X + 0.5 * F3.Y + 1.53884176858763 * M4.X + 0.5 * M4.Y">
+      <Dependency Name="F3" />
+      <Dependency Name="M4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="P4" X="1.30901699437495 * F3.X + 0.951056516295154 * F3.Y - 0.309016994374947 * M4.X - 0.951056516295154 * M4.Y" Y="-0.951056516295154 * F3.X + 1.30901699437495 * F3.Y + 0.951056516295154 * M4.X - 0.309016994374947 * M4.Y">
+      <Dependency Name="F3" />
+      <Dependency Name="M4" />
+    </PointByCoordinates>
+    <Segment Name="F3M4">
+      <Dependency Name="F3" />
+      <Dependency Name="M4" />
+    </Segment>
+    <Segment Name="M4N4">
+      <Dependency Name="M4" />
+      <Dependency Name="N4" />
+    </Segment>
+    <Segment Name="N4O4">
+      <Dependency Name="N4" />
+      <Dependency Name="O4" />
+    </Segment>
+    <Segment Name="O4P4">
+      <Dependency Name="O4" />
+      <Dependency Name="P4" />
+    </Segment>
+    <Segment Name="F3P4">
+      <Dependency Name="P4" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Polygon Name="F3M4N4O4P4">
+      <Dependency Name="F3" />
+      <Dependency Name="M4" />
+      <Dependency Name="N4" />
+      <Dependency Name="O4" />
+      <Dependency Name="P4" />
+    </Polygon>
+    <Polygon Name="GJYO" Style="GradientGreenOutline">
+      <Dependency Name="J" />
+      <Dependency Name="G" />
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+    </Polygon>
+    <Segment Name="OY">
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Polygon Name="NB1J3G1" Style="GradientGreenOutline">
+      <Dependency Name="B1" />
+      <Dependency Name="J3" />
+      <Dependency Name="G1" />
+      <Dependency Name="N" />
+    </Polygon>
+    <Segment Name="G1J3">
+      <Dependency Name="J3" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Polygon Name="KA1I3H1" Style="GradientGreenOutline">
+      <Dependency Name="I3" />
+      <Dependency Name="A1" />
+      <Dependency Name="K" />
+      <Dependency Name="H1" />
+    </Polygon>
+    <Segment Name="H1I3">
+      <Dependency Name="H1" />
+      <Dependency Name="I3" />
+    </Segment>
+    <Polygon Name="I1F2P4F3" Style="GradientGreenOutline">
+      <Dependency Name="P4" />
+      <Dependency Name="F3" />
+      <Dependency Name="I1" />
+      <Dependency Name="F2" />
+    </Polygon>
+    <Segment Name="F2P4">
+      <Dependency Name="F2" />
+      <Dependency Name="P4" />
+    </Segment>
+    <Polygon Name="G2H2U2A3" Style="GradientGreenOutline">
+      <Dependency Name="G2" />
+      <Dependency Name="H2" />
+      <Dependency Name="U2" />
+      <Dependency Name="A3" />
+    </Polygon>
+    <Segment Name="G2A3">
+      <Dependency Name="A3" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Polygon Name="BLK1V" Style="GradientGreenOutline">
+      <Dependency Name="K1" />
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+      <Dependency Name="V" />
+    </Polygon>
+    <Segment Name="LK1">
+      <Dependency Name="K1" />
+      <Dependency Name="L" />
+    </Segment>
+    <Polygon Name="WM1R2W2N1" Style="GradientGreenOutline">
+      <Dependency Name="R2" />
+      <Dependency Name="M1" />
+      <Dependency Name="W" />
+      <Dependency Name="N1" />
+      <Dependency Name="W2" />
+    </Polygon>
+    <Segment Name="M1R2">
+      <Dependency Name="R2" />
+      <Dependency Name="M1" />
+    </Segment>
+    <Segment Name="N1W2">
+      <Dependency Name="N1" />
+      <Dependency Name="W2" />
+    </Segment>
+    <Segment Name="R2W2">
+      <Dependency Name="W2" />
+      <Dependency Name="R2" />
+    </Segment>
+    <Polygon Name="FSP1X" Style="GradientGreenOutline">
+      <Dependency Name="X" />
+      <Dependency Name="F" />
+      <Dependency Name="S" />
+      <Dependency Name="P1" />
+    </Polygon>
+    <Segment Name="SP1">
+      <Dependency Name="S" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Polygon Name="HPV1U" Style="GradientGreenOutline">
+      <Dependency Name="H" />
+      <Dependency Name="P" />
+      <Dependency Name="V1" />
+      <Dependency Name="U" />
+    </Polygon>
+    <Segment Name="PV1">
+      <Dependency Name="P" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Polygon Name="IME1R" Style="GradientGreenOutline">
+      <Dependency Name="I" />
+      <Dependency Name="M" />
+      <Dependency Name="E1" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Segment Name="RE1">
+      <Dependency Name="E1" />
+      <Dependency Name="R" />
+    </Segment>
+    <Polygon Name="QY1P3Z1" Style="GradientGreenOutline">
+      <Dependency Name="Q" />
+      <Dependency Name="Z1" />
+      <Dependency Name="P3" />
+      <Dependency Name="Y1" />
+    </Polygon>
+    <Segment Name="Y1P3">
+      <Dependency Name="P3" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Polygon Name="TS1A4T1" Style="GradientGreenOutline">
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+      <Dependency Name="A4" />
+      <Dependency Name="S1" />
+    </Polygon>
+    <Segment Name="T1A4">
+      <Dependency Name="T1" />
+      <Dependency Name="A4" />
+    </Segment>
+  </Figures>
+</Drawing>
