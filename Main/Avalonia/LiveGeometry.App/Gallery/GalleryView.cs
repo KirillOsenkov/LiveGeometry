@@ -40,6 +40,7 @@ public class GalleryView : DockPanel
     readonly TileGridPanel galleryTiles = new TileGridPanel();
     readonly List<DrawingThumbnail> pictures = new List<DrawingThumbnail>();
     readonly GalleryTile continueTile;
+    readonly ScrollViewer scrollViewer;
 
     /// <param name="arrange">The arrange mode: see <see cref="Arrange_PointerPressed"/></param>
     public GalleryView(Control corner, bool arrange = false)
@@ -160,12 +161,13 @@ public class GalleryView : DockPanel
         }));
 
         var page = new Panel();
-        page.Children.Add(new ScrollViewer()
+        scrollViewer = new ScrollViewer()
         {
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
             Content = content
-        });
+        };
+        page.Children.Add(scrollViewer);
 
         // the theme button and the build stamp in the corner, as on the editor's toolbar
         if (corner != null)
@@ -193,6 +195,38 @@ public class GalleryView : DockPanel
             Height = StartTileSize,
             IsCompact = true
         };
+    }
+
+    /// <summary>
+    /// Scrolls the page by a key, as a web page does (nothing on the page takes the
+    /// keyboard, so the keys went nowhere): Page Down and Page Up, End and Home, the down
+    /// and up arrows. False for any other key.
+    /// </summary>
+    public bool ScrollByKey(Key key)
+    {
+        switch (key)
+        {
+            case Key.PageDown:
+                scrollViewer.PageDown();
+                return true;
+            case Key.PageUp:
+                scrollViewer.PageUp();
+                return true;
+            case Key.End:
+                scrollViewer.ScrollToEnd();
+                return true;
+            case Key.Home:
+                scrollViewer.ScrollToHome();
+                return true;
+            case Key.Down:
+                scrollViewer.LineDown();
+                return true;
+            case Key.Up:
+                scrollViewer.LineUp();
+                return true;
+            default:
+                return false;
+        }
     }
 
     #region Loading the drawings

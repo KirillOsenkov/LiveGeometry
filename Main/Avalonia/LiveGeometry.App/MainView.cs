@@ -1612,6 +1612,12 @@ public partial class MainView : UserControl
                 shortcutKeyDown = e.Key;
                 e.Handled = true;
             }
+            else if (e.KeyModifiers == KeyModifiers.None && Gallery.ScrollByKey(e.Key))
+            {
+                // the page scrolls by the keys as a web page does: nothing on it takes the
+                // keyboard, so the keys went nowhere
+                e.Handled = true;
+            }
 
             return;
         }

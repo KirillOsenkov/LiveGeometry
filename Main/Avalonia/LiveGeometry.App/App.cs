@@ -4,8 +4,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Threading;
+using AvaloniaStyle = Avalonia.Styling.Style;
 
 namespace LiveGeometry;
 
@@ -35,6 +37,15 @@ public class App : Application
     public override void Initialize()
     {
         Styles.Add(new FluentTheme());
+
+        // Every scrollbar at its full width all the time. Fluent's is a thin strip until
+        // it is hovered, which hides it and leaves a 4 px thumb to aim at. The attached
+        // property on a text box reaches the scroll viewer inside its template, whose own
+        // value is bound to it.
+        Styles.Add(new AvaloniaStyle(x => Selectors.Or(x.OfType<ScrollViewer>(), x.OfType<TextBox>()))
+        {
+            Setters = { new Setter(ScrollViewer.AllowAutoHideProperty, false) }
+        });
 
         // the chrome's colors under each theme variant; the stored choice (or the system's)
         // before the first frame, so nothing flashes light first. The stored colors go on

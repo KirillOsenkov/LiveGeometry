@@ -41,7 +41,9 @@ and fails with words (`playerparity.cs`'s `Webauto`).
   `drag <t> x1 y1 x2 y2 [steps] [--shift] [--alt]`, `path <t> x1 y1 x2 y2 ... [--right]
   [--shift] [--alt] [--hold]` (a drag through the points, a lasso; `--hold` keeps the button
   and keys down for a `shot` in the middle, `release [--right] [--shift] [--alt]` lets go),
-  `wheel <t> x y <notches>`, `keys <t> "^s"`, `text`, `focus`,
+  `wheel <t> x y <notches>` (the Windows sign: positive rolls the wheel forward and
+  scrolls up, so a page scrolls down with negative notches - a gallery "that would not
+  scroll" was at its top, 2026-11-01), `keys <t> "^s"`, `text`, `focus`,
   `cursor`, `place <t> x y w h`, `maximize <t>`. Target = process name | `pid:N` | `hwnd:0x..` | `title:substr`.
   - The VB6 app starts maximized: `place <t> 100 100 1500 1000` first. The Avalonia desktop app
     remembers its window (`LiveGeometry.Desktop/WindowPlacementPersistence.cs`, the

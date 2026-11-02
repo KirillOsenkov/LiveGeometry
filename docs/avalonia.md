@@ -89,6 +89,12 @@
   frame, ignores nothing but shows nothing new, every thread idle; no error report is seen,
   since it is never drawn. Invalidate from where the state changes, not where it is read
   (`ColoredTextPresenter.InvalidateTextLayout`).
+- **Scrollbars at full width** (`App.Initialize`, 2026-11-01): Fluent's scrollbar is a thin
+  strip until it is hovered (`ScrollBar.AllowAutoHide`, true by default), which hides it
+  and leaves a 4 px thumb to aim at. An app-wide style sets `ScrollViewer.AllowAutoHide`
+  false on every `ScrollViewer` and on every `TextBox` (the attached property, which the
+  scroll viewer inside the text box's template is bound to): the gallery, the Figure List,
+  the side panel, the completion list, text boxes alike.
 - **`Shape.Render` is sealed** (Avalonia 12): a Shape can't draw anything but its geometry.
   `PointMarker` draws a character through an `EmojiGlyph` visual child it measures and arranges
   itself; with no geometry, `Shape.ArrangeOverride` returns size 0 and the shape collapses to

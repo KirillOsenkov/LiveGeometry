@@ -22,7 +22,10 @@
   to a file from there) and, while there is a drawing to go back to, My Drawing. They are
   92 wide so that all three fit across a phone 360 wide; the brand beside them gets what
   room is left, which on a phone with three tiles is none. A caption longer than
-  "My Drawing" would be cut short.
+  "My Drawing" would be cut short. The page scrolls by the keys as a web page does, Page
+  Down and Up, End and Home, the down and up arrows (`GalleryView.ScrollByKey`, from
+  `MainView_KeyDown`, 2026-11-01): nothing on the page takes the keyboard, so they went
+  nowhere before.
 - **The puzzle libraries** (2026-10-27): the "Gallery" heading shares its line with a chip per
   library of the site (`GalleryView.Libraries`: title, address, the chip's pastel, the count
   and a miniature), a gap to its right, where the room beside the heading was empty. A chip
