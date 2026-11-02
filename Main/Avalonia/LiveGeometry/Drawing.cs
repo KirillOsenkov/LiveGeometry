@@ -78,6 +78,36 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
         }
     }
 
+    /// <summary>
+    /// The heading of the drawing, the text of its Title label (<see cref="Caption"/>): typed
+    /// here, the label is made, and with an explanation the caption is laid out
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridCustomValueProvider(typeof(CaptionTextValue))]
+    public string Title
+    {
+        get => LiveGeometry.Caption.FindTitle(this)?.Text ?? "";
+        set => LiveGeometry.Caption.SetText(this, title: true, value ?? "", actionManager: null);
+    }
+
+    /// <summary>The explanation under the heading, the text of the Description label (<see cref="Caption"/>)</summary>
+    [PropertyGridVisible]
+    [PropertyGridMultiline]
+    [PropertyGridCustomValueProvider(typeof(CaptionTextValue))]
+    public string Description
+    {
+        get => LiveGeometry.Caption.FindDescription(this)?.Text ?? "";
+        set => LiveGeometry.Caption.SetText(this, title: false, value ?? "", actionManager: null);
+    }
+
+    /// <summary>
+    /// How the caption is laid out where the drawing is shown (the app's gallery layout):
+    /// the labels pinned beside or under the figure and the figure in the room they leave.
+    /// Set by whoever shows the drawing, null where nobody lays captions out; see
+    /// <see cref="Caption.RecordLayout"/>.
+    /// </summary>
+    public Action LayOutCaption { get; set; }
+
     Brush background;
 
     /// <summary>

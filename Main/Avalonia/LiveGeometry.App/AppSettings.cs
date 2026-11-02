@@ -92,9 +92,9 @@ public class AppSettings : INotifyPropertyChanged
     /// <summary>The drawing on screen wants its paper shown: not a setting, but the drawing's (saved with it, undoable)</summary>
     public event Action DrawingBackgroundRequested;
 
-    /// <summary>The paper of the drawing on screen, a color or a gradient</summary>
+    /// <summary>The drawing on screen: its caption and its paper, a color or a gradient</summary>
     [PropertyGridVisible]
-    [PropertyGridName("Drawing background")]
+    [PropertyGridName("Drawing properties")]
     [PropertyGridIcon(PropertyGridIcon.Swatches)]
     public void EditDrawingBackground()
     {

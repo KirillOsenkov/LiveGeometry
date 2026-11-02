@@ -95,6 +95,23 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         return FindExpressionParts(Text ?? "").Count > 0;
     }
 
+    /// <summary>
+    /// Whether the label has had its first Heading or Explanation style, which names it as
+    /// the caption expects and lays the caption out (<see cref="CaptionStyleValue"/>); a
+    /// label made from the drawing's page has. Later changes of the style are plain.
+    /// </summary>
+    public bool CaptionMade { get; set; }
+
+    [PropertyGridVisible]
+    [PropertyGridName("Style")]
+    [PropertyGridGroup("Style")]
+    [PropertyGridSection(PropertyGridSection.Style)]
+    [PropertyGridCustomValueProvider(typeof(CaptionStyleValue))]
+    public override IFigureStyle StyleDisplay
+    {
+        get => base.StyleDisplay; set => base.StyleDisplay = value;
+    }
+
     #region Pinning
 
     LabelPin pin;
@@ -188,8 +205,14 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
 
     /// <summary>
     /// The width of the label in pixels, its text wrapping to fit; 0 lets every line run as
-    /// long as it is.
+    /// long as it is. A row of the grid (2026-11-01), unset by default: a caption gets its
+    /// width from the layout, any other label from here.
     /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Wrap width")]
+    [PropertyGridSection(PropertyGridSection.Display, 25)]
+    [PropertyGridPreferredEditor("UpDown")]
+    [Domain(0, 4000)]
     public double WrapWidth
     {
         get => wrapWidth;

@@ -121,6 +121,10 @@ public partial class MainView : UserControl
         KeepDrawingOfEditor();
         drawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
 
+        // a caption made in the editor (Caption: a label given the Heading or the
+        // Explanation style, the drawing's page) is laid out as the gallery's are
+        drawingHost.DrawingControl.DrawingAttach += drawing => drawing.LayOutCaption = () => GalleryDrawing.Fit(drawing, plane: null);
+
         // the side the user put the side panel on, kept between runs (a left-handed or a
         // right-to-left habit)
         drawingHost.PanelAtLeft = SettingsStore.Current.Get(SidePanelKey) == "Left";

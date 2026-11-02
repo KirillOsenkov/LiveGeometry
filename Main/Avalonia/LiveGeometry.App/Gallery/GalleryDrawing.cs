@@ -17,9 +17,9 @@ namespace LiveGeometry;
 /// </summary>
 public static class GalleryDrawing
 {
-    public const string TitleName = "Title";
-    public const string DescriptionName = "Description";
-    public const string HintName = "Hint";
+    public const string TitleName = Caption.TitleName;
+    public const string DescriptionName = Caption.DescriptionName;
+    public const string HintName = Caption.HintName;
 
     /// <summary>The caption beside the figure is a column this wide (wider only for a heading that needs it)</summary>
     public const double CaptionWidth = 400;
@@ -57,32 +57,15 @@ public static class GalleryDrawing
 
     public static bool HasCaption(Drawing drawing)
     {
-        return FindCaption(drawing, out _, out _);
+        return Caption.HasCaption(drawing);
     }
 
+    /// <summary>A caption is a heading, with an explanation under it or not (2026-11-01; both were needed before)</summary>
     static bool FindCaption(Drawing drawing, out Label title, out Label description)
     {
-        title = FindCaptionLabel(drawing, TitleName, StyleManager.HeadingStyleName);
-        description = FindCaptionLabel(drawing, DescriptionName, StyleManager.ExplanationStyleName);
-        return title != null && description != null;
-    }
-
-    /// <summary>
-    /// A part of the caption: the label of its name, else the first label in its style that
-    /// has none of the caption's names (the hint is in the explanation's style), so that
-    /// picking the style is all it takes
-    /// </summary>
-    static Label FindCaptionLabel(Drawing drawing, string name, string styleName)
-    {
-        if (drawing.Figures[name] is Label named)
-        {
-            return named;
-        }
-
-        return drawing.Figures
-            .OfType<Label>()
-            .FirstOrDefault(label => label.Name is not (TitleName or DescriptionName or HintName)
-                && label.Style?.Name == styleName);
+        title = Caption.FindTitle(drawing);
+        description = Caption.FindDescription(drawing);
+        return title != null;
     }
 
     /// <summary>
@@ -196,15 +179,19 @@ public static class GalleryDrawing
         {
             SetCaption(LabelPin.TopRight, column, title, description, hint);
             var titleSize = title.MeasureSize();
-            var descriptionSize = description.MeasureSize();
+            double descriptionHeight = description != null ? lineGapPixels + description.MeasureSize().Height : 0;
             double hintHeight = hint != null ? hintGap + hint.MeasureSize().Height : 0;
-            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height + hintHeight;
-            double top =System.Math.Max(textMarginPixels, (canvasHeight - textHeight) / 2);
+            double textHeight = titleSize.Height + descriptionHeight + hintHeight;
+            double top = System.Math.Max(textMarginPixels, (canvasHeight - textHeight) / 2);
             title.PinOffset = new Point(textMarginPixels, top);
-            description.PinOffset = new Point(textMarginPixels, top + titleSize.Height + lineGapPixels);
+            if (description != null)
+            {
+                description.PinOffset = new Point(textMarginPixels, top + titleSize.Height + lineGapPixels);
+            }
+
             if (hint != null)
             {
-                hint.PinOffset = new Point(textMarginPixels, top + titleSize.Height + lineGapPixels + descriptionSize.Height + hintGap);
+                hint.PinOffset = new Point(textMarginPixels, top + titleSize.Height + descriptionHeight + hintGap);
             }
 
             room = new Rect(
@@ -217,9 +204,9 @@ public static class GalleryDrawing
         {
             SetCaption(LabelPin.BottomLeft, canvasWidth - 2 * textMarginPixels, title, description, hint);
             var titleSize = title.MeasureSize();
-            var descriptionSize = description.MeasureSize();
+            double descriptionHeight = description != null ? lineGapPixels + description.MeasureSize().Height : 0;
             double hintHeight = hint != null ? hintGap + hint.MeasureSize().Height : 0;
-            double textHeight = titleSize.Height + lineGapPixels + descriptionSize.Height + hintHeight;
+            double textHeight = titleSize.Height + descriptionHeight + hintHeight;
             double roomHeight = System.Math.Max(
                 canvasHeight - margin - gapPixels - textHeight - textMarginPixels,
                 stackedFigureShare * canvasHeight);
@@ -227,7 +214,11 @@ public static class GalleryDrawing
 
             // pinned at the bottom: an offset is from there to the label's lower edge
             title.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height);
-            description.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height - lineGapPixels - descriptionSize.Height);
+            if (description != null)
+            {
+                description.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - titleSize.Height - descriptionHeight);
+            }
+
             if (hint != null)
             {
                 hint.PinOffset = new Point(textMarginPixels, canvasHeight - textTop - textHeight);

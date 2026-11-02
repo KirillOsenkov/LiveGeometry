@@ -39,10 +39,11 @@ const GalleryDrawing = {
         return GalleryDrawing.findCaption(drawing) != null;
     },
 
+    /** A caption is a heading, with an explanation under it or not (description null then) */
     findCaption(drawing) {
         const title = GalleryDrawing.findCaptionLabel(drawing, GalleryDrawing.TitleName, StyleManager.HeadingStyleName);
         const description = GalleryDrawing.findCaptionLabel(drawing, GalleryDrawing.DescriptionName, StyleManager.ExplanationStyleName);
-        return title != null && description != null ? { title, description } : null;
+        return title != null ? { title, description } : null;
     },
 
     /**
@@ -171,29 +172,35 @@ const GalleryDrawing = {
         if (isWide) {
             GalleryDrawing.setCaption(LabelPin.TopRight, column, title, description, hint);
             const titleSize = title.measureSize();
-            const descriptionSize = description.measureSize();
+            const descriptionHeight = description != null ? lineGap + description.measureSize().height : 0;
             const hintHeight = hint != null ? hintGap + hint.measureSize().height : 0;
-            const textHeight = titleSize.height + lineGap + descriptionSize.height + hintHeight;
+            const textHeight = titleSize.height + descriptionHeight + hintHeight;
             const top = Math.max(textMargin, (canvasHeight - textHeight) / 2);
             title.pinOffset = new Point(textMargin, top);
-            description.pinOffset = new Point(textMargin, top + titleSize.height + lineGap);
+            if (description != null) {
+                description.pinOffset = new Point(textMargin, top + titleSize.height + lineGap);
+            }
+
             if (hint != null) {
-                hint.pinOffset = new Point(textMargin, top + titleSize.height + lineGap + descriptionSize.height + hintGap);
+                hint.pinOffset = new Point(textMargin, top + titleSize.height + descriptionHeight + hintGap);
             }
 
             room = new Rect(margin, margin, canvasWidth - margin - gap - column - textMargin - margin, canvasHeight - 2 * margin);
         } else {
             GalleryDrawing.setCaption(LabelPin.BottomLeft, canvasWidth - 2 * textMargin, title, description, hint);
             const titleSize = title.measureSize();
-            const descriptionSize = description.measureSize();
+            const descriptionHeight = description != null ? lineGap + description.measureSize().height : 0;
             const hintHeight = hint != null ? hintGap + hint.measureSize().height : 0;
-            const textHeight = titleSize.height + lineGap + descriptionSize.height + hintHeight;
+            const textHeight = titleSize.height + descriptionHeight + hintHeight;
             const roomHeight = Math.max(canvasHeight - margin - gap - textHeight - textMargin, stackedFigureShare * canvasHeight);
             const textTop = margin + roomHeight + gap;
 
             // pinned at the bottom: an offset is from there to the label's lower edge
             title.pinOffset = new Point(textMargin, canvasHeight - textTop - titleSize.height);
-            description.pinOffset = new Point(textMargin, canvasHeight - textTop - titleSize.height - lineGap - descriptionSize.height);
+            if (description != null) {
+                description.pinOffset = new Point(textMargin, canvasHeight - textTop - titleSize.height - descriptionHeight);
+            }
+
             if (hint != null) {
                 hint.pinOffset = new Point(textMargin, canvasHeight - textTop - textHeight);
             }

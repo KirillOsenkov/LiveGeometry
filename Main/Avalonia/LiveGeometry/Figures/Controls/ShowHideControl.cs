@@ -193,13 +193,82 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
 
     #region Pinning
 
+    LabelPin pin;
+
     /// <summary>
     /// A box pinned to a corner of the canvas stays there in pixels while the plane zooms
     /// and pans, as a pinned label does (<see cref="Label.Pin"/>). Boxes stacked at places
     /// in the plane were a different number of pixels apart at every zoom: overlapping on
-    /// a phone, far apart on a big screen. Only a file pins a box.
+    /// a phone, far apart on a big screen. A row of the grid since 2026-11-01 (only a file
+    /// pinned a box before): pinning keeps the box where it is on the screen.
     /// </summary>
-    public LabelPin Pin { get; set; }
+    [PropertyGridVisible]
+    [PropertyGridName("Pinned to")]
+    [PropertyGridSection(PropertyGridSection.Display, 30)]
+    [PropertyGridCustomValueProvider(typeof(PinValue))]
+    public LabelPin Pin
+    {
+        get => pin;
+        set
+        {
+            if (value == pin)
+            {
+                return;
+            }
+
+            if (value != LabelPin.None && HasCanvas)
+            {
+                PinOffset = Pinning.OffsetFrom(value, ToPhysical(Coordinates), MeasureSize(), Drawing.CoordinateSystem.PhysicalSize);
+            }
+
+            pin = value;
+            if (HasCanvas)
+            {
+                UpdateVisual();
+            }
+        }
+    }
+
+    /// <summary>The pin as the grid sets it: undo puts the box back where it was, in the plane or at its offset from the corner (as <see cref="Label.PinValue"/>)</summary>
+    public class PinValue : PropertyValue, IRestorableValue
+    {
+        class SavedPin
+        {
+            public LabelPin Pin;
+            public Point Offset;
+            public Point Coordinates;
+        }
+
+        public object CaptureState()
+        {
+            var box = (ShowHideControl)Parent;
+            return new SavedPin()
+            {
+                Pin = box.Pin,
+                Offset = box.PinOffset,
+                Coordinates = box.Coordinates
+            };
+        }
+
+        public void RestoreState(object state)
+        {
+            var box = (ShowHideControl)Parent;
+            var saved = (SavedPin)state;
+            box.Pin = saved.Pin;
+            if (saved.Pin == LabelPin.None)
+            {
+                box.MoveTo(saved.Coordinates);
+            }
+            else
+            {
+                box.PinOffset = saved.Offset;
+                if (box.HasCanvas)
+                {
+                    box.UpdateVisual();
+                }
+            }
+        }
+    }
 
     /// <summary>Pixels from the pinned corner of the canvas to the same corner of the box</summary>
     public Point PinOffset { get; set; }

@@ -179,7 +179,31 @@ Default names, subscripts, labels that say numbers, wrapping, names of lines and
   which it covered) - since 2026-10-23 on every label (`LabelBase`), so a measurement or
   a name can sit on one over a busy spot; a free text writes the attribute after its own,
   as the gallery's files have it (`WritesBackdropLast`). Pinned labels draw above figures,
-  zoom to fit ignores them, thumbnails hide them.
+  zoom to fit ignores them, thumbnails hide them. `WrapWidth` is a row of the grid too
+  ("Wrap width", 2026-11-01), unset by default: a caption gets its width from the layout,
+  any other label from here. A show/hide box has the same "Pinned to" row
+  (`ShowHideControl.Pin`, 2026-11-01; only a file pinned a box before), with the same undo
+  (`ShowHideControl.PinValue`): the gallery's layout arranges boxes pinned to the top left
+  corner, so a user's can be laid out as the gallery's are.
+- **A caption made in the editor** (`Figures/Controls/Caption.cs`, 2026-11-01; the
+  gallery's `GalleryDrawing` finds the caption through it): a user gets what the gallery's
+  drawings have two ways. Picking the Heading or the Explanation style for a label
+  (`CaptionStyleValue`, the Style row's value of a `Label`, an `ISelfRecordingValue`): the
+  first time a label gets either style it is named as the caption expects, Title or
+  Description, if its name is a default one and the name is free, and once the drawing has
+  a heading the caption is laid out (a heading alone is a caption; the explanation is
+  optional, in the app and the player alike, since 2026-11-01 - both were needed before);
+  later changes of the label's style are plain (`Label.CaptionMade`). Or typing on the
+  drawing's page, which has Title and Description rows (`Drawing.Title`,
+  `Drawing.Description`, `CaptionTextValue`): the label is made, named and styled, at the
+  middle of the view until the layout pins it, and lays the caption out once there is a
+  heading. The layout is the app's (`Drawing.LayOutCaption`, set on every
+  drawing the editor attaches to `GalleryDrawing.Fit`; null in the player and the tools),
+  recorded as a `CallMethodAction` in the pick's or the text's own transaction
+  (`Caption.RecordLayout`): undo puts the labels' pin, offsets, wrap width and backdrop,
+  the view and Zoom to fit back; from then on Zoom to fit lays the caption out
+  (`Drawing.FitToWindow`). The caption stays the user's to drag, as any pinned label. The
+  label's page is shown again after the pick, since its rows changed under it.
 - **A label's text is edited where it is** (`Behaviors/InPlaceTextEditor.cs`, 2026-10-17): a
   double click on a text label with the Drag tool (not a locked one, nor a gallery
   drawing's own text) puts a box over it in its font, size, padding and wrap width, so the

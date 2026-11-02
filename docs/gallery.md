@@ -59,10 +59,12 @@
   (`AB` for `Segment8`). Rerunning `--rewrite` on the folder changes nothing, so a generated
   drawing (below) can be normalized the same way after regenerating.
 - **The caption** (`Title` + `Description`, which may contain live expressions - then list the
-  points as dependencies) is pinned to the screen. Its labels are the ones named Title and
+  points as dependencies; the description is optional since 2026-11-01) is pinned to the screen. Its labels are the ones named Title and
   Description, else the first in the `Heading` and the `Explanation` style
-  (`GalleryDrawing.FindCaptionLabel`, the player's `findCaptionLabel`; 2026-10-16: a label
-  given the style and not the name was no caption, and a user had to do both). The files
+  (`Caption.Find` in the library, the player's `findCaptionLabel`; 2026-10-16: a label
+  given the style and not the name was no caption, and a user had to do both). A user
+  makes one in the editor by picking the style or on the drawing's page: see "A caption
+  made in the editor" in `docs/labels.md`. The files
   carry no X/Y and `GalleryDrawing.Fit` recomputes pin, offsets and wrap width at open
   time: a column at the
   right in a wide canvas, a strip at the bottom in a tall one. Labels are sized in pixels, so

@@ -139,9 +139,11 @@ Default styles and the palette, point shapes and emoji, dashes, textured fills, 
   On the Spectrum tab the surface pressed last (field, hue, opacity) takes them as fine
   steps, 1% or 1°, ten with Shift (`DragSurface.Stepped`); a step of 1/255 left the color
   as it was once rounded, and a press that changes nothing looks broken.
-- **The paper** is `Drawing.Background`, edited through "Drawing background" on the settings
-  page (`AppSettings.EditDrawingBackground`; `DrawingHost.ShowDrawingProperties` puts the
-  drawing itself in the property grid). "Reset to default" (the theme's paper) shows only while
+- **The paper** is `Drawing.Background`, edited through "Drawing properties" on the settings
+  page ("Drawing background" until 2026-11-01; `AppSettings.EditDrawingBackground`;
+  `DrawingHost.ShowDrawingProperties` puts the drawing itself in the property grid, whose
+  page has the Title and Description rows of the caption too, see "A caption made in the
+  editor" in `docs/labels.md`). "Reset to default" (the theme's paper) shows only while
   the paper is not the theme's, and "Same paper as in Light" only while there is a Dark override: both come and go
   as the paper changes (`[PropertyGridLiveCondition]`: the button is made hidden and the grid
   asks `CanEdit` again on each named `PropertyChanged`; the divider over destructive buttons
