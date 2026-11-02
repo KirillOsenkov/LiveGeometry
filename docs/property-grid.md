@@ -118,11 +118,19 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   centered, not zoomed out to. What the view can't move - a caption, any label pinned to
   the screen - or what has no room to go to, gets the panel on the other side for that page
   (on a phone the bottom half); right after the button the panel stays where the user
-  put it. The panel is placed once the page has settled (posted at Background, unseen
-  until then: the value plates and style swatches fill in after the first layout, and the
-  rows' shared caption column settles on a second pass - measured at once, the panel came
-  out 50 px narrower than it is), with a real layout pass (`UpdateLayout`), so the grid
-  raises `VisibilityChanged` after its rows are built. Tried and left (2026-10-17, by
+  put it. The panel is placed once the page has settled (posted at Background: the value
+  plates and style swatches fill in after the first layout, and the rows' shared caption
+  column settles on a second pass - measured at once, the panel came out 50 px narrower
+  than it is), with a real layout pass (`UpdateLayout`), so the grid raises
+  `VisibilityChanged` after its rows are built. A panel that was away is unseen (opacity 0)
+  until then, so that it never shows on the wrong side first; one that is up stays up with
+  the new page where it is and moves then if it must (`panelUp`, 2026-11-01: hidden
+  meanwhile too, it blinked at every change of the selection, since a frame was drawn
+  without it before the posted placement ran). Up means drawn up: a click on another
+  figure clears the selection and selects it in one go, so the panel is put away and
+  given the new page before a frame is drawn, and counts as up throughout (a posted job
+  marks it away only if it is still away when the job runs, after any placement posted
+  meanwhile). Tried and left (2026-10-17, by
   screenshots): sliding a caption out from under the panel (its plate then covered the
   figure, and the text being edited moved), and always taking the side that covers less
   (the panel jumped from side to side between clicks).

@@ -100,11 +100,19 @@ public partial class DrawingHost
     // the placement waiting for the page to settle, if any
     int pendingPlacement;
 
+    // Whether the panel is on the screen as it was last drawn. Put away and given another
+    // page in one go (a click on a figure clears the selection first, then selects it;
+    // the panel is hidden and shown again before a frame is drawn) it is still up.
+    bool panelUp;
+
     /// <summary>
     /// The panel was given a page to show, or put away. A page fills in a moment after it is
     /// built (the value under an expression box, the swatches of a style), and only then has
-    /// its size: the panel is placed then, and stays unseen until it is, so that it never
-    /// shows on the wrong side first.
+    /// its size: the panel is placed then. A panel that was away stays unseen until it is,
+    /// so that it never shows on the wrong side first; one that is up stays up where it is,
+    /// with the new page, and moves then if it must (the side rarely changes). Hidden
+    /// meanwhile too, it blinked at every change of the selection: a frame or more was
+    /// drawn without it before the placement ran.
     /// </summary>
     void PlaceSidePanel()
     {
@@ -113,10 +121,26 @@ public partial class DrawingHost
         {
             sidePanel.Opacity = 1;
             PlaceSidePanelNow(reveal: false);
+
+            // away for good only if nothing shows it again before the next frame: this
+            // runs after a placement posted meanwhile would have been posted
+            Dispatcher.UIThread.Post(
+                () =>
+                {
+                    if (!sidePanel.IsVisible)
+                    {
+                        panelUp = false;
+                    }
+                },
+                DispatcherPriority.Background);
             return;
         }
 
-        sidePanel.Opacity = 0;
+        if (!panelUp)
+        {
+            sidePanel.Opacity = 0;
+        }
+
         bool reveal = revealSelection;
         bool chosen = sideChosen;
         Dispatcher.UIThread.Post(
@@ -125,6 +149,7 @@ public partial class DrawingHost
                 if (placement == pendingPlacement)
                 {
                     sidePanel.Opacity = 1;
+                    panelUp = true;
                     PlaceSidePanelNow(reveal, chosen);
                 }
             },
