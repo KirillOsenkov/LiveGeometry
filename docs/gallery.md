@@ -281,6 +281,14 @@
   April 1902 is not described anywhere found (his column gave it; the four-piece one came
   from C. W. McElroy two weeks later), so the five-piece drawing is the natural one, not
   his.
+- **Inscribed Square in a Triangle** (`SquareInTriangle.lgf`, 2026-11-01, the maintainer's,
+  hand-written, at the end of the gallery): the classic construction by similarity - a
+  square hung under the base (its far corners `PointByCoordinates` from A and B, so the
+  square turns with the base), lines from its bottom corners to the apex, the crossings
+  with the base, perpendiculars up (`FaintDashedLine`, the gray row) to the sides, and the
+  square that results. Lines rather than segments, since the drawing shows where they go
+  past the base. Half the height on a phone (`stackedFigureShare: 0.5`): the figure is
+  taller than wide and came out tiny at a third.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

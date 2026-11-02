@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-23" Top="8.5" Right="35" Bottom="-14.5" />
+  <Styles />
+  <Figures>
+    <FreePoint Name="A" X="-6" Y="0" />
+    <FreePoint Name="B" X="6" Y="0" />
+    <Segment Name="AB" Style="ThickPurpleLine">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <FreePoint Name="C" X="3" Y="6.65" />
+    <Segment Name="AC" Style="ThickPurpleLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="BC" Style="ThickPurpleLine">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointByCoordinates Name="D" X="A.X - A.Y + B.Y" Y="A.X + A.Y - B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" X="-A.Y + B.X + B.Y" Y="A.X - B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="AD">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="DE">
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="BE">
+      <Dependency Name="E" />
+      <Dependency Name="B" />
+    </Segment>
+    <Polygon Name="ABED" Style="GreenOutline">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Polygon>
+    <LineTwoPoints Name="CD" Style="CyanLine">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="CE" Style="CyanLine">
+      <Dependency Name="C" />
+      <Dependency Name="E" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AB" />
+      <Dependency Name="CD" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="G" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AB" />
+      <Dependency Name="CE" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="g" Style="FaintDashedLine" RightAngleCorner="3">
+      <Dependency Name="AB" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="h" Style="FaintDashedLine" RightAngleCorner="2">
+      <Dependency Name="AB" />
+      <Dependency Name="G" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="H" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AC" />
+      <Dependency Name="g" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I" Algorithm="IntersectLineAndLine">
+      <Dependency Name="BC" />
+      <Dependency Name="h" />
+    </IntersectionPoint>
+    <Segment Name="HI" Style="ThickBrownLine">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Segment>
+    <Polygon Name="FGIH" Style="BrownOutline">
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="GI" Style="ThickBrownLine">
+      <Dependency Name="I" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="FG" Style="ThickBrownLine">
+      <Dependency Name="G" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="FH" Style="ThickBrownLine">
+      <Dependency Name="F" />
+      <Dependency Name="H" />
+    </Segment>
+    <Label Name="Title" Style="Heading" Text="Inscribed Square in a Triangle" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Construct a square under the base. Then draw lines from the bottom two vertices of the square to the top of the triangle.\n\nMark where the two lines cross the base. The bottom side of the square is projected onto the segment between these two points.\n\nDraw perpendiculars up from these points and mark where they meet the sides of the triangle. The resulting square is similar to the big one, but inscribed in the triangle: its bottom two vertices are on the base and the top two are on the sides.\n\nDrag the corners of the triangle." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+  </Figures>
+</Drawing>
