@@ -8,7 +8,9 @@ using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Threading;
 
 namespace LiveGeometry;
@@ -78,6 +80,14 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         if (backdrop)
         {
             ApplyBackdrop();
+        }
+
+        // the pieces take the colors of the theme on screen, which may have changed (the
+        // drawing applies every style again after a switch of theme)
+        if (TextBlock.Inlines?.Count > 0)
+        {
+            shownText = null;
+            ShowTextAgain();
         }
 
         if (Drawing != null)
@@ -566,6 +576,73 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     /// </summary>
     protected virtual string ShownText(string text) => text;
 
+    /// <summary>
+    /// The pieces of the shown text that have a color of their own, in the order of the
+    /// text: none here; a number's caption says its formula in the colors an expression box
+    /// shows it in (<see cref="Number.CaptionPieces"/>). The rest of the text is in the
+    /// label's own color.
+    /// </summary>
+    protected virtual IReadOnlyList<ClassifiedSpan> ShownPieces(string shown) => [];
+
+    /// <summary>The text the TextBlock was last given (its Text is null while it holds runs)</summary>
+    string shownText;
+
+    /// <summary>The text on screen right now, for what measures it (the TextBlock's Text is null while it holds colored runs)</summary>
+    protected string CurrentShownText => shownText;
+
+    /// <summary>
+    /// The text into the TextBlock: as it is, or, where pieces of it have colors of their
+    /// own, as a run per piece in its color and a run in the label's own color between them.
+    /// A TextBlock draws either its Text or its Inlines: the Text goes first (setting it
+    /// clears the runs), then the runs. Pieces that don't fit the text (a formula changed
+    /// while the caption still says the old one) leave it plain.
+    /// </summary>
+    void SetShownText(string shown)
+    {
+        shownText = shown;
+        var pieces = ShownPieces(shown);
+        TextBlock.Text = shown;
+        if (pieces.Count == 0 || shown == null || pieces[^1].End > shown.Length)
+        {
+            return;
+        }
+
+        TextBlock.Text = null;
+        var inlines = TextBlock.Inlines;
+        int at = 0;
+        foreach (var piece in pieces)
+        {
+            if (piece.Start > at)
+            {
+                inlines.Add(new Run(shown.Substring(at, piece.Start - at)));
+            }
+
+            inlines.Add(new Run(shown.Substring(piece.Start, piece.Length)) { Foreground = PieceBrush(piece.Class) });
+            at = piece.End;
+        }
+
+        if (at < shown.Length)
+        {
+            inlines.Add(new Run(shown.Substring(at)));
+        }
+    }
+
+    /// <summary>A piece's color on the paper: the theme's Expressions color of its kind, as the expression boxes have it</summary>
+    static IBrush PieceBrush(ExpressionClass kind)
+    {
+        var theme = AppTheme.Current;
+        var color = kind switch
+        {
+            ExpressionClass.Bracket => theme.ExpressionBracket,
+            ExpressionClass.Figure => theme.ExpressionFigure,
+            ExpressionClass.Property => theme.ExpressionProperty,
+            ExpressionClass.Function => theme.ExpressionFunction,
+            ExpressionClass.Number => theme.ExpressionNumber,
+            _ => theme.ExpressionReserved
+        };
+        return new ImmutableSolidColorBrush(color);
+    }
+
     /// <summary>The text shown again, after something <see cref="ShownText"/> goes by has changed</summary>
     protected void ShowTextAgain()
     {
@@ -580,9 +657,9 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
         pendingText?.Dispose();
         pendingText = null;
         var shown = ShownText(processedText);
-        if (TextBlock.Text != shown)
+        if (shownText != shown)
         {
-            TextBlock.Text = shown;
+            SetShownText(shown);
             textShownAt = Stopwatch.GetTimestamp();
         }
     }
@@ -590,7 +667,7 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     void ShowTextSoon()
     {
         var shownFor = Stopwatch.GetElapsedTime(textShownAt);
-        if (TextBlock.Text == ShownText(processedText) || shownFor >= TextInterval)
+        if (shownText == ShownText(processedText) || shownFor >= TextInterval)
         {
             ShowText();
             return;
@@ -605,12 +682,12 @@ public abstract partial class LabelBase : ControlBase, IRenamableExpressions
     {
         pendingText = null;
         var shown = ShownText(processedText);
-        if (TextBlock.Text == shown)
+        if (shownText == shown)
         {
             return;
         }
 
-        TextBlock.Text = shown;
+        SetShownText(shown);
         textShownAt = Stopwatch.GetTimestamp();
 
         // a label placed by its size (a pinned caption, a point's name kept clear of its

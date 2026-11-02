@@ -162,6 +162,24 @@ class NumberFigure extends CompositeFigure {
         return this.showName ? NameDisplay.format(this.name) + " = " + text : text;
     }
 
+    /**
+     * The pieces of the caption that are the formula's, as the compiler read them, placed
+     * where the formula is in captionText (after "a = "), for the colors the app's expression
+     * boxes show it in. None where the caption doesn't say the formula, or it doesn't compile.
+     */
+    get captionPieces() {
+        const classification = this.expression.classification;
+        if (!this.showFormula || this.isTyped || classification.length === 0) {
+            return [];
+        }
+
+        // in the order of the text (the compiler notes a piece as it binds it: a call's name before its arguments, but a ° after the number before it)
+        const offset = this.showName ? NameDisplay.format(this.name).length + 3 : 0;
+        return [...classification]
+            .sort((a, b) => a.start - b.start)
+            .map(piece => ({ start: piece.start + offset, length: piece.length, kind: piece.kind }));
+    }
+
     /** The caption says the number anew, where it is on the paper; a hidden one waits until it shows */
     refreshCaption() {
         if (this.drawing != null && this.visible) {
@@ -335,6 +353,11 @@ class NumberCaption extends LabelWithOffset {
 
     allowMove() {
         return false;
+    }
+
+    /** The formula in the colors of its pieces, as the app's expression boxes show it */
+    get shownPieces() {
+        return this.number.captionPieces;
     }
 
     updateVisual() {

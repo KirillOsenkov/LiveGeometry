@@ -49,6 +49,7 @@ public class DrawingExpression : IValueProvider
             IsValid = value == null;
             // (a value given as a delegate has no tree)
             Bound = null;
+            Classification = [];
         }
     }
     public string Text { get; set; }
@@ -58,6 +59,12 @@ public class DrawingExpression : IValueProvider
     /// <summary>The tree the text compiled to last, its names resolved (<see cref="LinearForms"/>); null when it didn't</summary>
     public BoundExpression Bound { get; private set; }
 
+    /// <summary>
+    /// What the pieces of the text are, as it compiled last (<see cref="CompileResult.Classification"/>),
+    /// for a caption that says the formula in colors; none when it didn't compile
+    /// </summary>
+    public IReadOnlyList<ClassifiedSpan> Classification { get; private set; } = [];
+
     public void Recalculate()
     {
         var result = Compiler.Instance.CompileExpression(
@@ -65,6 +72,7 @@ public class DrawingExpression : IValueProvider
              Text,
              f => !f.DependsOn(ParentFigure));
         IsValid = result.IsSuccess;
+        Classification = IsValid ? result.Classification : [];
         if (!IsValid)
         {
             // What it compiled to before goes too: it held the figures it named then, one

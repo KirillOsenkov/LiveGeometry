@@ -107,6 +107,27 @@ class LabelBase extends ControlBase {
         return text;
     }
 
+    /**
+     * The pieces of the shown text that have a color of their own, { start, length, kind }
+     * in the order of the text: none here; a number's caption says its formula in the colors
+     * the app's expression boxes show it in (NumberFigure.captionPieces). The rest of the
+     * text is in the label's own color.
+     */
+    get shownPieces() {
+        return [];
+    }
+
+    /** The pieces as the renderer takes them, { start, length, color }, in the theme's Expressions colors; none that don't fit the text */
+    coloredPieces(text) {
+        const pieces = this.shownPieces;
+        if (pieces.length === 0 || pieces[pieces.length - 1].start + pieces[pieces.length - 1].length > text.length) {
+            return [];
+        }
+
+        const theme = AppTheme.of(this.drawing);
+        return pieces.map(piece => ({ start: piece.start, length: piece.length, color: theme.expressionColor(piece.kind) }));
+    }
+
     /** The text laid out at the font and wrap width on screen (the TextBlock's layout), measured by the canvas */
     getTextLayout() {
         const canvas = this.canvas;
@@ -275,7 +296,15 @@ class LabelBase extends ControlBase {
             return;
         }
 
-        renderer.drawText(layout, topLeft, this.font, this.textColor, this.padding, this.backdropBrush, this.resolvedStyle?.underline === true);
+        renderer.drawText(
+            layout,
+            topLeft,
+            this.font,
+            this.textColor,
+            this.padding,
+            this.backdropBrush,
+            this.resolvedStyle?.underline === true,
+            this.coloredPieces(layout.text));
     }
 
     /** A plate of the paper's color behind the text (Backdrop in C#): a caption over a grid, a number over a busy spot */

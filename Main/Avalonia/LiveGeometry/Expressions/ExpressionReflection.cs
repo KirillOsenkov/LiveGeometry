@@ -109,8 +109,11 @@ public static class ExpressionReflection
         }
 
         return named.FirstOrDefault(method => !IsNumberFunction(method)
-            && (method.GetParameters().Length == argumentCount || TakesPointArray(method) && argumentCount >= 3));
+            && (method.GetParameters().Length == argumentCount || TakesPointArray(method) && argumentCount >= FewestPolygonPoints));
     }
+
+    /// <summary>How many points a function of any number of them takes at least: an area is a triangle's or more</summary>
+    public const int FewestPolygonPoints = 3;
 
     /// <summary>
     /// log_2, log_10: the logarithm whose base the name says after the _, as Desmos writes it

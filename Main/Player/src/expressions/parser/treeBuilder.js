@@ -37,7 +37,7 @@ class ExpressionTreeBuilder {
                 return this.createIdentifierExpression(root);
             case NodeType.Constant:
                 // the language writes decimals with a point, whatever the user's culture
-                return new BoundConstant(Number(root.token.text));
+                return this.classified(new BoundConstant(Number(root.token.text)), root.token, ExpressionClass.Number);
             case NodeType.FunctionCall:
                 return this.createCallExpression(root);
             case NodeType.PropertyAccess:
@@ -45,7 +45,7 @@ class ExpressionTreeBuilder {
             case NodeType.Degrees: {
                 // 30°: the number in radians, what trigonometry takes
                 const operand = this.createExpressionCore(root.children[0]);
-                return operand == null ? null : new BoundBinary(BoundOperator.Multiply, operand, new BoundConstant(Math.PI / 180));
+                return operand == null ? null : this.classified(new BoundBinary(BoundOperator.Multiply, operand, new BoundConstant(Math.PI / 180)), root.token, ExpressionClass.Reserved);
             }
 
             case NodeType.AbsoluteValue: {
@@ -74,15 +74,25 @@ class ExpressionTreeBuilder {
         return new BoundNegation(operand);
     }
 
+    /** The tree with its token noted as what it was bound to (CompileResult.classification); one that didn't bind is noted as nothing */
+    classified(bound, token, kind) {
+        if (bound != null) {
+            this.status.classify(token, kind);
+        }
+
+        return bound;
+    }
+
     createIdentifierExpression(root) {
         const text = root.token.text;
+        const token = root.token;
 
         // a name in backticks is the number called exactly that: never pi, e, a function's
         // x or two points run together
-        if (root.token.isQuoted) {
+        if (token.isQuoted) {
             const quoted = this.binder.resolveFigureExactly(text);
             if (quoted != null && quoted.isNumber === true) {
-                return this.createNumberExpression(quoted, text);
+                return this.classified(this.createNumberExpression(quoted, text), token, ExpressionClass.Figure);
             }
 
             this.status.addUnknownIdentifierError(text);
@@ -92,28 +102,28 @@ class ExpressionTreeBuilder {
         // a number called exactly this comes before the reading as two points
         const exact = this.binder.resolveExactNumber(text);
         if (exact != null) {
-            return this.createNumberExpression(exact, text);
+            return this.classified(this.createNumberExpression(exact, text), token, ExpressionClass.Figure);
         }
 
         // pi is π whatever the drawing has
         if (text === "pi" || text === "π" || text === "e") {
-            return this.binder.resolve(text);
+            return this.classified(this.binder.resolve(text), token, ExpressionClass.Reserved);
         }
 
         const resolveTwoPoints = this.resolveTwoPoints(text);
         if (resolveTwoPoints != null) {
-            return resolveTwoPoints;
+            return this.classified(resolveTwoPoints, token, ExpressionClass.Figure);
         }
 
         const parameter = this.binder.resolve(text);
         if (parameter != null) {
-            return parameter;
+            return this.classified(parameter, token, ExpressionClass.Reserved);
         }
 
         // a Number in the drawing, by its name: the expression then depends on it
         const number = this.binder.resolveFigure(text);
         if (number != null && number.isNumber === true) {
-            return this.createNumberExpression(number, text);
+            return this.classified(this.createNumberExpression(number, text), token, ExpressionClass.Figure);
         }
 
         this.status.addUnknownIdentifierError(text);
@@ -211,6 +221,8 @@ class ExpressionTreeBuilder {
         }
 
         this.status.dependencies.push(figure);
+        this.status.classify(figureToken, ExpressionClass.Figure);
+        this.status.classify(root.children[1].token, ExpressionClass.Property);
         return new BoundProperty(figure, property);
     }
 
@@ -224,6 +236,7 @@ class ExpressionTreeBuilder {
                 return null;
             }
 
+            this.status.classify(root.token, ExpressionClass.Function);
             const value = args[0] == null ? null : this.createExpressionCore(args[0]);
             return value == null ? null : new BoundCall(ExpressionReflection.builtIn("LogBase"), [value, new BoundConstant(logBase)]);
         }
@@ -234,14 +247,16 @@ class ExpressionTreeBuilder {
             return null;
         }
 
-        // ∠ABC, angle(ABC): the points in one name, run together as the two of a distance are (AB)
+        // ∠ABC, angle(ABC), area(ABCD): the points in one name, run together as the two of a distance are (AB)
         const joinedCount = ExpressionTreeBuilder.joinedPointCount(root);
-        if (joinedCount > 0) {
+        if (joinedCount !== 0) {
+            this.status.classify(root.token, ExpressionClass.Function);
             return this.createJoinedPointsCallExpression(function_, joinedCount, args[0].token);
         }
 
         // angle(∠ABC) is ∠ABC
         if (function_.name === "angle" && args.length === 1 && args[0]?.kind === NodeType.FunctionCall && args[0].token.kind === TokenType.Angle) {
+            this.status.classify(root.token, ExpressionClass.Function);
             return this.createExpressionCore(args[0]);
         }
 
@@ -250,6 +265,8 @@ class ExpressionTreeBuilder {
             this.status.addIncorrectNumberOfArgumentsError(function_.name, args.length);
             return null;
         }
+
+        this.status.classify(root.token, ExpressionClass.Function);
 
         // a function of numbers: each argument is an expression; anything else takes points
         if (method.takesNumbers) {
@@ -319,9 +336,13 @@ class ExpressionTreeBuilder {
         return new BoundPointCall(method, points);
     }
 
+    /** The count of a function that takes any number of points, three at least (area), for joinedPointCount and splitNames */
+    static AnyCount = -1;
+
     /**
      * How many points a call names in its one argument, their names run together: 3 for ∠ABC
-     * and angle(ABC), 2 for distance(AB). 0 for any other call.
+     * and angle(ABC), 2 for distance(AB), AnyCount for area(ABCD), which takes as many as are
+     * named. 0 for any other call.
      */
     static joinedPointCount(call) {
         const argument = call.children.length === 1 ? call.children[0] : null;
@@ -331,22 +352,27 @@ class ExpressionTreeBuilder {
 
         const function_ = FunctionCatalog.find(call.token.text);
         const pointCount = function_ == null ? undefined : PointFunctionNames[function_.name[0].toUpperCase() + function_.name.substring(1)];
-        return pointCount >= 2 ? pointCount : 0;
+        return pointCount >= 2 || pointCount === ExpressionTreeBuilder.AnyCount ? pointCount : 0;
     }
 
     /**
-     * The text read as the names of count points run together, in order (ABC: A, B and C):
-     * as written first, then in any case; a longer name before a shorter one. Null when it
-     * doesn't read so.
+     * The text read as the names of count points run together, in order (ABC: A, B and C), or
+     * of any number of them, three at least, for AnyCount (ABCD): as written first, then in
+     * any case; a longer name before a shorter one. Null when it doesn't read so.
      */
     static splitNames(text, count, names) {
         const sorted = names.filter(name => name != null && name !== "").sort((a, b) => b.length - a.length);
+        const any = count === ExpressionTreeBuilder.AnyCount;
         for (const ignoreCase of [false, true]) {
             const found = [];
             const same = (part, name) => ignoreCase ? part.toLowerCase() === name.toLowerCase() : part === name;
             const split = start => {
-                if (found.length === count) {
-                    return start === text.length;
+                if (start === text.length) {
+                    return any ? found.length >= ExpressionReflection.fewestPolygonPoints : found.length === count;
+                }
+
+                if (!any && found.length === count) {
+                    return false;
                 }
 
                 for (const name of sorted) {
@@ -370,11 +396,13 @@ class ExpressionTreeBuilder {
         return null;
     }
 
-    /** ∠ABC, angle(ABC): a function of points called with their names run together into one */
+    /** ∠ABC, angle(ABC), area(ABCD): a function of points called with their names run together into one */
     createJoinedPointsCallExpression(function_, count, joined) {
         const names = ExpressionTreeBuilder.splitNames(joined.text, count, this.binder.pointNames);
         if (names == null) {
-            this.status.addError("'" + joined.text + "' is not the names of " + count + " points run together");
+            this.status.addError(count === ExpressionTreeBuilder.AnyCount
+                ? "'" + joined.text + "' is not the names of points run together"
+                : "'" + joined.text + "' is not the names of " + count + " points run together");
             return null;
         }
 
@@ -388,7 +416,8 @@ class ExpressionTreeBuilder {
             points.push(point);
         }
 
-        return new BoundPointCall(this.binder.resolveMethod(function_.name, count), points);
+        this.status.classify(joined, ExpressionClass.Figure);
+        return new BoundPointCall(this.binder.resolveMethod(function_.name, points.length), points);
     }
 
     /** The figure a name stands for: in backticks, the one called exactly that */
@@ -397,7 +426,12 @@ class ExpressionTreeBuilder {
     }
 
     resolvePoint(token) {
-        return this.resolvePointFigure(this.resolveFigure(token), token.text);
+        const point = this.resolvePointFigure(this.resolveFigure(token), token.text);
+        if (point != null) {
+            this.status.classify(token, ExpressionClass.Figure);
+        }
+
+        return point;
     }
 
     resolvePointFigure(figure, pointName) {

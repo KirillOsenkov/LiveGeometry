@@ -330,6 +330,31 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         }
     }
 
+    /// <summary>
+    /// The pieces of the caption that are the formula's, as the compiler read them, placed
+    /// where the formula is in <see cref="CaptionText"/> (after "a = "), for the colors the
+    /// expression boxes show it in. None where the caption doesn't say the formula, or it
+    /// doesn't compile right now.
+    /// </summary>
+    public IReadOnlyList<ClassifiedSpan> CaptionPieces
+    {
+        get
+        {
+            if (!showFormula || IsTyped || Expression.Classification.Count == 0)
+            {
+                return [];
+            }
+
+            // in the order of the text (the compiler notes a piece as it binds it: a call's
+            // name before its arguments, but a ° after the number before it)
+            int offset = showName ? NameDisplay.Format(Name).Length + 3 : 0;
+            return Expression.Classification
+                .OrderBy(piece => piece.Start)
+                .Select(piece => piece with { Start = piece.Start + offset })
+                .ToList();
+        }
+    }
+
     #endregion
 
     #region Place
@@ -521,6 +546,12 @@ public class Number : CompositeFigure, INumber, ILengthProvider, IAngleProvider,
         public override bool AllowMove()
         {
             return false;
+        }
+
+        /// <summary>The formula in the colors of its pieces, as an expression box shows it</summary>
+        protected override IReadOnlyList<ClassifiedSpan> ShownPieces(string shown)
+        {
+            return number.CaptionPieces;
         }
 
         public override void UpdateVisual()

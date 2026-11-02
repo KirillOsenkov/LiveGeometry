@@ -148,7 +148,7 @@ public abstract class LabelWithOffset : LabelBase, IMovable
     /// <summary>The label's size on the canvas, in pixels, measured again only when its text or font changed</summary>
     public Size ShownSize()
     {
-        var text = TextBlock.Text ?? "";
+        var text = CurrentShownText ?? "";
         if (text != measuredText || TextBlock.FontSize != measuredFontSize)
         {
             measuredSize = MeasureSize();

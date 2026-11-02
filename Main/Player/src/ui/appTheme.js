@@ -23,7 +23,12 @@ class AppTheme {
         gridMajor: Color.fromUInt32(0xFFD3D3D3),
         gridMinor: Color.fromUInt32(0xFFECECEC),
         text: Color.fromUInt32(0xFF2B3038),
-        textEmphasis: Color.fromUInt32(0xFF000000)
+        textEmphasis: Color.fromUInt32(0xFF000000),
+        expressionFigure: Color.fromUInt32(0xFF267F99),
+        expressionProperty: Color.fromUInt32(0xFFA0522D),
+        expressionFunction: Color.fromUInt32(0xFF008000),
+        expressionNumber: Color.fromUInt32(0xFF8A2BE2),
+        expressionReserved: Color.fromUInt32(0xFF808080)
     });
 
     static Dark = new AppTheme("Dark", {
@@ -41,8 +46,29 @@ class AppTheme {
         gridMajor: Color.fromUInt32(0xFF4A4A4A),
         gridMinor: Color.fromUInt32(0xFF383838),
         text: Color.fromUInt32(0xFFD9DEE6),
-        textEmphasis: Color.fromUInt32(0xFFFFFFFF)
+        textEmphasis: Color.fromUInt32(0xFFFFFFFF),
+        expressionFigure: Color.fromUInt32(0xFF4EC9B0),
+        expressionProperty: Color.fromUInt32(0xFF9CDCFE),
+        expressionFunction: Color.fromUInt32(0xFFDCDCAA),
+        expressionNumber: Color.fromUInt32(0xFFB5CEA8),
+        expressionReserved: Color.fromUInt32(0xFF569CD6)
     });
+
+    /** The Expressions color of a piece of a formula of this kind (ExpressionClass), as the app's expression boxes have it */
+    expressionColor(kind) {
+        switch (kind) {
+            case ExpressionClass.Figure:
+                return this.expressionFigure;
+            case ExpressionClass.Property:
+                return this.expressionProperty;
+            case ExpressionClass.Function:
+                return this.expressionFunction;
+            case ExpressionClass.Number:
+                return this.expressionNumber;
+            default:
+                return this.expressionReserved;
+        }
+    }
 
     static get All() {
         return [AppTheme.Light, AppTheme.Dark];

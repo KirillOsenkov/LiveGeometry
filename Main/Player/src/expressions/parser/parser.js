@@ -137,7 +137,10 @@ class Parser {
     parseTerm(precedence) {
         let term = this.parsePrimary(precedence);
         while (term != null && this.currentTokenKind === TokenType.Degree) {
-            term = new SyntaxNode(NodeType.Degrees, [term]);
+            // (the sign is the node's token, to be colored as pi is)
+            const degrees = new SyntaxNode(NodeType.Degrees, this.currentToken);
+            degrees.children.push(term);
+            term = degrees;
             this.advanceToken();
         }
 

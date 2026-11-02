@@ -10,6 +10,9 @@ class DrawingExpression {
         this.isValid = false;
         this.mValue = null;
         this.dependencies = null;
+
+        /** What the pieces of the text are, as it compiled last (CompileResult.classification), for a caption that says the formula in colors; none when it didn't compile */
+        this.classification = [];
     }
 
     get text() {
@@ -34,6 +37,7 @@ class DrawingExpression {
         const parent = this.parentFigure;
         const result = Compiler.instance.compileExpression(parent.drawing, this.text, f => !f.dependsOn(parent));
         this.isValid = result.isSuccess;
+        this.classification = this.isValid ? result.classification : [];
         if (!this.isValid) {
             // what it compiled to before goes too: it held the figures it named then
             this.mValue = null;

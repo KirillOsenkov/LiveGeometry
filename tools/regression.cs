@@ -1657,6 +1657,33 @@ public class Program
         Require(number.CaptionText == number.Name + " = ∠(A, `my point`, B) / 7 = 12.86", "The number says " + number.CaptionText);
         var copy = ReadLgf(drawing.SaveAsText()).Figures.OfType<Number>().Single();
         Require(copy.ShowFormula && copy.CaptionText == number.CaptionText, "The number read back says " + copy.CaptionText);
+
+        // the caption says the formula in the colors of its pieces, placed after "a = "
+        var pieces = number.CaptionPieces;
+        Require(pieces.Count == 5, "The caption has " + pieces.Count + " pieces: " + string.Join(", ", pieces));
+        Require(
+            pieces.All(piece => piece.Start >= number.Name.Length + 3)
+                && pieces[0].Class == ExpressionClass.Function
+                && number.CaptionText.Substring(pieces[0].Start, pieces[0].Length) == "∠"
+                && pieces[^1].Class == ExpressionClass.Number
+                && number.CaptionText.Substring(pieces[^1].Start, pieces[^1].Length) == "7",
+            "The pieces are " + string.Join(", ", pieces));
+        number.ShowFormula = false;
+        Require(number.CaptionPieces.Count == 0, "A caption without the formula has pieces.");
+
+        // area takes the names of its points run together too, as many as are named
+        Set(drawing, c, nameof(IFigure.Name), value: "C");
+        var d = AddPoint(drawing, x: 0, y: 4);
+        label.Text = "[area(ACBD)] [area(A, C, B, D)] [area(ACB)] [area(acbd)]";
+        Require(label.ProcessedText == "12.000 12.000 6.000 12.000", "The label shows " + label.ProcessedText);
+        Set(drawing, d, nameof(IFigure.Name), value: "Q");
+        Require(label.Text == "[area(ACBQ)] [area(A, C, B, Q)] [area(ACB)] [area(acbQ)]", "The label says " + label.Text);
+        Set(drawing, d, nameof(IFigure.Name), value: "my point");
+        Require(label.Text == "[area(A, C, B, `my point`)] [area(A, C, B, `my point`)] [area(ACB)] [area(A, C, B, `my point`)]", "The label says " + label.Text);
+        foreach (var text in new[] { "area(AC)", "area(ACX)", "area(A)" })
+        {
+            Require(!Compiler.Instance.CompileExpression(drawing, text, figure => true).IsSuccess, text + " compiled.");
+        }
     }
 
     /// <summary>

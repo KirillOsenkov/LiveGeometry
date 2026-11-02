@@ -274,8 +274,14 @@ class CanvasRenderer {
         this.drawEllipse(center, radius, radius, 0, stroke, fill);
     }
 
-    /** Text laid out by the measurer at the top-left, with a plate of the backdrop behind it when given */
-    drawText(layout, topLeft, font, color, padding, backdrop, underline) {
+    /**
+     * Text laid out by the measurer at the top-left, with a plate of the backdrop behind it
+     * when given. Pieces ({ start, length, color }, in the order of the text) are drawn in
+     * their own colors and the text between them in the color given, run by run, each run
+     * measured for where the next starts: for a text of one line, as a number's caption is
+     * (the lines of a wrapped text don't say where in the text they start).
+     */
+    drawText(layout, topLeft, font, color, padding, backdrop, underline, pieces = []) {
         const context = this.context;
         if (backdrop != null) {
             context.fillStyle = this.toFillStyle(backdrop, new Rect(topLeft.x, topLeft.y, layout.width + 2 * padding, layout.height + 2 * padding));
@@ -288,13 +294,39 @@ class CanvasRenderer {
         context.textBaseline = "alphabetic";
         let y = topLeft.y + padding + layout.ascent;
         for (const line of layout.lines) {
-            context.fillText(line.text, topLeft.x + padding, y);
+            if (pieces.length > 0 && layout.lines.length === 1) {
+                this.drawRuns(line.text, pieces, topLeft.x + padding, y, color);
+            } else {
+                context.fillText(line.text, topLeft.x + padding, y);
+            }
+
             if (underline) {
                 context.fillRect(topLeft.x + padding, y + 1, line.width, Math.max(1, TextMeasurer.fontSize(font) / 14));
             }
 
             y += layout.lineHeight;
         }
+    }
+
+    /** One line of text as runs: a piece in its color, the text between pieces in the line's */
+    drawRuns(text, pieces, x, y, color) {
+        const context = this.context;
+        let at = 0;
+        const run = (end, runColor) => {
+            if (end > at) {
+                const piece = text.substring(at, end);
+                context.fillStyle = runColor.toCss();
+                context.fillText(piece, x, y);
+                x += context.measureText(piece).width;
+                at = end;
+            }
+        };
+        for (const piece of pieces) {
+            run(piece.start, color);
+            run(piece.start + piece.length, piece.color);
+        }
+
+        run(text.length, color);
     }
 
     /** A check box with a caption, as a show/hide box draws: the box outlined (filled when checked) in the caption's color */

@@ -6,6 +6,9 @@
 const ExpressionReflection = {
     resolvedMethods: new Map(),
 
+    /** How many points a function of any number of them takes at least: an area is a triangle's or more */
+    fewestPolygonPoints: 3,
+
     /**
      * The method a function of the language (FunctionCatalog, by any of its names) is called
      * through with this many arguments: { name, parameterCount, takesNumbers, takesPoints,
@@ -32,7 +35,7 @@ const ExpressionReflection = {
         const pointCount = PointFunctionNames[name];
         if (pointCount !== undefined) {
             const takesArray = pointCount < 0;
-            return (takesArray ? argumentCount >= 3 : argumentCount === pointCount)
+            return (takesArray ? argumentCount >= ExpressionReflection.fewestPolygonPoints : argumentCount === pointCount)
                 ? { name, parameterCount: takesArray ? 1 : pointCount, takesNumbers: false, takesPoints: true, takesArray, invoke }
                 : null;
         }

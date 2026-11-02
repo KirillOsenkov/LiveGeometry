@@ -257,7 +257,7 @@ const Functions = {
 Functions.compare = (a, b, holds) => Number.isNaN(a) || Number.isNaN(b) ? NaN : (holds(a, b) ? 1 : 0);
 Functions.areEqual = (a, b) => a === b || Math.abs(a - b) <= 1e-9 * Math.max(1, Math.abs(a), Math.abs(b));
 
-/** Which of ours take points (the rest take numbers), and Area takes the points themselves */
+/** Which of ours take points (the rest take numbers), and how many; -1 (ExpressionTreeBuilder.AnyCount) for Area, which takes any number of them */
 const PointFunctionNames = {
     Distance: 2, Angle: 3, Directedangle: 3, Direction: 2, Area: -1
 };

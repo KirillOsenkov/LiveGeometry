@@ -52,12 +52,14 @@ The expression language: renames, cycles, the language itself, exact forms, bind
   rounding being equal (`Math.TangencyTolerance`), for `if(condition, a, b)` -
   `if(condition, a)` has no value where it doesn't hold. `−`, `×`, `·`, `÷` are the
   operators they look like. **`∠ABC` is `angle(A, B, C)`** (2026-10-28): ∠ is another name
-  of angle (`∠(A, B, C)` too), and a function of a fixed number of points also takes their
-  names run together into one name, as AB is a distance: `angle(ABC)`,
-  `directedangle(ABC)`, `distance(AB)` (`ExpressionTreeBuilder.JoinedPointCount` and
-  `SplitNames`: names as written first, then in any case, a longer name before a shorter
-  one). `angle(∠ABC)` is ∠ABC. The renamer keeps the names run together while the new ones
-  read back the same, else writes them apart, `∠(P, B, C)`. **The functions are a closed list** (2026-10-18:
+  of angle (`∠(A, B, C)` too), and a function of points also takes their names run together
+  into one name, as AB is a distance: `angle(ABC)`, `directedangle(ABC)`, `distance(AB)`,
+  and `area(ABCD)` with as many names as are run together, three at least (2026-11-01;
+  `ExpressionTreeBuilder.JoinedPointCount`, `AnyCount` for area, and `SplitNames`: names as
+  written first, then in any case, a longer name before a shorter one, so `ABCD` next to a
+  point called AB is AB, C, D). `angle(∠ABC)` is ∠ABC. The renamer keeps the names run
+  together while the new ones read back the same, else writes them apart, `∠(P, B, C)`.
+  **The functions are a closed list** (2026-10-18:
   `FunctionCatalog`, a method of `Functions` each, by name in any case and its other names;
   until then every method of System.Math with doubles compiled, BitIncrement and
   Log(a, newBase) too), named as the American classroom and Desmos name them: `log` is base
@@ -173,7 +175,9 @@ The expression language: renames, cycles, the language itself, exact forms, bind
   properties, functions, numbers, pi, e and x - and each [...] part of a label's text on
   a faint plate, a pink one where the part doesn't compile. The binder notes what each
   token was bound to (`CompileResult.Classification`, by the token's place in the text, so
-  nothing keeps the whitespace), and only a text that compiles is colored: in a part with
+  nothing keeps the whitespace; the player's `compileResult.js` notes the same, for a
+  number's caption that says its formula, see "Show formula" in `docs/values.md`), and only
+  a text that compiles is colored: in a part with
   an error only the plate says so, and a [ never closed is text like the rest. A box
   follows its drawing's history (a name given to a figure, or taken away). A TextBox draws
   its text in one brush: `ColoredTextPresenter` overrides `TextPresenter.CreateTextLayout`

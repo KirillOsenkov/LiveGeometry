@@ -319,9 +319,9 @@ public class ExpressionTreeBuilder
             return null;
         }
 
-        // ∠ABC, angle(ABC): the points in one name, run together as the two of a distance are (AB)
+        // ∠ABC, angle(ABC), area(ABCD): the points in one name, run together as the two of a distance are (AB)
         int joinedCount = JoinedPointCount(root);
-        if (joinedCount > 0)
+        if (joinedCount != 0)
         {
             Status.Classify(root.Token, ExpressionClass.Function);
             return CreateJoinedPointsCallExpression(function, joinedCount, arguments[0].Token);
@@ -468,9 +468,16 @@ public class ExpressionTreeBuilder
     }
 
     /// <summary>
+    /// The count of a function that takes any number of points, three at least (area), for
+    /// <see cref="JoinedPointCount"/> and <see cref="SplitNames"/>
+    /// </summary>
+    public const int AnyCount = -1;
+
+    /// <summary>
     /// How many points a call names in its one argument, their names run together: 3 for
-    /// ∠ABC and angle(ABC), 2 for distance(AB). 0 for any other call (angle(A, B, C), sin(x),
-    /// a name in backticks, which is one figure's).
+    /// ∠ABC and angle(ABC), 2 for distance(AB), <see cref="AnyCount"/> for area(ABCD), which
+    /// takes as many as are named. 0 for any other call (angle(A, B, C), sin(x), max(a), a
+    /// name in backticks, which is one figure's).
     /// </summary>
     public static int JoinedPointCount(Node call)
     {
@@ -484,18 +491,21 @@ public class ExpressionTreeBuilder
         }
 
         var function = FunctionCatalog.Find(call.Token.Text);
-        if (function == null || function.IsVariadic || function.ArgumentCount < 2)
+        if (function == null
+            || function.ArgumentCount < 2
+            || !ExpressionReflection.TakesPoints(function.Name, function.ArgumentCount))
         {
             return 0;
         }
 
-        return ExpressionReflection.TakesPoints(function.Name, function.ArgumentCount) ? function.ArgumentCount : 0;
+        return function.IsVariadic ? AnyCount : function.ArgumentCount;
     }
 
     /// <summary>
     /// The text read as the names of <paramref name="count"/> of the items run together, in
-    /// order (ABC: A, B and C): as written first, then in any case, as two points are read;
-    /// a longer name before a shorter one. Null when it doesn't read so.
+    /// order (ABC: A, B and C), or of any number of them, three at least, for
+    /// <see cref="AnyCount"/> (ABCD): as written first, then in any case, as two points are
+    /// read; a longer name before a shorter one. Null when it doesn't read so.
     /// </summary>
     public static List<T> SplitNames<T>(string text, int count, IEnumerable<T> items, Func<T, string> nameOf)
     {
@@ -513,9 +523,14 @@ public class ExpressionTreeBuilder
 
             bool Split(int start)
             {
-                if (found.Count == count)
+                if (start == text.Length)
                 {
-                    return start == text.Length;
+                    return count == AnyCount ? found.Count >= ExpressionReflection.FewestPolygonPoints : found.Count == count;
+                }
+
+                if (count != AnyCount && found.Count == count)
+                {
+                    return false;
                 }
 
                 foreach (var item in named)
@@ -540,13 +555,15 @@ public class ExpressionTreeBuilder
         return null;
     }
 
-    /// <summary>∠ABC, angle(ABC): a function of points called with their names run together into one</summary>
+    /// <summary>∠ABC, angle(ABC), area(ABCD): a function of points called with their names run together into one</summary>
     BoundExpression CreateJoinedPointsCallExpression(FunctionInfo function, int count, Token joined)
     {
         var names = SplitNames(joined.Text, count, Binder.PointNames, name => name);
         if (names == null)
         {
-            Status.AddError(string.Format("'{0}' is not the names of {1} points run together: {2}", joined.Text, count, function.Signature));
+            Status.AddError(count == AnyCount
+                ? string.Format("'{0}' is not the names of points run together: {1}", joined.Text, function.Signature)
+                : string.Format("'{0}' is not the names of {1} points run together: {2}", joined.Text, count, function.Signature));
             return null;
         }
 
@@ -563,7 +580,7 @@ public class ExpressionTreeBuilder
         }
 
         Status.Classify(joined, ExpressionClass.Figure);
-        var method = Binder.ResolveMethod(function.Name, count);
+        var method = Binder.ResolveMethod(function.Name, points.Count);
         return AsNumber(method.ReturnType, method.Name) ? new BoundPointCall(method, points) : null;
     }
 

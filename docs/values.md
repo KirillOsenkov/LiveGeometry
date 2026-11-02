@@ -63,7 +63,16 @@ Lengths and directions set or fixed, Numbers, sliders, the typed or tied values 
   with a formula makes it typed again (`ValueState` restores the formula on undo); a
   formula that doesn't compile makes the number not exist, one without a value right now
   says "a = undefined". "Show formula" (2026-10-28, a row only while there is a formula)
-  puts the formula in the caption: "a = angle(A, B, C) = 27". File: `<Number Name="a"
+  puts the formula in the caption: "a = angle(A, B, C) = 27", the formula in the colors of
+  its pieces as an expression box shows it (2026-11-01: `Number.CaptionPieces`, the
+  `DrawingExpression.Classification` of its last compile moved past "a = ";
+  `LabelBase.ShownPieces`, which only the caption overrides, and `SetShownText`, which
+  gives the TextBlock a `Run` per piece in the theme's Expressions color and plain runs
+  between; the name and the value stay in the label's own color, and a switch of theme
+  recolors through `ApplyStyle`. The TextBlock's Text is null while it holds runs, so what
+  measures a label reads `CurrentShownText`. The player draws the runs one after another
+  with `measureText` for where the next starts, `CanvasRenderer.drawRuns`, for a text of one
+  line). File: `<Number Name="a"
   Formula="d.ArcLength + f.ArcLength" X Y Visible="true" ShowName="false" ShowFormula="true"
   Decimals />`, `Value` instead of `Formula` for a typed one. The player has the twin (`number.js`). `Auxiliary` (any figure) marks one
   created on demand for another: it is removed with its last dependent and comes back on undo.

@@ -330,7 +330,7 @@ public class AngleMeasurement : AngleMeasurementBase, IConditionalProperties, IH
     /// <summary>The size of the box, measured again only when the text shown changes (or the style: <see cref="ApplyStyle"/>)</summary>
     public Size LayoutSize()
     {
-        var shown = TextBlock.Text ?? "";
+        var shown = CurrentShownText ?? "";
         if (shown != measuredText)
         {
             measuredSize = MeasureSize();

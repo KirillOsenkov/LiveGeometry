@@ -1,4 +1,23 @@
-// Port of Main/Avalonia/LiveGeometry/Expressions/CompileResult.cs
+// Port of Main/Avalonia/LiveGeometry/Expressions/CompileResult.cs and of the ExpressionClass
+// of ExpressionClassification.cs: what a piece of an expression's text is, for its color in a
+// number's caption that says its formula (the app colors its expression boxes the same way).
+
+const ExpressionClass = Object.freeze({
+    /** A figure by its name: A in A.X, the points of distance(A, B) and of AB, a slider, a number */
+    Figure: "Figure",
+
+    /** What is read off a figure: the X of A.X, the Length of AB.Length */
+    Property: "Property",
+
+    /** A function: sin, sqrt, distance, angle, log_2 */
+    Function: "Function",
+
+    /** A number as typed: 3, 0.5 */
+    Number: "Number",
+
+    /** What the language gives a meaning of its own: pi, π, e, the x of a function, the degree sign */
+    Reserved: "Reserved"
+});
 
 class CompileResult {
     constructor() {
@@ -9,10 +28,21 @@ class CompileResult {
         this.expression = null;
         this.dependencies = [];
         this.errors = [];
+
+        /**
+         * What the pieces of the text were read as, in the order of the text: each name as
+         * the binder resolved it, each number as typed, { start, length, kind }. Operators,
+         * parentheses and commas are left out. Whole only when the text compiled.
+         */
+        this.classification = [];
     }
 
     get isSuccess() {
         return this.errors.length === 0 && (this.expression != null || this.function != null);
+    }
+
+    classify(token, kind) {
+        this.classification.push({ start: token.start, length: token.length, kind });
     }
 
     addError(error) {

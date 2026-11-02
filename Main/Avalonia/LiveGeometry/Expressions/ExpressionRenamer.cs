@@ -122,7 +122,7 @@ public class ExpressionRenamer
                 return;
             case NodeType.FunctionCall:
                 int joinedCount = ExpressionTreeBuilder.JoinedPointCount(node);
-                if (joinedCount > 0)
+                if (joinedCount != 0)
                 {
                     RenameJoinedPoints(node, joinedCount, replacements);
                     return;
