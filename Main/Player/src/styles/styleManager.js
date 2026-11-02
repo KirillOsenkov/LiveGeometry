@@ -124,6 +124,7 @@ class StyleManager {
         lineStyles.push(...StyleHue.Colors.map(hue => StyleManager.hueLine("Thick" + hue.name + "Line", hue, StyleManager.ThickStrokeWidth, LineDash.Solid)));
         lineStyles.push(dashedLineStyle);
         lineStyles.push(...StyleHue.Colors.map(hue => StyleManager.hueLine("Dashed" + hue.name + "Line", hue, StyleManager.ThinStrokeWidth, LineDash.Dash)));
+        lineStyles.push(...StyleManager.grayLines());
 
         // a bar rather than a line: what the knob of a slider runs along
         const sliderTrackStyle = new LineStyle();
@@ -239,6 +240,31 @@ class StyleManager {
         style.strokeWidth = strokeWidth;
         style.dash = dash;
         style.setOverride(AppTheme.Dark.name, "color", hue.darkStroke);
+        return style;
+    }
+
+    /** The gray row of the line picker: a helper construction stepped back without being hidden (the app's GrayLines) */
+    static grayLines() {
+        const gray = StyleHue.Gray;
+        return [
+            StyleManager.grayLine("FaintLine", Color.parse("#1A000000"), Color.parse("#474747")),
+            StyleManager.grayLine("LightLine", Color.parse("#33000000"), Color.parse("#5C5C5C")),
+            StyleManager.grayLine("InkLine", Color.parse("#FF000000"), Color.parse("#F2F2F2")),
+            StyleManager.grayLine("FaintDashedLine", Color.parse("#40000000"), Color.parse("#6A6A6A"), LineDash.Dash, 1.25),
+            StyleManager.grayLine("DottedLine", gray.stroke, gray.darkStroke, LineDash.Dot, 1.25),
+            StyleManager.grayLine("DashDotLine", gray.stroke, gray.darkStroke, LineDash.DashDot, 1.25),
+            StyleManager.grayLine("DashDotDotLine", gray.stroke, gray.darkStroke, LineDash.DashDotDot, 1.25),
+            StyleManager.grayLine("SoftLine", Color.parse("#32000000"), Color.parse("#505050"), LineDash.Solid, 3)
+        ];
+    }
+
+    static grayLine(name, color, darkColor, dash = LineDash.Solid, strokeWidth = StyleManager.ThinStrokeWidth) {
+        const style = new LineStyle();
+        style.name = name;
+        style.color = color;
+        style.strokeWidth = strokeWidth;
+        style.dash = dash;
+        style.setOverride(AppTheme.Dark.name, "color", darkColor);
         return style;
     }
 

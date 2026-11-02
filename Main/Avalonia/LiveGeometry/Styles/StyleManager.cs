@@ -210,6 +210,7 @@ public partial class StyleManager
         lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(ThickLineStyleNameOf(hue), hue, ThickStrokeWidth, LineDash.Solid)));
         lineStyles.Add(dashedLineStyle);
         lineStyles.AddRange(StyleHue.Colors.Select(hue => HueLine(DashedLineStyleNameOf(hue), hue, ThinStrokeWidth, LineDash.Dash)));
+        lineStyles.AddRange(GrayLines());
 
         // a bar rather than a line: what the knob of a slider runs along (the picker
         // offers it to sliders only, IsOffered)
@@ -427,6 +428,56 @@ public partial class StyleManager
             Dash = dash
         };
         style.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), hue.DarkStroke);
+        return style;
+    }
+
+    /// <summary>
+    /// The gray row of the line picker, the fourth (2026-11-01): a helper construction
+    /// stepped back without being hidden. From the faintest up: two solid grays under the
+    /// default line (translucent black, 39% on the light paper), the full ink, a faint
+    /// dashed line, the three other dash patterns in the dashed line's gray, and a wide
+    /// faint line. Literal, as the hues are; opaque on the dark paper, as the default line
+    /// is there (a translucent gray came out too dim), about as far from its paper as the
+    /// light one is from white.
+    /// </summary>
+    static IEnumerable<LineStyle> GrayLines()
+    {
+        var gray = StyleHue.Gray;
+        yield return GrayLine("FaintLine", "#1A000000", "#474747");
+        yield return GrayLine("LightLine", "#33000000", "#5C5C5C");
+        yield return GrayLine("InkLine", "#FF000000", "#F2F2F2");
+        yield return GrayLine("FaintDashedLine", "#40000000", "#6A6A6A", LineDash.Dash, strokeWidth: 1.25);
+        yield return GrayLine("DottedLine", gray.Stroke, gray.DarkStroke, LineDash.Dot, strokeWidth: 1.25);
+        yield return GrayLine("DashDotLine", gray.Stroke, gray.DarkStroke, LineDash.DashDot, strokeWidth: 1.25);
+        yield return GrayLine("DashDotDotLine", gray.Stroke, gray.DarkStroke, LineDash.DashDotDot, strokeWidth: 1.25);
+        yield return GrayLine("SoftLine", "#32000000", "#505050", LineDash.Solid, strokeWidth: 3);
+    }
+
+    static LineStyle GrayLine(
+        string name,
+        string color,
+        string darkColor,
+        LineDash dash = LineDash.Solid,
+        double strokeWidth = ThinStrokeWidth)
+    {
+        return GrayLine(name, Color.Parse(color), Color.Parse(darkColor), dash, strokeWidth);
+    }
+
+    static LineStyle GrayLine(
+        string name,
+        Color color,
+        Color darkColor,
+        LineDash dash,
+        double strokeWidth)
+    {
+        var style = new LineStyle()
+        {
+            Name = name,
+            Color = color,
+            StrokeWidth = strokeWidth,
+            Dash = dash
+        };
+        style.SetOverride(AppTheme.Dark.Name, nameof(LineStyle.Color), darkColor);
         return style;
     }
 

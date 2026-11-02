@@ -30,8 +30,10 @@ loader still does for files from before; none of it needs extending.
   `IntersectionPoint`, `Midpoint`, `DependentPoint` - `DependentPointStyle` in older files,
   `Line`, `SliderTrack`, `CoincidentLine`, `Shape`, `OutlinedShape`, `Text`, `Heading`, `Explanation`, and the palette ones
   named by hue: `RedLine`, `ThickRedLine`, `DashedRedLine`, `RedOutline`, `RedShape`,
-  `RedPoint`, `RedBead`... - see "The default styles"; `OtherLine`, `DottedLine` and
-  `OtherShape` are gone). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
+  `RedPoint`, `RedBead`... - see "The default styles"; the gray row of lines, `FaintLine`,
+  `LightLine`, `InkLine`, `FaintDashedLine`, `DottedLine`, `DashDotLine`, `DashDotDotLine`,
+  `SoftLine` - see "The gray row of lines"; `OtherLine` and `OtherShape` are gone, and
+  `DottedLine` was gone from 2026-09-29 to 2026-11-01). Saved are the styles the figures name (`DrawingSerializer.Write` writes the
   figures aside first and collects their `Style` attributes - a figure may name another's
   style, a vector its arrow's) and a default the drawing changed; a default as a new drawing
   has it is left out (`StyleManager.IsUnchangedDefault`). `Name` comes first, and an

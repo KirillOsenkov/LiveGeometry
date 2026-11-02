@@ -11,7 +11,7 @@ Default styles and the palette, point shapes and emoji, dashes, textured fills, 
 - **The default styles** (2026-10-03) are a palette of eight hues (`Styles/StyleHue.cs`:
   gray, red, orange, brown, green, cyan, blue, purple), a column each in every style picker,
   in full rows of eight: points (the kind defaults and red, blue, purple at 8; beads, 12 with
-  a highlight), lines (thin 1.5, thick 2.5, dashed), shapes (outlined with a flat fill -
+  a highlight), lines (thin 1.5, thick 2.5, dashed, and a gray row - see below), shapes (outlined with a flat fill -
   on the light paper the gradient's lighter end, on the dark one the dark stroke 11% of the
   way from the paper at the same alpha (`StyleHue.DarkSolidFill`, 2026-10-17: the lighter
   end there was a slab, mid gray for `OutlinedShape`, which every sector and circular
@@ -38,6 +38,17 @@ Default styles and the palette, point shapes and emoji, dashes, textured fills, 
   where filled (`PolygonBase.HitTest` reads the shape as drawn; its shape has no fill of its
   own, or a line style applied first left the factory's yellow). Under side segments, an
   outline in a line style shows through them darkened: the segments are drawn over it.
+- **The gray row of lines** (`StyleManager.GrayLines`, mirrored in the player's
+  `styleManager.js`, 2026-11-01): the fourth row of the line picker, for stepping a helper
+  construction back without hiding it. Its columns are not the hues (`HueOfDefault` knows
+  none of them, so a type conversion keeps the style as it is). From the faintest up:
+  `FaintLine` and `LightLine` (translucent black, 10% and 20%, under the default `Line`'s
+  39%), `InkLine` (full ink), `FaintDashedLine` (25%, 1.25 wide like `DashedLine`),
+  `DottedLine`, `DashDotLine` and `DashDotDotLine` in `DashedLine`'s gray (#6E6E6E), and
+  `SoftLine`, 3 wide at 20%. On the dark paper each is an opaque gray about as far from
+  its paper as the light one is from white (#474747, #5C5C5C, #F2F2F2, #6A6A6A, the gray
+  hue's #9E9E9E for the three patterns, #505050): a translucent gray came out too dim
+  there, as the default line did.
   Text styles are three (2026-10-16): `Text` for labels, `Heading` and `Explanation` for a
   drawing's caption (the style alone makes a label part of it, see "The caption"). They
   were `GalleryTitle` and `GalleryText`, next to a 40 px `Heading` and a `Hyperlink` that
