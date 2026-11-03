@@ -294,6 +294,20 @@
   square that results. Lines rather than segments, since the drawing shows where they go
   past the base. Half the height on a phone (`stackedFigureShare: 0.5`): the figure is
   taller than wide and came out tiny at a third.
+- **Fit a Circle in the Corner** (`CircleInTheCorner.lgf`, 2026-11-03, hand-written, at the
+  end of the gallery): a circle touching the two sides of an angle and a circle inside it,
+  by pushing the sides out by R, scaling from the pushed-out vertex D and shrinking back.
+  One compass circle of radius R at V marks the pushed-out sides (rays from D through its
+  perpendicular radii, over hidden parallels) and is the circle that gets scaled; DV is the
+  bisector, so no bisector tool. The steps are three show/hide boxes ("1. Push out",
+  "2. Scale", "3. Shrink"; short, so that they fit in a row on a phone), each listing its
+  figures and point labels. Dashes mean one thing: a copy of the solid figure of the same
+  color, moved (`DashedPurpleLine` the given circle carried to V, `DashedRedLine` the sides
+  pushed out, `DashedBlueLine` the answer grown by R); every helper is thin and solid
+  (`PurpleLine` radii, `OrangeLine` for the three segments of the scaling, `BlueLine` for
+  XK), the bisector `DashDotLine`. The second solution (the nearer crossing of DO) is
+  named in the caption but not drawn: four to five times the size of the picture, it
+  wrecked the fit even hidden. Merged from two generated attempts (2026-11-03).
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

@@ -187,6 +187,7 @@ public static class GalleryCatalog
         Item("haberdashers-puzzle", "The Haberdasher's Puzzle", stackedFigureShare: 0.5),
         Item("triangle-to-square", "Triangle to Square in Five Pieces", stackedFigureShare: 0.5),
         Item("square-in-triangle", "Inscribed Square in a Triangle", stackedFigureShare: 0.5),
+        Item("circle-in-the-corner", "Fit a Circle in the Corner"),
     };
 
     /// <summary>

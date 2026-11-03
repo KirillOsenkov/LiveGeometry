@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-7" Top="8" Right="14" Bottom="-8" />
+  <Styles>
+    <ShapeStyle Name="GivenCircle" Fill="#208854D0" Color="#FF8854D0" StrokeWidth="2.5">
+      <Dark Fill="#25B48CFF" Color="#FFB48CFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="AnswerCircle" Fill="#302F7BD6" Color="#FF2F7BD6" StrokeWidth="3">
+      <Dark Fill="#306AA5FF" Color="#FF6AA5FF" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="V" X="0" Y="0" />
+    <FreePoint Name="A" X="8" Y="6" />
+    <FreePoint Name="B" X="8" Y="-6" />
+    <FreePoint Name="O" X="9" Y="2" />
+    <FreePoint Name="S" X="9" Y="4.5" />
+    <Ray Name="VA" Style="ThickRedLine">
+      <Dependency Name="V" />
+      <Dependency Name="A" />
+    </Ray>
+    <Ray Name="VB" Style="ThickRedLine">
+      <Dependency Name="V" />
+      <Dependency Name="B" />
+    </Ray>
+    <Circle Name="Given" Style="GivenCircle">
+      <Dependency Name="O" />
+      <Dependency Name="S" />
+    </Circle>
+    <Segment Name="OS" Style="PurpleLine">
+      <Dependency Name="O" />
+      <Dependency Name="S" />
+    </Segment>
+    <AttachedLabel Name="BigRadius" OffsetX="-17" OffsetY="-12" Text="R">
+      <Dependency Name="OS" />
+    </AttachedLabel>
+    <CircleByRadius Name="Compass" Style="DashedPurpleLine">
+      <Dependency Name="O" />
+      <Dependency Name="S" />
+      <Dependency Name="V" />
+    </CircleByRadius>
+    <PerpendicularLine Name="normalA" Visible="false" RightAngleCorner="0">
+      <Dependency Name="VA" />
+      <Dependency Name="V" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Q1" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="normalA" />
+      <Dependency Name="Compass" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="normalB" Visible="false" RightAngleCorner="0">
+      <Dependency Name="VB" />
+      <Dependency Name="V" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Q2" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="normalB" />
+      <Dependency Name="Compass" />
+    </IntersectionPoint>
+    <Segment Name="VQ1" Style="PurpleLine">
+      <Dependency Name="V" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Segment Name="VQ2" Style="PurpleLine">
+      <Dependency Name="V" />
+      <Dependency Name="Q2" />
+    </Segment>
+    <ParallelLine Name="pushedA" Visible="false">
+      <Dependency Name="VA" />
+      <Dependency Name="Q1" />
+    </ParallelLine>
+    <ParallelLine Name="pushedB" Visible="false">
+      <Dependency Name="VB" />
+      <Dependency Name="Q2" />
+    </ParallelLine>
+    <IntersectionPoint Name="D" Algorithm="IntersectLineAndLine">
+      <Dependency Name="pushedA" />
+      <Dependency Name="pushedB" />
+    </IntersectionPoint>
+    <Ray Name="DQ1" Style="DashedRedLine">
+      <Dependency Name="D" />
+      <Dependency Name="Q1" />
+    </Ray>
+    <Ray Name="DQ2" Style="DashedRedLine">
+      <Dependency Name="D" />
+      <Dependency Name="Q2" />
+    </Ray>
+    <Segment Name="DO" Style="OrangeLine">
+      <Dependency Name="D" />
+      <Dependency Name="O" />
+    </Segment>
+    <IntersectionPoint Name="P" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="DO" />
+      <Dependency Name="Compass" />
+    </IntersectionPoint>
+    <Segment Name="PV" Style="OrangeLine">
+      <Dependency Name="P" />
+      <Dependency Name="V" />
+    </Segment>
+    <Ray Name="DV" Style="DashDotLine">
+      <Dependency Name="D" />
+      <Dependency Name="V" />
+    </Ray>
+    <ParallelLine Name="imageOfPV" Visible="false">
+      <Dependency Name="PV" />
+      <Dependency Name="O" />
+    </ParallelLine>
+    <IntersectionPoint Name="X" Style="BluePoint" Algorithm="IntersectLineAndLine">
+      <Dependency Name="DV" />
+      <Dependency Name="imageOfPV" />
+    </IntersectionPoint>
+    <Segment Name="OX" Style="OrangeLine">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Segment>
+    <Circle Name="Scaled" Style="DashedBlueLine">
+      <Dependency Name="X" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="K" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="OX" />
+      <Dependency Name="Given" />
+    </IntersectionPoint>
+    <Segment Name="KX" Style="BlueLine">
+      <Dependency Name="X" />
+      <Dependency Name="K" />
+    </Segment>
+    <AttachedLabel Name="SmallRadius" OffsetX="-10.443883435612406" OffsetY="-28.83974682122141" Text="r">
+      <Dependency Name="KX" />
+    </AttachedLabel>
+    <Circle Name="Answer" Style="AnswerCircle">
+      <Dependency Name="X" />
+      <Dependency Name="K" />
+    </Circle>
+    <PointLabel Name="LabelV" OffsetX="-5" OffsetY="8">
+      <Dependency Name="V" />
+    </PointLabel>
+    <PointLabel Name="LabelO" OffsetX="3.5" OffsetY="-30.186533479473212">
+      <Dependency Name="O" />
+    </PointLabel>
+    <PointLabel Name="LabelD" OffsetX="-6.5" OffsetY="-29">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="-0.3324381430520589" OffsetY="-30.352590699492282">
+      <Dependency Name="P" />
+    </PointLabel>
+    <PointLabel Name="LabelX" OffsetX="-5.5" OffsetY="-29">
+      <Dependency Name="X" />
+    </PointLabel>
+    <PointLabel Name="LabelK" OffsetX="-0.3324381430520589" OffsetY="-30.352590699492282">
+      <Dependency Name="K" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Fit a Circle in the Corner" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The purple circle with center O and radius R lies inside the red angle at V. Find the blue circle that touches both sides of the angle and the purple circle.\n\nCall its center X and radius r. Grow it by R: the circle around X of radius r + R passes through O and touches the two sides pushed out by R. So push the sides out, find a circle through O touching the pushed-out sides, and shrink it back.\n\n1. Push the sides out. Draw the circle of radius R around V (dashed purple) and a radius perpendicular to each side. Through its end draw a parallel to that side (dashed red): the side pushed out by R. The two pushed-out sides meet at D.\n\n2. Scale from D. Both the dashed purple circle and the circle through O that we want touch the pushed-out sides, so one is the other scaled up from D, where the sides meet. DO meets the dashed purple circle at P on the far side. The scaling takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X. The dashed blue circle around X through O is the scaled-up circle.\n\n3. Shrink by R. XO meets the purple circle at K, so XK = XO − R = r. The blue circle around X through K is the answer.\n\nDrag the yellow points. With the nearer crossing of DO in place of P, the same steps produce a second circle, on the far side of the purple one." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <ShowHideControl Name="PushBox" Style="Explanation" Show="true" Text="1. Push out" Pin="TopLeft" OffsetX="16" OffsetY="16">
+      <Dependency Name="Compass" />
+      <Dependency Name="Q1" />
+      <Dependency Name="Q2" />
+      <Dependency Name="VQ1" />
+      <Dependency Name="VQ2" />
+      <Dependency Name="DQ1" />
+      <Dependency Name="DQ2" />
+      <Dependency Name="D" />
+      <Dependency Name="LabelD" />
+    </ShowHideControl>
+    <ShowHideControl Name="ScaleBox" Style="Explanation" Show="true" Text="2. Scale" Pin="TopLeft" OffsetX="16" OffsetY="40">
+      <Dependency Name="DO" />
+      <Dependency Name="P" />
+      <Dependency Name="PV" />
+      <Dependency Name="DV" />
+      <Dependency Name="X" />
+      <Dependency Name="OX" />
+      <Dependency Name="Scaled" />
+      <Dependency Name="LabelP" />
+      <Dependency Name="LabelX" />
+    </ShowHideControl>
+    <ShowHideControl Name="ShrinkBox" Style="Explanation" Show="true" Text="3. Shrink" Pin="TopLeft" OffsetX="16" OffsetY="64">
+      <Dependency Name="K" />
+      <Dependency Name="KX" />
+      <Dependency Name="SmallRadius" />
+      <Dependency Name="Answer" />
+      <Dependency Name="LabelK" />
+    </ShowHideControl>
+  </Figures>
+</Drawing>
