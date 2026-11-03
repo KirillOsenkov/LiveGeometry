@@ -70,14 +70,24 @@ public class SelectionFlash : Control
     /// <summary>Flashes the figure, one at a time: a new flash replaces the one before</summary>
     public static void Show(IFigure figure)
     {
-        var canvas = figure?.Drawing?.Canvas;
+        Show([figure]);
+    }
+
+    /// <summary>Flashes the figures together (a step of the construction and what it is built on)</summary>
+    public static void Show(IEnumerable<IFigure> figures)
+    {
+        var canvas = figures.FirstOrDefault(figure => figure != null)?.Drawing?.Canvas;
         if (canvas == null)
         {
             return;
         }
 
         var shapes = new List<Flashed>();
-        Collect(figure, shapes);
+        foreach (var figure in figures)
+        {
+            Collect(figure, shapes);
+        }
+
         if (shapes.Count == 0)
         {
             return;
@@ -92,6 +102,20 @@ public class SelectionFlash : Control
         var flash = new SelectionFlash(shapes);
         layer.Children.Add(flash);
         flash.Start();
+    }
+
+    /// <summary>Takes away whatever is flashing on the canvas (the stepping left)</summary>
+    public static void StopAll(Canvas canvas)
+    {
+        if (canvas == null)
+        {
+            return;
+        }
+
+        foreach (var flash in Layer.Get(canvas).Children.OfType<SelectionFlash>().ToList())
+        {
+            flash.Stop();
+        }
     }
 
     /// <summary>The controls that draw the figure: its shape, or the shapes of its parts (a slider, a vector, a regular polygon)</summary>

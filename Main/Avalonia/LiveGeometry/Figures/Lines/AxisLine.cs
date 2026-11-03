@@ -101,6 +101,12 @@ public class AxisLine : LineBase, ILine, IConditionalProperties
         get => base.Visible; set => base.Visible = value;
     }
 
+    /// <summary>An axis is part of the paper, not of the construction</summary>
+    public override bool CanBeStep()
+    {
+        return false;
+    }
+
     [PropertyGridVisible(false)]
     public override bool Locked
     {

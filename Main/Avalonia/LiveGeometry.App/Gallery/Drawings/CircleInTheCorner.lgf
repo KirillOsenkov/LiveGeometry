@@ -10,31 +10,31 @@
     </ShapeStyle>
   </Styles>
   <Figures>
-    <FreePoint Name="V" X="0" Y="0" />
-    <FreePoint Name="A" X="8" Y="6" />
-    <FreePoint Name="B" X="8" Y="-6" />
-    <FreePoint Name="O" X="9" Y="2" />
-    <FreePoint Name="S" X="9" Y="4.5" />
-    <Ray Name="VA" Style="ThickRedLine">
+    <FreePoint Name="V" Step="GroupWithNext" Description="Given: the angle at V with its two red sides, and inside it the purple circle with center O and radius R. Find the blue circle that touches both sides and the purple circle." X="0" Y="0" />
+    <FreePoint Name="A" Step="GroupWithNext" X="8" Y="6" />
+    <FreePoint Name="B" Step="GroupWithNext" X="8" Y="-6" />
+    <FreePoint Name="O" Step="GroupWithNext" X="9" Y="2" />
+    <FreePoint Name="S" Step="GroupWithNext" X="9" Y="4.5" />
+    <Ray Name="VA" Style="ThickRedLine" Step="GroupWithNext">
       <Dependency Name="V" />
       <Dependency Name="A" />
     </Ray>
-    <Ray Name="VB" Style="ThickRedLine">
+    <Ray Name="VB" Style="ThickRedLine" Step="GroupWithNext">
       <Dependency Name="V" />
       <Dependency Name="B" />
     </Ray>
-    <Circle Name="Given" Style="GivenCircle">
+    <Circle Name="Given" Style="GivenCircle" Step="GroupWithNext">
       <Dependency Name="O" />
       <Dependency Name="S" />
     </Circle>
-    <Segment Name="OS" Style="PurpleLine">
+    <Segment Name="OS" Style="PurpleLine" Step="GroupWithNext">
       <Dependency Name="O" />
       <Dependency Name="S" />
     </Segment>
     <AttachedLabel Name="BigRadius" OffsetX="-17" OffsetY="-12" Text="R">
       <Dependency Name="OS" />
     </AttachedLabel>
-    <CircleByRadius Name="Compass" Style="DashedPurpleLine">
+    <CircleByRadius Name="Compass" Style="DashedPurpleLine" Description="Draw the circle of radius R around V: the purple circle carried to the corner.">
       <Dependency Name="O" />
       <Dependency Name="S" />
       <Dependency Name="V" />
@@ -43,7 +43,7 @@
       <Dependency Name="VA" />
       <Dependency Name="V" />
     </PerpendicularLine>
-    <IntersectionPoint Name="Q1" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="Q1" Step="GroupWithNext" Description="Draw a radius of that circle perpendicular to each side, on the outside." Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="normalA" />
       <Dependency Name="Compass" />
     </IntersectionPoint>
@@ -51,11 +51,11 @@
       <Dependency Name="VB" />
       <Dependency Name="V" />
     </PerpendicularLine>
-    <IntersectionPoint Name="Q2" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="Q2" Step="GroupWithNext" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="normalB" />
       <Dependency Name="Compass" />
     </IntersectionPoint>
-    <Segment Name="VQ1" Style="PurpleLine">
+    <Segment Name="VQ1" Style="PurpleLine" Step="GroupWithNext">
       <Dependency Name="V" />
       <Dependency Name="Q1" />
     </Segment>
@@ -71,11 +71,11 @@
       <Dependency Name="VB" />
       <Dependency Name="Q2" />
     </ParallelLine>
-    <IntersectionPoint Name="D" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="D" Step="GroupWithNext" Description="Through the end of each radius draw a parallel to that side: the side pushed out by R. The two pushed-out sides meet at D." Algorithm="IntersectLineAndLine">
       <Dependency Name="pushedA" />
       <Dependency Name="pushedB" />
     </IntersectionPoint>
-    <Ray Name="DQ1" Style="DashedRedLine">
+    <Ray Name="DQ1" Style="DashedRedLine" Step="GroupWithNext">
       <Dependency Name="D" />
       <Dependency Name="Q1" />
     </Ray>
@@ -83,7 +83,7 @@
       <Dependency Name="D" />
       <Dependency Name="Q2" />
     </Ray>
-    <Segment Name="DO" Style="OrangeLine">
+    <Segment Name="DO" Style="OrangeLine" Step="GroupWithNext" Description="The circle we want, grown by R, passes through O and touches both pushed-out sides, as the dashed purple circle does: it is that circle scaled up from D. DO meets the dashed purple circle at P, on the far side.">
       <Dependency Name="D" />
       <Dependency Name="O" />
     </Segment>
@@ -91,11 +91,11 @@
       <Dependency Name="DO" />
       <Dependency Name="Compass" />
     </IntersectionPoint>
-    <Segment Name="PV" Style="OrangeLine">
+    <Segment Name="PV" Style="OrangeLine" Step="GroupWithNext" Description="The scaling from D takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X.">
       <Dependency Name="P" />
       <Dependency Name="V" />
     </Segment>
-    <Ray Name="DV" Style="DashDotLine">
+    <Ray Name="DV" Style="DashDotLine" Step="GroupWithNext">
       <Dependency Name="D" />
       <Dependency Name="V" />
     </Ray>
@@ -103,7 +103,7 @@
       <Dependency Name="PV" />
       <Dependency Name="O" />
     </ParallelLine>
-    <IntersectionPoint Name="X" Style="BluePoint" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="X" Style="BluePoint" Step="GroupWithNext" Algorithm="IntersectLineAndLine">
       <Dependency Name="DV" />
       <Dependency Name="imageOfPV" />
     </IntersectionPoint>
@@ -111,22 +111,22 @@
       <Dependency Name="O" />
       <Dependency Name="X" />
     </Segment>
-    <Circle Name="Scaled" Style="DashedBlueLine">
+    <Circle Name="Scaled" Style="DashedBlueLine" Description="The dashed blue circle around X through O is the scaled-up circle: it touches both pushed-out sides and passes through O.">
       <Dependency Name="X" />
       <Dependency Name="O" />
     </Circle>
-    <IntersectionPoint Name="K" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="K" Step="GroupWithNext" Description="Shrink it by R: XO meets the purple circle at K, so XK = XO − R = r." Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="OX" />
       <Dependency Name="Given" />
     </IntersectionPoint>
-    <Segment Name="KX" Style="BlueLine">
+    <Segment Name="KX" Style="BlueLine" Step="GroupWithNext">
       <Dependency Name="X" />
       <Dependency Name="K" />
     </Segment>
     <AttachedLabel Name="SmallRadius" OffsetX="-10.443883435612406" OffsetY="-28.83974682122141" Text="r">
       <Dependency Name="KX" />
     </AttachedLabel>
-    <Circle Name="Answer" Style="AnswerCircle">
+    <Circle Name="Answer" Style="AnswerCircle" Description="The blue circle around X through K is the answer: it touches both sides of the angle and the purple circle.">
       <Dependency Name="X" />
       <Dependency Name="K" />
     </Circle>
@@ -150,34 +150,5 @@
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Fit a Circle in the Corner" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
     <Label Name="Description" Style="Explanation" Text="The purple circle with center O and radius R lies inside the red angle at V. Find the blue circle that touches both sides of the angle and the purple circle.\n\nCall its center X and radius r. Grow it by R: the circle around X of radius r + R passes through O and touches the two sides pushed out by R. So push the sides out, find a circle through O touching the pushed-out sides, and shrink it back.\n\n1. Push the sides out. Draw the circle of radius R around V (dashed purple) and a radius perpendicular to each side. Through its end draw a parallel to that side (dashed red): the side pushed out by R. The two pushed-out sides meet at D.\n\n2. Scale from D. Both the dashed purple circle and the circle through O that we want touch the pushed-out sides, so one is the other scaled up from D, where the sides meet. DO meets the dashed purple circle at P on the far side. The scaling takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X. The dashed blue circle around X through O is the scaled-up circle.\n\n3. Shrink by R. XO meets the purple circle at K, so XK = XO − R = r. The blue circle around X through K is the answer.\n\nDrag the yellow points. With the nearer crossing of DO in place of P, the same steps produce a second circle, on the far side of the purple one." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
-    <ShowHideControl Name="PushBox" Style="Explanation" Show="true" Text="1. Push out" Pin="TopLeft" OffsetX="16" OffsetY="16">
-      <Dependency Name="Compass" />
-      <Dependency Name="Q1" />
-      <Dependency Name="Q2" />
-      <Dependency Name="VQ1" />
-      <Dependency Name="VQ2" />
-      <Dependency Name="DQ1" />
-      <Dependency Name="DQ2" />
-      <Dependency Name="D" />
-      <Dependency Name="LabelD" />
-    </ShowHideControl>
-    <ShowHideControl Name="ScaleBox" Style="Explanation" Show="true" Text="2. Scale" Pin="TopLeft" OffsetX="16" OffsetY="40">
-      <Dependency Name="DO" />
-      <Dependency Name="P" />
-      <Dependency Name="PV" />
-      <Dependency Name="DV" />
-      <Dependency Name="X" />
-      <Dependency Name="OX" />
-      <Dependency Name="Scaled" />
-      <Dependency Name="LabelP" />
-      <Dependency Name="LabelX" />
-    </ShowHideControl>
-    <ShowHideControl Name="ShrinkBox" Style="Explanation" Show="true" Text="3. Shrink" Pin="TopLeft" OffsetX="16" OffsetY="64">
-      <Dependency Name="K" />
-      <Dependency Name="KX" />
-      <Dependency Name="SmallRadius" />
-      <Dependency Name="Answer" />
-      <Dependency Name="LabelK" />
-    </ShowHideControl>
   </Figures>
 </Drawing>

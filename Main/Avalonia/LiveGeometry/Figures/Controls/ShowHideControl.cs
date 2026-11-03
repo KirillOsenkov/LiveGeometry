@@ -50,6 +50,12 @@ public class ShowHideControl : ControlBase, ISupportRemoveDependency
     /// <summary>Nothing: the caption, in quotes, would sit right over the whole of it in the Text box</summary>
     public override string ConstructionOnPage => null;
 
+    /// <summary>A box is on the paper throughout the stepping, to be clicked</summary>
+    public override bool CanBeStep()
+    {
+        return false;
+    }
+
     /// <summary>The caption and the empty box in the text style's color, in every state (hovered, pressed, checked)</summary>
     public override void ApplyStyle()
     {

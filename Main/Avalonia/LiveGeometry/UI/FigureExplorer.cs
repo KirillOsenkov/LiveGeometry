@@ -125,6 +125,7 @@ public class FigureExplorer : Border
                 drawing.ConstructionStepStarted -= Drawing_ConstructionStepStarted;
                 drawing.ConstructionStepComplete -= Drawing_ConstructionStepComplete;
                 drawing.PicksChanged -= Drawing_PicksChanged;
+                drawing.Playback.Changed -= Playback_Changed;
             }
 
             drawing = value;
@@ -139,6 +140,7 @@ public class FigureExplorer : Border
                 drawing.ConstructionStepStarted += Drawing_ConstructionStepStarted;
                 drawing.ConstructionStepComplete += Drawing_ConstructionStepComplete;
                 drawing.PicksChanged += Drawing_PicksChanged;
+                drawing.Playback.Changed += Playback_Changed;
             }
 
             // a drawing is attached empty and loaded right after
@@ -230,6 +232,23 @@ public class FigureExplorer : Border
         {
             ScrollIntoView(focused);
         }
+    }
+
+    // the rows of the steps not yet taken fade, as hidden figures do, and the current
+    // step's rows are painted as a selection is
+    void Playback_Changed()
+    {
+        if (!IsVisible)
+        {
+            return;
+        }
+
+        foreach (var row in rows)
+        {
+            row.UpdateContent();
+        }
+
+        UpdateLook();
     }
 
     // a tool picked a figure (IFigurePicker): the picks are selected figures, painted as the selection
@@ -350,6 +369,17 @@ public class FigureExplorer : Border
     /// <param name="toggle">Add to or take from the selection (Ctrl)</param>
     void Select(IFigure figure, bool range, bool toggle)
     {
+        // stepping through the construction, a row picks its step, which is the selection
+        if (drawing.Playback.IsOn)
+        {
+            focused = figure;
+            anchor = figure;
+            drawing.Playback.GoToFigure(figure);
+            UpdateLook();
+            ScrollIntoView(figure);
+            return;
+        }
+
         // turning to the list gives up a construction under way, as Escape does: its
         // transaction is open, and an edit of the selected figure would join the undo step
         // of the figure being made
@@ -480,6 +510,22 @@ public class FigureExplorer : Border
         if (!IsNavigationKey(e.Key) || rows.Count == 0)
         {
             base.OnKeyDown(e);
+            return;
+        }
+
+        // stepping through the construction, the keys walk the steps, not the rows
+        var playback = drawing.Playback;
+        if (playback.IsOn)
+        {
+            switch (e.Key)
+            {
+                case Key.Up: playback.Previous(); break;
+                case Key.Down: playback.Next(); break;
+                case Key.Home: playback.First(); break;
+                default: playback.Last(); break;
+            }
+
+            e.Handled = true;
             return;
         }
 
@@ -746,6 +792,18 @@ public class FigureExplorer : Border
 
     class Row : Border
     {
+        // the number of the step the figure begins, while the construction is stepped
+        // through (StepPlayback): nothing for a figure grouped with the one before it
+        readonly TextBlock number = new TextBlock()
+        {
+            Width = 20,
+            Margin = new Thickness(0, 0, 4, 0),
+            TextAlignment = TextAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Center,
+            FontSize = 12,
+            IsVisible = false
+        };
+
         readonly Decorator iconHost = new Decorator()
         {
             Width = IconSize,
@@ -790,8 +848,10 @@ public class FigureExplorer : Border
             CornerRadius = new CornerRadius(3);
 
             var content = new DockPanel();
+            DockPanel.SetDock(number, Dock.Left);
             DockPanel.SetDock(iconHost, Dock.Left);
             DockPanel.SetDock(text, Dock.Left);
+            content.Children.Add(number);
             content.Children.Add(iconHost);
             content.Children.Add(text);
             content.Children.Add(construction);
@@ -823,8 +883,20 @@ public class FigureExplorer : Border
             kindRun.Text = kind == null ? "" : name == null ? kind : kind + " ";
             nameRun.Text = name ?? "";
             construction.Text = Figure.Construction;
-            // a helper made for another figure (the Number of a fixed length) counts as hidden
-            Opacity = Figure.Visible && !Figure.Auxiliary ? 1 : HiddenOpacity;
+            // a helper made for another figure (the Number of a fixed length) counts as
+            // hidden, and so does a figure of a step not yet taken
+            bool shown = Figure.Visible && !Figure.Auxiliary && !(Figure is FigureBase figureBase && figureBase.IsHiddenByPlayback);
+            Opacity = shown ? 1 : HiddenOpacity;
+            var playback = Figure.Drawing?.Playback;
+            number.IsVisible = playback?.IsOn == true;
+            if (number.IsVisible)
+            {
+                int stepNumber = playback.NumberOf(Figure);
+                number.Text = stepNumber > 0 ? stepNumber.ToString() : "";
+                bool current = stepNumber == playback.Current + 1;
+                number.FontWeight = current ? FontWeight.Bold : FontWeight.Normal;
+                number.BindTheme(TextBlock.ForegroundProperty, current ? nameof(AppTheme.Accent) : nameof(AppTheme.TextMuted));
+            }
             var key = FigureIcons.GetKey(Figure);
             if (key != iconKey || iconHost.Child == null && key != null)
             {
@@ -841,7 +913,12 @@ public class FigureExplorer : Border
 
         void Paint()
         {
-            string background = Figure.Selected
+            // while the construction is stepped through, the current step's rows (nothing
+            // is selected then: the halos took the eye)
+            var playback = Figure.Drawing?.Playback;
+            bool highlighted = Figure.Selected
+                || playback?.IsOn == true && playback.StepOf(Figure) == playback.Current;
+            string background = highlighted
                 ? nameof(AppTheme.ButtonChecked)
                 : hover ? nameof(AppTheme.ButtonHover) : null;
             this.BindTheme(BackgroundProperty, background, whenNone: Brushes.Transparent);

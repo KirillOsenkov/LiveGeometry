@@ -131,6 +131,74 @@ public static class ToggleIcons
         builder.Canvas.Children.Add(dot);
     }
 
+    /// <summary>
+    /// Step by Step: the Figure List's sheet of rows, each numbered in a color of its own
+    /// (green, DodgerBlue, purple) before its line
+    /// </summary>
+    public static FrameworkElement StepByStep()
+    {
+        var builder = IconBuilder.BuildIcon()
+            .Polygon(nameof(AppTheme.InputBackground), guide, new Point(0.1, 0.08), new Point(0.9, 0.08), new Point(0.9, 0.92), new Point(0.1, 0.92))
+            .Line(strokeThickness: 2, guide, 0.46, 0.25, 0.8, 0.25)
+            .Line(strokeThickness: 2, guide, 0.46, 0.5, 0.74, 0.5)
+            .Line(strokeThickness: 2, guide, 0.46, 0.75, 0.78, 0.75);
+        Digit(builder, 0.28, 0.25, "1", Avalonia.Media.Color.Parse("#2E9E4F"));
+        Digit(builder, 0.28, 0.5, "2", Avalonia.Media.Color.Parse("#1E90FF"));
+        Digit(builder, 0.28, 0.75, "3", Avalonia.Media.Color.Parse("#8854D0"));
+        return builder.Canvas;
+    }
+
+    /// <summary>A bold digit in a color of its own, its middle at (x, y)</summary>
+    static void Digit(IconBuilder builder, double x, double y, string text, Avalonia.Media.Color color)
+    {
+        var digit = new Avalonia.Controls.TextBlock()
+        {
+            Text = text,
+            FontSize = 8,
+            FontWeight = Avalonia.Media.FontWeight.Bold,
+            Foreground = new Avalonia.Media.SolidColorBrush(color),
+            Width = 10,
+            Height = 10,
+            TextAlignment = Avalonia.Media.TextAlignment.Center,
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+        };
+        Avalonia.Controls.Canvas.SetLeft(digit, builder.Canvas.Width * x - 5);
+        Avalonia.Controls.Canvas.SetTop(digit, builder.Canvas.Height * y - 5);
+        builder.Canvas.Children.Add(digit);
+    }
+
+    // the step buttons: a triangle a fifth smaller than the icon's full height (at the full
+    // height the four of them were heavy next to the toggles)
+    public static FrameworkElement StepFirst()
+    {
+        return IconBuilder.BuildIcon()
+            .Line(strokeThickness: 2, ink, 0.26, 0.26, 0.26, 0.74)
+            .Polygon(ink, ink, new Point(0.74, 0.26), new Point(0.74, 0.74), new Point(0.38, 0.5))
+            .Canvas;
+    }
+
+    public static FrameworkElement StepPrevious()
+    {
+        return IconBuilder.BuildIcon()
+            .Polygon(ink, ink, new Point(0.66, 0.26), new Point(0.66, 0.74), new Point(0.3, 0.5))
+            .Canvas;
+    }
+
+    public static FrameworkElement StepNext()
+    {
+        return IconBuilder.BuildIcon()
+            .Polygon(ink, ink, new Point(0.34, 0.26), new Point(0.34, 0.74), new Point(0.7, 0.5))
+            .Canvas;
+    }
+
+    public static FrameworkElement StepLast()
+    {
+        return IconBuilder.BuildIcon()
+            .Polygon(ink, ink, new Point(0.26, 0.26), new Point(0.26, 0.74), new Point(0.62, 0.5))
+            .Line(strokeThickness: 2, ink, 0.74, 0.26, 0.74, 0.74)
+            .Canvas;
+    }
+
     /// <summary>The panel for typing a point's coordinates: a point with x and y read off the axes</summary>
     public static FrameworkElement PointByCoordinates()
     {

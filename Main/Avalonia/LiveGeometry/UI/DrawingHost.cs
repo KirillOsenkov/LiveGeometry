@@ -81,6 +81,7 @@ public partial class DrawingHost : Grid
         CreatePropertyGrid();
         CreateStatusBar();
         CreateFigureExplorer();
+        CreateStepCommands();
 
         this.Children.Add(Ribbon);
         this.Children.Add(FigureExplorer);
@@ -88,8 +89,10 @@ public partial class DrawingHost : Grid
         this.Children.Add(DrawingControl);
         this.Children.Add(sidePanel);
         this.Children.Add(StatusBar);
+        this.Children.Add(CreateStepBar());
 
         Grid.SetColumnSpan(Ribbon, 3);
+        Grid.SetColumnSpan(StepBar, 3);
         Grid.SetRow(FigureExplorer, 1);
         Grid.SetRow(figureExplorerSplitter, 1);
         Grid.SetColumn(figureExplorerSplitter, 1);
@@ -516,11 +519,22 @@ public partial class DrawingHost : Grid
         drawing.DisplayProperties += mCurrentDrawing_DisplayProperties;
         drawing.UnhandledException += UnhandledException;
         drawing.FigureCoordinatesChanged += mCurrentDrawing_FigureCoordinatesChanged;
+        drawing.Playback.Changed += Playback_Changed;
+        drawing.ActionManager.CollectionChanged += Playback_CollectionChanged;
         FigureExplorer.Drawing = drawing;
     }
 
     protected virtual void DrawingControl_DrawingDetach(Drawing drawing)
     {
+        // the ribbon back to its tools: the next drawing starts without stepping
+        drawing.Playback.Stop();
+        drawing.Playback.Changed -= Playback_Changed;
+        drawing.ActionManager.CollectionChanged -= Playback_CollectionChanged;
+        if (IsStepping)
+        {
+            ShowStepsState(on: false);
+        }
+
         drawing.Status -= mCurrentDrawing_Status;
         drawing.ChoiceStatus -= mCurrentDrawing_ChoiceStatus;
         mCurrentDrawing_ChoiceStatus(null);
@@ -600,6 +614,12 @@ public partial class DrawingHost : Grid
         // and a redo of another deletion then opened the panel for it, though the panel had
         // been put away. Once the step is done, a panel that is up shows the selection again.
         if (DrawingControl.IsSteppingHistory)
+        {
+            return;
+        }
+
+        // stepping through the construction, the selection is the step: no page for it
+        if (Playback?.IsOn == true)
         {
             return;
         }

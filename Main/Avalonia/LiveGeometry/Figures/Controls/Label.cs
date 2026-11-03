@@ -112,6 +112,12 @@ public class Label : LabelBase, IAngleProvider, ILengthProvider
         get => base.StyleDisplay; set => base.StyleDisplay = value;
     }
 
+    /// <summary>A text pinned to the screen (a caption) stays throughout the stepping; one in the plane is a step like any figure</summary>
+    public override bool CanBeStep()
+    {
+        return Pin == LabelPin.None;
+    }
+
     #region Pinning
 
     LabelPin pin;

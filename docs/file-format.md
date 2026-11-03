@@ -68,6 +68,11 @@ loader still does for files from before; none of it needs extending.
   fill; a circle keeps the line, a polygon's outline is its side segments). Labels leave
   out `DecimalsToShow` at the default. `LiveGeometry.Desktop.exe --rewrite <folder>` loads
   and saves every drawing of a folder, keeping each file's viewport.
+- **Steps in files** (2026-11-03, see "Steps" in `docs/app.md`): a figure's
+  `Step="GroupWithNext"` / `"GroupWithPrevious"` / `"Exclude"` (left out at Regular,
+  read by name, an unknown name is Regular) and `Description="..."` (left out when
+  empty, escaped as a label's text is: `\n` and `\\`), written by `FigureBase.WriteXml`
+  after the base attributes.
 - **A figure is asked before it is worked out** while a file is read: whatever a `ReadXml`
   works out (an intersection point does) sees figures that have been read but never
   recalculated nor added. A Bézier curve had no points yet (`Bezier.CurveInfo` works them

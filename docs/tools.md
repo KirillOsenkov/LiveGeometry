@@ -37,7 +37,8 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
   point: `IsTakenWithItsPoints`). (Until 2026-10-15 every region took what it touched;
   GeoGebra takes only what is wholly inside, and no line at all.) Never hidden figures,
   names, Numbers, the axes or a gallery drawing's text. Figure List (toggle): see "The
-  Figure List".
+  Figure List". Step by Step (toggle): the construction a step at a time, see "Steps" in
+  `docs/app.md`; while it is on, the step bar is in the ribbon's place.
 - **Points**: Point (P) - free, on a figure, or at an intersection; Midpoint (M) - two points
   or a segment; Intersection (I) - two figures that cross, the click on the second picks the
   nearer crossing (`PointPlacement.Intersection`, shared with the Point tool), a graph or a

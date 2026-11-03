@@ -120,6 +120,7 @@ public partial class MainView : UserControl
         InitializeCommands();
         KeepDrawingOfEditor();
         drawingHost.UnhandledException += (s, e) => ReportException(e.Exception);
+        drawingHost.StepsStateChanged += UpdateRibbon;
 
         // a caption made in the editor (Caption: a label given the Heading or the
         // Explanation style, the drawing's page) is laid out as the gallery's are
@@ -372,6 +373,13 @@ public partial class MainView : UserControl
 
     void ToggleRibbon()
     {
+        // the step bar is in the ribbon's place while the construction is stepped through
+        // (the logo button and Ctrl+F1): nothing to show or hide
+        if (DrawingHost.IsStepping)
+        {
+            return;
+        }
+
         ribbonChoice = !DrawingHost.Ribbon.IsVisible;
         UpdateRibbon();
     }
@@ -384,7 +392,9 @@ public partial class MainView : UserControl
         }
 
         bool visible = ribbonChoice ?? !(CurrentSample != null && IsSmallScreen);
-        DrawingHost.Ribbon.IsVisible = visible;
+
+        // while the construction is stepped through, the step bar is in the ribbon's place
+        DrawingHost.Ribbon.IsVisible = visible && !DrawingHost.IsStepping;
         Toolbar.IsTabOpen = visible;
         ToolTip.SetTip(ToolboxButton, (visible ? "Hide the tools" : "Show the tools") + " (" + RibbonShortcut + ")");
     }
@@ -397,6 +407,7 @@ public partial class MainView : UserControl
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleLabelNewPoints);
         DrawingHost.AddToolbarButton(DrawingHost.CommandTogglePointByCoordinates);
         DrawingHost.AddToolbarButton(DrawingHost.CommandToggleFigureExplorer);
+        DrawingHost.AddStepControls();
 
         // Not on the ribbon for now: Ortho, Polar, Snap to grid / point / center
         // (DrawingHost.CommandToggle*). Their settings still work (Shift = snap to grid).
@@ -1285,6 +1296,13 @@ public partial class MainView : UserControl
             return false;
         }
 
+        // stepping through the construction, the keys go from step to step; the tool
+        // letters are off with their tools
+        if (drawing.Playback.IsOn)
+        {
+            return DrawingHost.HandleStepKey(key);
+        }
+
         var toolType = BehaviorShortcuts.GetTool(key);
         if (toolType != null)
         {
@@ -1724,6 +1742,10 @@ public partial class MainView : UserControl
         if (behavior.AbandonGesture())
         {
             // a lasso being drawn goes, and nothing else
+        }
+        else if (DrawingHost.Playback.IsOn)
+        {
+            DrawingHost.ExitSteps();
         }
         else if (behavior.IsInInitialState)
         {

@@ -9,8 +9,7 @@ coordinates in the status bar; undo/redo
 captions naming the action; recent files; print; message, sound and launch buttons (the `.dgf`
 reader leaves button types 1-3 out); "Create locus" on a point (the Locus tool does the
 tracing); measurement label dragging constraints; rulers; "tool select once" option (every
-construction returns to Drag); languages (en/ru/uk/de); step-by-step construction playback;
-Calculator. Not a gap but a choice: double-click
+construction returns to Drag); languages (en/ru/uk/de); Calculator. Not a gap but a choice: double-click
 zooms to fit, where VB6 opened properties (here selecting a figure shows them).
 
 Done since the list was made: the point symmetric about a point and the inverted point are
@@ -19,7 +18,8 @@ are per style; show/hide buttons are `ShowHideControl`, made with the Show/hide 
 (2026-10-07; VB6 dragged its buttons with the right button, here a drag is a drag and a
 click ticks); settings persist (`SettingsStore`);
 the axes are lines to build on (`AxisLine`); a click among overlapping figures is chosen
-with Tab, a tap's in a menu, a selection in the context menu (`ClickChoice`).
+with Tab, a tap's in a menu, a selection in the context menu (`ClickChoice`); step-by-step
+construction playback is Steps (2026-11-03, see `docs/app.md`), without autoplay yet.
 
 ## Not yet verified in the browser
 

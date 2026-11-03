@@ -66,7 +66,12 @@ public abstract class AnchoredLabel : LabelWithOffset
             return;
         }
 
-        bool shown = Visible && figure.Visible && figure.Exists;
+        // (nor is a label of a later step there yet while the construction is stepped through)
+        bool shown = Visible
+            && figure.Visible
+            && figure.Exists
+            && !IsHiddenByPlayback
+            && !(figure is FigureBase figureBase && figureBase.IsHiddenByPlayback);
         if (figure is LineBase && figure is not Segment)
         {
             // a line that runs outside the window has nowhere to write it

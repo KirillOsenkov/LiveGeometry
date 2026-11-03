@@ -22,6 +22,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
 
         ActionManager = new ActionManager();
         StyleManager = new StyleManager(this);
+        Playback = new StepPlayback(this);
 
         Figures = new RootFigureList(this);
         CurveIntersectionHistory = new CurveIntersectionHistory(this);
@@ -39,6 +40,9 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     }
 
     public double Version { get; set; }
+
+    /// <summary>Stepping through the construction, off unless the user turned it on</summary>
+    public StepPlayback Playback { get; }
 
     /// <summary>Where the crossings with curves were in each state of the undo history</summary>
     public CurveIntersectionHistory CurveIntersectionHistory { get; }

@@ -13,6 +13,12 @@ public abstract class NameLabel : AnchoredLabel
     /// <summary>"of A", "of line g": "Label of A", "Name of line g"</summary>
     public override string Construction => Figure != null ? "of " + ConstructionText.Of(Figure) : null;
 
+    /// <summary>A name comes with its figure's step (<see cref="StepPlayback"/>)</summary>
+    public override bool CanBeStep()
+    {
+        return false;
+    }
+
     public override void OnAddingToDrawing(Drawing drawing)
     {
         base.OnAddingToDrawing(drawing);

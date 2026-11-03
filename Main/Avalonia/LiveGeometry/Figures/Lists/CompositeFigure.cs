@@ -181,6 +181,20 @@ public partial class CompositeFigure : FigureBase
         }
     }
 
+    public override void RefreshShown()
+    {
+        foreach (var item in Children.OfType<FigureBase>())
+        {
+            item.RefreshShown();
+        }
+    }
+
+    /// <summary>A figure of a later step than the one shown is not there to be hit (<see cref="StepPlayback"/>)</summary>
+    static bool IsThere(IFigure figure)
+    {
+        return !(figure is FigureBase figureBase && figureBase.IsHiddenByPlayback);
+    }
+
     public override Drawing Drawing
     {
         get => base.Drawing;
@@ -237,7 +251,7 @@ public partial class CompositeFigure : FigureBase
     {
         IFigure bestFoundSoFar = null;
 
-        foreach (var item in Children.Where(f => filter(f)))
+        foreach (var item in Children.Where(f => filter(f) && IsThere(f)))
         {
             IFigure found = item.HitTest(point);
             if (found != null)
@@ -255,7 +269,7 @@ public partial class CompositeFigure : FigureBase
     {
         List<IFigure> result = new List<IFigure>();
 
-        foreach (var item in Children)
+        foreach (var item in Children.Where(IsThere))
         {
             IFigure found = item.HitTest(point);
             if (found != null && found.Visible)
@@ -279,7 +293,7 @@ public partial class CompositeFigure : FigureBase
     {
         IFigure bestFoundSoFar = null;
 
-        foreach (var item in Children)
+        foreach (var item in Children.Where(IsThere))
         {
             IFigure found = item.HitTest(point);
             if (found != null && figureType.IsAssignableFrom(found.GetType()))

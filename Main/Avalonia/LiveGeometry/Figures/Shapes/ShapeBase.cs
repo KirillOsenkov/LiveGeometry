@@ -106,8 +106,9 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
             return null;
         }
 
-        // a hidden figure shown while selected (IsGhost) is still hidden
-        if (!Visible)
+        // a hidden figure shown while selected (IsGhost) is still hidden; one of a later
+        // step is not there yet
+        if (!Visible || IsHiddenByPlayback)
         {
             return null;
         }
@@ -188,7 +189,12 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
     protected bool IsGhost => ghost;
 
     /// <summary>Whether the shape is on the canvas and wants its geometry kept up to date</summary>
-    protected bool IsShown => Exists && (Visible || ghost);
+    protected bool IsShown => Exists && (Visible || ghost) && !IsHiddenByPlayback;
+
+    public override void RefreshShown()
+    {
+        UpdateShapeVisibility();
+    }
 
     protected void UpdateShapeVisibility()
     {
@@ -204,6 +210,13 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
             && Drawing != null
             && Drawing.Figures.Contains(this);
 
+        // the figures of the steps already taken are dimmed while the construction is stepped through
+        double opacity = ghost ? GhostOpacity : Drawing?.Playback?.OpacityOf(this) ?? 1;
+        if (Shape.Opacity != opacity)
+        {
+            Shape.Opacity = opacity;
+        }
+
         bool needsToBeVisible = IsShown;
         if (needsToBeVisible && canvas != null && !isShapeOnCanvas)
         {
@@ -216,6 +229,14 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
         if ((Shape.Visibility == Visibility.Visible) != needsToBeVisible)
         {
             Shape.Visibility = needsToBeVisible ? Visibility.Visible : Visibility.Collapsed;
+
+            // a shape isn't kept in place while it isn't shown (the UpdateVisual overrides
+            // skip it): one that comes back - a later step of the construction reached,
+            // after the view was refit - is drawn where things are now
+            if (needsToBeVisible && Drawing != null && Drawing.Canvas != null)
+            {
+                UpdateVisual();
+            }
         }
 
         UpdateSelectionHalo();
@@ -230,7 +251,6 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
         {
             hitTestVisibleBeforeGhost = Shape.IsHitTestVisible;
             Shape.IsHitTestVisible = false;
-            Shape.Opacity = GhostOpacity;
 
             // a hidden figure isn't kept in place while it is hidden
             if (Drawing != null && Drawing.Canvas != null)
@@ -241,7 +261,6 @@ public abstract partial class ShapeBase<TShape> : FigureBase, IHasShape
         else
         {
             Shape.IsHitTestVisible = hitTestVisibleBeforeGhost;
-            Shape.Opacity = 1;
         }
     }
 

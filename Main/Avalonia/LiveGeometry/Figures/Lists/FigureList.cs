@@ -144,6 +144,18 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
     protected virtual IEnumerable<IFigure> HitTestCandidates => this;
 
     /// <summary>
+    /// Whether a figure is there to be hit: one that doesn't exist right now (an
+    /// intersection whose lines no longer cross, a circle built on it) is nowhere to be
+    /// clicked - its own hit test still answers, from where it was last, and a tool took
+    /// the invisible figure, and what was built on it never appeared. Nor is a figure of a
+    /// later step than the one shown (<see cref="StepPlayback"/>).
+    /// </summary>
+    static bool IsThere(IFigure figure)
+    {
+        return figure.Exists && !(figure is FigureBase figureBase && figureBase.IsHiddenByPlayback);
+    }
+
+    /// <summary>
     /// Finds any figure at the point
     /// </summary>
     /// <param name="point">Hittest coordinates</param>
@@ -194,11 +206,7 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
 
         foreach (var item in HitTestCandidates)
         {
-            // A figure that doesn't exist right now (an intersection whose lines no
-            // longer cross, a circle built on it) is nowhere to be clicked. Its own hit
-            // test still answers, from where it was last: a tool took the invisible
-            // figure, and what was built on it never appeared.
-            if (!item.Exists)
+            if (!IsThere(item))
             {
                 continue;
             }
@@ -242,7 +250,7 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
         foreach (var item in HitTestCandidates)
         {
             index++;
-            if (!item.Exists)
+            if (!IsThere(item))
             {
                 continue;
             }
@@ -270,7 +278,7 @@ public abstract partial class FigureList : CollectionWithEvents<IFigure>
         var reverse = HitTestCandidates.Reverse();
         foreach (var item in reverse)
         {
-            if (!item.Exists)
+            if (!IsThere(item))
             {
                 continue;
             }

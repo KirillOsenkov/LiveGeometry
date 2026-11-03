@@ -32,6 +32,66 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   old point's place (`MoveBefore`: with what it is built on that came later, such as its
   Number, to keep dependency order; `Figures.Move` doesn't touch the canvas). Several figures selected show as a `FigureSelection`
   in the property grid (common properties + Delete).
+- **Steps** (2026-11-03; `Figures/ConstructionSteps.cs`, `Figures/StepPlayback.cs`,
+  `UI/DrawingHost.Steps.cs`): stepping through the construction a figure or a group at
+  a time, VB6's "construction playback" made over. The data is on the figures
+  (`FigureBase.StepRole`, `Description`; file: `Step="GroupWithNext"`, `Description=`,
+  see "Steps in files"), so every drawing plays with no authoring: each visible figure is
+  a step in list order, saying its title and construction ("Perpendicular g to ray VA
+  through V."). Two neighbors of the list are one step when the earlier says Group with
+  next or the later Group with previous (either end, whichever a selection makes
+  handy: the Step row takes a multi-selection; Description doesn't); Not a step leaves
+  a figure on the paper throughout. A hidden figure is never a step; a point's name goes
+  with its point; a caption (a pinned text), a show/hide box, the grid and the axes are
+  always there (`FigureBase.CanBeStep`, which also hides the two rows). A step's text is
+  the typed descriptions of its figures, else their generated sentences
+  (`ConstructionStep.Text`). The Step by Step toggle after Figure List on the Selection
+  tab (`CommandToggleSteps`; its icon is the Figure List's sheet with 1, 2, 3 in green,
+  DodgerBlue and purple) starts at step 1 with Drag, the side panel put away and the
+  Figure List up (put back as it was on leaving). While on, the step bar takes the
+  ribbon's place (`DrawingHost.StepBar`, `ShowStepsState`; the application hides the
+  ribbon on `StepsStateChanged`, through `MainView.UpdateRibbon`, and the logo button
+  and Ctrl+F1 do nothing meanwhile): the toggle to leave (a command of its own: an icon
+  can be in one button only), First / Previous / Next / Last, and "Step 4 of 9: what
+  the step says" filling the rest. The bar is one row, lower than the ribbon, so the
+  canvas grows: the view keeps its middle (the drawing shifts down by half the
+  difference) and an untouched gallery drawing is refit, as when the ribbon is hidden.
+  The bar at the ribbon's exact height, so that nothing moved, was tried first
+  (2026-11-03) and dropped for the room. Where the text would get less than
+  `MinimumStepTextWidth` (420 px) beside the buttons it goes under them, as wide as the
+  window (decided from the bar's width alone, in its SizeChanged, so the layout settles
+  in one pass): in a middle band of widths it was a word a line beside the buttons,
+  the bar as tall as the window; the buttons are a WrapPanel of two groups, the toggles
+  and the four step buttons, so on a phone the step buttons go onto a second row
+  together (one at a time, "Last" sat alone on it). The step buttons' triangles are a
+  fifth smaller than the icon's height (at the full height they were heavy next to the
+  toggles). The bar has a Figure List toggle of its own next to
+  Step by Step (the ribbon's is away with the ribbon). The stepping opens the Figure
+  List in a window at least `FigureExplorerWhileSteppingMinimumWidth` (700 px, the
+  ribbon's own small-screen limit) wide and puts it away in a narrower one, where it
+  took half the width; on leaving, the list is as it was before. Figures of later steps are
+  not drawn, hit, snapped or dragged - a playback flag `IsShown` and the hit tests
+  consult (`FigureBase.IsHiddenByPlayback`, `FigureList.IsThere`), never `Visible`, so
+  nothing is recorded or saved; earlier steps are drawn at `StepPlayback.DimOpacity`
+  (0.7) through the opacity the ghost uses; the current step's figures flash with their
+  direct dependencies (`SelectionFlash.Show(figures)`) and nothing is selected (the
+  halos stayed on while the step was read and took the eye; the stepping clears the
+  selection as it starts, and a selection changed while stepping opens no page). An
+  anchored label's own `UpdateVisual` sets `Shape.IsVisible`, so it asks the flag too.
+  A shape that comes back from not being drawn is drawn again at once
+  (`ShapeBase.UpdateShapeVisibility`): the `UpdateVisual` overrides skip a shape that
+  isn't shown, and after the refit on entering, the later steps came back where the
+  view had been. Keys: Space, Right, Down, Page Down next;
+  Left, Up, Page Up previous; Home, End; Escape leaves (`DrawingHost.HandleStepKey`,
+  before the tool letters). In the Figure List a row picks its step, Up and Down walk the
+  steps, the current step's rows are painted as a selection is (`Row.Paint`), the rows
+  of later steps fade like hidden ones, and the first figure of each
+  step has the step's number before its icon (the current one bold in the accent; a
+  figure grouped with the one before it, hidden or no step has none:
+  `StepPlayback.NumberOf`). The steps are read again on
+  every change of the history (`StepPlayback.Refresh`: nothing happens while they are
+  the same), and the stepping stops when the drawing leaves the editor or no step is
+  left. The player doesn't play steps yet; zoom to fit covers every figure, shown or not.
 - **Save writes the drawing's own file again, without a dialog** (`MainView.SaveDrawing`),
   when it has one: `OwnFile`, the .lgf it was read from (the Open dialog, the command line)
   or last saved to. A new drawing, a drawing of the gallery and one read from a GeoGebra or

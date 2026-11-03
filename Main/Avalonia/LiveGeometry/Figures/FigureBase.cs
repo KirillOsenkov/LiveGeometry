@@ -791,6 +791,63 @@ public abstract partial class FigureBase :
 
     public bool Auxiliary { get; set; }
 
+    #region Steps
+
+    /// <summary>
+    /// How the figure takes part in stepping through the construction
+    /// (<see cref="StepPlayback"/>): a step of its own, in one step with the figure before
+    /// or after it in the list, or no step at all. Saved only when it isn't the default.
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridName("Step")]
+    [PropertyGridGroup("Steps")]
+    [PropertyGridSection(PropertyGridSection.Display, 90)]
+    [PropertyGridCondition(nameof(CanBeStep))]
+    public virtual StepRole StepRole { get; set; }
+
+    /// <summary>
+    /// What the step says when it comes: typed by the author; empty, the figure says
+    /// what it is (<see cref="DefaultDescription"/>). The descriptions of the figures of
+    /// one step are read one after another (<see cref="ConstructionStep.Text"/>).
+    /// </summary>
+    [PropertyGridVisible]
+    [PropertyGridMultiline]
+    [PropertyGridDisallowMultiEdit]
+    [PropertyGridGroup("Steps")]
+    [PropertyGridSection(PropertyGridSection.Display, 91)]
+    [PropertyGridCondition(nameof(CanBeStep))]
+    public virtual string Description { get; set; }
+
+    /// <summary>"Point A.", "Perpendicular g to ray VA through V.": the title and the construction as a sentence</summary>
+    public string DefaultDescription
+    {
+        get
+        {
+            var construction = ConstructionOnPage;
+            return (string.IsNullOrEmpty(construction) ? Title : Title + " " + construction) + ".";
+        }
+    }
+
+    /// <summary>
+    /// Whether a figure of this kind can be a step of the construction: a point's name
+    /// goes with its point, and a caption, a show/hide box, the grid and the axes are
+    /// always on the paper. Also hides the Steps rows of the page.
+    /// </summary>
+    public virtual bool CanBeStep()
+    {
+        return true;
+    }
+
+    /// <summary>Whether the figure is of a later step than the one shown (<see cref="StepPlayback"/>) and so not drawn, hit or snapped to</summary>
+    public bool IsHiddenByPlayback => Drawing?.Playback?.IsHidden(this) == true;
+
+    /// <summary>The shape is shown, hidden or dimmed again as the stepping says now (<see cref="StepPlayback"/>)</summary>
+    public virtual void RefreshShown()
+    {
+    }
+
+    #endregion
+
     /// <summary>
     /// Whether a figure of this kind is on the paper unless the file says otherwise: every
     /// figure but a <see cref="Number"/>, which is a hidden helper until it is shown, so the
@@ -830,6 +887,14 @@ public abstract partial class FigureBase :
         {
             writer.WriteAttributeString("Z", Z.ToString(System.Globalization.CultureInfo.InvariantCulture));
         }
+        if (StepRole != StepRole.Regular)
+        {
+            writer.WriteAttributeString("Step", StepRole.ToString());
+        }
+        if (!string.IsNullOrEmpty(Description))
+        {
+            writer.WriteAttributeString("Description", Label.Escape(Description));
+        }
     }
 
     public virtual void ReadXml(XElement element)
@@ -851,6 +916,9 @@ public abstract partial class FigureBase :
             }
         }
         Flipped = element.ReadBool("Flipped", false);
+        StepRole = Enum.TryParse(element.ReadString("Step"), ignoreCase: true, out StepRole role) ? role : StepRole.Regular;
+        var description = element.ReadString("Description");
+        Description = description == null ? null : Label.Unescape(description);
     }
 
     public virtual bool Serializable => true;

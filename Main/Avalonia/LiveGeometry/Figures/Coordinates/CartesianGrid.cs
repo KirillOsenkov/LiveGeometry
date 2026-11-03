@@ -125,6 +125,12 @@ public partial class CartesianGrid : CompositeFigure, ICustomPropertyProvider, I
         labelsStyle.RefreshFromTheme();
     }
 
+    /// <summary>The grid is part of the paper, not of the construction</summary>
+    public override bool CanBeStep()
+    {
+        return false;
+    }
+
     private bool visible = false;
     public override bool Visible
     {

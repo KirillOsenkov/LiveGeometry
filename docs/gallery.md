@@ -299,9 +299,12 @@
   by pushing the sides out by R, scaling from the pushed-out vertex D and shrinking back.
   One compass circle of radius R at V marks the pushed-out sides (rays from D through its
   perpendicular radii, over hidden parallels) and is the circle that gets scaled; DV is the
-  bisector, so no bisector tool. The steps are three show/hide boxes ("1. Push out",
-  "2. Scale", "3. Shrink"; short, so that they fit in a row on a phone), each listing its
-  figures and point labels. Dashes mean one thing: a copy of the solid figure of the same
+  bisector, so no bisector tool. Nine steps for the Steps toggle (see "Steps" in
+  `docs/app.md`; the first drawing authored for it, 2026-11-03): the given, the compass
+  circle, the two radii, the pushed-out sides and D, DO and P, the scaling to X, the
+  scaled-up circle, K and r, the answer - `Step="GroupWithNext"` on the runs and a
+  `Description` on the first figure of each step. (Three show/hide boxes did the same
+  job at a third of the granularity until then, and went.) Dashes mean one thing: a copy of the solid figure of the same
   color, moved (`DashedPurpleLine` the given circle carried to V, `DashedRedLine` the sides
   pushed out, `DashedBlueLine` the answer grown by R); every helper is thin and solid
   (`PurpleLine` radii, `OrangeLine` for the three segments of the scaling, `BlueLine` for
