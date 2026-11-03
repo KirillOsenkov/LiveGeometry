@@ -311,6 +311,18 @@
   XK), the bisector `DashDotLine`. The second solution (the nearer crossing of DO) is
   named in the caption but not drawn: four to five times the size of the picture, it
   wrecked the fit even hidden. Merged from two generated attempts (2026-11-03).
+- **Steps authored** (2026-11-03, see "Steps" in `docs/app.md`; the checker's report lists
+  them): Circle in the Corner, Circumscribed Circle, Inscribed Circle, Circle Touching Three
+  Lines, Simson Line, Regular Pentagon, Tangents to a Circle, Parabola, Conic Through Five
+  Points, Square Around Four Points, Inscribed Square in a Triangle. The least that makes
+  the playback read as a construction: the given figures one step, a polygon with its
+  sides one step, a helper with the point it is there for one step (`Step="GroupWithNext"`
+  on the run), and a sentence on the first figure of a step only where the generated one
+  says nothing of the why. Four files had figures moved up the list so that the steps
+  come in construction order (the triangle's sides and polygon in Circumscribed Circle
+  and Simson Line, AC in Tangents to a Circle, the third bisector after the incenter in
+  Inscribed Circle): a step is a run of the list, so the list's order is the playback's.
+  Every other drawing plays with the defaults.
 - **Drawings that must not fall apart** when a kid drags the wrong thing (Castle, The Falling
   Ladder): fixed points are `PointByCoordinates` with constant coordinates (a polygon of those
   has no free point, so dragging it does nothing), and the only things that move are

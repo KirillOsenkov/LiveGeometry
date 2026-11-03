@@ -3,14 +3,14 @@
   <Viewport Left="-23" Top="8.5" Right="35" Bottom="-14.5" />
   <Styles />
   <Figures>
-    <FreePoint Name="A" X="-6" Y="0" />
-    <FreePoint Name="B" X="6" Y="0" />
-    <Segment Name="AB" Style="ThickPurpleLine">
+    <FreePoint Name="A" Step="GroupWithNext" Description="The triangle ABC. Fit a square into it, with one side on the base and the other two corners on the sides." X="-6" Y="0" />
+    <FreePoint Name="B" Step="GroupWithNext" X="6" Y="0" />
+    <Segment Name="AB" Style="ThickPurpleLine" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <FreePoint Name="C" X="3" Y="6.65" />
-    <Segment Name="AC" Style="ThickPurpleLine">
+    <FreePoint Name="C" Step="GroupWithNext" X="3" Y="6.65" />
+    <Segment Name="AC" Style="ThickPurpleLine" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
@@ -18,23 +18,23 @@
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Segment>
-    <PointByCoordinates Name="D" X="A.X - A.Y + B.Y" Y="A.X + A.Y - B.X">
+    <PointByCoordinates Name="D" Step="GroupWithNext" Description="A square on the base, below the triangle." X="A.X - A.Y + B.Y" Y="A.X + A.Y - B.X">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <PointByCoordinates Name="E" X="-A.Y + B.X + B.Y" Y="A.X - B.X + B.Y">
+    <PointByCoordinates Name="E" Step="GroupWithNext" X="-A.Y + B.X + B.Y" Y="A.X - B.X + B.Y">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </PointByCoordinates>
-    <Segment Name="AD">
+    <Segment Name="AD" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="D" />
     </Segment>
-    <Segment Name="DE">
+    <Segment Name="DE" Step="GroupWithNext">
       <Dependency Name="D" />
       <Dependency Name="E" />
     </Segment>
-    <Segment Name="BE">
+    <Segment Name="BE" Step="GroupWithNext">
       <Dependency Name="E" />
       <Dependency Name="B" />
     </Segment>
@@ -44,7 +44,7 @@
       <Dependency Name="D" />
       <Dependency Name="E" />
     </Polygon>
-    <LineTwoPoints Name="CD" Style="CyanLine">
+    <LineTwoPoints Name="CD" Style="CyanLine" Step="GroupWithNext" Description="Lines from the bottom corners of the square to the apex C.">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </LineTwoPoints>
@@ -52,7 +52,7 @@
       <Dependency Name="C" />
       <Dependency Name="E" />
     </LineTwoPoints>
-    <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="F" Step="GroupWithNext" Description="They cross the base at F and G: the bottom side of the square, scaled toward C." Algorithm="IntersectLineAndLine">
       <Dependency Name="AB" />
       <Dependency Name="CD" />
     </IntersectionPoint>
@@ -60,15 +60,15 @@
       <Dependency Name="AB" />
       <Dependency Name="CE" />
     </IntersectionPoint>
-    <PerpendicularLine Name="g" Style="FaintDashedLine" RightAngleCorner="3">
+    <PerpendicularLine Name="g" Style="FaintDashedLine" Step="GroupWithNext" Description="Perpendiculars up from F and G meet the sides at H and I." RightAngleCorner="3">
       <Dependency Name="AB" />
       <Dependency Name="F" />
     </PerpendicularLine>
-    <PerpendicularLine Name="h" Style="FaintDashedLine" RightAngleCorner="2">
+    <PerpendicularLine Name="h" Style="FaintDashedLine" Step="GroupWithNext" RightAngleCorner="2">
       <Dependency Name="AB" />
       <Dependency Name="G" />
     </PerpendicularLine>
-    <IntersectionPoint Name="H" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="H" Step="GroupWithNext" Algorithm="IntersectLineAndLine">
       <Dependency Name="AC" />
       <Dependency Name="g" />
     </IntersectionPoint>
@@ -76,21 +76,21 @@
       <Dependency Name="BC" />
       <Dependency Name="h" />
     </IntersectionPoint>
-    <Segment Name="HI" Style="ThickBrownLine">
+    <Segment Name="HI" Style="ThickBrownLine" Step="GroupWithNext" Description="FGIH is a square, the big one scaled toward C: its bottom side is on the base and its top corners are on the sides.">
       <Dependency Name="H" />
       <Dependency Name="I" />
     </Segment>
-    <Polygon Name="FGIH" Style="BrownOutline">
+    <Polygon Name="FGIH" Style="BrownOutline" Step="GroupWithNext">
       <Dependency Name="H" />
       <Dependency Name="I" />
       <Dependency Name="G" />
       <Dependency Name="F" />
     </Polygon>
-    <Segment Name="GI" Style="ThickBrownLine">
+    <Segment Name="GI" Style="ThickBrownLine" Step="GroupWithNext">
       <Dependency Name="I" />
       <Dependency Name="G" />
     </Segment>
-    <Segment Name="FG" Style="ThickBrownLine">
+    <Segment Name="FG" Style="ThickBrownLine" Step="GroupWithNext">
       <Dependency Name="G" />
       <Dependency Name="F" />
     </Segment>

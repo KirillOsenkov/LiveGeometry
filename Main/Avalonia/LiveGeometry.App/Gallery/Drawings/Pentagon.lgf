@@ -10,17 +10,17 @@
     <LineStyle Name="13" Color="#FF1100FF" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" X="-0.5833333334" Y="1" />
-    <FreePoint Name="B" X="2.4375" Y="1" />
+    <FreePoint Name="A" Step="GroupWithNext" Description="The circle with center A through B. Fit a regular pentagon into it with compass and straightedge only." X="-0.5833333334" Y="1" />
+    <FreePoint Name="B" Step="GroupWithNext" X="2.4375" Y="1" />
     <Circle Name="c" Style="11">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
-    <Segment Name="AB" Style="13">
+    <Segment Name="AB" Style="13" Step="GroupWithNext" Description="The radius AB, and the radius AC perpendicular to it.">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <PerpendicularLine Name="g" Style="13" RightAngleCorner="0">
+    <PerpendicularLine Name="g" Style="13" Step="GroupWithNext" RightAngleCorner="0">
       <Dependency Name="AB" />
       <Dependency Name="A" />
     </PerpendicularLine>
@@ -28,11 +28,11 @@
       <Dependency Name="g" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <MidPoint Name="D" Style="DependentPoint">
+    <MidPoint Name="D" Style="DependentPoint" Description="D is the midpoint of AC.">
       <Dependency Name="C" />
       <Dependency Name="A" />
     </MidPoint>
-    <Circle Name="d" Style="13">
+    <Circle Name="d" Style="13" Step="GroupWithNext" Description="The circle around D through B meets the line AC at E, on the other side of A from C.">
       <Dependency Name="D" />
       <Dependency Name="B" />
     </Circle>
@@ -40,7 +40,7 @@
       <Dependency Name="d" />
       <Dependency Name="g" />
     </IntersectionPoint>
-    <Circle Name="f" Style="12">
+    <Circle Name="f" Style="12" Step="GroupWithNext" Description="BE is the side of the pentagon: the circle around B through E meets the big circle at F.">
       <Dependency Name="B" />
       <Dependency Name="E" />
     </Circle>
@@ -48,7 +48,7 @@
       <Dependency Name="f" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <Circle Name="h" Style="12">
+    <Circle Name="h" Style="12" Step="GroupWithNext" Description="Step the same length around the circle: the circle around F through B meets it at G.">
       <Dependency Name="F" />
       <Dependency Name="B" />
     </Circle>
@@ -56,7 +56,7 @@
       <Dependency Name="h" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <Circle Name="k" Style="12">
+    <Circle Name="k" Style="12" Step="GroupWithNext" Description="Once more: the circle around G through F meets it at H.">
       <Dependency Name="G" />
       <Dependency Name="F" />
     </Circle>
@@ -64,30 +64,30 @@
       <Dependency Name="k" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <IntersectionPoint Name="I" Style="DependentPoint" Algorithm="IntersectCircleAndCircle1">
+    <IntersectionPoint Name="I" Style="DependentPoint" Description="The fifth vertex I is the other crossing of the circle around B with the big circle." Algorithm="IntersectCircleAndCircle1">
       <Dependency Name="f" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <Polygon Name="BFGHI" Style="10">
+    <Polygon Name="BFGHI" Style="10" Step="GroupWithNext" Description="The regular pentagon BFGHI.">
       <Dependency Name="G" />
       <Dependency Name="H" />
       <Dependency Name="I" />
       <Dependency Name="B" />
       <Dependency Name="F" />
     </Polygon>
-    <Segment Name="GH" Style="11">
+    <Segment Name="GH" Style="11" Step="GroupWithNext">
       <Dependency Name="G" />
       <Dependency Name="H" />
     </Segment>
-    <Segment Name="HI" Style="11">
+    <Segment Name="HI" Style="11" Step="GroupWithNext">
       <Dependency Name="H" />
       <Dependency Name="I" />
     </Segment>
-    <Segment Name="BI" Style="11">
+    <Segment Name="BI" Style="11" Step="GroupWithNext">
       <Dependency Name="I" />
       <Dependency Name="B" />
     </Segment>
-    <Segment Name="BF" Style="11">
+    <Segment Name="BF" Style="11" Step="GroupWithNext">
       <Dependency Name="B" />
       <Dependency Name="F" />
     </Segment>

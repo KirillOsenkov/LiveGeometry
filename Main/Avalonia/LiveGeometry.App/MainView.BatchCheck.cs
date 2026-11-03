@@ -134,6 +134,13 @@ public partial class MainView
                     report.AppendLine("  " + message.Replace("\n", " | "));
                 }
 
+                // the steps as Step by Step would say them, for authoring them
+                var steps = ConstructionSteps.Partition(drawing);
+                for (int i = 0; i < steps.Count; i++)
+                {
+                    report.AppendLine("  step " + (i + 1) + " [" + string.Join(", ", steps[i].Figures.Select(f => f.Name)) + "]: " + steps[i].Text);
+                }
+
                 var control = DrawingHost.DrawingControl;
                 var size = new PixelSize((int)control.Bounds.Width, (int)control.Bounds.Height);
                 using var bitmap = new RenderTargetBitmap(size, new Avalonia.Vector(96, 96));

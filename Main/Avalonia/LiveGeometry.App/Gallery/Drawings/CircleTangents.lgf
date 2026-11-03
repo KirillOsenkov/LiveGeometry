@@ -8,22 +8,26 @@
     <LineStyle Name="12" Color="#FF808080" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" X="-2.0833333333" Y="0.9791666667" />
-    <FreePoint Name="B" X="-3.8020833333" Y="1.71875" />
-    <Circle Name="c" Style="11">
+    <FreePoint Name="A" Step="GroupWithNext" Description="The circle with center A through B, and a point C outside it. Draw the two tangents from C." X="-2.0833333333" Y="0.9791666667" />
+    <FreePoint Name="B" Step="GroupWithNext" X="-3.8020833333" Y="1.71875" />
+    <Circle Name="c" Style="11" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Circle>
     <FreePoint Name="C" X="4.125" Y="0.9791666667" />
+    <Segment Name="AC" Style="12" Step="GroupWithNext" Description="Join A and C, and mark the midpoint D of AC.">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
     <MidPoint Name="D" Style="DependentPoint">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </MidPoint>
-    <Circle Name="d" Style="12">
+    <Circle Name="d" Style="12" Description="The circle around D through A: AC is its diameter, so it passes through C as well.">
       <Dependency Name="D" />
       <Dependency Name="A" />
     </Circle>
-    <IntersectionPoint Name="E" Style="DependentPoint" Algorithm="IntersectCircleAndCircle1">
+    <IntersectionPoint Name="E" Style="DependentPoint" Step="GroupWithNext" Description="It meets the first circle at E and F." Algorithm="IntersectCircleAndCircle1">
       <Dependency Name="d" />
       <Dependency Name="c" />
     </IntersectionPoint>
@@ -31,7 +35,7 @@
       <Dependency Name="d" />
       <Dependency Name="c" />
     </IntersectionPoint>
-    <Ray Name="CE" Style="10">
+    <Ray Name="CE" Style="10" Step="GroupWithNext" Description="CE and CF are the tangents: the angle at E in the semicircle on AC is a right angle, so CE is perpendicular to the radius AE, and a line perpendicular to a radius at its end touches the circle there.">
       <Dependency Name="C" />
       <Dependency Name="E" />
     </Ray>
@@ -39,10 +43,6 @@
       <Dependency Name="C" />
       <Dependency Name="F" />
     </Ray>
-    <Segment Name="AC" Style="12">
-      <Dependency Name="A" />
-      <Dependency Name="C" />
-    </Segment>
     <PointLabel Name="PointLabel48" Style="7" OffsetX="-17.6" OffsetY="-31.1">
       <Dependency Name="A" />
     </PointLabel>

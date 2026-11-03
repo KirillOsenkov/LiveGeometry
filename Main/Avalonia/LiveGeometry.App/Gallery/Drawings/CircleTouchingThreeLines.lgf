@@ -6,15 +6,15 @@
     <ShapeStyle Name="PurpleOutline" Fill="#1C8854D0" Color="#FF8854D0" StrokeWidth="3" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" X="-11.499999999899998" Y="-6.166666666499999" />
-    <FreePoint Name="B" X="-13.53125" Y="-1.1562499997000004" />
-    <Ray Name="AB" Style="RedLine">
+    <FreePoint Name="A" Step="GroupWithNext" Description="The segment AC and two rays from its ends. Find the circle that touches all three." X="-11.499999999899998" Y="-6.166666666499999" />
+    <FreePoint Name="B" Step="GroupWithNext" X="-13.53125" Y="-1.1562499997000004" />
+    <Ray Name="AB" Style="RedLine" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Ray>
-    <FreePoint Name="C" X="-5.4791666666" Y="-6.1979166664" />
-    <FreePoint Name="D" X="-3.375" Y="-2.0937499998" />
-    <Ray Name="CD" Style="RedLine">
+    <FreePoint Name="C" Step="GroupWithNext" X="-5.4791666666" Y="-6.1979166664" />
+    <FreePoint Name="D" Step="GroupWithNext" X="-3.375" Y="-2.0937499998" />
+    <Ray Name="CD" Style="RedLine" Step="GroupWithNext">
       <Dependency Name="C" />
       <Dependency Name="D" />
     </Ray>
@@ -22,12 +22,12 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleBisector Name="g" Style="DashedLine">
+    <AngleBisector Name="g" Style="DashedLine" Description="The bisector of the angle at A: every point on it is as far from the ray AB as from AC.">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="h" Style="DashedLine">
+    <AngleBisector Name="h" Style="DashedLine" Step="GroupWithNext" Description="The bisector of the angle at C meets it at E, which is as far from all three lines.">
       <Dependency Name="C" />
       <Dependency Name="D" />
       <Dependency Name="A" />
@@ -36,11 +36,11 @@
       <Dependency Name="g" />
       <Dependency Name="h" />
     </IntersectionPoint>
-    <PerpendicularLine Name="k" Style="GreenLine" RightAngleCorner="2">
+    <PerpendicularLine Name="k" Style="GreenLine" Step="GroupWithNext" Description="Perpendiculars from E to the three lines: the circle touches each line at the foot of its perpendicular." RightAngleCorner="2">
       <Dependency Name="AB" />
       <Dependency Name="E" />
     </PerpendicularLine>
-    <PerpendicularLine Name="m" Style="GreenLine" RightAngleCorner="0">
+    <PerpendicularLine Name="m" Style="GreenLine" Step="GroupWithNext" RightAngleCorner="0">
       <Dependency Name="AC" />
       <Dependency Name="E" />
     </PerpendicularLine>
@@ -48,7 +48,7 @@
       <Dependency Name="CD" />
       <Dependency Name="E" />
     </PerpendicularLine>
-    <IntersectionPoint Name="F" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="F" Step="GroupWithNext" Description="F is the foot on the ray AB. The circle around E through F touches all three lines." Algorithm="IntersectLineAndLine">
       <Dependency Name="AB" />
       <Dependency Name="k" />
     </IntersectionPoint>

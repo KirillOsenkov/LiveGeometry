@@ -24,23 +24,23 @@
     <LineStyle Name="15" Color="#FFFF0000" StrokeWidth="2" />
   </Styles>
   <Figures>
-    <FreePoint Name="A1" X="1.653648" Y="-0.621771" />
-    <FreePoint Name="A2" X="2.5" Y="1.2" />
-    <FreePoint Name="A3" X="5.3" Y="0.4" />
-    <FreePoint Name="A4" X="5.6" Y="-1.9" />
+    <FreePoint Name="A1" Step="GroupWithNext" Description="Five points, no three on a line. Draw the conic through them with a straightedge only." X="1.653648" Y="-0.621771" />
+    <FreePoint Name="A2" Step="GroupWithNext" X="2.5" Y="1.2" />
+    <FreePoint Name="A3" Step="GroupWithNext" X="5.3" Y="0.4" />
+    <FreePoint Name="A4" Step="GroupWithNext" X="5.6" Y="-1.9" />
     <FreePoint Name="A5" X="3.770316" Y="-2.341565" />
-    <LineTwoPoints Name="A2A3" Style="8">
+    <LineTwoPoints Name="A2A3" Style="8" Step="GroupWithNext" Description="The line A₂A₃, and a point M sliding along it.">
       <Dependency Name="A2" />
       <Dependency Name="A3" />
     </LineTwoPoints>
     <PointOnFigure Name="M" X="3.9110508867924527" Y="0.796842603773585" Parameter="0.5039467452830189">
       <Dependency Name="A2A3" />
     </PointOnFigure>
-    <LineTwoPoints Name="A1A2" Style="10">
+    <LineTwoPoints Name="A1A2" Style="10" Step="GroupWithNext" Description="The lines A₁A₂ and A₄A₅ meet at M₂.">
       <Dependency Name="A1" />
       <Dependency Name="A2" />
     </LineTwoPoints>
-    <LineTwoPoints Name="A4A5" Style="11">
+    <LineTwoPoints Name="A4A5" Style="11" Step="GroupWithNext">
       <Dependency Name="A4" />
       <Dependency Name="A5" />
     </LineTwoPoints>
@@ -48,11 +48,11 @@
       <Dependency Name="A1A2" />
       <Dependency Name="A4A5" />
     </IntersectionPoint>
-    <LineTwoPoints Name="A3A4" Style="10">
+    <LineTwoPoints Name="A3A4" Style="10" Step="GroupWithNext" Description="The line MM₂ meets A₃A₄ at M₁.">
       <Dependency Name="A3" />
       <Dependency Name="A4" />
     </LineTwoPoints>
-    <LineTwoPoints Name="MM2" Style="10">
+    <LineTwoPoints Name="MM2" Style="10" Step="GroupWithNext">
       <Dependency Name="M2" />
       <Dependency Name="M" />
     </LineTwoPoints>
@@ -60,11 +60,11 @@
       <Dependency Name="A3A4" />
       <Dependency Name="MM2" />
     </IntersectionPoint>
-    <LineTwoPoints Name="A1M1" Style="13">
+    <LineTwoPoints Name="A1M1" Style="13" Step="GroupWithNext" Description="The lines A₁M₁ and MA₅ meet at A. By Pascal's theorem, A lies on the conic through the five points.">
       <Dependency Name="A1" />
       <Dependency Name="M1" />
     </LineTwoPoints>
-    <LineTwoPoints Name="MA5" Style="13">
+    <LineTwoPoints Name="MA5" Style="13" Step="GroupWithNext">
       <Dependency Name="A5" />
       <Dependency Name="M" />
     </LineTwoPoints>
@@ -72,7 +72,7 @@
       <Dependency Name="A1M1" />
       <Dependency Name="MA5" />
     </IntersectionPoint>
-    <Locus Name="Locus1" Style="15">
+    <Locus Name="Locus1" Style="15" Description="As M slides along A₂A₃, A traces the whole conic.">
       <Dependency Name="A" />
       <Dependency Name="M" />
     </Locus>

@@ -8,14 +8,14 @@
     <LineStyle Name="12" Color="#FFEB4444" StrokeWidth="3" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" X="-1.7083333333" Y="-8.6875" />
-    <FreePoint Name="B" X="6.5416666667" Y="-5.875" />
-    <Segment Name="AB" Style="4">
+    <FreePoint Name="A" Step="GroupWithNext" Description="The triangle ABC. Find the circle that touches all three sides." X="-1.7083333333" Y="-8.6875" />
+    <FreePoint Name="B" Step="GroupWithNext" X="6.5416666667" Y="-5.875" />
+    <Segment Name="AB" Style="4" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <FreePoint Name="C" X="5.625" Y="-12.2083333333" />
-    <Segment Name="BC" Style="4">
+    <FreePoint Name="C" Step="GroupWithNext" X="5.625" Y="-12.2083333333" />
+    <Segment Name="BC" Style="4" Step="GroupWithNext">
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Segment>
@@ -23,26 +23,26 @@
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
-    <AngleBisector Name="g" Style="9">
+    <AngleBisector Name="g" Style="9" Description="The bisector of the angle at A: every point on it is as far from AB as from AC.">
       <Dependency Name="A" />
       <Dependency Name="C" />
       <Dependency Name="B" />
     </AngleBisector>
-    <AngleBisector Name="h" Style="9">
+    <AngleBisector Name="h" Style="9" Step="GroupWithNext" Description="The bisector of the angle at C meets it at D, which is as far from all three sides.">
       <Dependency Name="C" />
       <Dependency Name="B" />
       <Dependency Name="A" />
-    </AngleBisector>
-    <AngleBisector Name="k" Style="9">
-      <Dependency Name="B" />
-      <Dependency Name="A" />
-      <Dependency Name="C" />
     </AngleBisector>
     <IntersectionPoint Name="D" Style="DependentPoint" Algorithm="IntersectLineAndLine">
       <Dependency Name="h" />
       <Dependency Name="g" />
     </IntersectionPoint>
-    <PerpendicularLine Name="m" Style="10" RightAngleCorner="1">
+    <AngleBisector Name="k" Style="9" Description="The bisector of the angle at B passes through D as well.">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </AngleBisector>
+    <PerpendicularLine Name="m" Style="10" Step="GroupWithNext" Description="The perpendicular from D to AC meets the side at E, the point of AC nearest to D." RightAngleCorner="1">
       <Dependency Name="AC" />
       <Dependency Name="D" />
     </PerpendicularLine>
@@ -50,7 +50,7 @@
       <Dependency Name="m" />
       <Dependency Name="AC" />
     </IntersectionPoint>
-    <Circle Name="c" Style="12">
+    <Circle Name="c" Style="12" Description="The circle around D through E touches all three sides: the incircle.">
       <Dependency Name="D" />
       <Dependency Name="E" />
     </Circle>

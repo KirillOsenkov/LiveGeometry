@@ -13,7 +13,9 @@ viewport; the window's saved place is then neither read nor written; `--dark` an
 `--size` come in any order after `<out>`), saves `<out>/<relative path>.png`
 and `.lgf` (the conversion) and appends to `<out>/report.txt`: figure counts, `NOT EXISTING`
 (only the *root* failures - figures whose dependencies all exist - plus a dump of every point),
-load errors. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
+load errors, and the steps as Step by Step would say them (`step 3 [h, D]: ...`, see "Steps"
+in `docs/app.md`): the way to author a drawing's steps, since the generated sentences and
+the grouping show without opening the app. It exits when done. `dotnet tools/contactsheet.cs -- <png folder> <out.png>
 [columns] [tile width]` tiles the PNGs into one image: the fastest way to eyeball a whole
 folder (the whole gallery fits on one 4-column sheet). The VB6 CD library (221 files, kept
 outside the repo, read-only) all loads; what the report still calls "missing" there is second intersections that fall outside

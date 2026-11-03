@@ -15,42 +15,18 @@
     <LineStyle Name="10" Color="#FFB1B1B1" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" Style="1" X="-7.0553385417" Y="-4.8280526621" />
-    <FreePoint Name="B" Style="1" X="3.9748987268" Y="-4.8280526621" />
-    <FreePoint Name="C" Style="1" X="0.5135271991" Y="9.3404947916" />
-    <MidPoint Name="D" Style="2">
-      <Dependency Name="C" />
-      <Dependency Name="B" />
-    </MidPoint>
-    <Segment Name="BC" Style="9">
-      <Dependency Name="C" />
-      <Dependency Name="B" />
-    </Segment>
-    <PerpendicularLine Name="g" Style="10" RightAngleCorner="2">
-      <Dependency Name="BC" />
-      <Dependency Name="D" />
-    </PerpendicularLine>
-    <MidPoint Name="E" Style="2">
-      <Dependency Name="B" />
-      <Dependency Name="A" />
-    </MidPoint>
-    <Segment Name="AB" Style="9">
+    <FreePoint Name="A" Style="1" Step="GroupWithNext" Description="The triangle ABC. Find the circle through all three vertices." X="-7.0553385417" Y="-4.8280526621" />
+    <FreePoint Name="B" Style="1" Step="GroupWithNext" X="3.9748987268" Y="-4.8280526621" />
+    <FreePoint Name="C" Style="1" Step="GroupWithNext" X="0.5135271991" Y="9.3404947916" />
+    <Segment Name="AB" Style="9" Step="GroupWithNext">
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Segment>
-    <PerpendicularLine Name="h" Style="10" RightAngleCorner="3">
-      <Dependency Name="AB" />
-      <Dependency Name="E" />
-    </PerpendicularLine>
-    <IntersectionPoint Name="O" Style="3" Algorithm="IntersectLineAndLine">
-      <Dependency Name="h" />
-      <Dependency Name="g" />
-    </IntersectionPoint>
-    <Circle Name="c" Style="8">
-      <Dependency Name="O" />
+    <Segment Name="BC" Style="9" Step="GroupWithNext">
+      <Dependency Name="C" />
       <Dependency Name="B" />
-    </Circle>
-    <Segment Name="AC" Style="9">
+    </Segment>
+    <Segment Name="AC" Style="9" Step="GroupWithNext">
       <Dependency Name="A" />
       <Dependency Name="C" />
     </Segment>
@@ -59,7 +35,31 @@
       <Dependency Name="C" />
       <Dependency Name="B" />
     </Polygon>
-    <MidPoint Name="F" Style="2">
+    <MidPoint Name="D" Style="2" Step="GroupWithNext" Description="The perpendicular bisector of BC: through its midpoint D, at a right angle. Every point on it is as far from B as from C.">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <PerpendicularLine Name="g" Style="10" RightAngleCorner="2">
+      <Dependency Name="BC" />
+      <Dependency Name="D" />
+    </PerpendicularLine>
+    <MidPoint Name="E" Style="2" Step="GroupWithNext" Description="The perpendicular bisector of AB, the same way: every point on it is as far from A as from B.">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <PerpendicularLine Name="h" Style="10" RightAngleCorner="3">
+      <Dependency Name="AB" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="O" Style="3" Description="They meet at O, which is as far from A as from B as from C." Algorithm="IntersectLineAndLine">
+      <Dependency Name="h" />
+      <Dependency Name="g" />
+    </IntersectionPoint>
+    <Circle Name="c" Style="8" Description="The circle around O through B passes through A and C as well: the circumcircle.">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Circle>
+    <MidPoint Name="F" Style="2" Step="GroupWithNext" Description="The third perpendicular bisector, of AC, passes through O too.">
       <Dependency Name="C" />
       <Dependency Name="A" />
     </MidPoint>

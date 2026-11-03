@@ -18,17 +18,17 @@
     <LineStyle Name="10" Color="#FFFF6E00" StrokeWidth="3" />
   </Styles>
   <Figures>
-    <FreePoint Name="A" X="-6.5293402779" Y="-10.0637152778" />
-    <FreePoint Name="B" X="15.4019097221" Y="-10.0637152777" />
-    <FreePoint Name="F" X="5.7654513887" Y="-5.9100694444" />
+    <FreePoint Name="A" Step="GroupWithNext" Description="The directrix AB and the focus F. A parabola is made of the points as far from F as from the line." X="-6.5293402779" Y="-10.0637152778" />
+    <FreePoint Name="B" Step="GroupWithNext" X="15.4019097221" Y="-10.0637152777" />
+    <FreePoint Name="F" Step="GroupWithNext" X="5.7654513887" Y="-5.9100694444" />
     <Segment Name="AB" Style="4">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </Segment>
-    <PointOnFigure Name="C" Style="3" X="-2.984895833500002" Y="-10.063715277783839" Parameter="0.161616161614135">
+    <PointOnFigure Name="C" Style="3" Description="C, a point on the directrix." X="-2.984895833500002" Y="-10.063715277783839" Parameter="0.161616161614135">
       <Dependency Name="AB" />
     </PointOnFigure>
-    <Segment Name="CF" Style="8">
+    <Segment Name="CF" Style="8" Step="GroupWithNext" Description="Join C to F, and draw the perpendicular to the directrix at C.">
       <Dependency Name="F" />
       <Dependency Name="C" />
     </Segment>
@@ -36,7 +36,7 @@
       <Dependency Name="AB" />
       <Dependency Name="C" />
     </PerpendicularLine>
-    <MidPoint Name="D" Style="2">
+    <MidPoint Name="D" Style="2" Step="GroupWithNext" Description="The perpendicular bisector of CF: every point on it is as far from C as from F.">
       <Dependency Name="F" />
       <Dependency Name="C" />
     </MidPoint>
@@ -44,11 +44,11 @@
       <Dependency Name="CF" />
       <Dependency Name="D" />
     </PerpendicularLine>
-    <IntersectionPoint Name="E" Style="2" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="E" Style="2" Description="It meets the perpendicular at C at E: EC is the distance from E to the directrix, and EC = EF." Algorithm="IntersectLineAndLine">
       <Dependency Name="h" />
       <Dependency Name="g" />
     </IntersectionPoint>
-    <Locus Name="Locus122" Style="10">
+    <Locus Name="Locus122" Style="10" Description="As C runs along the directrix, E traces the parabola.">
       <Dependency Name="E" />
       <Dependency Name="C" />
     </Locus>
