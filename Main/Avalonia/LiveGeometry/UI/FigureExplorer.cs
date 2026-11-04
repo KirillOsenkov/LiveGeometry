@@ -17,7 +17,11 @@ namespace LiveGeometry;
 /// drawing's (click, Ctrl+click, Shift+click, the arrow keys); for the figure the keyboard is
 /// on, arrows in the left margin point up to the figures it is built on, and with
 /// `RecursiveArrows` gray ones from those on up to what they are built on, all the way.
-/// Hidden figures (a square's helpers, an auxiliary number) are listed faded.
+/// Hidden figures (a square's helpers, an auxiliary number) are listed faded. While the
+/// construction is stepped through (<see cref="StepPlayback"/>), a row goes to its step,
+/// and the foot of the list edits the step and the description of the current step's
+/// figures, or of the rows clicked (<see cref="PropertyGridSection.Steps"/>): the rows the
+/// side panel leaves out.
 /// </summary>
 /// <remarks>
 /// The list follows the undo history rather than the figure collection: a construction in
@@ -48,6 +52,20 @@ public class FigureExplorer : Border
     readonly ScrollViewer scrollViewer;
     readonly TextBlock header;
 
+    /// <summary>At the foot while stepping: the Step and Description rows of the picked figures</summary>
+    readonly PropertyGrid stepGrid = new PropertyGrid()
+    {
+        SectionFilter = section => section == PropertyGridSection.Steps
+    };
+
+    readonly Border stepFoot;
+
+    /// <summary>At the right of the Figures line while stepping: shows and hides the foot</summary>
+    readonly Button stepRowsToggle;
+
+    /// <summary>Whether the foot is up while stepping (for the session; off, the toggle brings it back)</summary>
+    bool stepRowsShown = true;
+
     List<Row> rows = new List<Row>();
     Dictionary<IFigure, Row> rowsByFigure = new Dictionary<IFigure, Row>();
 
@@ -67,6 +85,18 @@ public class FigureExplorer : Border
 
     /// <summary>Where a Shift range starts</summary>
     IFigure anchor;
+
+    /// <summary>
+    /// While stepping, the figures whose step rows the foot edits: the current step's, or
+    /// the rows clicked (click, Ctrl+click, Shift+click) until the step changes
+    /// </summary>
+    List<IFigure> stepPicks = new List<IFigure>();
+
+    /// <summary>The step the foot's picks were taken from, -1 while not stepping</summary>
+    int pickedStep = -1;
+
+    /// <summary>A click on a row is taking the stepping to its step: the picks are the row's, not the step's</summary>
+    bool pickingStep;
 
     bool refreshPosted;
     bool constructing;
@@ -97,9 +127,46 @@ public class FigureExplorer : Border
             Margin = HeaderMargin
         };
         header.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+
+        // the toggle at the right of the Figures line, as the side panel's eye and padlock
+        // are drawn: a pencil, plain while the foot is up, faint while it is away
+        stepRowsToggle = new Button()
+        {
+            Width = 26,
+            Height = 26,
+            Padding = new Thickness(0),
+            Margin = new Thickness(0, 3, 6, 0),
+            Background = Brushes.Transparent,
+            BorderThickness = new Thickness(0),
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Top,
+            IsVisible = false
+        };
+        stepRowsToggle.Click += (s, e) =>
+        {
+            stepRowsShown = !stepRowsShown;
+            ShowStepRows();
+        };
+        var headerBar = new DockPanel();
+        DockPanel.SetDock(stepRowsToggle, Dock.Right);
+        headerBar.Children.Add(stepRowsToggle);
+        headerBar.Children.Add(header);
+
+        // the foot under the rows, over a line, with the side panel's own room at the sides
+        stepFoot = new Border()
+        {
+            BorderThickness = new Thickness(0, 1, 0, 0),
+            Padding = new Thickness(14, 8, 14, 12),
+            IsVisible = false,
+            Child = stepGrid
+        };
+        stepFoot.BindTheme(BorderBrushProperty, nameof(AppTheme.Separator));
         var dock = new DockPanel();
-        DockPanel.SetDock(header, Dock.Top);
-        dock.Children.Add(header);
+        DockPanel.SetDock(headerBar, Dock.Top);
+        DockPanel.SetDock(stepFoot, Dock.Bottom);
+        dock.Children.Add(headerBar);
+        dock.Children.Add(stepFoot);
         dock.Children.Add(scrollViewer);
         Child = dock;
 
@@ -133,6 +200,9 @@ public class FigureExplorer : Border
             anchor = null;
             constructing = false;
             lastSelection.Clear();
+            stepPicks.Clear();
+            pickedStep = -1;
+            ShowStepRows();
             if (drawing != null)
             {
                 drawing.ActionManager.CollectionChanged += ActionManager_CollectionChanged;
@@ -176,6 +246,9 @@ public class FigureExplorer : Border
     {
         return key == Key.Up || key == Key.Down || key == Key.Home || key == Key.End;
     }
+
+    /// <summary>Whether the keyboard is in the foot's rows: its keys are the editor's, not the stepping's</summary>
+    public bool IsEditingSteps => stepFoot.IsKeyboardFocusWithin;
 
     #region Following the drawing
 
@@ -235,9 +308,32 @@ public class FigureExplorer : Border
     }
 
     // the rows of the steps not yet taken fade, as hidden figures do, and the current
-    // step's rows are painted as a selection is
+    // step's rows are painted as a selection is; the foot takes the step's figures at
+    // every step, and lets go of them when the stepping stops (a change that leaves the
+    // step where it is, an edit of a description, leaves the picks alone: the box being
+    // typed in would be built again)
     void Playback_Changed()
     {
+        var playback = drawing.Playback;
+        if (!playback.IsOn)
+        {
+            if (pickedStep >= 0)
+            {
+                pickedStep = -1;
+                stepPicks.Clear();
+                ShowStepRows();
+            }
+        }
+        else if (playback.Current != pickedStep)
+        {
+            pickedStep = playback.Current;
+            if (!pickingStep)
+            {
+                stepPicks = playback.CurrentStep?.Figures.ToList() ?? new List<IFigure>();
+                ShowStepRows();
+            }
+        }
+
         if (!IsVisible)
         {
             return;
@@ -249,6 +345,20 @@ public class FigureExplorer : Border
         }
 
         UpdateLook();
+
+        // the step's rows in view, however the step was reached (the keys, the bar's
+        // buttons, a row): the last first, then the first, so that the whole step shows
+        // when it fits and its first row always. After the layout: the foot changes height
+        // with the step's rows, and took the room the row had just been scrolled into.
+        var figures = playback.CurrentStep?.Figures.ToList();
+        if (figures != null && figures.Count > 0)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                ScrollIntoView(figures[figures.Count - 1]);
+                ScrollIntoView(figures[0]);
+            }, DispatcherPriority.Loaded);
+        }
     }
 
     // a tool picked a figure (IFigurePicker): the picks are selected figures, painted as the selection
@@ -332,6 +442,12 @@ public class FigureExplorer : Border
             {
                 anchor = focused;
             }
+
+            // a picked figure deleted leaves the foot
+            if (stepPicks.RemoveAll(figure => !rowsByFigure.ContainsKey(figure)) > 0)
+            {
+                ShowStepRows();
+            }
         }
 
         foreach (var row in rows)
@@ -369,12 +485,50 @@ public class FigureExplorer : Border
     /// <param name="toggle">Add to or take from the selection (Ctrl)</param>
     void Select(IFigure figure, bool range, bool toggle)
     {
-        // stepping through the construction, a row picks its step, which is the selection
+        // stepping through the construction, a row takes the stepping to its step, which
+        // is the selection, and the foot to its figure: with Ctrl or Shift, to several
+        // figures, whose Step row is set together (their descriptions are each their own)
         if (drawing.Playback.IsOn)
         {
             focused = figure;
-            anchor = figure;
-            drawing.Playback.GoToFigure(figure);
+            if (range && anchor != null && rowsByFigure.ContainsKey(anchor))
+            {
+                int from = IndexOf(anchor);
+                int to = IndexOf(figure);
+                var picked = new List<IFigure>();
+                for (int i = System.Math.Min(from, to); i <= System.Math.Max(from, to); i++)
+                {
+                    picked.Add(rows[i].Figure);
+                }
+
+                stepPicks = toggle ? stepPicks.Union(picked).ToList() : picked;
+            }
+            else if (toggle)
+            {
+                if (!stepPicks.Remove(figure))
+                {
+                    stepPicks.Add(figure);
+                }
+
+                anchor = figure;
+            }
+            else
+            {
+                stepPicks = new List<IFigure>() { figure };
+                anchor = figure;
+            }
+
+            pickingStep = true;
+            try
+            {
+                drawing.Playback.GoToFigure(figure);
+            }
+            finally
+            {
+                pickingStep = false;
+            }
+
+            ShowStepRows();
             UpdateLook();
             ScrollIntoView(figure);
             return;
@@ -498,6 +652,14 @@ public class FigureExplorer : Border
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
+        // the keys of the foot's text box and combo are theirs (an arrow in the
+        // description must not go to the next step)
+        if (IsEditingSteps)
+        {
+            base.OnKeyDown(e);
+            return;
+        }
+
         var picker = drawing?.Behavior as IFigurePicker;
         if (picker != null && e.Key == Key.Space && focused != null && rowsByFigure.ContainsKey(focused))
         {
@@ -556,14 +718,71 @@ public class FigureExplorer : Border
 
     #endregion
 
+    #region The foot
+
+    /// <summary>
+    /// The foot shows the Step and Description rows of the picked figures: both for one
+    /// figure, the Step row alone for several (<see cref="PropertyGridDisallowMultiEditAttribute"/>);
+    /// nothing for figures that cannot be steps, or none. Called again after an undo or a
+    /// redo (the host's <see cref="DrawingControl.UndoneOrRedone"/>), as the side panel is:
+    /// a description put back raises nothing the rows would hear.
+    /// </summary>
+    public void ShowStepRows()
+    {
+        bool stepping = drawing?.Playback.IsOn == true;
+        stepRowsToggle.IsVisible = stepping;
+        if (stepping)
+        {
+            var icon = PropertyGridIcons.Create(PropertyGridIcon.Pencil);
+            icon.Opacity = stepRowsShown ? 1 : 0.5;
+            stepRowsToggle.Content = icon;
+            ToolTip.SetTip(stepRowsToggle, stepRowsShown
+                ? "Hide the Step and Description rows at the foot"
+                : "Show the Step and Description rows at the foot");
+        }
+
+        var figures = stepPicks
+            .Where(figure => figure is FigureBase figureBase && figureBase.CanBeStep())
+            .Cast<object>()
+            .ToList();
+        if (drawing == null || figures.Count == 0 || !stepRowsShown)
+        {
+            stepGrid.Show(null, null);
+        }
+        else if (figures.Count == 1)
+        {
+            stepGrid.Show(figures[0], drawing.ActionManager);
+        }
+        else
+        {
+            stepGrid.Show(figures, drawing.ActionManager);
+        }
+
+        // the list is narrow: the description's box under its label, as wide as the foot
+        foreach (var editor in (stepGrid.CurrentEditors ?? []).OfType<LabeledValueEditor>())
+        {
+            if (editor.Value?.GetAttribute<PropertyGridMultilineAttribute>() != null)
+            {
+                editor.PutLabelAbove();
+            }
+        }
+
+        stepFoot.IsVisible = stepGrid.Selection != null;
+    }
+
+    #endregion
+
     #region Look
 
-    /// <summary>Selection, the keyboard's row and the arrows</summary>
+    /// <summary>Selection, the keyboard's row, the foot's figures and the arrows</summary>
     void UpdateLook()
     {
+        bool stepping = drawing?.Playback.IsOn == true;
         foreach (var row in rows)
         {
-            row.UpdateLook(isFocused: row.Figure == focused && IsFocused);
+            row.UpdateLook(
+                isFocused: row.Figure == focused && IsFocused,
+                isPicked: stepping && stepPicks.Contains(row.Figure));
         }
 
         UpdateArrows();
@@ -835,6 +1054,9 @@ public class FigureExplorer : Border
         bool hover;
         bool isFocused;
 
+        // whether the foot edits this figure's step (while stepping)
+        bool isPicked;
+
         public Row(FigureExplorer explorer, IFigure figure)
         {
             Figure = figure;
@@ -905,16 +1127,18 @@ public class FigureExplorer : Border
             }
         }
 
-        public void UpdateLook(bool isFocused)
+        public void UpdateLook(bool isFocused, bool isPicked)
         {
             this.isFocused = isFocused;
+            this.isPicked = isPicked;
             Paint();
         }
 
         void Paint()
         {
             // while the construction is stepped through, the current step's rows (nothing
-            // is selected then: the halos took the eye)
+            // is selected then: the halos took the eye), and the figures the foot edits
+            // are outlined as the keyboard's row is
             var playback = Figure.Drawing?.Playback;
             bool highlighted = Figure.Selected
                 || playback?.IsOn == true && playback.StepOf(Figure) == playback.Current;
@@ -922,7 +1146,7 @@ public class FigureExplorer : Border
                 ? nameof(AppTheme.ButtonChecked)
                 : hover ? nameof(AppTheme.ButtonHover) : null;
             this.BindTheme(BackgroundProperty, background, whenNone: Brushes.Transparent);
-            this.BindTheme(BorderBrushProperty, isFocused ? nameof(AppTheme.ButtonCheckedBorder) : null, whenNone: Brushes.Transparent);
+            this.BindTheme(BorderBrushProperty, isFocused || isPicked ? nameof(AppTheme.ButtonCheckedBorder) : null, whenNone: Brushes.Transparent);
         }
     }
 }

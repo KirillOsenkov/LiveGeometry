@@ -23,6 +23,18 @@ public partial class PropertyGrid : StackPanel
 
     public IValueDiscoveryStrategy ValueDiscoveryStrategy { get; set; }
 
+    /// <summary>
+    /// Which sections of a page this grid shows (<see cref="PropertyGridSectionAttribute"/>);
+    /// null for all. The side panel leaves out <see cref="PropertyGridSection.Steps"/>, and
+    /// the foot of the Figure List shows that section alone: no header, no measurements.
+    /// </summary>
+    public Func<PropertyGridSection, bool> SectionFilter { get; set; }
+
+    bool Shows(PropertyGridSection section)
+    {
+        return SectionFilter == null || SectionFilter(section);
+    }
+
     private object mSelection;
     public object Selection
     {
@@ -287,7 +299,10 @@ public partial class PropertyGrid : StackPanel
         {
             return;
         }
-        AddHeader();
+        if (Shows(PropertyGridSection.Header))
+        {
+            AddHeader();
+        }
         if (!Expanded)
         {
             return;
@@ -685,6 +700,12 @@ public partial class PropertyGrid : StackPanel
     /// </summary>
     void ShowHeaderRows()
     {
+        // (a grid without a header: the Figure List's foot)
+        if (headerToggles == null)
+        {
+            return;
+        }
+
         headerToggles.Children.Clear();
         foreach (var row in headerRows.OrderBy(row => GetPlace(row, isButton: false).Order))
         {
@@ -796,13 +817,20 @@ public partial class PropertyGrid : StackPanel
 
     public IEnumerable<UIElement> CreateObjectControls<T>(T editableObject)
     {
-        CurrentProperties = GetEditableProperties(editableObject).ToArray();
+        CurrentProperties = GetEditableProperties(editableObject)
+            .Where(p => Shows(GetPlace(p, isButton: false).Section))
+            .ToArray();
         headerRows = CurrentProperties.Where(IsHeaderRow).ToArray();
         var currentEditors = CurrentProperties
             .Except(headerRows)
             .Select(p => CreatePropertyEditorControl(p, editableObject, ActionManager))
             .Where(c => c != null).ToArray();
-        var currentMethods = GetCallableMethods(editableObject);
+        var currentMethods = GetCallableMethods(editableObject)
+            .Where(m => Shows(GetPlace(m, isButton: true).Section));
+
+        // (what is measured of a figure, and the values of the transformation it is the
+        // image of, go with the rows that define it)
+        bool definition = Shows(PropertyGridSection.Definition);
 
         // the values of the transformation a figure is the image of (the angle of the
         // rotation that made this triangle), after the rows that define it (a control
@@ -811,7 +839,7 @@ public partial class PropertyGrid : StackPanel
         // the others, so an edit through them is an undo step on the point that moves the
         // whole image
         var image = editableObject as IFigure;
-        var transformation = FigureTransformation.Of(image);
+        var transformation = definition ? FigureTransformation.Of(image) : null;
         if (transformation?.Values != null)
         {
             var values = transformation.Values;
@@ -831,7 +859,7 @@ public partial class PropertyGrid : StackPanel
         }
 
         // what can be measured of a figure
-        var quantities = editableObject is IFigure measured ? FigureQuantities.Of(measured) : new FigureQuantity[0];
+        var quantities = definition && editableObject is IFigure measured ? FigureQuantities.Of(measured) : new FigureQuantity[0];
         if (quantities.Count > 0)
         {
             var quantitiesEditor = new QuantitiesEditor(quantities, currentEditors.OfType<LabeledValueEditor>());

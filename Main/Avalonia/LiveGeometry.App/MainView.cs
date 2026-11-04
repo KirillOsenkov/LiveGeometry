@@ -1505,6 +1505,12 @@ public partial class MainView : UserControl
             return false;
         }
 
+        // the Step combo at the foot of the Figure List takes Space and the arrows itself
+        if (DrawingHost.FigureExplorer.IsEditingSteps)
+        {
+            return false;
+        }
+
         // Nor from a list, a slider or a combo of the side panel, which takes the key on its
         // way down: an arrow that picked the next style also moved the view by a step, as an
         // undo step. (Tool letters still work from there.)

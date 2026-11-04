@@ -43,8 +43,8 @@ public partial class DrawingHost : Grid
 
     GridSplitter figureExplorerSplitter;
 
-    /// <summary>The width the Figure List had when it was put away, to come back with</summary>
-    double figureExplorerWidth = 240;
+    /// <summary>The width the Figure List had when it was put away, to come back with (360 at first: at 240 most titles were cut, and the step rows at the foot cramped)</summary>
+    double figureExplorerWidth = 360;
 
     public DrawingHost()
     {
@@ -202,7 +202,12 @@ public partial class DrawingHost : Grid
     {
         // the title and the close cross stay put above the rows, which scroll under them
         var title = new Decorator();
-        PropertyGrid = new PropertyGrid() { HeaderHost = title };
+        // (a figure's step and what it says are edited at the foot of the Figure List)
+        PropertyGrid = new PropertyGrid()
+        {
+            HeaderHost = title,
+            SectionFilter = section => section != PropertyGridSection.Steps
+        };
         PropertyGrid.VisibilityChanged += PropertyGrid_VisibilityChanged;
 
         var header = new DockPanel() { Margin = new Thickness(14, 10, 8, 0) };
@@ -493,7 +498,14 @@ public partial class DrawingHost : Grid
     void DrawingControl_UndoneOrRedone(object sender, EventArgs e)
     {
         var drawing = CurrentDrawing;
-        if (drawing == null || !IsSidePanelShown)
+        if (drawing == null)
+        {
+            return;
+        }
+
+        // the step rows at the foot of the Figure List, likewise
+        FigureExplorer.ShowStepRows();
+        if (!IsSidePanelShown)
         {
             return;
         }

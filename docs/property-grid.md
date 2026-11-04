@@ -38,7 +38,12 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   (`HeaderNameEditor`: no box until hovered or focused, A₁ shown until edited as A_1), and
   on/off rows as icon toggles right after it (`HeaderToggle`: an eye for Visible, a
   padlock for Locked; the usual state faint).
-  A page without such rows (a style, a tool panel) keeps the plain title.
+  A page without such rows (a style, a tool panel) keeps the plain title. The Steps
+  section (a figure's step and description, 2026-11-03) is never on the page: a grid
+  shows the sections its `SectionFilter` says (null for all; the side panel's leaves
+  Steps out, the one at the foot of the Figure List shows Steps alone, without the
+  header or the measurements, which go with the Definition rows; see "Steps" in
+  `docs/app.md`).
 - **What can be measured of a figure is on its page** (2026-10-18; `FigureQuantities`, shown
   by `QuantitiesEditor` after the Definition rows): the lengths the Length tool takes of it
   (`LengthMeasurement.QuantitiesOf`: a circle's radius, diameter, circumference; a polygon's

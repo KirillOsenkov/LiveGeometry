@@ -21,7 +21,13 @@ public enum PropertyGridSection
     /// <summary>Bring to front, Send to back</summary>
     Arrange,
     /// <summary>Under a divider, last: Delete (<see cref="PropertyGridDestructiveAttribute"/>)</summary>
-    Delete
+    Delete,
+    /// <summary>
+    /// Never on the page: the figure's step and what it says, edited at the foot of the
+    /// Figure List while the construction is stepped through (<see cref="FigureExplorer"/>,
+    /// <see cref="PropertyGrid.SectionFilter"/>)
+    /// </summary>
+    Steps
 }
 
 /// <summary>

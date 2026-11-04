@@ -54,7 +54,7 @@ public partial class DrawingHost
             IsChecked = () => Playback?.IsOn == true,
             HintText = "Step through the construction, a figure or a group of figures at a time. "
                 + "Space, the arrow keys and Page Up and Down go from step to step, Escape leaves. "
-                + "A figure's page says which step it is in and what the step says."
+                + "The foot of the Figure List sets a figure's step and what the step says."
         };
         CommandStepFirst = new Command(() => Playback?.First(), ToggleIcons.StepFirst(), "First", BehaviorCategories.Selection)
         {
@@ -109,7 +109,7 @@ public partial class DrawingHost
         var figureListCommand = new Command(ToggleFigureExplorer, ToggleIcons.FigureList(), "Figure List", BehaviorCategories.Selection)
         {
             IsChecked = () => FigureExplorer.IsVisible,
-            HintText = "The figures with their step numbers at the left; a row goes to its step."
+            HintText = "The figures with their step numbers at the left; a row goes to its step, and the foot sets its step and what it says."
         };
         var figureList = new CommandToolButton(figureListCommand) { DrawingHost = this };
         stepText.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));

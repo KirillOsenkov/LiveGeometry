@@ -66,6 +66,28 @@ public abstract partial class LabeledValueEditor : Grid
         Children.Add(control);
     }
 
+    /// <summary>
+    /// The label over the editor instead of beside it, the editor as wide as the row: a
+    /// text box in a narrow place (the foot of the Figure List), where the label's column
+    /// would leave it a few words a line
+    /// </summary>
+    public void PutLabelAbove()
+    {
+        RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+        RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+        Label.VerticalAlignment = VerticalAlignment.Top;
+        Label.Margin = new Thickness(2, 4, 0, 2);
+        foreach (var child in Children)
+        {
+            if (child != Label)
+            {
+                Grid.SetRow(child, 1);
+                Grid.SetColumn(child, 0);
+                Grid.SetColumnSpan(child, ColumnDefinitions.Count);
+            }
+        }
+    }
+
     public TextBlock Label { get; set; }
 
     IValueProvider mValue;

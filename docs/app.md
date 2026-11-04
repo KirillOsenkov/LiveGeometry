@@ -2,7 +2,8 @@
 
 The Figure List, Save, Export, share links, the toolbar, settings between runs, the ribbon's look, the splash.
 
-- **The Figure List** (`UI/FigureExplorer.cs`, left column of `DrawingHost` with a splitter):
+- **The Figure List** (`UI/FigureExplorer.cs`, left column of `DrawingHost` with a splitter,
+  360 px at first - 240 cut most titles and cramped the step rows at the foot, 2026-11-03):
   top-level figures but the grid and point labels, by `Title`, with the ribbon icon of the
   tool that makes each (`UI/FigureIcons.cs`: figure type -> tool, walking base types; a new
   figure kind wants an entry). Hidden and `Auxiliary` figures are faded. Its selection *is*
@@ -45,7 +46,29 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   with its point; a caption (a pinned text), a show/hide box, the grid and the axes are
   always there (`FigureBase.CanBeStep`, which also hides the two rows). A step's text is
   the typed descriptions of its figures, else their generated sentences
-  (`ConstructionStep.Text`). The Step by Step toggle after Figure List on the Selection
+  (`ConstructionStep.Text`). The two rows are not on the figure's page (they were, in a
+  Steps box among the Display rows, and were in the way of everyone who never steps):
+  they are the section `PropertyGridSection.Steps`, which the side panel's grid leaves
+  out (`PropertyGrid.SectionFilter`) and a small grid at the foot of the Figure List
+  shows alone, while stepping (`FigureExplorer.stepGrid`, `ShowStepRows`): no header, no
+  measurements, the Step combo beside its label and the description's box under its
+  label as wide as the foot (`LabeledValueEditor.PutLabelAbove`, in the grid's plain
+  size: `[PropertyGridMultiline(large: false)]`). The foot edits the current step's
+  figures at each step, or the rows clicked: a click one figure, Ctrl+click and
+  Shift+click several (`FigureExplorer.stepPicks`, outlined as the keyboard's row is),
+  for which only the Step combo shows (Description is `PropertyGridDisallowMultiEdit`);
+  the picks stay through an edit (a `Changed` at the same step) and go back to the step's
+  figures when the step changes. A typed description is in the bar at once:
+  `StepPlayback.Refresh` compares the step's text with the text it last announced
+  (`announcedText`; not with the text before the re-read: the description is set by the
+  time the history says so) and raises `Changed` for it. The keys of the foot's box and
+  combo are theirs (`FigureExplorer.IsEditingSteps`: the list's own Up and Down and the
+  canvas's step keys stand back). The foot is put away and brought back by a pencil at
+  the right of the Figures line, there only while stepping, drawn as the side panel's
+  eye and padlock are (plain with the foot up, faint without; `stepRowsToggle`,
+  `stepRowsShown`, for the session). After an undo or a redo the foot's rows are read
+  again as the side panel's are (`DrawingHost.DrawingControl_UndoneOrRedone`): a
+  description put back raises nothing the rows would hear. The Step by Step toggle after Figure List on the Selection
   tab (`CommandToggleSteps`; its icon is the Figure List's sheet with 1, 2, 3 in green,
   DodgerBlue and purple) starts at step 1 with Drag, the side panel put away and the
   Figure List up (put back as it was on leaving). While on, the step bar takes the
@@ -97,7 +120,9 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   circumcircle's bisectors showed on the bare triangle. Keys: Space, Right, Down, Page Down next;
   Left, Up, Page Up previous; Home, End; Escape leaves (`DrawingHost.HandleStepKey`,
   before the tool letters). In the Figure List a row picks its step, Up and Down walk the
-  steps, the current step's rows are painted as a selection is (`Row.Paint`), the rows
+  steps, the current step's rows are scrolled into view at every step however it was
+  reached (`FigureExplorer.Playback_Changed`: the last row, then the first; the keys from
+  the canvas took the step out of the list's view), they are painted as a selection is (`Row.Paint`), the rows
   of later steps fade like hidden ones, and the first figure of each
   step has the step's number before its icon (the current one bold in the accent; a
   figure grouped with the one before it, hidden or no step has none:

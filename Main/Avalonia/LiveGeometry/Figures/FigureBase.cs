@@ -797,11 +797,12 @@ public abstract partial class FigureBase :
     /// How the figure takes part in stepping through the construction
     /// (<see cref="StepPlayback"/>): a step of its own, in one step with the figure before
     /// or after it in the list, or no step at all. Saved only when it isn't the default.
+    /// Not on the figure's page: edited at the foot of the Figure List while stepping
+    /// (<see cref="PropertyGridSection.Steps"/>).
     /// </summary>
     [PropertyGridVisible]
     [PropertyGridName("Step")]
-    [PropertyGridGroup("Steps")]
-    [PropertyGridSection(PropertyGridSection.Display, 90)]
+    [PropertyGridSection(PropertyGridSection.Steps, 10)]
     [PropertyGridCondition(nameof(CanBeStep))]
     public virtual StepRole StepRole { get; set; }
 
@@ -811,10 +812,9 @@ public abstract partial class FigureBase :
     /// one step are read one after another (<see cref="ConstructionStep.Text"/>).
     /// </summary>
     [PropertyGridVisible]
-    [PropertyGridMultiline]
+    [PropertyGridMultiline(large: false)]
     [PropertyGridDisallowMultiEdit]
-    [PropertyGridGroup("Steps")]
-    [PropertyGridSection(PropertyGridSection.Display, 91)]
+    [PropertyGridSection(PropertyGridSection.Steps, 20)]
     [PropertyGridCondition(nameof(CanBeStep))]
     public virtual string Description { get; set; }
 
@@ -831,7 +831,8 @@ public abstract partial class FigureBase :
     /// <summary>
     /// Whether a figure of this kind can be a step of the construction: a point's name
     /// goes with its point, and a caption, a show/hide box, the grid and the axes are
-    /// always on the paper. Also hides the Steps rows of the page.
+    /// always on the paper. Also hides the Step and Description rows at the foot of the
+    /// Figure List.
     /// </summary>
     public virtual bool CanBeStep()
     {

@@ -332,11 +332,11 @@ public class StringEditor : LabeledValueEditor, IValueEditor
     {
         // one line unless the property asks for more: a line break in an expression (a
         // function, a coordinate) only breaks it, and Enter belongs to the panel's button
-        bool multiline = Value.GetAttribute<PropertyGridMultilineAttribute>() != null;
-        TextBox.AcceptsReturn = multiline;
+        var multiline = Value.GetAttribute<PropertyGridMultilineAttribute>();
+        TextBox.AcceptsReturn = multiline != null;
 
         // a label's text is what its page is for: written larger than the other rows
-        if (multiline)
+        if (multiline != null && multiline.Large)
         {
             TextBox.FontSize = PropertyGridTheme.LabelTextFontSize;
         }

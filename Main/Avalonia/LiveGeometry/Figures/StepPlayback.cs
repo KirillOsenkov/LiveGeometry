@@ -70,7 +70,7 @@ public class StepPlayback
         steps.Clear();
         RefreshFigures();
         SelectionFlash.StopAll(drawing.Canvas);
-        Changed?.Invoke();
+        RaiseChanged();
     }
 
     public void Next()
@@ -103,13 +103,14 @@ public class StepPlayback
         current = System.Math.Clamp(index, 0, steps.Count - 1);
         Apply();
         FlashCurrent();
-        Changed?.Invoke();
+        RaiseChanged();
     }
 
     /// <summary>
     /// The steps read off the list again (a figure added, deleted, grouped or excluded):
     /// the view stays at the same step where the steps are as they were. Stops when no
-    /// step is left.
+    /// step is left. Where the steps are the same but the current one says something
+    /// else (a description typed), only <see cref="Changed"/> is raised, for the text.
     /// </summary>
     public void Refresh()
     {
@@ -130,11 +131,27 @@ public class StepPlayback
             && before.Zip(steps, (old, step) => old.SequenceEqual(step.Figures)).All(equal => equal);
         if (same)
         {
+            // (the description is set by the time the history says so: compared with the
+            // text last announced, not with the text before the re-read)
+            if (CurrentStep?.Text != announcedText)
+            {
+                RaiseChanged();
+            }
+
             return;
         }
 
         current = System.Math.Clamp(current, 0, steps.Count - 1);
         Apply();
+        RaiseChanged();
+    }
+
+    /// <summary>The current step's text as of the last <see cref="Changed"/></summary>
+    string announcedText;
+
+    void RaiseChanged()
+    {
+        announcedText = CurrentStep?.Text;
         Changed?.Invoke();
     }
 
