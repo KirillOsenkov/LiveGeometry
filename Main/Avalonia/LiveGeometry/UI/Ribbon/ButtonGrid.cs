@@ -153,6 +153,24 @@ public class ButtonGrid : Grid
         }
     }
 
+    /// <summary>
+    /// The room at either side of the icon and the text, 6 by default; the least width goes
+    /// down with it, so that buttons set closer together take less of a row (the step
+    /// bar's four step buttons, which fit a phone's width beside the two toggles that way)
+    /// </summary>
+    public double SideRoom
+    {
+        set
+        {
+            if (!isTabHeader)
+            {
+                iconHolder.Margin = new Thickness(value, iconHolder.Margin.Top, value, iconHolder.Margin.Bottom);
+                textBlock.Margin = new Thickness(value, textBlock.Margin.Top, value, textBlock.Margin.Bottom);
+                MinWidth = AppTheme.ButtonMinWidth - 2 * (6 - value);
+            }
+        }
+    }
+
     public TextBlock textBlock;
 
     UIElement icon;

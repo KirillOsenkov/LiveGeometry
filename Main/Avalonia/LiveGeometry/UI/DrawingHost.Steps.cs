@@ -81,9 +81,11 @@ public partial class DrawingHost
     /// </summary>
     Border CreateStepBar()
     {
-        // the buttons at the tools' own size, in the middle of the bar's height: the two
-        // toggles and the four step buttons, each group a unit, so that on a phone, too
-        // narrow for all of them in a row, the step buttons go onto a second row together
+        // the buttons at the tools' own height, in the middle of the bar's: the two toggles
+        // and the four step buttons, each group a unit, so that in a window too narrow for
+        // all of them in a row the step buttons go onto a second row together. The step
+        // buttons are set closer together than the tools, so that a phone (390 wide) takes
+        // all six in one row.
         var buttons = new WrapPanel()
         {
             Orientation = Orientation.Horizontal,
@@ -92,7 +94,7 @@ public partial class DrawingHost
         var navigation = new StackPanel() { Orientation = Orientation.Horizontal };
         foreach (var command in new[] { CommandStepFirst, CommandStepPrevious, CommandStepNext, CommandStepLast })
         {
-            navigation.Children.Add(new CommandToolButton(command) { DrawingHost = this });
+            navigation.Children.Add(new CommandToolButton(command) { DrawingHost = this, SideRoom = StepButtonSideRoom });
         }
 
         // the bar's own copy of the toggle (an icon can be in one button only)
@@ -162,6 +164,9 @@ public partial class DrawingHost
 
     /// <summary>The least width the step's text gets beside the buttons before it goes under them</summary>
     const double MinimumStepTextWidth = 420;
+
+    /// <summary>The room at the sides of a step button's icon and text (a tool's is 6)</summary>
+    const double StepButtonSideRoom = 2;
 
     /// <summary>The window width from which the stepping opens the Figure List by itself (the ribbon's own small-screen limit)</summary>
     const double FigureExplorerWhileSteppingMinimumWidth = 700;

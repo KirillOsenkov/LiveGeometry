@@ -62,8 +62,11 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   window (decided from the bar's width alone, in its SizeChanged, so the layout settles
   in one pass): in a middle band of widths it was a word a line beside the buttons,
   the bar as tall as the window; the buttons are a WrapPanel of two groups, the toggles
-  and the four step buttons, so on a phone the step buttons go onto a second row
-  together (one at a time, "Last" sat alone on it). The step buttons' triangles are a
+  and the four step buttons, so in a window too narrow for all six the step buttons go
+  onto a second row together (one at a time, "Last" sat alone on it). The step buttons
+  are set closer together than the tools (`ButtonGrid.SideRoom` 2 instead of 6, the
+  least width down by the same), so that a phone (390 px) takes all six in one row;
+  at the tools' spacing the four went under the toggles there. Their triangles are a
   fifth smaller than the icon's height (at the full height they were heavy next to the
   toggles). The bar has a Figure List toggle of its own next to
   Step by Step (the ribbon's is away with the ribbon). The stepping opens the Figure

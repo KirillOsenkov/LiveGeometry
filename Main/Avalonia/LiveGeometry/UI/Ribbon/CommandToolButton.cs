@@ -88,6 +88,12 @@ public class CommandToolButton : ToolButton
 
     public Command Command { get; set; }
 
+    /// <summary>The room at either side of the icon and the text (<see cref="ButtonGrid.SideRoom"/>)</summary>
+    public double SideRoom
+    {
+        set => buttonGrid.SideRoom = value;
+    }
+
     public override void EnabledChanged(bool newEnabledState)
     {
         base.EnabledChanged(newEnabledState);
