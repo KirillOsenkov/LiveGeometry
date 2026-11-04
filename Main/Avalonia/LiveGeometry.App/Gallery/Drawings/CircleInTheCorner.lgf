@@ -10,11 +10,11 @@
     </ShapeStyle>
   </Styles>
   <Figures>
-    <FreePoint Name="V" Step="GroupWithNext" Description="Given: the angle at V with its two red sides, and inside it the purple circle with center O and radius R. Find the blue circle that touches both sides and the purple circle." X="0" Y="0" />
+    <FreePoint Name="V" Step="GroupWithNext" Description="Given: the angle at V with its two red sides, and inside it the purple circle with center O and radius R. Construct a circle that touches both angle sides and the purple circle." X="0" Y="0" />
     <FreePoint Name="A" Step="GroupWithNext" X="8" Y="6" />
     <FreePoint Name="B" Step="GroupWithNext" X="8" Y="-6" />
     <FreePoint Name="O" Step="GroupWithNext" X="9" Y="2" />
-    <FreePoint Name="S" Step="GroupWithNext" X="9" Y="4.5" />
+    <FreePoint Name="S" Step="GroupWithNext" X="9" Y="5" />
     <Ray Name="VA" Style="ThickRedLine" Step="GroupWithNext">
       <Dependency Name="V" />
       <Dependency Name="A" />
@@ -34,7 +34,7 @@
     <AttachedLabel Name="BigRadius" OffsetX="-17" OffsetY="-12" Text="R">
       <Dependency Name="OS" />
     </AttachedLabel>
-    <CircleByRadius Name="Compass" Style="DashedPurpleLine" Description="Draw the circle of radius R around V: the purple circle carried to the corner.">
+    <CircleByRadius Name="Compass" Style="DashedPurpleLine" Description="Draw a circle of radius R around V: the purple circle translated to the corner.">
       <Dependency Name="O" />
       <Dependency Name="S" />
       <Dependency Name="V" />
@@ -71,7 +71,7 @@
       <Dependency Name="VB" />
       <Dependency Name="Q2" />
     </ParallelLine>
-    <IntersectionPoint Name="D" Step="GroupWithNext" Description="Through the end of each radius draw a parallel to that side: the side pushed out by R. The two pushed-out sides meet at D." Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="D" Step="GroupWithNext" Description="Through the end of each radius draw a parallel to that side, pushed out by R. The two pushed-out sides intersect at point D." Algorithm="IntersectLineAndLine">
       <Dependency Name="pushedA" />
       <Dependency Name="pushedB" />
     </IntersectionPoint>
@@ -83,7 +83,7 @@
       <Dependency Name="D" />
       <Dependency Name="Q2" />
     </Ray>
-    <Segment Name="DO" Style="OrangeLine" Step="GroupWithNext" Description="The circle we want, grown by R, passes through O and touches both pushed-out sides, as the dashed purple circle does: it is that circle scaled up from D. DO meets the dashed purple circle at P, on the far side.">
+    <Segment Name="DO" Style="OrangeLine" Step="GroupWithNext" Description="The circle we want, grown by R, passes through O and touches both pushed-out sides, as the dashed purple circle does. We can get it by scaling up from the dashed purple circle. DO intersects the dashed purple circle at P.">
       <Dependency Name="D" />
       <Dependency Name="O" />
     </Segment>
@@ -91,11 +91,11 @@
       <Dependency Name="DO" />
       <Dependency Name="Compass" />
     </IntersectionPoint>
-    <Segment Name="PV" Style="OrangeLine" Step="GroupWithNext" Description="The scaling from D takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X.">
+    <Segment Name="PV" Style="OrangeLine" Step="GroupWithNext" Description="PV is the radius.">
       <Dependency Name="P" />
       <Dependency Name="V" />
     </Segment>
-    <Ray Name="DV" Style="DashDotLine" Step="GroupWithNext">
+    <Ray Name="DV" Style="DashDotLine" Description="Ray DV is the angle bisector.">
       <Dependency Name="D" />
       <Dependency Name="V" />
     </Ray>
@@ -107,7 +107,7 @@
       <Dependency Name="DV" />
       <Dependency Name="imageOfPV" />
     </IntersectionPoint>
-    <Segment Name="OX" Style="OrangeLine">
+    <Segment Name="OX" Style="OrangeLine" Description="The scaling from D takes P to O and V to X, so OX is parallel to PV.">
       <Dependency Name="O" />
       <Dependency Name="X" />
     </Segment>
