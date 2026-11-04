@@ -47,6 +47,13 @@ public class FigureExplorer : Border
     /// <summary>Between the edge of the window and the arrows</summary>
     const double LeftPadding = 8;
 
+    /// <summary>
+    /// Over the first row of each step while stepping: the steps read as groups. Safe for
+    /// the arrows, which place themselves by row index at <see cref="RowHeight"/>: they
+    /// show for a selected figure only, and nothing is selected while stepping.
+    /// </summary>
+    const double StepGap = 10;
+
     readonly StackPanel rowPanel = new StackPanel();
     readonly Canvas arrows = new Canvas() { IsHitTestVisible = false };
     readonly ScrollViewer scrollViewer;
@@ -998,7 +1005,7 @@ public class FigureExplorer : Border
         header.Margin = HeaderMargin;
         foreach (var row in rows)
         {
-            row.Margin = RowMargin;
+            row.PlaceMargin();
         }
     }
 
@@ -1057,8 +1064,11 @@ public class FigureExplorer : Border
         // whether the foot edits this figure's step (while stepping)
         bool isPicked;
 
+        readonly FigureExplorer explorer;
+
         public Row(FigureExplorer explorer, IFigure figure)
         {
+            this.explorer = explorer;
             Figure = figure;
             text.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
             text.Inlines = new InlineCollection() { kindRun, nameRun };
@@ -1111,6 +1121,7 @@ public class FigureExplorer : Border
             Opacity = shown ? 1 : HiddenOpacity;
             var playback = Figure.Drawing?.Playback;
             number.IsVisible = playback?.IsOn == true;
+            bool beginsStep = false;
             if (number.IsVisible)
             {
                 int stepNumber = playback.NumberOf(Figure);
@@ -1118,7 +1129,12 @@ public class FigureExplorer : Border
                 bool current = stepNumber == playback.Current + 1;
                 number.FontWeight = current ? FontWeight.Bold : FontWeight.Normal;
                 number.BindTheme(TextBlock.ForegroundProperty, current ? nameof(AppTheme.Accent) : nameof(AppTheme.TextMuted));
+                beginsStep = stepNumber > 1;
             }
+
+            // a gap over each step but the first, so the steps read as groups
+            gap = beginsStep ? StepGap : 0;
+            PlaceMargin();
             var key = FigureIcons.GetKey(Figure);
             if (key != iconKey || iconHost.Child == null && key != null)
             {
@@ -1132,6 +1148,16 @@ public class FigureExplorer : Border
             this.isFocused = isFocused;
             this.isPicked = isPicked;
             Paint();
+        }
+
+        // the gap over the row (StepGap at the start of a step while stepping)
+        double gap;
+
+        /// <summary>The list's row margin (room for the arrows at the left), with the row's own gap over it</summary>
+        public void PlaceMargin()
+        {
+            var margin = explorer.RowMargin;
+            Margin = new Thickness(margin.Left, gap, margin.Right, margin.Bottom);
         }
 
         void Paint()

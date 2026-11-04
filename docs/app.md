@@ -122,7 +122,11 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   before the tool letters). In the Figure List a row picks its step, Up and Down walk the
   steps, the current step's rows are scrolled into view at every step however it was
   reached (`FigureExplorer.Playback_Changed`: the last row, then the first; the keys from
-  the canvas took the step out of the list's view), they are painted as a selection is (`Row.Paint`), the rows
+  the canvas took the step out of the list's view), each step but the first has a gap of
+  `FigureExplorer.StepGap` (10 px; 6 was tried first and read as a slip of the layout) over its first row so the steps read as groups (a
+  separator line would need an element between rows, which the list has none of; the
+  arrows, placed by row index at a fixed pitch, never show while stepping, since nothing
+  is selected then), they are painted as a selection is (`Row.Paint`), the rows
   of later steps fade like hidden ones, and the first figure of each
   step has the step's number before its icon (the current one bold in the accent; a
   figure grouped with the one before it, hidden or no step has none:
