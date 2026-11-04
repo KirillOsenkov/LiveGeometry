@@ -108,13 +108,24 @@ public abstract class PerpendicularLineBase : LineTwoPoints
             Mark.Corner = RightAngleMark.GetRoomiestCorner(vertex, baseLine, pointAcross);
         }
 
-        if (!Visible || !hasRightAngle)
+        // (nor while the line is of a later step than the one shown: the mark is a shape
+        // of its own, not hidden with the line's)
+        if (!Visible || IsHiddenByPlayback || !hasRightAngle)
         {
             Mark.Hide();
             return;
         }
 
         Mark.Show(Drawing, vertex, baseLine, BaseFigure);
+    }
+
+    public override void RefreshShown()
+    {
+        base.RefreshShown();
+        if (IsHiddenByPlayback)
+        {
+            Mark.Hide();
+        }
     }
 
     public override void OnAddingToCanvas(Canvas newContainer)

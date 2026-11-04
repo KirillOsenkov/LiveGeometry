@@ -81,7 +81,10 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   A shape that comes back from not being drawn is drawn again at once
   (`ShapeBase.UpdateShapeVisibility`): the `UpdateVisual` overrides skip a shape that
   isn't shown, and after the refit on entering, the later steps came back where the
-  view had been. Keys: Space, Right, Down, Page Down next;
+  view had been. A figure drawn by more than its own shape asks the flag for the rest
+  too: a perpendicular's right angle mark is a shape of its own
+  (`PerpendicularLineBase.UpdateVisual`, `RefreshShown`), and the marks of the
+  circumcircle's bisectors showed on the bare triangle. Keys: Space, Right, Down, Page Down next;
   Left, Up, Page Up previous; Home, End; Escape leaves (`DrawingHost.HandleStepKey`,
   before the tool letters). In the Figure List a row picks its step, Up and Down walk the
   steps, the current step's rows are painted as a selection is (`Row.Paint`), the rows
