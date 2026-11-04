@@ -87,7 +87,13 @@
   `Locked`: a point counts as locked when anything built on it is, captions included. Refitted on
   resize until the first edit, through `Drawing.SizeChanged` (`MainView.KeepFitted`) and not the
   canvas's event: the coordinate system's own resize handler shifts the origin and has to run
-  first. A file with a caption opened from disk is fitted the same way. Explanations have no
+  first. Not when what is above the canvas changed height (the ribbon toggled by the user,
+  the step bar, a step's text; `DrawingHost.IsChromeChanging`): the drawing stays where it is
+  on the screen (see "The view"). When the width changed as well (the Figure List with the
+  stepping) it is refit for the width, and with the caption beside the figure before and
+  after, the figure's middle is put back at the height it had (`GalleryDrawing.Fit` returns
+  that middle, `IsCaptionBeside`); a caption under the figure, or one that changed sides, is
+  laid out anew and the figure goes where the room is. A file with a caption opened from disk is fitted the same way. Explanations have no
   hand line breaks (a blank line separates paragraphs). On an iPhone in portrait (canvas about
   390x565) the long explanations run off the bottom. A third label, `Hint`, hidden and
   listed by a show/hide box, goes under the explanation a paragraph down, its room kept

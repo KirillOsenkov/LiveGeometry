@@ -9,7 +9,13 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   segments/polygons/Béziers even when their points are hidden - not lines. Panning (`MoveTo`)
   must not round the origin: a drag is many sub-pixel steps (0.5 px at 200% scaling) and
   rounding each one makes the plane run faster than the cursor. Labels have a fixed *pixel*
-  size, so fit re-measures and refits a few times. What the user asks for as "zoom to fit"
+  size, so fit re-measures and refits a few times. When the canvas changes size
+  (`Drawing_SizeChanged`), across it keeps its middle; down, the drawing follows half the
+  move of the bottom edge and none of the top's (`Drawing.CanvasTopMove`: how far the
+  canvas's top edge moved in its parent), so a window resized keeps its middle as before,
+  while the ribbon put away or brought back, the step bar in its place or a step's text
+  of another height leave the drawing where it is on the screen (2026-11-03; it moved by
+  half of each such change, which stepping made constant). What the user asks for as "zoom to fit"
   (double click, but on a text label, H, Home, the context menu) is `Drawing.ZoomToFit`: the drawing's
   `FitToWindow` when whoever showed it set one (a drawing of the gallery:
   `GalleryDrawing.Fit`, with its plane - only there, since it lays out the caption, which

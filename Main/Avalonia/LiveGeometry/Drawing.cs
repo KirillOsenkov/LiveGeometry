@@ -538,6 +538,7 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     {
         canvas.Background = PaintsPaper ? PlaceBackground(Background) : null;
         canvas.SizeChanged += mCanvas_SizeChanged;
+        canvasTop = canvas.Bounds.Y;
         UpdateClip(canvas);
         foreach (var figure in Figures)
         {
@@ -991,9 +992,23 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
 
     void mCanvas_SizeChanged(object sender, Avalonia.Controls.SizeChangedEventArgs e)
     {
+        double top = Canvas.Bounds.Y;
+        CanvasTopMove = top - canvasTop;
+        canvasTop = top;
         UpdateClip(Canvas);
         RaiseSizeChanged(e);
     }
+
+    // the canvas's top edge in its parent at the last change of its size
+    double canvasTop;
+
+    /// <summary>
+    /// At a change of the canvas's size (<see cref="SizeChanged"/>): how far its top edge
+    /// moved in its parent. Not 0 when what is above the canvas took more or less room (the
+    /// ribbon shown or hidden, the step bar in its place, a step's text of another height),
+    /// 0 when the window was resized.
+    /// </summary>
+    public double CanvasTopMove { get; private set; }
 
     public StyleManager StyleManager { get; set; }
 

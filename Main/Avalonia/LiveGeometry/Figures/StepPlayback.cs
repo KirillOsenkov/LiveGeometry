@@ -226,19 +226,19 @@ public class StepPlayback
     }
 
     /// <summary>
-    /// The current step's figures flash, with what they are built on. Nothing is selected:
-    /// the halos stayed on while the step was read and took the eye (2026-11-03).
+    /// The current step's figures flash: only they, not what they are built on (flashed
+    /// too at first, the parents drew the eye away from the new figure). Nothing is
+    /// selected: the halos stayed on while the step was read and took the eye (2026-11-03).
     /// </summary>
     void FlashCurrent()
     {
         var step = steps[current];
         var shown = step.Figures
-            .Concat(step.Figures.SelectMany(figure => figure.Dependencies))
             .Select(figure => drawing.Figures.FindTopLevel(figure) ?? figure)
             .Where(figure => figure.Visible && !hidden.Contains(figure))
             .Distinct()
             .ToList();
-        SelectionFlash.Show(shown);
+        SelectionFlash.Show(shown, SelectionFlash.StepFade);
     }
 
     /// <summary>A figure picked in the Figure List takes the stepping to its step (a figure of no step leaves it)</summary>

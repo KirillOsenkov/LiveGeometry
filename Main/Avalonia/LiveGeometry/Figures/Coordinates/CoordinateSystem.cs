@@ -444,13 +444,19 @@ public partial class CoordinateSystem : IMovable
 
     void Drawing_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        // what was in the middle of the canvas stays in the middle, whichever edge moved
+        // Across, what was in the middle of the canvas stays in the middle, whichever edge
+        // moved. Down, the drawing follows half the move of the bottom edge and none of the
+        // top's: a window resized keeps its middle as before, while what is above the
+        // canvas taking more or less room (the ribbon shown or hidden, the step bar in its
+        // place, a step's text of another height) leaves the drawing where it is on the
+        // screen, instead of moving it by half of that each time.
         var previous = e.PreviousSize;
         if (previous.Width > 0 && previous.Height > 0)
         {
+            double topMove = Drawing.CanvasTopMove;
             origin = new Point(
                 origin.X + (e.NewSize.Width - previous.Width) / 2,
-                origin.Y + (e.NewSize.Height - previous.Height) / 2);
+                origin.Y + (e.NewSize.Height - previous.Height - topMove) / 2);
         }
 
         Recalculate();
@@ -752,6 +758,12 @@ public partial class CoordinateSystem : IMovable
     #endregion
 
     #region IMovable Members
+
+    /// <summary>Moves the view by pixels: what was at a pixel is at the pixel plus the offset</summary>
+    public void ShiftBy(double dx, double dy)
+    {
+        Origin = new Point(origin.X + dx, origin.Y + dy);
+    }
 
     public void MoveTo(Point position)
     {

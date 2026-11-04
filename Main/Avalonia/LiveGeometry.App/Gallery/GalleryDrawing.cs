@@ -60,6 +60,12 @@ public static class GalleryDrawing
         return Caption.HasCaption(drawing);
     }
 
+    /// <summary>Whether the last fit put the caption in a column beside the figure (a wide window), not under it</summary>
+    public static bool IsCaptionBeside(Drawing drawing)
+    {
+        return Caption.FindTitle(drawing)?.Pin == LabelPin.TopRight;
+    }
+
     /// <summary>A caption is a heading, with an explanation under it or not (2026-11-01; both were needed before)</summary>
     static bool FindCaption(Drawing drawing, out Label title, out Label description)
     {
@@ -78,7 +84,9 @@ public static class GalleryDrawing
     /// <param name="plane">See <see cref="GetPlane"/></param>
     /// <param name="stackedFigureShare">With the caption under the figure (a phone), the figure
     /// keeps at least this share of the height: see <see cref="GalleryItem.StackedFigureShare"/></param>
-    public static void Fit(Drawing drawing, Rect? plane, double stackedFigureShare = StackedFigureShare)
+    /// <returns>The middle of the figure in the plane, which the fit put in the middle of the
+    /// figure's room; null when it fitted nothing</returns>
+    public static Point? Fit(Drawing drawing, Rect? plane, double stackedFigureShare = StackedFigureShare)
     {
         var coordinateSystem = drawing.CoordinateSystem;
         double canvasWidth = drawing.Canvas.Bounds.Width;
@@ -87,7 +95,7 @@ public static class GalleryDrawing
         // nothing to fit into (a window shrunk to its title bar); refitted when it grows
         if (canvasWidth <= 0 || canvasHeight <= 0)
         {
-            return;
+            return null;
         }
 
         bool hasScene = drawing.Scenes.Count > 0;
@@ -102,7 +110,7 @@ public static class GalleryDrawing
                 coordinateSystem.ZoomExtend(plane);
             }
 
-            return;
+            return coordinateSystem.ViewCenter;
         }
 
         var hint = drawing.Figures[HintName] as Label;
@@ -152,7 +160,7 @@ public static class GalleryDrawing
         if (!hasScene && !TryGetFigure(out figure))
         {
             coordinateSystem.ZoomExtend();
-            return;
+            return coordinateSystem.ViewCenter;
         }
 
         double margin = CoordinateSystem.FitMarginPixels;
@@ -230,7 +238,7 @@ public static class GalleryDrawing
         room = LayOutPinnedBoxes(drawing, room, figure, hasScene, margin);
         if (room.Width <= 0 || room.Height <= 0)
         {
-            return;
+            return null;
         }
 
         // the scene nearest in shape to the room: landscape or portrait
@@ -261,6 +269,7 @@ public static class GalleryDrawing
         }
 
         coordinateSystem.SetView(figure.Center, CoordinateSystem.ClampUnitLength(unitLength), room.Center);
+        return figure.Center;
     }
 
     /// <summary>

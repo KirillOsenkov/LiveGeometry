@@ -381,6 +381,7 @@ public partial class MainView : UserControl
         }
 
         ribbonChoice = !DrawingHost.Ribbon.IsVisible;
+        DrawingHost.ExpectChromeChange();
         UpdateRibbon();
     }
 
@@ -739,13 +740,21 @@ public partial class MainView : UserControl
         control.Drawing.FixLabels();
         var drawing = control.Drawing;
         drawing.FitToWindow = () => GalleryDrawing.Fit(drawing, item.Plane, item.StackedFigureShare);
-        GalleryDrawing.Fit(drawing, item.Plane, item.StackedFigureShare);
+        fitCenter = GalleryDrawing.Fit(drawing, item.Plane, item.StackedFigureShare);
         KeepFitted(drawing);
         UpdateTour();
         Publish(item.Path, item.Title + " - " + AppTitle, push);
     }
 
     Drawing fittedDrawing;
+
+    /// <summary>The middle of the figure, in the plane, as the last fit of the gallery drawing found it; null when it fitted nothing</summary>
+    Avalonia.Point? fitCenter;
+
+    void Refit(Drawing drawing)
+    {
+        HandleExceptions(() => fitCenter = GalleryDrawing.Fit(drawing, CurrentSample.Plane, CurrentSample.StackedFigureShare));
+    }
 
     /// <summary>
     /// A drawing of the gallery that nobody touched yet keeps filling the window. Through the
@@ -769,10 +778,41 @@ public partial class MainView : UserControl
     void FittedDrawing_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         var drawing = (Drawing)sender;
-        if (CurrentSample != null && drawing == DrawingHost.CurrentDrawing && !drawing.ActionManager.CanUndo)
+        if (CurrentSample == null || drawing != DrawingHost.CurrentDrawing || drawing.ActionManager.CanUndo)
         {
-            HandleExceptions(() => GalleryDrawing.Fit(drawing, CurrentSample.Plane, CurrentSample.StackedFigureShare));
+            return;
         }
+
+        // Not when what is above the canvas changed height (the ribbon put away or brought
+        // back, the step bar in its place, a step's text of another height): the drawing
+        // stays where it is on the screen (CoordinateSystem.Drawing_SizeChanged), and a fit
+        // would center it in the canvas anew, half the move down or up. When the width
+        // changed as well (the Figure List up with the stepping, or away) the fit is needed
+        // for the width; with the caption beside the figure before and after, where the
+        // figure's room is the whole height, the figure's middle is put back at the height
+        // it had. A caption under the figure is laid out anew for the width, and the figure
+        // goes where the fit leaves room for it; so does a figure whose caption changed
+        // sides (narrowed by the Figure List, a canvas can be taller than wide).
+        if (DrawingHost.IsChromeChanging)
+        {
+            if (e.PreviousSize.Width == e.NewSize.Width)
+            {
+                return;
+            }
+
+            var coordinateSystem = drawing.CoordinateSystem;
+            bool besideBefore = GalleryDrawing.IsCaptionBeside(drawing);
+            double? before = fitCenter != null ? coordinateSystem.ToPhysical(fitCenter.Value).Y : null;
+            Refit(drawing);
+            if (before != null && fitCenter != null && besideBefore && GalleryDrawing.IsCaptionBeside(drawing))
+            {
+                coordinateSystem.ShiftBy(0, before.Value - coordinateSystem.ToPhysical(fitCenter.Value).Y);
+            }
+
+            return;
+        }
+
+        Refit(drawing);
     }
 
     void ShowNeighborSample(int step)

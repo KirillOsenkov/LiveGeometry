@@ -54,10 +54,14 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   and Ctrl+F1 do nothing meanwhile): the toggle to leave (a command of its own: an icon
   can be in one button only), First / Previous / Next / Last, and "Step 4 of 9: what
   the step says" filling the rest. The bar is one row, lower than the ribbon, so the
-  canvas grows: the view keeps its middle (the drawing shifts down by half the
-  difference) and an untouched gallery drawing is refit, as when the ribbon is hidden.
-  The bar at the ribbon's exact height, so that nothing moved, was tried first
-  (2026-11-03) and dropped for the room. Where the text would get less than
+  canvas grows, and a step's text of another height changes it again: the drawing stays
+  where it is on the screen through all of it (see "The view": what is above the canvas
+  taking more or less room moves nothing), and an untouched gallery drawing is not
+  refit for it (`DrawingHost.ExpectChromeChange`, `MainView.FittedDrawing_SizeChanged`);
+  only the Figure List coming or going with the stepping refits it, for the width. The
+  bar at the ribbon's exact height, so that nothing moved, was tried first (2026-11-03)
+  and dropped for the room; the view kept its middle then, and the drawing moved down
+  by half the difference on entering and at every step whose text wrapped differently. Where the text would get less than
   `MinimumStepTextWidth` (420 px) beside the buttons it goes under them, as wide as the
   window (decided from the bar's width alone, in its SizeChanged, so the layout settles
   in one pass): in a middle band of widths it was a word a line beside the buttons,
@@ -76,8 +80,11 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   not drawn, hit, snapped or dragged - a playback flag `IsShown` and the hit tests
   consult (`FigureBase.IsHiddenByPlayback`, `FigureList.IsThere`), never `Visible`, so
   nothing is recorded or saved; earlier steps are drawn at `StepPlayback.DimOpacity`
-  (0.7) through the opacity the ghost uses; the current step's figures flash with their
-  direct dependencies (`SelectionFlash.Show(figures)`) and nothing is selected (the
+  (0.7) through the opacity the ghost uses; the current step's figures flash, they alone
+  (their direct dependencies did too at first, and drew the eye away from the new
+  figure; `SelectionFlash.Show(figures, fade)`, fading over
+  `SelectionFlash.StepFade`, 200 ms, not the Figure List's 700: a step is read, not
+  found far from its row) and nothing is selected (the
   halos stayed on while the step was read and took the eye; the stepping clears the
   selection as it starts, and a selection changed while stepping opens no page). An
   anchored label's own `UpdateVisual` sets `Shape.IsVisible`, so it asks the flag too.

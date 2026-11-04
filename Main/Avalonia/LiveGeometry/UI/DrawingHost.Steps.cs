@@ -162,6 +162,23 @@ public partial class DrawingHost
         return StepBar;
     }
 
+    /// <summary>
+    /// Whether what is above the canvas is changing height - the step bar in the ribbon's
+    /// place or back, a step's text of another height, the ribbon put away or brought back
+    /// by the user - so that the change of the canvas's size that follows leaves the drawing
+    /// where it is on the screen instead of fitting it again (MainView.FittedDrawing_SizeChanged;
+    /// the coordinate system keeps it put on its own). Set by whoever changes the chrome
+    /// (<see cref="ExpectChromeChange"/>), cleared once the layout has run.
+    /// </summary>
+    public bool IsChromeChanging { get; private set; }
+
+    public void ExpectChromeChange()
+    {
+        IsChromeChanging = true;
+        // (after the layout pass that resizes the canvas, which is before anything idle)
+        Avalonia.Threading.Dispatcher.UIThread.Post(() => IsChromeChanging = false, Avalonia.Threading.DispatcherPriority.ContextIdle);
+    }
+
     /// <summary>The least width the step's text gets beside the buttons before it goes under them</summary>
     const double MinimumStepTextWidth = 420;
 
@@ -231,6 +248,8 @@ public partial class DrawingHost
             return;
         }
 
+        // (another text may be another height of the bar)
+        ExpectChromeChange();
         stepNumberRun.Text = "Step " + (playback.Current + 1) + " of " + playback.Count + ": ";
         stepTextRun.Text = playback.CurrentStep?.Text ?? "";
         CommandStepFirst.Enabled = playback.Current > 0;
@@ -247,6 +266,7 @@ public partial class DrawingHost
     void ShowStepsState(bool on)
     {
         IsStepping = on;
+        ExpectChromeChange();
         if (on)
         {
             // the Figure List up where there is room for it beside the drawing, away on a

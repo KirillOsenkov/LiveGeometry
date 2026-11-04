@@ -35,6 +35,9 @@ public class SelectionFlash : Control
     /// <summary>Fading out from full strength over this long, from the click on</summary>
     public static TimeSpan Fade = TimeSpan.FromMilliseconds(700);
 
+    /// <summary>The stepping's shorter fade: a step is read, not found, and the band would stay over it too long</summary>
+    public static TimeSpan StepFade = TimeSpan.FromMilliseconds(200);
+
     /// <summary>Black and white stripes across the band, repeated along a diagonal</summary>
     static readonly IBrush brush = new ImmutableLinearGradientBrush(
         new[]
@@ -59,22 +62,24 @@ public class SelectionFlash : Control
     }
 
     readonly List<Flashed> shapes;
+    readonly TimeSpan fade;
     Glide glide;
 
-    SelectionFlash(List<Flashed> shapes)
+    SelectionFlash(List<Flashed> shapes, TimeSpan fade)
     {
         this.shapes = shapes;
+        this.fade = fade;
         IsHitTestVisible = false;
     }
 
     /// <summary>Flashes the figure, one at a time: a new flash replaces the one before</summary>
     public static void Show(IFigure figure)
     {
-        Show([figure]);
+        Show([figure], Fade);
     }
 
-    /// <summary>Flashes the figures together (a step of the construction and what it is built on)</summary>
-    public static void Show(IEnumerable<IFigure> figures)
+    /// <summary>Flashes the figures together (a step of the construction and what it is built on), fading out over the given time</summary>
+    public static void Show(IEnumerable<IFigure> figures, TimeSpan fade)
     {
         var canvas = figures.FirstOrDefault(figure => figure != null)?.Drawing?.Canvas;
         if (canvas == null)
@@ -99,7 +104,7 @@ public class SelectionFlash : Control
             old.Stop();
         }
 
-        var flash = new SelectionFlash(shapes);
+        var flash = new SelectionFlash(shapes, fade);
         layer.Children.Add(flash);
         flash.Start();
     }
@@ -140,7 +145,7 @@ public class SelectionFlash : Control
 
     void Start()
     {
-        glide = new Glide(Fade, t =>
+        glide = new Glide(fade, t =>
         {
             Opacity = 1 - t;
             if (t >= 1)
