@@ -311,10 +311,13 @@
   scaled-up circle, K and r, the answer - `Step="GroupWithNext"` on the runs and a
   `Description` on the first figure of each step. (Three show/hide boxes did the same
   job at a third of the granularity until then, and went.) Dashes mean one thing: a copy of the solid figure of the same
-  color, moved (`DashedPurpleLine` the given circle carried to V, `DashedRedLine` the sides
-  pushed out, `DashedBlueLine` the answer grown by R); every helper is thin and solid
-  (`PurpleLine` radii, `OrangeLine` for the three segments of the scaling, `BlueLine` for
-  XK), the bisector `DashDotLine`. The second solution (the nearer crossing of DO) is
+  color and width, moved (`CompassCircle`, the given circle carried to V, dashed at the
+  given's 2.5; `DashedRedLine` the sides pushed out; `ScaledCircle`, the answer grown by
+  R, dashed at the answer's 3; the two dashed circles are styles of the file, the default
+  dashed lines being thin); every helper is thin and solid (`PurpleLine` radii,
+  `OrangeLine` for the three segments of the scaling, `GreenLine` for XK), the bisector
+  `DashDotLine`. The answer is green (`AnswerCircle`, `GreenPoint` for X; 2026-11-03: in
+  blue, its dashed copy was hard to tell from the dashed purple). The second solution (the nearer crossing of DO) is
   named in the caption but not drawn: four to five times the size of the picture, it
   wrecked the fit even hidden. Merged from two generated attempts (2026-11-03).
 - **Steps authored** (2026-11-03, see "Steps" in `docs/app.md`; the checker's report lists

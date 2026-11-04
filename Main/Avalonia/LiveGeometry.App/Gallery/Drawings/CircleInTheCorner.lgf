@@ -5,9 +5,18 @@
     <ShapeStyle Name="GivenCircle" Fill="#208854D0" Color="#FF8854D0" StrokeWidth="2.5">
       <Dark Fill="#25B48CFF" Color="#FFB48CFF" />
     </ShapeStyle>
-    <ShapeStyle Name="AnswerCircle" Fill="#302F7BD6" Color="#FF2F7BD6" StrokeWidth="3">
-      <Dark Fill="#306AA5FF" Color="#FF6AA5FF" />
+    <ShapeStyle Name="AnswerCircle" Fill="#302E9E4F" Color="#FF2E9E4F" StrokeWidth="3">
+      <Dark Fill="#304CD27A" Color="#FF4CD27A" />
     </ShapeStyle>
+    <LineStyle Name="CompassCircle" Color="#FF8854D0" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFB48CFF" />
+    </LineStyle>
+    <LineStyle Name="ScaledCircle" Color="#FF2E9E4F" StrokeWidth="3" Dash="Dash">
+      <Dark Color="#FF4CD27A" />
+    </LineStyle>
+    <PointStyle Name="GreenPoint" Size="8" Fill="#FF7FD69A">
+      <Dark Fill="#FF6FCB8C" />
+    </PointStyle>
   </Styles>
   <Figures>
     <FreePoint Name="V" Step="GroupWithNext" Description="Given: the angle at V with its two red sides, and inside it the purple circle with center O and radius R. Construct a circle that touches both angle sides and the purple circle." X="0" Y="0" />
@@ -34,7 +43,7 @@
     <AttachedLabel Name="BigRadius" OffsetX="-17" OffsetY="-12" Text="R">
       <Dependency Name="OS" />
     </AttachedLabel>
-    <CircleByRadius Name="Compass" Style="DashedPurpleLine" Description="Draw a circle of radius R around V: the purple circle translated to the corner.">
+    <CircleByRadius Name="Compass" Style="CompassCircle" Description="Draw a circle of radius R around V: the purple circle translated to the corner.">
       <Dependency Name="O" />
       <Dependency Name="S" />
       <Dependency Name="V" />
@@ -103,7 +112,7 @@
       <Dependency Name="PV" />
       <Dependency Name="O" />
     </ParallelLine>
-    <IntersectionPoint Name="X" Style="BluePoint" Step="GroupWithNext" Algorithm="IntersectLineAndLine">
+    <IntersectionPoint Name="X" Style="GreenPoint" Step="GroupWithNext" Algorithm="IntersectLineAndLine">
       <Dependency Name="DV" />
       <Dependency Name="imageOfPV" />
     </IntersectionPoint>
@@ -111,7 +120,7 @@
       <Dependency Name="O" />
       <Dependency Name="X" />
     </Segment>
-    <Circle Name="Scaled" Style="DashedBlueLine" Description="The dashed blue circle around X through O is the scaled-up circle: it touches both pushed-out sides and passes through O.">
+    <Circle Name="Scaled" Style="ScaledCircle" Description="The dashed green circle around X through O is the scaled-up circle: it touches both pushed-out sides and passes through O.">
       <Dependency Name="X" />
       <Dependency Name="O" />
     </Circle>
@@ -119,14 +128,14 @@
       <Dependency Name="OX" />
       <Dependency Name="Given" />
     </IntersectionPoint>
-    <Segment Name="KX" Style="BlueLine" Step="GroupWithNext">
+    <Segment Name="KX" Style="GreenLine" Step="GroupWithNext">
       <Dependency Name="X" />
       <Dependency Name="K" />
     </Segment>
     <AttachedLabel Name="SmallRadius" OffsetX="-10.443883435612406" OffsetY="-28.83974682122141" Text="r">
       <Dependency Name="KX" />
     </AttachedLabel>
-    <Circle Name="Answer" Style="AnswerCircle" Description="The blue circle around X through K is the answer: it touches both sides of the angle and the purple circle.">
+    <Circle Name="Answer" Style="AnswerCircle" Description="The green circle around X through K is the answer: it touches both sides of the angle and the purple circle.">
       <Dependency Name="X" />
       <Dependency Name="K" />
     </Circle>
@@ -149,6 +158,6 @@
       <Dependency Name="K" />
     </PointLabel>
     <Label Name="Title" Style="Heading" Text="Fit a Circle in the Corner" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="400" Backdrop="true" />
-    <Label Name="Description" Style="Explanation" Text="The purple circle with center O and radius R lies inside the red angle at V. Find the blue circle that touches both sides of the angle and the purple circle.\n\nCall its center X and radius r. Grow it by R: the circle around X of radius r + R passes through O and touches the two sides pushed out by R. So push the sides out, find a circle through O touching the pushed-out sides, and shrink it back.\n\n1. Push the sides out. Draw the circle of radius R around V (dashed purple) and a radius perpendicular to each side. Through its end draw a parallel to that side (dashed red): the side pushed out by R. The two pushed-out sides meet at D.\n\n2. Scale from D. Both the dashed purple circle and the circle through O that we want touch the pushed-out sides, so one is the other scaled up from D, where the sides meet. DO meets the dashed purple circle at P on the far side. The scaling takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X. The dashed blue circle around X through O is the scaled-up circle.\n\n3. Shrink by R. XO meets the purple circle at K, so XK = XO − R = r. The blue circle around X through K is the answer.\n\nDrag the yellow points. With the nearer crossing of DO in place of P, the same steps produce a second circle, on the far side of the purple one." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="The purple circle with center O and radius R lies inside the red angle at V. Find the green circle that touches both sides of the angle and the purple circle.\n\nCall its center X and radius r. Grow it by R: the circle around X of radius r + R passes through O and touches the two sides pushed out by R. So push the sides out, find a circle through O touching the pushed-out sides, and shrink it back.\n\n1. Push the sides out. Draw the circle of radius R around V (dashed purple) and a radius perpendicular to each side. Through its end draw a parallel to that side (dashed red): the side pushed out by R. The two pushed-out sides meet at D.\n\n2. Scale from D. Both the dashed purple circle and the circle through O that we want touch the pushed-out sides, so one is the other scaled up from D, where the sides meet. DO meets the dashed purple circle at P on the far side. The scaling takes P to O and V to X, so OX is parallel to PV: the parallel to PV through O meets DV, the bisector of the angle, at X. The dashed green circle around X through O is the scaled-up circle.\n\n3. Shrink by R. XO meets the purple circle at K, so XK = XO − R = r. The green circle around X through K is the answer.\n\nDrag the yellow points. With the nearer crossing of DO in place of P, the same steps produce a second circle, on the far side of the purple one." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="400" Backdrop="true" />
   </Figures>
 </Drawing>
