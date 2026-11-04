@@ -417,6 +417,7 @@ public class FigureExplorer : Border
 
         var figures = drawing.Figures.Where(IsListed).ToList();
         bool listChanged = !figures.SequenceEqual(rows.Select(row => row.Figure));
+        IFigure replacement = null;
         if (listChanged)
         {
             int focusedIndex = focused != null && rowsByFigure.TryGetValue(focused, out var focusedRow) ? rows.IndexOf(focusedRow) : -1;
@@ -443,6 +444,7 @@ public class FigureExplorer : Border
             if (focused != null && !rowsByFigure.ContainsKey(focused))
             {
                 focused = rows.Count == 0 ? null : rows[System.Math.Clamp(focusedIndex, 0, rows.Count - 1)].Figure;
+                replacement = focused;
             }
 
             if (anchor != null && !rowsByFigure.ContainsKey(anchor))
@@ -471,6 +473,19 @@ public class FigureExplorer : Border
 
         lastSelection = SelectedFigures();
         UpdateLook();
+
+        // the selection deleted from the list with the keyboard, the row that took its
+        // place is selected, as a list's next item is: the keyboard's row alone would be
+        // outlined and empty. Not while picking (the selection is the tool's), nor while
+        // stepping (nothing is selected then), nor when other figures stayed selected
+        if (replacement != null
+            && IsFocused
+            && !(drawing.Behavior is IFigurePicker)
+            && !drawing.Playback.IsOn
+            && lastSelection.Count == 0)
+        {
+            Select(replacement, range: false, toggle: false);
+        }
     }
 
     static bool IsListed(IFigure figure)

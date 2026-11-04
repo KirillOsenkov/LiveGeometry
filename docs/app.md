@@ -16,7 +16,12 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   view records a move per step, and it rebuilt every row at every frame), never between `ConstructionStepStarted` and a complete step: temporary
   figures of a tool are never recorded and its real steps sit in its transaction. Undoing a
   deletion puts each figure back at its old index (`RemoveFigureAction.Indices`), so it
-  doesn't jump to the end of the list. A hidden figure that is selected is shown ghosted
+  doesn't jump to the end of the list. The keyboard's row (`focused`, outlined) is apart
+  from the selection (filled): deleting the selection from the list with the keyboard
+  hands the row to the figure that took the deleted one's place, and the refresh selects
+  it too, as a list's next item is (while the list has the keyboard focus, not while
+  picking or stepping, and only when nothing stayed selected); before, the row was left
+  outlined and empty until an arrow key, 2026-11-03. A hidden figure that is selected is shown ghosted
   (`ShapeBase.IsGhost`, half opacity, shape not hit-testable) until unselected; `Visible`
   stays false, so no hit test, snap or drag sees it (they all ask `Visible`;
   `HitTestShape` refuses hidden figures too). Only figures directly in the drawing: a
