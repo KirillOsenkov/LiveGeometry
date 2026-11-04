@@ -68,7 +68,7 @@ public class BehaviorToolButton : ToolButton
         // what to click next
         if (isCurrent && ParentBehavior.IsInInitialState && !ParentBehavior.HintText.IsEmpty())
         {
-            DrawingHost.ShowHint(ParentBehavior.HintText);
+            DrawingHost.ShowToolHint(ParentBehavior);
         }
     }
 

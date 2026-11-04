@@ -10,7 +10,12 @@ defines go onto Misc. Non-tool commands are added in `MainView.InitializeCommand
 - **Selection**: Drag (Q) - drags points and figures (with Alt a point snaps onto figures and
   lets go of them, see "Snapping and releasing points", and a text goes onto a figure or
   off it, see "Texts attached to figures"; while a point is dragged the
-  status says what Shift and Alt do to it, `Dragger.ModifierHint`); a press on a figure
+  status says what Shift and Alt do to it, `Dragger.ModifierHint`). Its own hint is an
+  introduction, and the tool is on most of the time: the hint is put away at the first
+  press on the canvas or ten seconds after the tool was picked, and comes back with the
+  tool - picked anew, or its button pressed again (`DrawingHost.DismissDragHint`,
+  `ShowToolHint`; 2026-11-03: it covered a phone's drawing whenever nothing else was
+  said). A press on a figure
   selected with others drags them all as one piece (`Dragger.FindSelectionRoots`: the roots
   of the whole selection, each once, by the same offset; no Alt snapping, no point jumping
   under the cursor; a locked figure or root holds them all, a caption stays); also the tool

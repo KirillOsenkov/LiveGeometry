@@ -118,7 +118,9 @@ The property grid (rows, editors, verbs, typed text), where the side panel goes,
   centered, not zoomed out to. What the view can't move - a caption, any label pinned to
   the screen - or what has no room to go to, gets the panel on the other side for that page
   (on a phone the bottom half); right after the button the panel stays where the user
-  put it. The panel is placed once the page has settled (posted at Background: the value
+  put it. The panel is over the status bar (`ZOrder.PropertyGrid` above `ZOrder.StatusBar`;
+  2026-11-03: the two had one ZIndex and the bar, added later, covered the panel's bottom
+  rows across a phone). The panel is placed once the page has settled (posted at Background: the value
   plates and style swatches fill in after the first layout, and the rows' shared caption
   column settles on a second pass - measured at once, the panel came out 50 px narrower
   than it is), with a real layout pass (`UpdateLayout`), so the grid raises

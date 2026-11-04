@@ -4,8 +4,11 @@ using System.Linq;
 using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace LiveGeometry;
@@ -186,6 +189,13 @@ public partial class DrawingHost : Grid
         StatusBar.HorizontalAlignment = HorizontalAlignment.Left;
         StatusBar.VerticalAlignment = VerticalAlignment.Bottom;
         StatusBar.ZIndex = (int)ZOrder.StatusBar;
+
+        // (before anything else sees the press, whatever takes it)
+        DrawingControl.AddHandler(
+            InputElement.PointerPressedEvent,
+            (sender, e) => DismissDragHint(),
+            RoutingStrategies.Tunnel,
+            handledEventsToo: true);
     }
 
     protected void CreatePropertyGrid()
@@ -248,7 +258,9 @@ public partial class DrawingHost : Grid
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Top,
             Visibility = Visibility.Collapsed,
-            ZIndex = (int)ZOrder.StatusBar,
+            // over the status bar: across a narrow window the two overlap, and the bar
+            // covered the panel's bottom rows
+            ZIndex = (int)ZOrder.PropertyGrid,
             Child = layout
         };
         sidePanel.BindTheme(Border.BackgroundProperty, nameof(AppTheme.Background));
@@ -600,6 +612,7 @@ public partial class DrawingHost : Grid
     protected virtual void mCurrentDrawing_BehaviorChanged(Behavior newBehavior)
     {
         Ribbon.SelectBehavior(newBehavior);
+        ResetDragHint();
         var help = newBehavior.HintText;
         if (!help.IsEmpty())
         {
@@ -694,6 +707,18 @@ public partial class DrawingHost : Grid
         }
 
         var text = choiceHint ?? hint;
+        if (choiceHint == null && IsDragHint(hint))
+        {
+            if (dragHintDismissed)
+            {
+                text = null;
+            }
+            else
+            {
+                StartDragHintTimer();
+            }
+        }
+
         if (text.IsEmpty())
         {
             StatusBar.Visibility = Visibility.Collapsed;
@@ -711,6 +736,59 @@ public partial class DrawingHost : Grid
 
             StatusBar.Visibility = Visibility.Visible;
         }
+    }
+
+    // The Drag tool's hint is an introduction, not what to click next, and the tool is on
+    // most of the time (every construction ends in it): the hint is put away at the first
+    // press on the canvas or after ten seconds, and stays away until a tool is picked
+    // (a drag's end brings the tool's hint back, which then shows nothing). Across a
+    // narrow window it covered the drawing for as long as nothing else was said.
+    bool dragHintDismissed;
+    DispatcherTimer dragHintTimer;
+    static readonly TimeSpan DragHintTime = TimeSpan.FromSeconds(10);
+
+    bool IsDragHint(string text)
+    {
+        return !text.IsEmpty() && CurrentDrawing?.Behavior is Dragger dragger && text == dragger.HintText;
+    }
+
+    void StartDragHintTimer()
+    {
+        if (dragHintTimer == null)
+        {
+            dragHintTimer = new DispatcherTimer() { Interval = DragHintTime };
+            dragHintTimer.Tick += (sender, e) => DismissDragHint();
+        }
+
+        if (!dragHintTimer.IsEnabled)
+        {
+            dragHintTimer.Start();
+        }
+    }
+
+    void ResetDragHint()
+    {
+        dragHintDismissed = false;
+        dragHintTimer?.Stop();
+    }
+
+    /// <summary>The tool's hint as when the tool was just picked: the Drag tool's again, though it was put away</summary>
+    public void ShowToolHint(Behavior behavior)
+    {
+        ResetDragHint();
+        ShowHint(behavior.HintText);
+    }
+
+    void DismissDragHint()
+    {
+        dragHintTimer?.Stop();
+        if (dragHintDismissed || !(CurrentDrawing?.Behavior is Dragger))
+        {
+            return;
+        }
+
+        dragHintDismissed = true;
+        UpdateStatusBar();
     }
 
     protected virtual void ShowSelectionProperties()
