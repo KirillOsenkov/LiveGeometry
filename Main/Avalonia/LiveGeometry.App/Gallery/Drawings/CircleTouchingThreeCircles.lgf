@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Drawing Version="1">
+  <Viewport Left="-14.0761107789" Top="8.7494199134" Right="28.1852382368" Bottom="-9.5528257671" />
+  <Styles>
+    <ShapeStyle Name="GivenCircle" Fill="#208854D0" IsFilled="false" Color="#FF8854D0" StrokeWidth="3">
+      <Dark Fill="#25B48CFF" Color="#FFB48CFF" />
+    </ShapeStyle>
+    <ShapeStyle Name="AnswerCircle" Fill="#1C2E9E4F" IsFilled="false" Color="#FF2E9E4F" StrokeWidth="3">
+      <Dark Fill="#1C4CD27A" Color="#FF4CD27A" />
+    </ShapeStyle>
+    <LineStyle Name="ShrunkCircle" Color="#FF8854D0" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFB48CFF" />
+    </LineStyle>
+    <LineStyle Name="ShrunkAnswer" Color="#FF2E9E4F" StrokeWidth="3" Dash="Dash">
+      <Dark Color="#FF4CD27A" />
+    </LineStyle>
+    <PointStyle Name="GreenPoint" Size="8" Fill="#FF7FD69A">
+      <Dark Fill="#FF6FCB8C" />
+    </PointStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Step="GroupWithNext" Description="Given: three circles, a around A, b around B and c around C, with a the smallest; r is its radius. Construct the circle that encloses all three and touches each of them." X="1" Y="6.5" />
+    <FreePoint Name="A1" Step="GroupWithNext" X="0.2" Y="6.5" />
+    <FreePoint Name="B" Step="GroupWithNext" X="5.5" Y="-1" />
+    <FreePoint Name="B1" Step="GroupWithNext" X="3.803" Y="0.697" />
+    <FreePoint Name="C" Step="GroupWithNext" X="-3" Y="-2.5" />
+    <FreePoint Name="C1" Step="GroupWithNext" X="-6.253" Y="0.753" />
+    <Circle Name="a" Style="GivenCircle" Step="GroupWithNext">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+    </Circle>
+    <Circle Name="b" Style="GivenCircle" Step="GroupWithNext">
+      <Dependency Name="B" />
+      <Dependency Name="B1" />
+    </Circle>
+    <Circle Name="c" Style="GivenCircle" Step="GroupWithNext">
+      <Dependency Name="C" />
+      <Dependency Name="C1" />
+    </Circle>
+    <Segment Name="AA1" Style="PurpleLine" Step="GroupWithNext">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+    </Segment>
+    <AttachedLabel Name="SmallRadius" OffsetX="-4" OffsetY="2" Text="r">
+      <Dependency Name="AA1" />
+    </AttachedLabel>
+    <Ray Name="g" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Ray>
+    <PerpendicularLine Name="normalB" Visible="false" RightAngleCorner="1">
+      <Dependency Name="g" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="K" Step="GroupWithNext" Description="Draw a radius BK of b perpendicular to BC." Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="normalB" />
+      <Dependency Name="b" />
+    </IntersectionPoint>
+    <Segment Name="BK" Style="PurpleLine">
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+    </Segment>
+    <CircleByRadius Name="compassK" Style="DashedPurpleLine" Step="GroupWithNext" Description="Shrink the radius by r: a circle of radius r around K meets BK at M, so BM = BK − r.">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+      <Dependency Name="K" />
+    </CircleByRadius>
+    <IntersectionPoint Name="M" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="BK" />
+      <Dependency Name="compassK" />
+    </IntersectionPoint>
+    <Circle Name="shrunkB" Style="ShrunkCircle" Description="The small dashed circle around B through M is b shrunk by r.">
+      <Dependency Name="B" />
+      <Dependency Name="M" />
+    </Circle>
+    <PerpendicularLine Name="normalC" Visible="false" RightAngleCorner="0">
+      <Dependency Name="g" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="L" Step="GroupWithNext" Description="Draw the radius CL of c perpendicular to BC, on the same side." Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="normalC" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <Segment Name="CL" Style="PurpleLine">
+      <Dependency Name="C" />
+      <Dependency Name="L" />
+    </Segment>
+    <CircleByRadius Name="compassL" Style="DashedPurpleLine" Step="GroupWithNext" Description="A circle of radius r around L meets CL at N: CN = CL − r.">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+      <Dependency Name="L" />
+    </CircleByRadius>
+    <IntersectionPoint Name="N" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="CL" />
+      <Dependency Name="compassL" />
+    </IntersectionPoint>
+    <Circle Name="shrunkC" Style="ShrunkCircle" Description="The big dashed circle around C through N is c shrunk by r. Shrunk by r, a became the point A, b and c became the dashed circles, and the circle we want became a circle through A that encloses and touches both dashed circles. Find that one, then grow it back by r.">
+      <Dependency Name="C" />
+      <Dependency Name="N" />
+    </Circle>
+    <Ray Name="h" Visible="false">
+      <Dependency Name="N" />
+      <Dependency Name="M" />
+    </Ray>
+    <IntersectionPoint Name="S" Step="GroupWithNext" Description="The dashed circles are scaled copies of each other. BM and CN are parallel radii, so the line NM and the line CB meet at S, the center of the scaling that takes the small dashed circle to the big one, with M going to N." Algorithm="IntersectLineAndLine">
+      <Dependency Name="h" />
+      <Dependency Name="g" />
+    </IntersectionPoint>
+    <Segment Name="NS" Style="OrangeLine" Step="GroupWithNext">
+      <Dependency Name="N" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="CS">
+      <Dependency Name="C" />
+      <Dependency Name="S" />
+    </Segment>
+    <IntersectionPoint Name="D" Description="The line NM meets the big dashed circle again at D. M and D do not correspond under the scaling, and for such a pair SM · SD is the same on every line through S." Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="h" />
+      <Dependency Name="shrunkC" />
+    </IntersectionPoint>
+    <Segment Name="AS" Style="OrangeLine" Description="The circle we want touches the dashed circles at two points that line up with S and do not correspond under the scaling either. So on the line SA it has a second point E with SA · SE = SM · SD.">
+      <Dependency Name="S" />
+      <Dependency Name="A" />
+    </Segment>
+    <SegmentBisector Name="bisectorMA" Visible="false" RightAngleCorner="0">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </SegmentBisector>
+    <SegmentBisector Name="bisectorDA" Visible="false" RightAngleCorner="0">
+      <Dependency Name="D" />
+      <Dependency Name="A" />
+    </SegmentBisector>
+    <IntersectionPoint Name="G" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bisectorMA" />
+      <Dependency Name="bisectorDA" />
+    </IntersectionPoint>
+    <Circle Name="k" Style="BlueLine" Description="Draw the blue circle through M, D and A: SM · SD is the power of S with respect to it.">
+      <Dependency Name="G" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="E" Description="It meets SA again at E, so SA · SE = SM · SD: E lies on the circle we want." Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="AS" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="P" Step="GroupWithNext" Description="The blue circle meets the small dashed circle again at P. The line MP meets AE at Q: Q has the same power with respect to the blue circle, to the small dashed circle, and so to the circle we want, which passes through A and E as well." Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="k" />
+      <Dependency Name="shrunkB" />
+    </IntersectionPoint>
+    <Ray Name="m" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </Ray>
+    <IntersectionPoint Name="Q" Step="GroupWithNext" Algorithm="IntersectLineAndLine">
+      <Dependency Name="m" />
+      <Dependency Name="AS" />
+    </IntersectionPoint>
+    <Segment Name="MQ" Style="BlueLine">
+      <Dependency Name="M" />
+      <Dependency Name="Q" />
+    </Segment>
+    <MidPoint Name="H" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Circle Name="thales" Visible="false">
+      <Dependency Name="H" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="T" Step="GroupWithNext" Description="The tangent from Q to the small dashed circle touches it at T, and QT² = QA · QE. So the circle through A, E and T touches the small dashed circle at T." Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="thales" />
+      <Dependency Name="shrunkB" />
+    </IntersectionPoint>
+    <Segment Name="QT" Style="GreenLine">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </Segment>
+    <Ray Name="TB" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </Ray>
+    <SegmentBisector Name="n" Visible="false" RightAngleCorner="0">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </SegmentBisector>
+    <MidPoint Name="J" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <IntersectionPoint Name="X" Style="GreenPoint" Step="GroupWithNext" Description="Its center X lies on the line TB and on the perpendicular bisector of AE." Algorithm="IntersectLineAndLine">
+      <Dependency Name="TB" />
+      <Dependency Name="n" />
+    </IntersectionPoint>
+    <Segment Name="TX" Style="GreenLine" Step="GroupWithNext">
+      <Dependency Name="T" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="JX" Style="DashDotLine">
+      <Dependency Name="J" />
+      <Dependency Name="X" />
+    </Segment>
+    <Circle Name="shrunkAnswer" Style="ShrunkAnswer" Description="The dashed green circle around X through A passes through E and touches both dashed circles: the answer shrunk by r.">
+      <Dependency Name="X" />
+      <Dependency Name="A" />
+    </Circle>
+    <Ray Name="XA" Visible="false">
+      <Dependency Name="X" />
+      <Dependency Name="A" />
+    </Ray>
+    <IntersectionPoint Name="F" Step="GroupWithNext" Description="Grow it by r: XA meets circle a at F on the far side, so XF = XA + r." Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="XA" />
+      <Dependency Name="a" />
+    </IntersectionPoint>
+    <Segment Name="FX" Style="GreenLine">
+      <Dependency Name="X" />
+      <Dependency Name="F" />
+    </Segment>
+    <Circle Name="answer" Style="AnswerCircle" Z="-1" Description="The green circle around X through F touches all three given circles.">
+      <Dependency Name="X" />
+      <Dependency Name="F" />
+    </Circle>
+    <PointLabel Name="LabelA" OffsetX="4" OffsetY="-30">
+      <Dependency Name="A" />
+    </PointLabel>
+    <PointLabel Name="LabelB" OffsetX="4" OffsetY="4">
+      <Dependency Name="B" />
+    </PointLabel>
+    <PointLabel Name="LabelC" OffsetX="-18" OffsetY="4">
+      <Dependency Name="C" />
+    </PointLabel>
+    <PointLabel Name="LabelK" OffsetX="4" OffsetY="4">
+      <Dependency Name="K" />
+    </PointLabel>
+    <PointLabel Name="LabelL" OffsetX="-18" OffsetY="4">
+      <Dependency Name="L" />
+    </PointLabel>
+    <PointLabel Name="LabelM" OffsetX="-20" OffsetY="-12">
+      <Dependency Name="M" />
+    </PointLabel>
+    <PointLabel Name="LabelN" OffsetX="-20" OffsetY="-12">
+      <Dependency Name="N" />
+    </PointLabel>
+    <PointLabel Name="LabelS" OffsetX="4" OffsetY="-30">
+      <Dependency Name="S" />
+    </PointLabel>
+    <PointLabel Name="LabelD" OffsetX="4" OffsetY="-30">
+      <Dependency Name="D" />
+    </PointLabel>
+    <PointLabel Name="LabelE" OffsetX="4" OffsetY="-30">
+      <Dependency Name="E" />
+    </PointLabel>
+    <PointLabel Name="LabelP" OffsetX="4" OffsetY="-30">
+      <Dependency Name="P" />
+    </PointLabel>
+    <PointLabel Name="LabelQ" OffsetX="4" OffsetY="-30">
+      <Dependency Name="Q" />
+    </PointLabel>
+    <PointLabel Name="LabelT" OffsetX="4" OffsetY="4">
+      <Dependency Name="T" />
+    </PointLabel>
+    <PointLabel Name="LabelX" OffsetX="4" OffsetY="4">
+      <Dependency Name="X" />
+    </PointLabel>
+    <PointLabel Name="LabelF" OffsetX="4" OffsetY="-30">
+      <Dependency Name="F" />
+    </PointLabel>
+    <Label Name="Title" Style="Heading" Text="Circle Touching Three Circles" Pin="TopRight" OffsetX="16" OffsetY="16" WrapWidth="419.5" Backdrop="true" />
+    <Label Name="Description" Style="Explanation" Text="Three circles are given: a around A with radius r, the smallest, b around B and c around C. Find the circle that encloses all three and touches each of them: one of the eight circles touching three given circles, Apollonius's problem, and the longest construction in the gallery.\n\nShrink everything by r: a becomes the point A, b and c become the dashed circles, and the circle we want becomes a circle through A that encloses and touches both dashed circles. Find that one and grow it back.\n\n1. Shrink. The radii BK and CL are perpendicular to BC. Shortened by r they end at M and N, and the dashed circles around B and C through them are b and c shrunk.\n\n2. The center of similitude. NM meets BC at S, and scaling from S takes the small dashed circle to the big one, M to N. The circle we want touches the dashed circles at two points that line up with S and do not correspond under the scaling. For such a pair the product of the distances from S is the same as for M and D, so on SA the circle we want has a second point E with SA · SE = SM · SD: the blue circle through M, D and A meets SA at E.\n\n3. The tangent. The blue circle meets the small dashed circle again at P, and MP meets AE at Q. The tangent from Q touches the small dashed circle at T, with QT² = QA · QE, so the circle through A, E and T touches it there. Its center X is where TB meets the perpendicular bisector of AE: the dashed green circle.\n\n4. Grow by r. XA meets a at F on the far side, and the green circle around X through F is the answer.\n\nDrag the yellow points, keeping a the smallest circle." Pin="TopRight" OffsetX="16" OffsetY="64" WrapWidth="419.5" Backdrop="true" />
+  </Figures>
+</Drawing>

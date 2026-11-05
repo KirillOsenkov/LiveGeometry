@@ -320,10 +320,39 @@
   blue, its dashed copy was hard to tell from the dashed purple). The second solution (the nearer crossing of DO) is
   named in the caption but not drawn: four to five times the size of the picture, it
   wrecked the fit even hidden. Merged from two generated attempts (2026-11-03).
+- **Circle Touching Three Circles** (`CircleTouchingThreeCircles.lgf`, 2026-11-04,
+  hand-written, at the end of the gallery): the circle enclosing three given circles and
+  touching each, one of the eight of Apollonius's problem, by Viète's reduction. Shrink
+  all three by the smallest radius r (a becomes its center A, b and c the dashed purple
+  circles, concentric), which leaves a circle through A touching two circles; its tangent
+  points line up with the external center of similitude S and are an antihomologous pair,
+  so SA · SE = SM · SD gives a second point E of the circle (the blue circle through M, D
+  and A meets SA at E); then a circle through A and E touching the small dashed circle: Q
+  on AE with equal power to the blue circle and the dashed one (the blue circle's chord MP
+  meets AE there), the tangent from Q touches at T, X = TB ∩ the bisector of AE; grow the
+  circle around X through A by r (F on the far side of a). The shrinking is done along
+  radii perpendicular to BC (K and L, then M and N by a compass circle of radius r):
+  the line MN then gives S, the antihomologous partner D of M, and the chord MP all at once,
+  where shrinking along BC itself put the tangent point T within a hair of the shrunk
+  point and the chord of the blue circle in b′ was too short to draw a line through (its
+  chord in c′ met AE far off the picture). The sizes are 0.8, 2.4, 4.6: S lies on BC
+  beyond B at d · b′/(c′ − b′), so c′ must be a few times b′ or S leaves the picture, and b′
+  must still hold M, P and T apart. Eighteen steps; the helpers that are lines (CB, NM,
+  MP, TB, the bisector of AE) are hidden rays and bisectors with a visible segment drawn
+  over the part that matters (CS, NS, MQ, TX, JX with J the hidden midpoint of AE), since
+  as lines they ran across the whole canvas and into the caption. The answer is `Z="-1"`
+  so that its fill lies under the given circles' purple, which a fill over them turned
+  gray. Half the height on a phone (`stackedFigureShare: 0.5`). The construction was
+  modelled in a script before the file was written, to pick the configuration and the
+  intersection branches (an `IntersectLineAndEllipse1` is the crossing toward the line's
+  first point, `2` the one past the second; `IntersectCircleAndCircle1` is to the right
+  of the way from the first center to the second); the caption tells the reader to keep
+  a the smallest, since with another circle smallest the shrunk circles change kind.
 - **Steps authored** (2026-11-03, see "Steps" in `docs/app.md`; the checker's report lists
   them): Circle in the Corner, Circumscribed Circle, Inscribed Circle, Circle Touching Three
   Lines, Simson Line, Regular Pentagon, Tangents to a Circle, Parabola, Conic Through Five
-  Points, Square Around Four Points, Inscribed Square in a Triangle. The least that makes
+  Points, Square Around Four Points, Inscribed Square in a Triangle, Circle Touching
+  Three Circles (2026-11-04). The least that makes
   the playback read as a construction: the given figures one step, a polygon with its
   sides one step, a helper with the point it is there for one step (`Step="GroupWithNext"`
   on the run), and a sentence on the first figure of a step only where the generated one
