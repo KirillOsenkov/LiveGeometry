@@ -94,51 +94,8 @@ static partial class Puzzles
         d.Scene(-2.1, 3.75, 2.8, -0.15);
     }
 
-    // Four congruent squares, all tilted the same way, in a rectangle: two side by side from the left
-    // side down to the bottom, two stacked on the bottom up to the top and right sides, the lower one's
-    // left side along the second square's right side. A line from the bottom left corner through the top
-    // corner the first two share; the angle it makes with the top? Dragging the first square's corner up
-    // and down the left side tilts all four (the rectangle follows): the line stays at the same angle.
-    [Puzzle("four-squares-inside-a-rectangle")]
-    public static void FourSquaresInsideARectangle(Lgf d)
-    {
-        d.Texture = "FeltTip";
-        const double s = 2;
-        var o = d.Pt(0, 0, "O");
-        var p1 = d.Slider(V.At(0, 2 * s * Math.Sin(4 * Math.PI / 180)), V.At(0, 2 * s * Math.Sin(28 * Math.PI / 180)), 0.4, (0, 1.0), "P");
-        string sn = d.Num($"P.Y / {Lgf.N(2 * s)}", "sn");
-        string c = d.Num($"sqrt(1 - {sn} ^ 2)", "cs");
-        var u = new V($"{Lgf.N(s)} * {c}", $"-{Lgf.N(s)} * {sn}");
-        var v = new V($"{Lgf.N(s)} * {sn}", $"{Lgf.N(s)} * {c}");
-        var a1 = d.Pt(p1 + u);
-        var a2 = d.Pt(p1 + u + v, "T");
-        var a3 = d.Pt(p1 + v);
-        var q2 = d.Pt(p1 + 2 * u, "Q");
-        var b2 = d.Pt(p1 + 2 * u + v);
-        var b3 = d.Pt(q2 + $"{sn} / {c}" * v, "B");
-        var c1 = d.Pt(b3 + u);
-        var c2 = d.Pt(b3 + u + v);
-        var c3 = d.Pt(b3 + v);
-        var c4 = d.Pt(b3 + u + 2 * v);
-        var c5 = d.Pt(b3 + 2 * v, "F");
-        string w = d.Num($"{c4.X}", "w");
-        var tl = d.Pt(new V("0", "F.Y"));
-        var tr = d.Pt(new V(w, "F.Y"));
-        var br = d.Pt(new V(w, "0"));
-        var x = d.Pt(new V("F.Y", "F.Y"), "X");
-        string pink = d.Fill("Pink", "#FFFEC2CC", "#FF4A2441");
-        d.Polygon(pink, p1, a1, a2, a3);
-        d.Polygon(pink, a1, q2, b2, a2);
-        d.Polygon(pink, b3, c1, c2, c3);
-        d.Polygon(pink, c3, c2, c4, c5);
-        d.Polygon(d.Outline("Frame", "#FF4A2441"), o, br, tr, tl);
-        string magenta = "#FFEA4182";
-        string line = d.Line("PinkLine", magenta, 2.5);
-        d.Segment(line, o, x);
-        d.Angle(line, x, tl, o, 40);
-        d.Label("?", x + V.At(-0.85, -0.38), d.Text("PinkMark", magenta, 28));
-        d.Scene(0, 4.6, 7.3, 0);
-    }
+    // (four-squares-inside-a-rectangle is a ruler-and-compass construction kept as a file, see
+    // "Ruler and compass from now on" in docs/catriona-agg.md)
 
     // A semicircle and a circle crossing it twice. Lines from the ends of the diameter through those
     // crossings meet the circle again at the triangles' far corners, and cross each other at their

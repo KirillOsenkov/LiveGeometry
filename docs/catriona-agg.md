@@ -92,6 +92,28 @@ page shows it), never copied.
   isn't to scale or her numbers fix a different shape, the drawing follows the numbers and its
   comment says so; where the statement leaves the figure free and the answer doesn't depend on
   it, that freedom is a handle.
+- **Ruler and compass from now on** (2026-11-04). The generated drawings are coordinates and
+  formulas because 440 of them had to be made at once; that is not how a drawing should be
+  made from here on. A drawing touched or redone, and every new one, is constructed with the
+  app's own tools the way a reader would construct it: points, segments, parallels and
+  perpendiculars, circles, intersections, midpoints and bisectors, a point on a segment or
+  circle as the handle. No `PointByCoordinates` with a formula, no `Number`, no generator
+  function. The reasons: honesty, since kids are expected to build with these tools and the
+  library should be built the same way; the step-by-step playback, which then shows a
+  construction a reader can follow and repeat, and says nothing with a page of formulas; and
+  the handles, which then slide between the special cases of the figure (a corner moving from
+  one end of a side to the other, where the two ends are the two insights) instead of along a
+  made-up track that stops short of them. The first drawing done this way is
+  `four-squares-inside-a-rectangle.lgf`: the maintainer's own construction (the handle on a
+  side, a circle of the side's radius cut by a parallel, perpendiculars and a parallel for the
+  rectangle, an angle bisector and a circle of half a side to place the question mark) in the
+  library's styles, written by hand, with a comment at its top saying what it does. Such a
+  drawing is a file of its own, not a function: the tool leaves a slug it has no `[Puzzle]`
+  function for alone, so a rerun over every puzzle doesn't overwrite it. The way to make one is
+  to draw it in the app (or take the maintainer's drawing from a share link, `/s/<id>.lgf`),
+  then give it the styles of this file's neighbors by hand: the `Handle` point style for the
+  handle, every other point and helper line hidden, her fills and inks, the scene over the
+  handle's whole range, no title or description labels.
 - **Tiles** are pictures: each drawing is played once off screen without its handles and kept
   as a PNG (an object URL) that every tile of it shows, only near the view, the nearest first;
   the texts of every tile near the view are fetched at once, the drawing is one tile at a time

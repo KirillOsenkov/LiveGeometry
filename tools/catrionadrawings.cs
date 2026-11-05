@@ -17,6 +17,10 @@
 // This file has the drawing kit (V, Lgf) and the first 20 puzzles drawn; the rest are in
 // catrionadrawings/<year>[-<part>].cs, more of the partial class Puzzles. A puzzle's function
 // says its slug with [Puzzle].
+//
+// No new functions (2026-11-04): a drawing touched, redone or added from now on is a
+// ruler-and-compass construction made with the app's own tools and kept as a file of its own,
+// which this tool leaves alone (see "Ruler and compass from now on" in docs/catriona-agg.md).
 
 #nullable disable
 
