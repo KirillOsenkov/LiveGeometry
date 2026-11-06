@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #16 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+     The middle triangle LTR stands on the hidden base points L and R; its apex T is the handle, free inside a hidden
+     rectangle above LR, starting where the book has it. The equilateral triangles are built outward on LT and TR by
+     circles of the sides' radius about their ends (E on the left, F on the right), shaded grey. The lines ER and FL cross
+     at X; the asked angle is at X, the one opening down toward LR. It is 120° wherever T is: the triangles LTF and ETR
+     are the same triangle turned 60° about T. -->
+<Drawing Version="1">
+  <Viewport Left="-3.2" Top="6" Right="7.2" Bottom="-2" />
+  <Scene Left="-3.2" Top="6" Right="7.2" Bottom="-2" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="Grey" Color="#FF000000" StrokeWidth="3" Fill="#FFC8C8C8">
+      <Dark Color="#FFE8EBF0" Fill="#FF6B7280" />
+    </ShapeStyle>
+    <ShapeStyle Name="RedMark" Color="#FFEF303F" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFD9333F" Fill="#FFD9333F" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="L" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="R" Visible="false" Locked="true" X="4" Y="0" />
+    <FreePoint Name="R1" Visible="false" Locked="true" X="0.8" Y="1.5" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="3.2" Y="1.5" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="3.2" Y="3.5" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="0.8" Y="3.5" />
+    <Polygon Name="Room" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="T" Style="Handle" X="2.63" Y="2.68">
+      <Dependency Name="Room" />
+    </PointInRegion>
+    <Circle Name="cL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Circle>
+    <Circle Name="cTL" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Circle>
+    <IntersectionPoint Name="E" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="cL" />
+      <Dependency Name="cTL" />
+    </IntersectionPoint>
+    <Circle Name="cR" Visible="false">
+      <Dependency Name="R" />
+      <Dependency Name="T" />
+    </Circle>
+    <Circle Name="cTR" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+    </Circle>
+    <IntersectionPoint Name="F" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="cR" />
+      <Dependency Name="cTR" />
+    </IntersectionPoint>
+    <Polygon Name="LET" Style="Grey">
+      <Dependency Name="L" />
+      <Dependency Name="E" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Polygon Name="TFR" Style="Grey">
+      <Dependency Name="T" />
+      <Dependency Name="F" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Polygon Name="LTR" Style="Frame">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+      <Dependency Name="R" />
+    </Polygon>
+    <Segment Name="ER" Style="Ink">
+      <Dependency Name="E" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="FL" Style="Ink">
+      <Dependency Name="F" />
+      <Dependency Name="L" />
+    </Segment>
+    <IntersectionPoint Name="X" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ER" />
+      <Dependency Name="FL" />
+    </IntersectionPoint>
+    <AngleArc Name="asked" Style="RedMark" Radius="40">
+      <Dependency Name="X" />
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </AngleArc>
+  </Figures>
+</Drawing>

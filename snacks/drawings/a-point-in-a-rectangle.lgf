@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #6 (Curiosity Closet), drawn by hand as a ruler-and-compass construction.
+     The rectangle ABKH on the hidden points A and B: the corner K is a handle on a hidden vertical stretch above B,
+     which sets the rectangle's height, and H is where the perpendicular at A meets the parallel to AB through K. The
+     handle P is a point inside the rectangle. The parallel to AB through P meets the sides at L and Q, with right angles
+     there, marked by small squares built with a circle of radius AB/32; the segments AP and PK close the two hatched
+     triangles ALP and KPQ (drawn in a lighter blue, the player has no hatching), and HPB is the shaded triangle. Its
+     area is the difference of the hatched ones wherever P and K are. -->
+<Drawing Version="1">
+  <Viewport Left="-0.8" Top="8.3" Right="7.8" Bottom="-0.8" />
+  <Scene Left="-0.8" Top="8.3" Right="7.8" Bottom="-0.8" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Hatched" Color="#FF000000" StrokeWidth="3" Fill="#FFDCDCFF">
+      <Dark Color="#FFE8EBF0" Fill="#FF5C62A8" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="Mark" Color="#FF000000" StrokeWidth="2" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="7" Y="0" />
+    <FreePoint Name="Z1" Visible="false" Locked="true" X="7" Y="1.5" />
+    <FreePoint Name="Z2" Visible="false" Locked="true" X="7" Y="7.5" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="Track" Visible="false">
+      <Dependency Name="Z1" />
+      <Dependency Name="Z2" />
+    </Segment>
+    <PointOnFigure Name="K" Style="Handle" X="7" Y="5" Parameter="0.5833">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <PerpendicularLine Name="a" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <ParallelLine Name="k" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="K" />
+    </ParallelLine>
+    <IntersectionPoint Name="H" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="a" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <Segment Name="AH" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="BK" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="Rectangle" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="K" />
+      <Dependency Name="H" />
+    </Polygon>
+    <PointInRegion Name="P" Style="Handle" X="6" Y="2">
+      <Dependency Name="Rectangle" />
+    </PointInRegion>
+    <ParallelLine Name="p" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="P" />
+    </ParallelLine>
+    <IntersectionPoint Name="L" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="p" />
+      <Dependency Name="AH" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Q" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="p" />
+      <Dependency Name="BK" />
+    </IntersectionPoint>
+    <Polygon Name="LowerHatched" Style="Hatched">
+      <Dependency Name="A" />
+      <Dependency Name="L" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="UpperHatched" Style="Hatched">
+      <Dependency Name="K" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <Segment Name="LQ" Style="Ink">
+      <Dependency Name="L" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Polygon Name="Shaded" Style="Blue">
+      <Dependency Name="H" />
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Polygon>
+    <!-- the right-angle marks at L and Q: squares of side AB/32 (five midpoints), the circle of that radius about
+         the corner cut by the lines of the two sides (the lines, not the sides: with P on the top or bottom side the
+         corner of the mark would be past the side's end), the fourth corner by a reflection in a midpoint; an
+         AngleArc would vanish there, these stay -->
+    <MidPoint Name="m16" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="m8" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m16" />
+    </MidPoint>
+    <MidPoint Name="m4" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m8" />
+    </MidPoint>
+    <MidPoint Name="m2" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m4" />
+    </MidPoint>
+    <MidPoint Name="m1" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m2" />
+    </MidPoint>
+    <CircleByRadius Name="cL" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m1" />
+      <Dependency Name="L" />
+    </CircleByRadius>
+    <IntersectionPoint Name="L1" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="p" />
+      <Dependency Name="cL" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="L2" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="a" />
+      <Dependency Name="cL" />
+    </IntersectionPoint>
+    <MidPoint Name="mL" Visible="false">
+      <Dependency Name="L1" />
+      <Dependency Name="L2" />
+    </MidPoint>
+    <ReflectedPoint Name="L3" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="mL" />
+    </ReflectedPoint>
+    <Polygon Name="RightAngleL" Style="Mark">
+      <Dependency Name="L" />
+      <Dependency Name="L1" />
+      <Dependency Name="L3" />
+      <Dependency Name="L2" />
+    </Polygon>
+    <CircleByRadius Name="cQ" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="m1" />
+      <Dependency Name="Q" />
+    </CircleByRadius>
+    <IntersectionPoint Name="Q1" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="p" />
+      <Dependency Name="cQ" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="b" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Q2" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="b" />
+      <Dependency Name="cQ" />
+    </IntersectionPoint>
+    <MidPoint Name="mQ" Visible="false">
+      <Dependency Name="Q1" />
+      <Dependency Name="Q2" />
+    </MidPoint>
+    <ReflectedPoint Name="Q3" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="mQ" />
+    </ReflectedPoint>
+    <Polygon Name="RightAngleQ" Style="Mark">
+      <Dependency Name="Q" />
+      <Dependency Name="Q1" />
+      <Dependency Name="Q3" />
+      <Dependency Name="Q2" />
+    </Polygon>
+  </Figures>
+</Drawing>

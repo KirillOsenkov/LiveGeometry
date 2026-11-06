@@ -34,6 +34,26 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   first is `a-parallelogram-in-a-square.lgf` (book 1, #1): a square from two points by
   perpendiculars and circles, the handle on the top side, the opposite vertex where the line
   through the center meets the bottom side.
+- **The 29 drawings of 2026-11-05** (16 from book 1, 13 from book 2) were made in parallel by
+  agents from a brief (`C:\temp\Snacks\BRIEF.md`, outside the repo) and checked on the real
+  puzzle page by a copy of the Catriona checker (`C:\temp\Snacks\snackcheck.cs`, built to
+  `C:\temp\Snacks\bin\snackcheck\snackcheck.exe <slug> --out <dir>`: the page in both themes and
+  on a phone, two frames with the handles moved, a sweep that reports every visible figure that
+  stops existing). Two are rigid and only turn: `three-squares` (the tick marks and the 45°
+  squares fix the ratio) and `two-concentric-pentagons` (parallel sides and concentricity put
+  the small vertex at one point of the diagonal); `three-equal-segments-in-a-circle` changes
+  its given angle with the handle; `a-path-across-a-cube` is the unfolded net. The maintainer
+  decides whether those stay. What the agents learned, to keep: a base `FreePoint` must be
+  `Locked="true"`, or the tiles' hover drift and the checker move it; an `IntersectionPoint`
+  with a `Segment` exists only on the segment, so a point that may pass an end is cut on a
+  `LineTwoPoints`; line-and-circle algorithm 1 is behind along the line's direction and 2
+  ahead, circle-and-circle 1 is to the right of the first center seen from the second;
+  an `AngleArc` in a filled `ShapeStyle` fills its sector (the books' marked angles) and draws
+  a square at 90°; a `PointInRegion` is clamped inside a circle as well as a polygon; a label
+  on a hidden point is hung on a shown point in a style that draws nothing (`Anchor`); the
+  player fills a self-crossing polygon even-odd, so a pentagram is drawn as its ten-cornered
+  outline. Book 2's shaded parts are the lavender `#B9B9FF` with blue `#0000FF` outlines, the
+  rest black ink.
 - **Reading the books**: the page images the drawings are made from are the maintainer's own
   (C:\temp\Snacks, outside the repo, from the Kindle editions), one PNG per page of the first book
   and per two-page spread of the second.

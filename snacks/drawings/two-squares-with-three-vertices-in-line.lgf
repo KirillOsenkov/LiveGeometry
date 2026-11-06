@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #20 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+     The large square LBRT stands on the hidden points L and B: perpendiculars to LB at L and B, cut by circles of radius
+     LB about them. The small grey square LSQP shares the corner L; its side SQ, extended, passes through R, which is the
+     same as S lying on the circumcircle of the large square (the angle LSR is right). So the handle S slides along a
+     hidden arc of that circumcircle below LB, from near L (a tiny square) to near B (nearly the large square; the arc
+     stops an eighth of LB short of either end so the figure never degenerates). The square is built from LS: the
+     perpendicular at S cut by the circle of radius SL about S gives Q, and P is S reflected through the midpoint of LQ.
+     The segment RS is the line of the three collinear vertices, SB joins S to the large square's corner, and the asked
+     angle is at S between SB and SQ: 45° wherever S is. -->
+<Drawing Version="1">
+  <Viewport Left="-1.2" Top="4.6" Right="6" Bottom="-3.4" />
+  <Scene Left="-1.2" Top="4.6" Right="6" Bottom="-3.4" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="Grey" Color="#FF000000" StrokeWidth="3" Fill="#FFC8C8C8">
+      <Dark Color="#FFE8EBF0" Fill="#FF6B7280" />
+    </ShapeStyle>
+    <ShapeStyle Name="RedMark" Color="#FFEF303F" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFD9333F" Fill="#FFD9333F" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="L" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="3.8042" Y="-1.2361" />
+    <Segment Name="LB" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="atL" Visible="false">
+      <Dependency Name="LB" />
+      <Dependency Name="L" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="atB" Visible="false">
+      <Dependency Name="LB" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="cL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cB" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="L" />
+    </Circle>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atL" />
+      <Dependency Name="cL" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="R" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atB" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <!-- the circumcircle of the large square and the arc of it under LB, an eighth of LB short of L and of B -->
+    <MidPoint Name="O" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <Circle Name="circumcircle" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+    </Circle>
+    <MidPoint Name="Half" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="Quarter" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Half" />
+    </MidPoint>
+    <MidPoint Name="Eighth" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Quarter" />
+    </MidPoint>
+    <CircleByRadius Name="nearL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Eighth" />
+      <Dependency Name="L" />
+    </CircleByRadius>
+    <CircleByRadius Name="nearB" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Eighth" />
+      <Dependency Name="B" />
+    </CircleByRadius>
+    <IntersectionPoint Name="L2" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="circumcircle" />
+      <Dependency Name="nearL" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="B2" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="circumcircle" />
+      <Dependency Name="nearB" />
+    </IntersectionPoint>
+    <CircleArc Name="Slide" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="L2" />
+      <Dependency Name="B2" />
+    </CircleArc>
+    <PointOnFigure Name="S" Style="Handle" X="1.2405" Y="-1.2383" Parameter="-2.0403">
+      <Dependency Name="Slide" />
+    </PointOnFigure>
+    <!-- the small square on LS -->
+    <Segment Name="LS" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="S" />
+    </Segment>
+    <PerpendicularLine Name="atS" Visible="false">
+      <Dependency Name="LS" />
+      <Dependency Name="S" />
+    </PerpendicularLine>
+    <Circle Name="cS" Visible="false">
+      <Dependency Name="S" />
+      <Dependency Name="L" />
+    </Circle>
+    <IntersectionPoint Name="Q" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atS" />
+      <Dependency Name="cS" />
+    </IntersectionPoint>
+    <MidPoint Name="Center" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Q" />
+    </MidPoint>
+    <ReflectedPoint Name="P" Visible="false">
+      <Dependency Name="S" />
+      <Dependency Name="Center" />
+    </ReflectedPoint>
+    <Polygon Name="Small" Style="Grey">
+      <Dependency Name="L" />
+      <Dependency Name="S" />
+      <Dependency Name="Q" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="Large" Style="Frame">
+      <Dependency Name="L" />
+      <Dependency Name="B" />
+      <Dependency Name="R" />
+      <Dependency Name="T" />
+    </Polygon>
+    <Segment Name="RS" Style="Ink">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="SB" Style="Ink">
+      <Dependency Name="S" />
+      <Dependency Name="B" />
+    </Segment>
+    <AngleArc Name="asked" Style="RedMark" Radius="40">
+      <Dependency Name="S" />
+      <Dependency Name="B" />
+      <Dependency Name="Q" />
+    </AngleArc>
+  </Figures>
+</Drawing>

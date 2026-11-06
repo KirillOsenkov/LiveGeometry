@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #31 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     An equilateral triangle on the hidden points A and B: C is where the circles about A through B and about B through
+     A meet above AB. The dashed altitude is the perpendicular from C to AB, down to its foot M, with the mark of the
+     right angle there. The handle P is a point inside the triangle; the red segments go from P to the feet of the
+     perpendiculars from P to the three sides, each with its right-angle mark, so they are the distances to the sides
+     wherever P is. -->
+<Drawing Version="1">
+  <Viewport Left="-3.7" Top="5.9" Right="3.7" Bottom="-1.5" />
+  <Scene Left="-3.7" Top="5.9" Right="3.7" Bottom="-1.5" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="Dashed" Color="#FF000000" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="RedLine" Color="#FFEF303F" StrokeWidth="3">
+      <Dark Color="#FFF0616C" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="-3" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="3" Y="0" />
+    <Circle Name="ca" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cb" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="ca" />
+      <Dependency Name="cb" />
+    </IntersectionPoint>
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BC" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="CA" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </Segment>
+    <Polygon Name="ABC" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <PerpendicularLine Name="altitude" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="M" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="altitude" />
+      <Dependency Name="AB" />
+    </IntersectionPoint>
+    <Segment Name="CM" Style="Dashed">
+      <Dependency Name="C" />
+      <Dependency Name="M" />
+    </Segment>
+    <AngleArc Name="rightAngleM" Style="Ink" Radius="26">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </AngleArc>
+    <PointInRegion Name="P" Style="Handle" X="1.02" Y="1.06">
+      <Dependency Name="ABC" />
+    </PointInRegion>
+    <PerpendicularLine Name="toAB" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="toBC" Visible="false">
+      <Dependency Name="BC" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="toCA" Visible="false">
+      <Dependency Name="CA" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Fa" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="toAB" />
+      <Dependency Name="AB" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Fb" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="toBC" />
+      <Dependency Name="BC" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Fc" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="toCA" />
+      <Dependency Name="CA" />
+    </IntersectionPoint>
+    <Segment Name="PFa" Style="RedLine">
+      <Dependency Name="P" />
+      <Dependency Name="Fa" />
+    </Segment>
+    <Segment Name="PFb" Style="RedLine">
+      <Dependency Name="P" />
+      <Dependency Name="Fb" />
+    </Segment>
+    <Segment Name="PFc" Style="RedLine">
+      <Dependency Name="P" />
+      <Dependency Name="Fc" />
+    </Segment>
+    <AngleArc Name="rightAngleA" Style="Ink" Radius="24">
+      <Dependency Name="Fa" />
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+    </AngleArc>
+    <AngleArc Name="rightAngleB" Style="Ink" Radius="24">
+      <Dependency Name="Fb" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </AngleArc>
+    <AngleArc Name="rightAngleC" Style="Ink" Radius="24">
+      <Dependency Name="Fc" />
+      <Dependency Name="A" />
+      <Dependency Name="P" />
+    </AngleArc>
+  </Figures>
+</Drawing>

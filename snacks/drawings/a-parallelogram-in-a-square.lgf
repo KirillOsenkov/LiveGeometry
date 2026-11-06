@@ -20,8 +20,8 @@
     </ShapeStyle>
   </Styles>
   <Figures>
-    <FreePoint Name="A" Visible="false" X="0" Y="0" />
-    <FreePoint Name="B" Visible="false" X="4" Y="0" />
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
     <Segment Name="AB" Visible="false">
       <Dependency Name="A" />
       <Dependency Name="B" />

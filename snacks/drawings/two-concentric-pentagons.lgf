@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #3 (Curiosity Closet), drawn by hand as a ruler-and-compass construction.
+     The center O and a radius point are the hidden base points; the handle Tp, the big pentagon's top vertex, goes
+     round the hidden circumcircle and turns the whole figure (the figure is rigid otherwise: see below). The big
+     pentagon is the classic compass construction on O and Tp: W on the perpendicular diameter, M its midpoint, the
+     circle about M through Tp cutting the diameter at N, and TpN is the side, stepped round the circumcircle to R and
+     BR; L and BL are their reflections in the axis OTp. The dashed diagonal is BL Tp. The small pentagon is the
+     dilation of the big one about O whose upper-left vertex UL is on that diagonal: UL is where the line OL meets the
+     diagonal (which fixes the small pentagon: UL is the midpoint of the diagonal and the ratio is cos 72 degrees, so
+     the statement leaves nothing free but the figure's size and turn), and the rest by parallels to the big sides
+     through UL and reflections in the axis. The blue segments run from BL to the small pentagon's bottom-right vertex
+     BR2 and on to its top vertex T2; the asked angle is at BR2 between them. -->
+<Drawing Version="1">
+  <Viewport Left="-4.7" Top="4.7" Right="4.7" Bottom="-4.7" />
+  <Scene Left="-4.7" Top="4.7" Right="4.7" Bottom="-4.7" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF404040" Color="#FF404040" StrokeWidth="1">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF0000FF" StrokeWidth="3">
+      <Dark Color="#FF9DA3FF" />
+    </LineStyle>
+    <LineStyle Name="Dashed" Color="#FF000000" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Style="Dot" Locked="true" X="0" Y="0" />
+    <FreePoint Name="P0" Visible="false" Locked="true" X="0" Y="4" />
+    <Circle Name="circumcircle" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="P0" />
+    </Circle>
+    <PointOnFigure Name="Tp" Style="Handle" X="0" Y="4" Parameter="1.5707963268">
+      <Dependency Name="circumcircle" />
+    </PointOnFigure>
+    <Segment Name="OTp" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Tp" />
+    </Segment>
+    <LineTwoPoints Name="axis" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Tp" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="diameter" Visible="false">
+      <Dependency Name="OTp" />
+      <Dependency Name="O" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="W" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="diameter" />
+      <Dependency Name="circumcircle" />
+    </IntersectionPoint>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="W" />
+    </MidPoint>
+    <Circle Name="aboutM" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="Tp" />
+    </Circle>
+    <IntersectionPoint Name="N" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="diameter" />
+      <Dependency Name="aboutM" />
+    </IntersectionPoint>
+    <CircleByRadius Name="sideFromTp" Visible="false">
+      <Dependency Name="Tp" />
+      <Dependency Name="N" />
+      <Dependency Name="Tp" />
+    </CircleByRadius>
+    <IntersectionPoint Name="R" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="circumcircle" />
+      <Dependency Name="sideFromTp" />
+    </IntersectionPoint>
+    <CircleByRadius Name="sideFromR" Visible="false">
+      <Dependency Name="Tp" />
+      <Dependency Name="N" />
+      <Dependency Name="R" />
+    </CircleByRadius>
+    <IntersectionPoint Name="BR" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="circumcircle" />
+      <Dependency Name="sideFromR" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="L" Visible="false">
+      <Dependency Name="R" />
+      <Dependency Name="axis" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="BL" Visible="false">
+      <Dependency Name="BR" />
+      <Dependency Name="axis" />
+    </ReflectedPoint>
+    <Polygon Name="big" Style="Frame">
+      <Dependency Name="Tp" />
+      <Dependency Name="R" />
+      <Dependency Name="BR" />
+      <Dependency Name="BL" />
+      <Dependency Name="L" />
+    </Polygon>
+    <Segment Name="diagonal" Style="Dashed">
+      <Dependency Name="BL" />
+      <Dependency Name="Tp" />
+    </Segment>
+    <LineTwoPoints Name="OL" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="L" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="UL" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="OL" />
+      <Dependency Name="diagonal" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LTp" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Tp" />
+    </LineTwoPoints>
+    <ParallelLine Name="topSide" Visible="false">
+      <Dependency Name="LTp" />
+      <Dependency Name="UL" />
+    </ParallelLine>
+    <IntersectionPoint Name="T2" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="topSide" />
+      <Dependency Name="axis" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="LBL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="BL" />
+    </LineTwoPoints>
+    <ParallelLine Name="leftSide" Visible="false">
+      <Dependency Name="LBL" />
+      <Dependency Name="UL" />
+    </ParallelLine>
+    <LineTwoPoints Name="OBL" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="BL" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="BL2" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="leftSide" />
+      <Dependency Name="OBL" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="R2" Visible="false">
+      <Dependency Name="UL" />
+      <Dependency Name="axis" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="BR2" Visible="false">
+      <Dependency Name="BL2" />
+      <Dependency Name="axis" />
+    </ReflectedPoint>
+    <Polygon Name="small" Style="Frame">
+      <Dependency Name="T2" />
+      <Dependency Name="R2" />
+      <Dependency Name="BR2" />
+      <Dependency Name="BL2" />
+      <Dependency Name="UL" />
+    </Polygon>
+    <Segment Name="toCorner" Style="BlueLine">
+      <Dependency Name="BL" />
+      <Dependency Name="BR2" />
+    </Segment>
+    <Segment Name="toTop" Style="BlueLine">
+      <Dependency Name="BR2" />
+      <Dependency Name="T2" />
+    </Segment>
+    <AngleArc Name="asked" Style="Blue" Radius="40">
+      <Dependency Name="BR2" />
+      <Dependency Name="BL" />
+      <Dependency Name="T2" />
+    </AngleArc>
+  </Figures>
+</Drawing>

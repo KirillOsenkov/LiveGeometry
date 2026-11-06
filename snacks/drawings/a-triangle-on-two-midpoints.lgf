@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #2 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
+     A triangle ABC on the hidden base points A and B; the apex C is the handle, free inside a hidden rectangle above AB,
+     and starts where the triangle is equilateral. M is the midpoint of AC and N the midpoint of CB; the shaded triangle
+     is AMN. It is a quarter of ABC wherever C is, so dragging C shows that the fraction does not need the equilateral. -->
+<Drawing Version="1">
+  <Viewport Left="-1.1" Top="5.5" Right="5.1" Bottom="-0.6" />
+  <Scene Left="-1.1" Top="5.5" Right="5.1" Bottom="-0.6" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#FF000000" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFE8EBF0" Fill="#FFD9333F" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-0.5" Y="1" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="4.5" Y="1" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="4.5" Y="5" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-0.5" Y="5" />
+    <Polygon Name="Room" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="C" Style="Handle" X="2" Y="3.4641016151">
+      <Dependency Name="Room" />
+    </PointInRegion>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Polygon Name="ABC" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="AMN" Style="Red">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </Polygon>
+  </Figures>
+</Drawing>

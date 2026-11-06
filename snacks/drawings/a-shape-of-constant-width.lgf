@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #36 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     The triangle ABC stands on the hidden points A and C; the handle B, its apex, moves inside a hidden rectangle above
+     AC that keeps B farther than half of AC from both A and C, which is what the shape needs. The width is d = AB + BC,
+     as the book's figure has it: then the small arc about B has the radius AC/2 (Mb is the midpoint of AC), the small
+     arc about A the radius BC - AC/2 and the small arc about C the radius AB - AC/2; each big arc has the width less
+     the small arc's radius at its vertex. The six ends of the arcs are where the circles of those radii about A, B
+     and C meet the lines of the sides beyond the vertices (P and P' are the points at AC/2 from B on BC and BA, whose
+     distances to C and A are the other two small radii). The dashed segments run from each vertex to the ends of the
+     arcs on its two sides; the six arcs are centred at the vertices, each between the two ends on its lines. The dots
+     at A and C are where the lines of the sides meet, so that the letters have a shown point to hang on. -->
+<Drawing Version="1">
+  <Viewport Left="-4.4" Top="6.4" Right="8.4" Bottom="-4.6" />
+  <Scene Left="-4.4" Top="6.4" Right="8.4" Bottom="-4.6" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="10" Fill="#FF000000" Color="#FF000000" StrokeWidth="0">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <PointStyle Name="Open" Size="8" Fill="#FFFFFFFF" Color="#FF000000" StrokeWidth="2">
+      <Dark Fill="#FF1E2228" Color="#FFE8EBF0" />
+    </PointStyle>
+    <ShapeStyle Name="Grey" Color="#FF000000" StrokeWidth="3" Fill="#FFC8C8C8">
+      <Dark Color="#FFE8EBF0" Fill="#FF6B7280" />
+    </ShapeStyle>
+    <LineStyle Name="Dashed" Color="#FF000000" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="RedLine" Color="#FFEF303F" StrokeWidth="3">
+      <Dark Color="#FFF0616C" />
+    </LineStyle>
+    <TextStyle Name="Letter" FontSize="30" Color="#FF000000" FontFamily="Segoe UI" Italic="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="C" Visible="false" Locked="true" X="4" Y="0" />
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-0.5" Y="2.1" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="4.5" Y="2.1" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="4.5" Y="3.6" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-0.5" Y="3.6" />
+    <Polygon Name="range" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="B" Style="Handle" X="0.81" Y="2.81">
+      <Dependency Name="range" />
+    </PointInRegion>
+    <Polygon Name="ABC" Style="Grey">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <LineTwoPoints Name="lineAB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="lineBC" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="lineCA" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </LineTwoPoints>
+    <MidPoint Name="Mb" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <CircleByRadius Name="cB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Mb" />
+      <Dependency Name="B" />
+    </CircleByRadius>
+    <IntersectionPoint Name="Qb1" Style="Open" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineAB" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Qb2" Style="Open" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="lineBC" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="P" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineBC" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Pp" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="lineAB" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <CircleByRadius Name="cA" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </CircleByRadius>
+    <IntersectionPoint Name="Qa1" Style="Open" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="lineAB" />
+      <Dependency Name="cA" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Qa2" Style="Open" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineCA" />
+      <Dependency Name="cA" />
+    </IntersectionPoint>
+    <CircleByRadius Name="cC" Visible="false">
+      <Dependency Name="Pp" />
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </CircleByRadius>
+    <IntersectionPoint Name="Qc1" Style="Open" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="lineCA" />
+      <Dependency Name="cC" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Qc2" Style="Open" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineBC" />
+      <Dependency Name="cC" />
+    </IntersectionPoint>
+    <Segment Name="dA1" Style="Dashed">
+      <Dependency Name="A" />
+      <Dependency Name="Qa1" />
+    </Segment>
+    <Segment Name="dA2" Style="Dashed">
+      <Dependency Name="A" />
+      <Dependency Name="Qa2" />
+    </Segment>
+    <Segment Name="dB1" Style="Dashed">
+      <Dependency Name="B" />
+      <Dependency Name="Qb1" />
+    </Segment>
+    <Segment Name="dB2" Style="Dashed">
+      <Dependency Name="B" />
+      <Dependency Name="Qb2" />
+    </Segment>
+    <Segment Name="dC1" Style="Dashed">
+      <Dependency Name="C" />
+      <Dependency Name="Qc1" />
+    </Segment>
+    <Segment Name="dC2" Style="Dashed">
+      <Dependency Name="C" />
+      <Dependency Name="Qc2" />
+    </Segment>
+    <CircleArc Name="smallA" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="A" />
+      <Dependency Name="Qa1" />
+      <Dependency Name="Qa2" />
+    </CircleArc>
+    <CircleArc Name="bigA" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="A" />
+      <Dependency Name="Qb1" />
+      <Dependency Name="Qc1" />
+    </CircleArc>
+    <CircleArc Name="smallB" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="B" />
+      <Dependency Name="Qb1" />
+      <Dependency Name="Qb2" />
+    </CircleArc>
+    <CircleArc Name="bigB" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="B" />
+      <Dependency Name="Qa1" />
+      <Dependency Name="Qc2" />
+    </CircleArc>
+    <CircleArc Name="smallC" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="C" />
+      <Dependency Name="Qc1" />
+      <Dependency Name="Qc2" />
+    </CircleArc>
+    <CircleArc Name="bigC" Style="RedLine" Sweep="Smaller">
+      <Dependency Name="C" />
+      <Dependency Name="Qa2" />
+      <Dependency Name="Qb2" />
+    </CircleArc>
+    <IntersectionPoint Name="Ad" Style="Dot" Algorithm="IntersectLineAndLine">
+      <Dependency Name="lineCA" />
+      <Dependency Name="lineAB" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Cd" Style="Dot" Algorithm="IntersectLineAndLine">
+      <Dependency Name="lineBC" />
+      <Dependency Name="lineCA" />
+    </IntersectionPoint>
+    <AttachedLabel Name="LabelA" Style="Letter" Z="1" OffsetX="4" OffsetY="4" Text="A">
+      <Dependency Name="Ad" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelB" Style="Letter" Z="1" OffsetX="12" OffsetY="-46" Text="B">
+      <Dependency Name="B" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelC" Style="Letter" Z="1" OffsetX="-26" OffsetY="4" Text="C">
+      <Dependency Name="Cd" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

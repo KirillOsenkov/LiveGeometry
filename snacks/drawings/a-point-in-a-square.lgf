@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #1 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
+     A square ABCD on the hidden points A and B: perpendiculars to AB at A and B, cut by the circles of radius AB about
+     them. The handle P is a point inside the square, free in both directions; the triangles on the top and the bottom
+     sides with their apex at P are shaded. Their area is half the square's wherever P is, a side included. -->
+<Drawing Version="1">
+  <Viewport Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
+  <Scene Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="a" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="b" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="ca" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cb" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="D" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="a" />
+      <Dependency Name="ca" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="b" />
+      <Dependency Name="cb" />
+    </IntersectionPoint>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <PointInRegion Name="P" Style="Handle" X="2.63" Y="1.22">
+      <Dependency Name="ABCD" />
+    </PointInRegion>
+    <Polygon Name="top" Style="Blue">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="bottom" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+    </Polygon>
+  </Figures>
+</Drawing>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #9 (Sangaku), drawn by hand as a ruler-and-compass construction.
+     The bottom-left corner A and the bottom tangency Q of the big circle are the hidden base points: the center O is a
+     radius AQ up the perpendicular at Q, the circle has radius OQ (3 for AQ = 3), T is its top (Q reflected through
+     O), the top side is the parallel to AQ through T and the left side the perpendicular at A. The handle F is the
+     point where the small circle touches the top side; it slides on a hidden track along the top line, from where
+     the right side touches both circles (a radius short of the square's diagonal, laid along the bottom from A and
+     carried up) to a diameter right of T. The small circle is tangent to the top side at F and to the big circle:
+     by the homothety at their touching point G, which maps the small circle's top F to the big circle's bottom Q,
+     G is where the line QF meets the big circle again, and the center P is where the line OG meets the perpendicular
+     to the top at F. The right side is the perpendicular to AQ at the point of the small circle level with P, so it
+     is tangent too, and the rectangle is fitted to the corners. The handle starts where the rectangle is 8 long for
+     a radius of 3 (the book's page draws it nearer 9); at the right end of the track the two circles are equal. -->
+<Drawing Version="1">
+  <Viewport Left="-0.7" Top="8.4" Right="12.7" Bottom="-2.4" />
+  <Scene Left="-0.7" Top="8.4" Right="12.7" Bottom="-2.4" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="BlueFrame" Color="#FF0000FF" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FF9DA3FF" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="Q" Visible="false" Locked="true" X="3" Y="0" />
+    <Segment Name="AQ" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+    </Segment>
+    <LineTwoPoints Name="bottom" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="atQ" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="Q" />
+    </PerpendicularLine>
+    <Circle Name="aboutQ" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="O" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atQ" />
+      <Dependency Name="aboutQ" />
+    </IntersectionPoint>
+    <Circle Name="big" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="Q" />
+    </Circle>
+    <ReflectedPoint Name="T" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ParallelLine Name="top" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="T" />
+    </ParallelLine>
+    <PerpendicularLine Name="left" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="LT" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="left" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <!-- the track along the top line: a diameter right of T, starting half a radius right of T -->
+    <CircleByRadius Name="diameter" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+      <Dependency Name="T" />
+    </CircleByRadius>
+    <IntersectionPoint Name="Fmax" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="top" />
+      <Dependency Name="diameter" />
+    </IntersectionPoint>
+    <!-- the other end of the track: where the right side is tangent to both circles, a radius short of the
+         diagonal of the square about the big circle, laid along the bottom from A -->
+    <IntersectionPoint Name="R0" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="bottom" />
+      <Dependency Name="aboutQ" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="atR0" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="R0" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="TR0" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="atR0" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <Circle Name="diagonalReach" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="TR0" />
+    </Circle>
+    <IntersectionPoint Name="Dg" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="bottom" />
+      <Dependency Name="diagonalReach" />
+    </IntersectionPoint>
+    <CircleByRadius Name="radiusBack" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+      <Dependency Name="Dg" />
+    </CircleByRadius>
+    <IntersectionPoint Name="F0b" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="bottom" />
+      <Dependency Name="radiusBack" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="atF0b" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="F0b" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F0" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="atF0b" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <Segment Name="track" Visible="false">
+      <Dependency Name="F0" />
+      <Dependency Name="Fmax" />
+    </Segment>
+    <PointOnFigure Name="F" Style="Handle" X="6.798" Y="6" Parameter="0.3734789">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <LineTwoPoints Name="QF" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="F" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="G" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="QF" />
+      <Dependency Name="big" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="OG" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="G" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="atF" Visible="false">
+      <Dependency Name="top" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="P" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="OG" />
+      <Dependency Name="atF" />
+    </IntersectionPoint>
+    <Circle Name="small" Style="BlueFrame">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Circle>
+    <ParallelLine Name="level" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="P" />
+    </ParallelLine>
+    <IntersectionPoint Name="E" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="level" />
+      <Dependency Name="small" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="rightSide" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="RB" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="rightSide" />
+      <Dependency Name="bottom" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="RT" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="rightSide" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <Polygon Name="rectangle" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="RB" />
+      <Dependency Name="RT" />
+      <Dependency Name="LT" />
+    </Polygon>
+  </Figures>
+</Drawing>

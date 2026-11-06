@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #24 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+     A circle about the hidden point O through the hidden point R; the line OR cuts it again at L, so LR is a diameter
+     and its midpoint M the centre dot. The handle Q slides along the diameter LR. P is the point of the circle above
+     the diameter equidistant from L and Q (the perpendicular bisector of LQ meets the circle there), and the circle
+     about P through L cuts the circle again at S, so PL = PQ = PS wherever Q is. The arc at L marks the angle between
+     the diameter and PL; it is 52° where the book has Q and changes with it, from 90° with Q at L (where the segments
+     shrink to nothing) to 45° with Q at R. The red wedge at P is the asked angle between PQ and PS. The "52°" sits on
+     the bisector of the angle at L, 1.5 units out (three midpoints of LM and a circle about L). -->
+<Drawing Version="1">
+  <Viewport Left="-4.9" Top="4.9" Right="4.9" Bottom="-4.9" />
+  <Scene Left="-4.9" Top="4.9" Right="4.9" Bottom="-4.9" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="RedWedge" Color="#FFEF303F" StrokeWidth="1" Fill="#FFEF303F">
+      <Dark Color="#FFD9333F" Fill="#FFD9333F" />
+    </ShapeStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF000000" Color="#FF000000" StrokeWidth="1">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <TextStyle Name="Mark" FontSize="28" Color="#FF000000" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="R" Visible="false" Locked="true" X="4" Y="0" />
+    <Circle Name="c" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </Circle>
+    <LineTwoPoints Name="d" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="L" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="d" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <MidPoint Name="M" Style="Dot">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </MidPoint>
+    <Segment Name="LR" Style="Ink">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+    </Segment>
+    <PointOnFigure Name="Q" Style="Handle" X="2.06462" Y="0" Parameter="0.758078">
+      <Dependency Name="LR" />
+    </PointOnFigure>
+    <SegmentBisector Name="bisectorLQ" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Q" />
+    </SegmentBisector>
+    <IntersectionPoint Name="P" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="bisectorLQ" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <Circle Name="cp" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="L" />
+    </Circle>
+    <IntersectionPoint Name="S" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="cp" />
+    </IntersectionPoint>
+    <Segment Name="PL" Style="Ink" Decoration="OneTick">
+      <Dependency Name="P" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="PQ" Style="Ink" Decoration="OneTick">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="PS" Style="Ink" Decoration="OneTick">
+      <Dependency Name="P" />
+      <Dependency Name="S" />
+    </Segment>
+    <AngleArc Name="given" Style="Ink" Radius="45">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+      <Dependency Name="P" />
+    </AngleArc>
+    <AngleArc Name="asked" Style="RedWedge" Radius="50">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+      <Dependency Name="S" />
+    </AngleArc>
+    <!-- the "52°" on the bisector of the angle at L, 1.5 units from L: a point there is attached to, shown in a style that draws nothing -->
+    <AngleBisector Name="bisector" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="R" />
+      <Dependency Name="P" />
+    </AngleBisector>
+    <MidPoint Name="H1" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </MidPoint>
+    <MidPoint Name="H2" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="H1" />
+    </MidPoint>
+    <MidPoint Name="H3" Visible="false">
+      <Dependency Name="H1" />
+      <Dependency Name="H2" />
+    </MidPoint>
+    <Circle Name="reach" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="H3" />
+    </Circle>
+    <IntersectionPoint Name="At" Style="Anchor" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="bisector" />
+      <Dependency Name="reach" />
+    </IntersectionPoint>
+    <AttachedLabel Name="Given" Style="Mark" Z="1" OffsetX="-26" OffsetY="-19.55" Text="52°">
+      <Dependency Name="At" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #4 (Curiosity Closet), drawn by hand as a ruler-and-compass construction.
+     The small semicircle stands on the hidden points L and T (its centre O1 is their midpoint); the two semicircles meet
+     at T. The handle E, the far end of the large diameter, slides along a hidden stretch of the base line to the right
+     of T, and O2 is the midpoint of TE. The common tangent of the two arcs: its midpoint M is where the perpendicular
+     at T meets the circle on the diameter O1O2 (the tangent lengths from M are the geometric mean of the radii), and the
+     tangent points T1 and T2 are T reflected in the lines MO1 and MO2. The blue square stands on T1T2, its far corners
+     found with the line O1T1 (perpendicular to the tangent), the circle of radius T1T2 about T1 and a reflection in a
+     midpoint. The dotted square stands under the small diameter LT (perpendiculars at L and T cut by the circle of
+     radius LT and a parallel), the blue rectangle under the large diameter TE has the same height. The square and the
+     rectangle have the same area for every E. -->
+<Drawing Version="1">
+  <Viewport Left="-1.2" Top="7.2" Right="8.8" Bottom="-2.8" />
+  <Scene Left="-1.2" Top="7.2" Right="8.8" Bottom="-2.8" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="DottedFrame" Color="#FF000000" StrokeWidth="3" Dash="Dot" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="Dotted" Color="#FF000000" StrokeWidth="3" Dash="Dot">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="L" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="T" Visible="false" Locked="true" X="2" Y="0" />
+    <FreePoint Name="Z1" Visible="false" Locked="true" X="2.4" Y="0" />
+    <FreePoint Name="Z2" Visible="false" Locked="true" X="8" Y="0" />
+    <Segment Name="LT" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="Track" Visible="false">
+      <Dependency Name="Z1" />
+      <Dependency Name="Z2" />
+    </Segment>
+    <MidPoint Name="O1" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </MidPoint>
+    <PointOnFigure Name="E" Style="Handle" X="5.54" Y="0" Parameter="0.5607">
+      <Dependency Name="Track" />
+    </PointOnFigure>
+    <MidPoint Name="O2" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="E" />
+    </MidPoint>
+    <!-- the common tangent: its midpoint M on the perpendicular at T, at the geometric mean of the radii -->
+    <MidPoint Name="Oc" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="O2" />
+    </MidPoint>
+    <Circle Name="cc" Visible="false">
+      <Dependency Name="Oc" />
+      <Dependency Name="O1" />
+    </Circle>
+    <PerpendicularLine Name="tT" Visible="false">
+      <Dependency Name="LT" />
+      <Dependency Name="T" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="M" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="tT" />
+      <Dependency Name="cc" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="MO1" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="O1" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="MO2" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="O2" />
+    </LineTwoPoints>
+    <ReflectedPoint Name="T1" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="MO1" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="T2" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="MO2" />
+    </ReflectedPoint>
+    <!-- the square on the tangent -->
+    <LineTwoPoints Name="O1T1" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="T1" />
+    </LineTwoPoints>
+    <Circle Name="c4" Visible="false">
+      <Dependency Name="T1" />
+      <Dependency Name="T2" />
+    </Circle>
+    <IntersectionPoint Name="S4" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="O1T1" />
+      <Dependency Name="c4" />
+    </IntersectionPoint>
+    <MidPoint Name="M24" Visible="false">
+      <Dependency Name="T2" />
+      <Dependency Name="S4" />
+    </MidPoint>
+    <ReflectedPoint Name="S3" Visible="false">
+      <Dependency Name="T1" />
+      <Dependency Name="M24" />
+    </ReflectedPoint>
+    <Polygon Name="Square" Style="Blue">
+      <Dependency Name="T1" />
+      <Dependency Name="T2" />
+      <Dependency Name="S3" />
+      <Dependency Name="S4" />
+    </Polygon>
+    <!-- the dotted square and the rectangle under the diameters -->
+    <PerpendicularLine Name="tL" Visible="false">
+      <Dependency Name="LT" />
+      <Dependency Name="L" />
+    </PerpendicularLine>
+    <Circle Name="cL" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Circle>
+    <IntersectionPoint Name="Lb" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="tL" />
+      <Dependency Name="cL" />
+    </IntersectionPoint>
+    <ParallelLine Name="par" Visible="false">
+      <Dependency Name="LT" />
+      <Dependency Name="Lb" />
+    </ParallelLine>
+    <IntersectionPoint Name="Tb" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="tT" />
+      <Dependency Name="par" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="tE" Visible="false">
+      <Dependency Name="LT" />
+      <Dependency Name="E" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Eb" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="tE" />
+      <Dependency Name="par" />
+    </IntersectionPoint>
+    <Polygon Name="DottedSquare" Style="DottedFrame">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+      <Dependency Name="Tb" />
+      <Dependency Name="Lb" />
+    </Polygon>
+    <Polygon Name="Rectangle" Style="Blue">
+      <Dependency Name="T" />
+      <Dependency Name="E" />
+      <Dependency Name="Eb" />
+      <Dependency Name="Tb" />
+    </Polygon>
+    <Segment Name="SmallDiameter" Style="Ink">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </Segment>
+    <CircleArc Name="SmallArc" Style="Dotted">
+      <Dependency Name="O1" />
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </CircleArc>
+    <CircleArc Name="LargeArc" Style="Ink">
+      <Dependency Name="O2" />
+      <Dependency Name="E" />
+      <Dependency Name="T" />
+    </CircleArc>
+  </Figures>
+</Drawing>

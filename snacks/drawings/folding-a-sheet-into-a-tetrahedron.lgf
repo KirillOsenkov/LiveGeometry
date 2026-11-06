@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #10 (3D Geometry), drawn by hand as a ruler-and-compass construction.
+     The 8 by 12 sheet AFKH on the hidden points A and B, 4 apart: E and F are reflections of A and B in a point along
+     the bottom (AF = 12), D is the perpendicular at A cut by the circle of radius AB, H is A reflected in D (AH = 8),
+     and K is where the parallel to AF through H meets the perpendicular at F. The handle P slides along the top side
+     HK; the blue net is the triangle PAF, and its fold lines are the sides of the medial triangle, joining the midpoints
+     of PA, PF and AF. The thin dashed lines are the altitudes of PAF and the dot where they meet is its orthocentre:
+     the folded tetrahedron holds the most when the orthocentre lies on a fold line. At either end of HK the net is a
+     right triangle and the orthocentre is at its right angle. The book's three small variants are left out. -->
+<Drawing Version="1">
+  <Viewport Left="-1" Top="11" Right="13" Bottom="-3" />
+  <Scene Left="-1" Top="11" Right="13" Bottom="-3" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="9" Fill="#FF1E1E1E" Color="#FF1E1E1E" StrokeWidth="1">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="BlueDashed" Color="#FF0000FF" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FF9DA3FF" />
+    </LineStyle>
+    <LineStyle Name="ThinDashed" Color="#FF000000" StrokeWidth="1.25" Dash="Dash">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <ReflectedPoint Name="E" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="F" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="E" />
+    </ReflectedPoint>
+    <PerpendicularLine Name="a" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <Circle Name="ca" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <IntersectionPoint Name="D" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="a" />
+      <Dependency Name="ca" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="H" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </ReflectedPoint>
+    <Segment Name="AF" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </Segment>
+    <ParallelLine Name="h" Visible="false">
+      <Dependency Name="AF" />
+      <Dependency Name="H" />
+    </ParallelLine>
+    <PerpendicularLine Name="f" Visible="false">
+      <Dependency Name="AF" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="K" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="h" />
+      <Dependency Name="f" />
+    </IntersectionPoint>
+    <Segment Name="HK" Visible="false">
+      <Dependency Name="H" />
+      <Dependency Name="K" />
+    </Segment>
+    <Polygon Name="Sheet" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+      <Dependency Name="K" />
+      <Dependency Name="H" />
+    </Polygon>
+    <PointOnFigure Name="P" Style="Handle" X="2" Y="8" Parameter="0.1667">
+      <Dependency Name="HK" />
+    </PointOnFigure>
+    <Polygon Name="Net" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="PA" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </Segment>
+    <Segment Name="PF" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+    <!-- the altitudes and the orthocentre -->
+    <PerpendicularLine Name="hp" Visible="false">
+      <Dependency Name="AF" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="ha" Visible="false">
+      <Dependency Name="PF" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="hf" Visible="false">
+      <Dependency Name="PA" />
+      <Dependency Name="F" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Fp" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="hp" />
+      <Dependency Name="AF" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Fa" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ha" />
+      <Dependency Name="PF" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Ff" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="hf" />
+      <Dependency Name="PA" />
+    </IntersectionPoint>
+    <Segment Name="AltitudeP" Style="ThinDashed">
+      <Dependency Name="P" />
+      <Dependency Name="Fp" />
+    </Segment>
+    <Segment Name="AltitudeA" Style="ThinDashed">
+      <Dependency Name="A" />
+      <Dependency Name="Fa" />
+    </Segment>
+    <Segment Name="AltitudeF" Style="ThinDashed">
+      <Dependency Name="F" />
+      <Dependency Name="Ff" />
+    </Segment>
+    <!-- the fold lines: the medial triangle -->
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="A" />
+    </MidPoint>
+    <MidPoint Name="M2" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <MidPoint Name="M3" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="F" />
+    </MidPoint>
+    <Segment Name="Fold1" Style="BlueDashed">
+      <Dependency Name="M1" />
+      <Dependency Name="M2" />
+    </Segment>
+    <Segment Name="Fold2" Style="BlueDashed">
+      <Dependency Name="M2" />
+      <Dependency Name="M3" />
+    </Segment>
+    <Segment Name="Fold3" Style="BlueDashed">
+      <Dependency Name="M3" />
+      <Dependency Name="M1" />
+    </Segment>
+    <IntersectionPoint Name="O" Style="Dot" Algorithm="IntersectLineAndLine">
+      <Dependency Name="hp" />
+      <Dependency Name="ha" />
+    </IntersectionPoint>
+  </Figures>
+</Drawing>

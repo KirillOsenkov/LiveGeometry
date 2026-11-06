@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #35 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     The red line is the segment between the hidden points L1 and L2; A and B are hidden points above it, shown by the
+     dots Ad and Bd (each the other's reflection in O, the midpoint of AB). The handle M slides along the red line; the
+     segments AM and MB are the path. The ellipse with foci A and B through M is built from its axes: X is on the line
+     MA beyond A with AX = MB (a circle of radius MB about A), so MX = AM + MB is the major axis's length and MN, with
+     N the midpoint of MX, the semi-major axis a. V, where the circle of radius a about O meets the line AB, is an end
+     of the major axis; W, where the circle of radius a about the focus A meets the perpendicular bisector of AB, is
+     an end of the minor axis. The ellipse changes with M and is tangent to the red line only where the path is
+     shortest, which is where the book has M (at either end of the line the ellipse crosses it). -->
+<Drawing Version="1">
+  <Viewport Left="-4.8" Top="7.2" Right="4.8" Bottom="-1.4" />
+  <Scene Left="-4.8" Top="7.2" Right="4.8" Bottom="-1.4" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="10" Fill="#FF000000" Color="#FF000000" StrokeWidth="0">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="RedLine" Color="#FFEF303F" StrokeWidth="3">
+      <Dark Color="#FFF0616C" />
+    </LineStyle>
+    <TextStyle Name="Letter" FontSize="30" Color="#FF000000" FontFamily="Segoe UI" Italic="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="L1" Visible="false" Locked="true" X="-3" Y="0" />
+    <FreePoint Name="L2" Visible="false" Locked="true" X="3" Y="0" />
+    <FreePoint Name="A" Visible="false" Locked="true" X="-1.9" Y="3.2" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="1.7" Y="1.6" />
+    <Segment Name="red" Style="RedLine">
+      <Dependency Name="L1" />
+      <Dependency Name="L2" />
+    </Segment>
+    <PointOnFigure Name="M" Style="Handle" X="0.5" Y="0" Parameter="0.5833333333">
+      <Dependency Name="red" />
+    </PointOnFigure>
+    <Segment Name="AM" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="MB" Style="Ink">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+    </Segment>
+    <LineTwoPoints Name="lineAB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <MidPoint Name="O" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <ReflectedPoint Name="Ad" Style="Dot">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="Bd" Style="Dot">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <LineTwoPoints Name="lineMA" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </LineTwoPoints>
+    <CircleByRadius Name="cA" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </CircleByRadius>
+    <IntersectionPoint Name="X" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineMA" />
+      <Dependency Name="cA" />
+    </IntersectionPoint>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="X" />
+    </MidPoint>
+    <CircleByRadius Name="cO" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <IntersectionPoint Name="V" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="lineAB" />
+      <Dependency Name="cO" />
+    </IntersectionPoint>
+    <CircleByRadius Name="cFocus" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+      <Dependency Name="A" />
+    </CircleByRadius>
+    <SegmentBisector Name="minor" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </SegmentBisector>
+    <IntersectionPoint Name="W" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="minor" />
+      <Dependency Name="cFocus" />
+    </IntersectionPoint>
+    <Ellipse Name="ellipse" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </Ellipse>
+    <AttachedLabel Name="LabelA" Style="Letter" Z="1" OffsetX="-32" OffsetY="-50" Text="A">
+      <Dependency Name="Ad" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelB" Style="Letter" Z="1" OffsetX="8" OffsetY="-50" Text="B">
+      <Dependency Name="Bd" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelM" Style="Letter" Z="1" OffsetX="-12" OffsetY="10" Text="M">
+      <Dependency Name="M" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

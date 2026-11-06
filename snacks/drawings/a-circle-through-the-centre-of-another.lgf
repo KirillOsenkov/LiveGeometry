@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #32 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     The book's figure has the large circle pass through the centre of the small one (not the other way round, which
+     would make the claim false): the large circle is about the locked point O through the locked point K, and K is the
+     small circle's centre. The handle A slides round the large circle and the small circle is the one about K through
+     A, so the two circles meet at A and at B, A's mirror image across the line OK. The tangent to the large circle at A
+     is the perpendicular to OA at A, drawn dashed from a length AC before A to half a length past C; C, where it cuts
+     the small circle again, is A's mirror image across the perpendicular from K to the tangent. AB and AC are the red
+     chords. Dragging A changes the small circle's radius; past the far side of the large circle it grows larger than
+     the large one, and the claim still holds. -->
+<Drawing Version="1">
+  <Viewport Left="-5" Top="7.2" Right="9.4" Bottom="-5.2" />
+  <Scene Left="-5" Top="7.2" Right="9.4" Bottom="-5.2" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Dashed" Color="#FF000000" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="RedLine" Color="#FFEF303F" StrokeWidth="3">
+      <Dark Color="#FFF0616C" />
+    </LineStyle>
+    <PointStyle Name="Dot" Size="8" Fill="#FF000000" Color="#FF000000" StrokeWidth="1">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <TextStyle Name="Mark" FontSize="28" Color="#FF000000" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Style="Dot" Locked="true" X="0" Y="0" />
+    <FreePoint Name="K" Style="Dot" Locked="true" X="4" Y="0" />
+    <Circle Name="large" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="K" />
+    </Circle>
+    <LineTwoPoints Name="OK" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="K" />
+    </LineTwoPoints>
+    <PointOnFigure Name="A" Style="Handle" X="3.5764" Y="1.7893" Parameter="0.4643">
+      <Dependency Name="large" />
+    </PointOnFigure>
+    <Circle Name="small" Style="Frame">
+      <Dependency Name="K" />
+      <Dependency Name="A" />
+    </Circle>
+    <ReflectedPoint Name="B" Style="Dot">
+      <Dependency Name="A" />
+      <Dependency Name="OK" />
+    </ReflectedPoint>
+    <LineTwoPoints Name="OA" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="tangent" Visible="false">
+      <Dependency Name="OA" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="fromK" Visible="false">
+      <Dependency Name="tangent" />
+      <Dependency Name="K" />
+    </PerpendicularLine>
+    <ReflectedPoint Name="C" Style="Dot">
+      <Dependency Name="A" />
+      <Dependency Name="fromK" />
+    </ReflectedPoint>
+    <MidPoint Name="Mac" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <ReflectedPoint Name="T1" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="T2" Visible="false">
+      <Dependency Name="Mac" />
+      <Dependency Name="C" />
+    </ReflectedPoint>
+    <Segment Name="tangentDrawn" Style="Dashed">
+      <Dependency Name="T1" />
+      <Dependency Name="T2" />
+    </Segment>
+    <Segment Name="AB" Style="RedLine">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="AC" Style="RedLine">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AttachedLabel Name="LabelA" Style="Mark" Z="1" OffsetX="8" OffsetY="-46" Text="A">
+      <Dependency Name="A" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelB" Style="Mark" Z="1" OffsetX="8" OffsetY="6" Text="B">
+      <Dependency Name="B" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelC" Style="Mark" Z="1" OffsetX="14" OffsetY="-14" Text="C">
+      <Dependency Name="C" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

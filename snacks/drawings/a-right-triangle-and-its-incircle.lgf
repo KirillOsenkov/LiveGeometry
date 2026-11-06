@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #28 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     The right angle is at the hidden point A: a hidden segment AX along the bottom, the perpendicular to it at A, cut by
+     the circle about A through X at Y, so AY is a hidden segment up the left. The two handles slide along them: C along
+     AX, B along AY, so ABC is right-angled at A whatever its legs. The incircle is the circle about I, where the
+     bisectors of the angles at A and at C meet, through the foot of the perpendicular from I to AC. The square at A
+     is the mark of the right angle. -->
+<Drawing Version="1">
+  <Viewport Left="-0.7" Top="6.7" Right="6.7" Bottom="-0.7" />
+  <Scene Left="-0.7" Top="6.7" Right="6.7" Bottom="-0.7" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <ShapeStyle Name="RedFrame" Color="#FFEF303F" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFF0616C" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="X" Visible="false" Locked="true" X="6" Y="0" />
+    <Segment Name="AX" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="X" />
+    </Segment>
+    <PerpendicularLine Name="up" Visible="false">
+      <Dependency Name="AX" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <Circle Name="cx" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="X" />
+    </Circle>
+    <IntersectionPoint Name="Y" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="up" />
+      <Dependency Name="cx" />
+    </IntersectionPoint>
+    <Segment Name="AY" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Y" />
+    </Segment>
+    <PointOnFigure Name="C" Style="Handle" X="4.2" Y="0" Parameter="0.7">
+      <Dependency Name="AX" />
+    </PointOnFigure>
+    <PointOnFigure Name="B" Style="Handle" X="0" Y="3.12" Parameter="0.52">
+      <Dependency Name="AY" />
+    </PointOnFigure>
+    <Polygon Name="ABC" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <AngleArc Name="rightAngle" Style="Ink" Radius="30">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </AngleArc>
+    <AngleBisector Name="bisectorA" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </AngleBisector>
+    <AngleBisector Name="bisectorC" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </AngleBisector>
+    <IntersectionPoint Name="I" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bisectorA" />
+      <Dependency Name="bisectorC" />
+    </IntersectionPoint>
+    <PerpendicularLine Name="down" Visible="false">
+      <Dependency Name="AX" />
+      <Dependency Name="I" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="F" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="down" />
+      <Dependency Name="AX" />
+    </IntersectionPoint>
+    <Circle Name="incircle" Style="RedFrame">
+      <Dependency Name="I" />
+      <Dependency Name="F" />
+    </Circle>
+  </Figures>
+</Drawing>

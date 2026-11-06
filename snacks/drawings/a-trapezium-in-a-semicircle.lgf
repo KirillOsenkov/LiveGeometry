@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #26 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     A semicircle on the hidden points A and D: the circle about their midpoint M through D, drawn as two quarter arcs
+     that meet at T, where the perpendicular bisector of AD cuts the circle. The handle B slides along the left quarter
+     arc, from A to T; C is B's mirror image across the bisector, so BC is parallel to AD and ABCD is a trapezium with
+     B and C on the arc wherever B is. The diagonal AC is drawn; the arrows on BC and AD say they are parallel. -->
+<Drawing Version="1">
+  <Viewport Left="-5" Top="5.4" Right="5" Bottom="-2.4" />
+  <Scene Left="-5" Top="5.4" Right="5" Bottom="-2.4" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <LineStyle Name="RedLine" Color="#FFEF303F" StrokeWidth="3">
+      <Dark Color="#FFF0616C" />
+    </LineStyle>
+    <TextStyle Name="Mark" FontSize="28" Color="#FF000000" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Style="Anchor" Locked="true" X="-4" Y="0" />
+    <FreePoint Name="D" Style="Anchor" Locked="true" X="4" Y="0" />
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <Circle Name="c" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="D" />
+    </Circle>
+    <SegmentBisector Name="bisector" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </SegmentBisector>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="bisector" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <CircleArc Name="rightArc" Style="RedLine">
+      <Dependency Name="M" />
+      <Dependency Name="D" />
+      <Dependency Name="T" />
+    </CircleArc>
+    <CircleArc Name="leftArc" Style="RedLine">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+      <Dependency Name="A" />
+    </CircleArc>
+    <PointOnFigure Name="B" Style="Handle" X="-2.2252" Y="3.3239" Parameter="2.16072">
+      <Dependency Name="leftArc" />
+    </PointOnFigure>
+    <ReflectedPoint Name="C" Style="Anchor">
+      <Dependency Name="B" />
+      <Dependency Name="bisector" />
+    </ReflectedPoint>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Segment Name="BC" Style="Ink" Decoration="OneArrow">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="AD" Style="Ink" Decoration="OneArrow">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="AC" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </Segment>
+    <AttachedLabel Name="LabelA" Style="Mark" Z="1" OffsetX="-34" OffsetY="4" Text="A">
+      <Dependency Name="A" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelB" Style="Mark" Z="1" OffsetX="-32" OffsetY="-46" Text="B">
+      <Dependency Name="B" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelC" Style="Mark" Z="1" OffsetX="10" OffsetY="-46" Text="C">
+      <Dependency Name="C" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelD" Style="Mark" Z="1" OffsetX="12" OffsetY="4" Text="D">
+      <Dependency Name="D" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

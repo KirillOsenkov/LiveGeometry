@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #2 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
+     The bottom side AB is between the hidden points A and B. The handle C, the top right corner, slides along a hidden
+     track on the perpendicular to AB at B, from Q at a quarter of AB above B (so the rectangle never flattens out) up to
+     T at one and a half times AB: S is where the circle of radius AB about B meets the perpendicular, Half the midpoint
+     of BS, Q the midpoint of B and Half, and T is where the circle of radius BS/2 about S meets the perpendicular; D
+     closes the rectangle on the perpendicular at A. M is the midpoint of the top side DC, marked by the ticks on DM and MC;
+     X is where the diagonal DB crosses the line MA, and the triangle ABX on the bottom side is shaded. The book's
+     figure is a square, where C starts; the fraction is the same for every rectangle. -->
+<Drawing Version="1">
+  <Viewport Left="-1.6" Top="6.6" Right="5.6" Bottom="-0.6" />
+  <Scene Left="-1.6" Top="6.6" Right="5.6" Bottom="-0.6" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="a" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="b" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="cb" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="S" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="b" />
+      <Dependency Name="cb" />
+    </IntersectionPoint>
+    <MidPoint Name="Half" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="S" />
+    </MidPoint>
+    <CircleByRadius Name="cs" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="Half" />
+      <Dependency Name="S" />
+    </CircleByRadius>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="b" />
+      <Dependency Name="cs" />
+    </IntersectionPoint>
+    <MidPoint Name="Q" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="Half" />
+    </MidPoint>
+    <Segment Name="track" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="T" />
+    </Segment>
+    <PointOnFigure Name="C" Style="Handle" X="4" Y="4" Parameter="0.6">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <ParallelLine Name="topLine" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="C" />
+    </ParallelLine>
+    <IntersectionPoint Name="D" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="a" />
+      <Dependency Name="topLine" />
+    </IntersectionPoint>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Segment Name="DB" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="MA" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+    </Segment>
+    <IntersectionPoint Name="X" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="DB" />
+      <Dependency Name="MA" />
+    </IntersectionPoint>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Segment Name="DM" Style="Ink" Decoration="OneTick">
+      <Dependency Name="D" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="MC" Style="Ink" Decoration="OneTick">
+      <Dependency Name="M" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="DX" Style="Ink">
+      <Dependency Name="D" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="MX" Style="Ink">
+      <Dependency Name="M" />
+      <Dependency Name="X" />
+    </Segment>
+    <Polygon Name="ABX" Style="Blue">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="X" />
+    </Polygon>
+  </Figures>
+</Drawing>

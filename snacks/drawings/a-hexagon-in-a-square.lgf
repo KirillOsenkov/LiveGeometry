@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #8 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+     The square S1 S2 S3 S4 stands on the hidden points S1 and S2. Two handles: the hexagon's center O is free inside a
+     hidden square (the square shrunk by half its diagonal's half, the corners cut on the diagonals by circles of half
+     a side about the corners), and its top vertex A is free inside a hidden circle of that same reach about O, so the
+     hexagon can be moved, turned and resized and still fits in the square. The hexagon is drawn by compass: the circle
+     about O through A, the circle about A through O cutting it at the two neighbors of A, and the other three vertices
+     by reflection through O. The line AB through A and its right-hand neighbor is extended to the square's right side
+     at B, the line CD through the lower-left vertex C and the bottom vertex to the bottom side at D, both dashed in
+     blue as the book draws them; the marked angles are at B against the right side and at D against the bottom side.
+     The handles start where the book has the hexagon: a quarter of a side as its radius, left of center and low. -->
+<Drawing Version="1">
+  <Viewport Left="-0.8" Top="6.6" Right="7" Bottom="-1.2" />
+  <Scene Left="-0.8" Top="6.6" Right="7" Bottom="-1.2" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <LineStyle Name="BlueDashed" Color="#FF0000FF" StrokeWidth="2.5" Dash="Dash">
+      <Dark Color="#FF9DA3FF" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <TextStyle Name="Mark" FontSize="28" Color="#FF000000" FontFamily="Segoe UI" Bold="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+    <PointStyle Name="Anchor" Size="1" Fill="#00000000" Color="#00000000" StrokeWidth="0" />
+  </Styles>
+  <Figures>
+    <FreePoint Name="S1" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="S2" Visible="false" Locked="true" X="6" Y="0" />
+    <Segment Name="S1S2" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+    </Segment>
+    <PerpendicularLine Name="p1" Visible="false">
+      <Dependency Name="S1S2" />
+      <Dependency Name="S1" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="p2" Visible="false">
+      <Dependency Name="S1S2" />
+      <Dependency Name="S2" />
+    </PerpendicularLine>
+    <Circle Name="c1" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+    </Circle>
+    <Circle Name="c2" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="S1" />
+    </Circle>
+    <IntersectionPoint Name="S4" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="p1" />
+      <Dependency Name="c1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="S3" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="p2" />
+      <Dependency Name="c2" />
+    </IntersectionPoint>
+    <Polygon Name="square" Style="Frame">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+      <Dependency Name="S3" />
+      <Dependency Name="S4" />
+    </Polygon>
+    <LineTwoPoints Name="right" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="S3" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="bottom" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+    </LineTwoPoints>
+    <!-- the room for the center: the square shrunk by the reach of the hexagon -->
+    <MidPoint Name="Mid" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S2" />
+    </MidPoint>
+    <MidPoint Name="Oc" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S3" />
+    </MidPoint>
+    <MidPoint Name="H" Visible="false">
+      <Dependency Name="Oc" />
+      <Dependency Name="S1" />
+    </MidPoint>
+    <LineTwoPoints Name="d1" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="S3" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d2" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="S4" />
+    </LineTwoPoints>
+    <CircleByRadius Name="k1" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="Mid" />
+      <Dependency Name="S1" />
+    </CircleByRadius>
+    <CircleByRadius Name="k2" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="Mid" />
+      <Dependency Name="S2" />
+    </CircleByRadius>
+    <CircleByRadius Name="k3" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="Mid" />
+      <Dependency Name="S3" />
+    </CircleByRadius>
+    <CircleByRadius Name="k4" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="Mid" />
+      <Dependency Name="S4" />
+    </CircleByRadius>
+    <IntersectionPoint Name="I1" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="d1" />
+      <Dependency Name="k1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I2" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="d2" />
+      <Dependency Name="k2" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I3" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="d1" />
+      <Dependency Name="k3" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I4" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="d2" />
+      <Dependency Name="k4" />
+    </IntersectionPoint>
+    <Polygon Name="room" Visible="false">
+      <Dependency Name="I1" />
+      <Dependency Name="I2" />
+      <Dependency Name="I3" />
+      <Dependency Name="I4" />
+    </Polygon>
+    <PointInRegion Name="O" Style="Handle" X="3.17" Y="2.23">
+      <Dependency Name="room" />
+    </PointInRegion>
+    <CircleByRadius Name="reach" Visible="false">
+      <Dependency Name="Oc" />
+      <Dependency Name="H" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <PointInRegion Name="A" Style="Handle" X="3.17" Y="3.73">
+      <Dependency Name="reach" />
+    </PointInRegion>
+    <Circle Name="c" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Circle>
+    <Circle Name="d" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="A1" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="d" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="A5" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="c" />
+      <Dependency Name="d" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="A3" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="A2" Visible="false">
+      <Dependency Name="A5" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="C" Style="Anchor">
+      <Dependency Name="A1" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <Polygon Name="hexagon" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+      <Dependency Name="A2" />
+      <Dependency Name="A3" />
+      <Dependency Name="C" />
+      <Dependency Name="A5" />
+    </Polygon>
+    <LineTwoPoints Name="lineAB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="A1" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="B" Style="Anchor" Algorithm="IntersectLineAndLine">
+      <Dependency Name="lineAB" />
+      <Dependency Name="right" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="lineCD" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="A3" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="D" Style="Anchor" Algorithm="IntersectLineAndLine">
+      <Dependency Name="lineCD" />
+      <Dependency Name="bottom" />
+    </IntersectionPoint>
+    <Segment Name="AB" Style="BlueDashed">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="CD" Style="BlueDashed">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <AngleArc Name="atB" Style="Blue" Radius="40">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+      <Dependency Name="S3" />
+    </AngleArc>
+    <AngleArc Name="atD" Style="Blue" Radius="40">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+      <Dependency Name="S1" />
+    </AngleArc>
+    <AttachedLabel Name="labelA" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="-54" Text="A">
+      <Dependency Name="A" />
+    </AttachedLabel>
+    <AttachedLabel Name="labelB" Style="Mark" Z="1" OffsetX="14" OffsetY="-14" Text="B">
+      <Dependency Name="B" />
+    </AttachedLabel>
+    <AttachedLabel Name="labelC" Style="Mark" Z="1" OffsetX="-42" OffsetY="-28" Text="C">
+      <Dependency Name="C" />
+    </AttachedLabel>
+    <AttachedLabel Name="labelD" Style="Mark" Z="1" OffsetX="-11.06" OffsetY="8" Text="D">
+      <Dependency Name="D" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>

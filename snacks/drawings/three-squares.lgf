@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #29 (Prove it!), drawn by hand as a ruler-and-compass construction.
+     The figure is rigid: the three tick-marked segments are equal, the two small squares meet at the vertex V at 45°
+     (the shaded one is tilted, the white one upright), and that fixes the white square's side as the shaded square's
+     diagonal. So the handle only turns the figure: P1, the shaded square's bottom vertex, slides round a hidden circle
+     about V through the hidden point U, and everything turns with it. The shaded square stands on P1V (perpendiculars
+     and circles); the white square's far corner P3 is the mirror image of the shaded square's left vertex through V
+     (the diagonal through V carried on); the white square stands on VP3. P4 is the fourth vertex of the parallelogram
+     P1 V P3 P4 (V reflected through the midpoint of P1P3), so VP4 = P4P3 = P1V. The red square stands on P1P3. -->
+<Drawing Version="1">
+  <Viewport Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
+  <Scene Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <ShapeStyle Name="RedFrame" Color="#FFEF303F" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFF0616C" />
+    </ShapeStyle>
+    <ShapeStyle Name="Grey" Color="#FF000000" StrokeWidth="3" Fill="#FFC8C8C8">
+      <Dark Color="#FFE8EBF0" Fill="#FF6B7280" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="V" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="U" Visible="false" Locked="true" X="-1.6" Y="0" />
+    <Circle Name="track" Visible="false">
+      <Dependency Name="V" />
+      <Dependency Name="U" />
+    </Circle>
+    <PointOnFigure Name="P1" Style="Handle" X="-1.13137" Y="-1.13137" Parameter="3.926991">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <!-- the shaded square on P1V, to the left of the way from P1 to V -->
+    <Segment Name="P1V" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="V" />
+    </Segment>
+    <PerpendicularLine Name="atV" Visible="false">
+      <Dependency Name="P1V" />
+      <Dependency Name="V" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="atP1" Visible="false">
+      <Dependency Name="P1V" />
+      <Dependency Name="P1" />
+    </PerpendicularLine>
+    <Circle Name="cV" Visible="false">
+      <Dependency Name="V" />
+      <Dependency Name="P1" />
+    </Circle>
+    <Circle Name="cP1" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="V" />
+    </Circle>
+    <IntersectionPoint Name="Q3" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atV" />
+      <Dependency Name="cV" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="Q4" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atP1" />
+      <Dependency Name="cP1" />
+    </IntersectionPoint>
+    <Polygon Name="Shaded" Style="Grey">
+      <Dependency Name="P1" />
+      <Dependency Name="V" />
+      <Dependency Name="Q3" />
+      <Dependency Name="Q4" />
+    </Polygon>
+    <!-- the white square on VP3, where P3 is Q4 reflected through V, to the left of the way from V to P3 -->
+    <ReflectedPoint Name="P3" Visible="false">
+      <Dependency Name="Q4" />
+      <Dependency Name="V" />
+    </ReflectedPoint>
+    <Segment Name="VP3" Visible="false">
+      <Dependency Name="V" />
+      <Dependency Name="P3" />
+    </Segment>
+    <PerpendicularLine Name="whiteAtV" Visible="false">
+      <Dependency Name="VP3" />
+      <Dependency Name="V" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="whiteAtP3" Visible="false">
+      <Dependency Name="VP3" />
+      <Dependency Name="P3" />
+    </PerpendicularLine>
+    <Circle Name="cVwhite" Visible="false">
+      <Dependency Name="V" />
+      <Dependency Name="P3" />
+    </Circle>
+    <Circle Name="cP3" Visible="false">
+      <Dependency Name="P3" />
+      <Dependency Name="V" />
+    </Circle>
+    <IntersectionPoint Name="W1" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="whiteAtV" />
+      <Dependency Name="cVwhite" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="W2" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="whiteAtP3" />
+      <Dependency Name="cP3" />
+    </IntersectionPoint>
+    <Polygon Name="White" Style="Frame">
+      <Dependency Name="V" />
+      <Dependency Name="P3" />
+      <Dependency Name="W2" />
+      <Dependency Name="W1" />
+    </Polygon>
+    <!-- the parallelogram P1 V P3 P4 and its three equal segments -->
+    <MidPoint Name="Mid" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="P3" />
+    </MidPoint>
+    <ReflectedPoint Name="P4" Visible="false">
+      <Dependency Name="V" />
+      <Dependency Name="Mid" />
+    </ReflectedPoint>
+    <Segment Name="P1P4" Style="Ink">
+      <Dependency Name="P1" />
+      <Dependency Name="P4" />
+    </Segment>
+    <Segment Name="P1Vmark" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="P1" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="VP4" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="V" />
+      <Dependency Name="P4" />
+    </Segment>
+    <Segment Name="P4P3" Style="Ink" Decoration="TwoTicks">
+      <Dependency Name="P4" />
+      <Dependency Name="P3" />
+    </Segment>
+    <!-- the red square on P1P3, to the right of the way from P1 to P3 -->
+    <Segment Name="P1P3" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="P3" />
+    </Segment>
+    <PerpendicularLine Name="redAtP1" Visible="false">
+      <Dependency Name="P1P3" />
+      <Dependency Name="P1" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="redAtP3" Visible="false">
+      <Dependency Name="P1P3" />
+      <Dependency Name="P3" />
+    </PerpendicularLine>
+    <Circle Name="cP1red" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="P3" />
+    </Circle>
+    <Circle Name="cP3red" Visible="false">
+      <Dependency Name="P3" />
+      <Dependency Name="P1" />
+    </Circle>
+    <IntersectionPoint Name="R1" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="redAtP1" />
+      <Dependency Name="cP1red" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="R2" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="redAtP3" />
+      <Dependency Name="cP3red" />
+    </IntersectionPoint>
+    <Polygon Name="Red" Style="RedFrame">
+      <Dependency Name="P1" />
+      <Dependency Name="P3" />
+      <Dependency Name="R2" />
+      <Dependency Name="R1" />
+    </Polygon>
+  </Figures>
+</Drawing>

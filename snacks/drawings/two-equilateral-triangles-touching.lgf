@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #21 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+     Two equilateral triangles on one line, touching at O: the left one AOP on the hidden base points A and O, the right
+     one OBQ on O and the handle B. B slides along a hidden stretch of the base line beyond O, from a quarter of AO (two
+     midpoints) to the whole of it (A reflected through O, where the two triangles are equal); it starts where the book
+     has it. Each
+     apex is where the circles of the base's radius about its ends cross. The lines AQ and BP cross at X; the asked angle
+     is at X, the one opening up between the apexes. It is 120° wherever B is: the triangles AOQ and POB are one
+     triangle turned 60° about O, so AQ and PB cross at 60°. -->
+<Drawing Version="1">
+  <Viewport Left="-0.6" Top="6.2" Right="8.6" Bottom="-1.8" />
+  <Scene Left="-0.6" Top="6.2" Right="8.6" Bottom="-1.8" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <LineStyle Name="Ink" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFE8EBF0" />
+    </LineStyle>
+    <ShapeStyle Name="Grey" Color="#FF000000" StrokeWidth="3" Fill="#FFC8C8C8">
+      <Dark Color="#FFE8EBF0" Fill="#FF6B7280" />
+    </ShapeStyle>
+    <ShapeStyle Name="RedMark" Color="#FFEF303F" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFD9333F" Fill="#FFD9333F" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="O" Visible="false" Locked="true" X="4" Y="0" />
+    <ReflectedPoint Name="A2" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <MidPoint Name="Half" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="A2" />
+    </MidPoint>
+    <MidPoint Name="Quarter" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Half" />
+    </MidPoint>
+    <Segment Name="Slide" Visible="false">
+      <Dependency Name="Quarter" />
+      <Dependency Name="A2" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="6.72" Y="0" Parameter="0.573333">
+      <Dependency Name="Slide" />
+    </PointOnFigure>
+    <Circle Name="cA" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="cOA" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="P" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="cA" />
+      <Dependency Name="cOA" />
+    </IntersectionPoint>
+    <Circle Name="cOB" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cB" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="Q" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="cOB" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
+    <Polygon Name="AOP" Style="Grey">
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </Polygon>
+    <Polygon Name="OBQ" Style="Grey">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <Segment Name="AQ" Style="Ink">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="BP" Style="Ink">
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+    </Segment>
+    <IntersectionPoint Name="X" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AQ" />
+      <Dependency Name="BP" />
+    </IntersectionPoint>
+    <AngleArc Name="asked" Style="RedMark" Radius="40">
+      <Dependency Name="X" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </AngleArc>
+  </Figures>
+</Drawing>
