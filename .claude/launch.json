@@ -36,6 +36,18 @@
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5011", "--overlay", "CatrionaAgg=CatrionaAgg", "--route", "CatrionaAgg=CatrionaAgg/puzzle.html", "--reload"],
       "port": 5011
+    },
+    {
+      "name": "snacks-dev",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5012", "--overlay", "snacks=snacks", "--route", "snacks=snacks/puzzle.html", "--reload"],
+      "port": 5012
+    },
+    {
+      "name": "donut-dev",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/snacks/donut", "5013"],
+      "port": 5013
     }
   ]
 }

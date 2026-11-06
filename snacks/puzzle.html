@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry Snacks · Live Geometry</title>
+<meta name="description" content="Puzzles from Geometry Snacks and More Geometry Snacks by Ed Southall and Vincent Pantaloni, redrawn as live constructions you can drag.">
+<meta property="og:title" content="Geometry Snacks on Live Geometry">
+<meta property="og:description" content="Puzzles from Geometry Snacks and More Geometry Snacks by Ed Southall and Vincent Pantaloni, redrawn as live constructions you can drag.">
+<meta property="og:url" content="https://livegeometry.com/snacks">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Live Geometry">
+<meta property="og:image" content="https://livegeometry.com/snacks/previews/index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://livegeometry.com/snacks">
+<meta name="color-scheme" content="light dark">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-10ZM10J6RW');
+</script>
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+    if (theme !== 'Light' && theme !== 'Dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    }
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/snacks/snacks.css">
+<!-- the catalog on its way with the scripts, not after them (snacks.js fetches it once it runs);
+     the page written for a puzzle names its drawing here too (WriteGalleryIndex) -->
+<link rel="preload" href="/snacks/puzzles.json" as="fetch" crossorigin>
+<script src="/player/1/player.js" defer></script>
+<script src="/snacks/snacks.js" defer></script>
+</head>
+<body>
+
+<div id="puzzle-view">
+  <header class="topbar">
+    <a class="back" id="back" href="/snacks" title="All puzzles (Escape)"><svg><use href="/snacks/icons.svg#icon-back"/></svg><span class="label">All puzzles</span></a>
+    <span class="crumb-sep optional"></span>
+    <a class="brand" href="/" title="Live Geometry"><img src="/logo.svg" alt=""><span class="site">Live Geometry</span></a>
+    <span class="spacer"></span>
+    <div class="stepper">
+      <a class="icon-button" id="previous" title="Previous puzzle (←)"><svg><use href="/snacks/icons.svg#icon-back"/></svg></a>
+      <span class="position" id="position"></span>
+      <a class="icon-button" id="next" title="Next puzzle (→)"><svg><use href="/snacks/icons.svg#icon-next"/></svg></a>
+    </div>
+    <span class="spacer"></span>
+    <button class="icon-button theme" aria-label="Light or dark"><svg class="moon"><use href="/snacks/icons.svg#icon-moon"/></svg><svg class="sun"><use href="/snacks/icons.svg#icon-sun"/></svg></button>
+  </header>
+  <div class="puzzle-body" id="puzzle-body">
+    <div class="stage">
+      <div id="player"></div>
+      <div class="stage-tools">
+        <button id="edit" title="Edit this drawing in Live Geometry (a new tab)"><svg viewBox="12 10 62 62" stroke="#8A6305" stroke-width="2.5"><linearGradient id="pencil-wood" x1="0" y1="0" x2="1" y2="1"><stop offset="0.39" stop-color="#F9E1AD"/><stop offset="0.61" stop-color="#F2B632"/></linearGradient><path d="M16,68 L20,52 L58,14 L70,26 L32,64 Z" fill="url(#pencil-wood)" stroke-linejoin="round"/><path d="M20,52 L32,64 M50,22 L62,34" fill="none" stroke-linecap="round"/></svg><span>Edit</span></button>
+        <button id="reset" title="Back to the drawing as it was"><svg><use href="/snacks/icons.svg#icon-reset"/></svg><span>Start over</span></button>
+      </div>
+    </div>
+    <aside class="panel">
+      <p class="where" id="p-where"></p>
+      <h1 id="p-title"></h1>
+      <blockquote class="question">
+        <p id="p-question"></p>
+      </blockquote>
+      <p class="credit">Puzzle by Ed Southall and Vincent Pantaloni, from <a id="p-book" href="https://www.amazon.com/dp/B0HD9GWL6C" target="_blank" rel="noopener">Geometry Snacks</a> (Tarquin). Redrawn for Live Geometry with the authors' permission; the solutions are in the book.</p>
+      <p class="credit"><a href="https://github.com/KirillOsenkov/LiveGeometry/issues" target="_blank" rel="noopener">Feedback</a></p>
+    </aside>
+  </div>
+</div>
+</body>
+</html>

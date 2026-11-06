@@ -97,17 +97,22 @@ try
     string homePicture = await cdp.Evaluate("renderHome(" + home.ToJsonString() + ", " + JsonValue.Create(Convert.ToBase64String(File.ReadAllBytes(logoFile))).ToJsonString() + ")");
     File.WriteAllBytes(Path.Combine(output, "index.png"), Convert.FromBase64String(homePicture.Substring(homePicture.IndexOf(',') + 1)));
 
-    // Catriona Agg's puzzles (CatrionaAgg/puzzles.json, the ones with a drawing): each one's
-    // picture without its handles, as its tile shows it, and a mosaic of the newest for the
-    // library's own page
-    string catrionaFolder = Path.Combine(root, "CatrionaAgg");
-    string catrionaCatalog = Path.Combine(catrionaFolder, "puzzles.json");
-    if (File.Exists(catrionaCatalog))
+    // The puzzle libraries, Catriona Agg's (CatrionaAgg/puzzles.json) and Geometry Snacks
+    // (snacks/puzzles.json), the puzzles with a drawing: each one's picture without its
+    // handles, as its tile shows it, and a mosaic of the first eight for the library's own page
+    foreach (string libraryName in new[] { "CatrionaAgg", "snacks" })
     {
-        string catrionaOutput = Path.Combine(catrionaFolder, "previews");
-        Directory.CreateDirectory(catrionaOutput);
+        string libraryFolder = Path.Combine(root, libraryName);
+        string libraryCatalog = Path.Combine(libraryFolder, "puzzles.json");
+        if (!File.Exists(libraryCatalog))
+        {
+            continue;
+        }
+
+        string libraryOutput = Path.Combine(libraryFolder, "previews");
+        Directory.CreateDirectory(libraryOutput);
         var mosaic = new JsonArray();
-        foreach (var puzzle in JsonNode.Parse(File.ReadAllText(catrionaCatalog))["puzzles"].AsArray())
+        foreach (var puzzle in JsonNode.Parse(File.ReadAllText(libraryCatalog))["puzzles"].AsArray())
         {
             if (puzzle["drawing"] == null)
             {
@@ -115,13 +120,13 @@ try
             }
 
             string slug = (string)puzzle["slug"];
-            string text = File.ReadAllText(Path.Combine(catrionaFolder, "drawings", (string)puzzle["drawing"]));
+            string text = File.ReadAllText(Path.Combine(libraryFolder, "drawings", (string)puzzle["drawing"]));
             var result = JsonNode.Parse(await cdp.Evaluate("renderPreview(" + JsonValue.Create(text).ToJsonString() + ", true)"));
             string png = (string)result["png"];
-            File.WriteAllBytes(Path.Combine(catrionaOutput, slug + ".png"), Convert.FromBase64String(png.Substring(png.IndexOf(',') + 1)));
+            File.WriteAllBytes(Path.Combine(libraryOutput, slug + ".png"), Convert.FromBase64String(png.Substring(png.IndexOf(',') + 1)));
             if (result["errors"] is JsonNode errors)
             {
-                warnings.Add($"CatrionaAgg/{slug}: {errors}");
+                warnings.Add($"{libraryName}/{slug}: {errors}");
             }
 
             if (mosaic.Count < 8)
@@ -133,7 +138,7 @@ try
         }
 
         string picture = await cdp.Evaluate("renderMosaic(" + mosaic.ToJsonString() + ")");
-        File.WriteAllBytes(Path.Combine(catrionaOutput, "index.png"), Convert.FromBase64String(picture.Substring(picture.IndexOf(',') + 1)));
+        File.WriteAllBytes(Path.Combine(libraryOutput, "index.png"), Convert.FromBase64String(picture.Substring(picture.IndexOf(',') + 1)));
     }
 
     foreach (var warning in warnings)

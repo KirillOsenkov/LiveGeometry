@@ -1,0 +1,32 @@
+{
+  "books": [
+    {
+      "book": 1,
+      "title": "Geometry Snacks",
+      "subtitle": "Bite size problems and multiple ways to solve them",
+      "year": 2018,
+      "amazon": "https://www.amazon.com/dp/B0HD9GWL6C",
+      "tarquin": "https://www.tarquingroup.com/collections/books/products/geometry-snacks"
+    },
+    {
+      "book": 2,
+      "title": "More Geometry Snacks",
+      "subtitle": "Bite size problems and multiple ways to solve them",
+      "year": 2019,
+      "amazon": "https://www.amazon.com/dp/B07X37DQCX",
+      "tarquin": "https://www.tarquingroup.com/collections/books/products/more-geometry-snacks"
+    }
+  ],
+  "puzzles": [
+    {
+      "slug": "a-parallelogram-in-a-square",
+      "title": "A Parallelogram in a Square",
+      "book": 1,
+      "number": 1,
+      "chapter": "What Fraction is Shaded?",
+      "statement": "A parallelogram is inscribed in a square such that two vertices are at the midpoints of opposite sides as shown. What fraction of the square is shaded?",
+      "drawing": "a-parallelogram-in-a-square.lgf",
+      "live": true
+    }
+  ]
+}

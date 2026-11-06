@@ -77,6 +77,8 @@
     <!-- Catriona Agg's puzzles, played by the player: /CatrionaAgg and /CatrionaAgg/<slug>
          (web.config routes them; each puzzle's own page is written by WriteGalleryIndex below) -->
     <Content Include="..\..\..\CatrionaAgg\**" Link="wwwroot\CatrionaAgg\%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- the Geometry Snacks puzzles, the same shape: /snacks and /snacks/<slug> -->
+    <Content Include="..\..\..\snacks\**" Link="wwwroot\snacks\%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -86,6 +88,8 @@
     <SitemapOutput>$(MSBuildProjectDirectory)\obj\gallery\sitemap.xml</SitemapOutput>
     <CatrionaFolder>$(MSBuildProjectDirectory)\..\..\..\CatrionaAgg</CatrionaFolder>
     <CatrionaPagesOutput>$(MSBuildProjectDirectory)\obj\catriona\pages</CatrionaPagesOutput>
+    <SnacksFolder>$(MSBuildProjectDirectory)\..\..\..\snacks</SnacksFolder>
+    <SnacksPagesOutput>$(MSBuildProjectDirectory)\obj\snacks\pages</SnacksPagesOutput>
     <WebTemplate>$(MSBuildProjectDirectory)\..\..\..\web\index.html</WebTemplate>
     <WebPagesOutput>$(MSBuildProjectDirectory)\obj\web\pages</WebPagesOutput>
     <!-- where the site is, for the absolute addresses link previews and the sitemap need -->
@@ -93,7 +97,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;$(WebTemplate);..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\puzzle.html;$(CatrionaFolder)\puzzles.json" />
+    <GalleryIndexInput Include="$(MSBuildProjectFullPath);$(GalleryCatalogSource);wwwroot\index.html;$(WebTemplate);..\LiveGeometry.App\Gallery\Drawings\*.lgf;$(CatrionaFolder)\puzzle.html;$(CatrionaFolder)\puzzles.json;$(SnacksFolder)\puzzle.html;$(SnacksFolder)\puzzles.json" />
   </ItemGroup>
 
   <!-- /gallery/index.json: the slugs, titles and files of the catalog in its order, read
@@ -111,7 +115,8 @@
        /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
        (CatrionaAgg/puzzles.json): the library's puzzle.html with the puzzle's title, its question
        and its preview picture (/CatrionaAgg/previews/<slug>.png) in the head, and its title and
-       question in the page's panel. -->
+       question in the page's panel.
+       /snacks/<slug>.html: the same for each Geometry Snacks puzzle (snacks/puzzles.json). -->
   <UsingTask TaskName="WriteGalleryIndex" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Source ParameterType="System.String" Required="true" />
@@ -123,6 +128,8 @@
       <SiteUrl ParameterType="System.String" Required="true" />
       <CatrionaFolder ParameterType="System.String" Required="true" />
       <CatrionaPagesFolder ParameterType="System.String" Required="true" />
+      <SnacksFolder ParameterType="System.String" Required="true" />
+      <SnacksPagesFolder ParameterType="System.String" Required="true" />
       <WebTemplate ParameterType="System.String" Required="true" />
       <WebPagesFolder ParameterType="System.String" Required="true" />
     </ParameterGroup>
@@ -380,6 +387,59 @@
             }
         }
 
+        // the Geometry Snacks puzzles: a page for each one, from snacks/puzzle.html (the catalog
+        // is written by hand in the same shape: an object per puzzle, nothing nested in braces)
+        {
+            string snacksTemplatePath = Path.Combine(SnacksFolder, "puzzle.html");
+            string snacksTemplate = File.ReadAllText(snacksTemplatePath);
+            Directory.CreateDirectory(SnacksPagesFolder);
+            foreach (string stale in Directory.GetFiles(SnacksPagesFolder, "*.html"))
+            {
+                File.Delete(stale);
+            }
+
+            sitemap.Append("  <url><loc>").Append(SiteUrl).Append("/snacks</loc></url>\n");
+            string snacksCatalog = File.ReadAllText(Path.Combine(SnacksFolder, "puzzles.json"));
+            const string Item = "(?:[^{}\"]|\"(?:[^\"\\\\]|\\\\.)*\")*";
+            foreach (Match entry in Regex.Matches(snacksCatalog, "\\{" + Item + "\"slug\"" + Item + "\\}"))
+            {
+                if (field(entry.Value, "drawing") == null)
+                {
+                    continue;
+                }
+
+                string slug = field(entry.Value, "slug");
+                string title = field(entry.Value, "title");
+                string question = field(entry.Value, "statement");
+                string url = SiteUrl + "/snacks/" + slug;
+                string escapedTitle = Escape(title);
+                string description = Escape("A Geometry Snacks puzzle by Ed Southall and Vincent Pantaloni, redrawn as live geometry you can drag: “" + question + "”");
+                string html = snacksTemplate;
+                try
+                {
+                    html = ReplaceOnce(html, "<title>[^<]*</title>", m => "<title>" + escapedTitle + " · Geometry Snacks · Live Geometry</title>", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta name=\"description\" content=\"[^\"]*\">", m => "<meta name=\"description\" content=\"" + description + "\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:title\" content=\"[^\"]*\">", m => "<meta property=\"og:title\" content=\"" + escapedTitle + " · Geometry Snacks\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:description\" content=\"[^\"]*\">", m => "<meta property=\"og:description\" content=\"" + description + "\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:url\" content=\"[^\"]*\">", m => "<meta property=\"og:url\" content=\"" + url + "\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:type\" content=\"[^\"]*\">", m => "<meta property=\"og:type\" content=\"article\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<meta property=\"og:image\" content=\"[^\"]*\">", m => "<meta property=\"og:image\" content=\"" + SiteUrl + "/snacks/previews/" + slug + ".png\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<link rel=\"canonical\" href=\"[^\"]*\">", m => "<link rel=\"canonical\" href=\"" + url + "\">", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<link rel=\"preload\" href=\"/snacks/puzzles.json\"[^>]*>", m => m.Value + "\n<link rel=\"preload\" href=\"/snacks/drawings/" + Escape(field(entry.Value, "drawing")) + "\" as=\"fetch\" crossorigin>", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<h1 id=\"p-title\"></h1>", m => "<h1 id=\"p-title\">" + escapedTitle + "</h1>", snacksTemplatePath);
+                    html = ReplaceOnce(html, "<p id=\"p-question\"></p>", m => "<p id=\"p-question\">" + Escape(question) + "</p>", snacksTemplatePath);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Log.LogError(ex.Message);
+                    return false;
+                }
+
+                File.WriteAllText(Path.Combine(SnacksPagesFolder, slug + ".html"), html, new UTF8Encoding(false));
+                sitemap.Append("  <url><loc>").Append(url).Append("</loc></url>\n");
+            }
+        }
+
         sitemap.Append("</urlset>\n");
         File.WriteAllText(SitemapFile, sitemap.ToString(), new UTF8Encoding(false));
       ]]></Code>
@@ -397,6 +457,8 @@
       SiteUrl="$(SiteUrl)"
       CatrionaFolder="$(CatrionaFolder)"
       CatrionaPagesFolder="$(CatrionaPagesOutput)"
+      SnacksFolder="$(SnacksFolder)"
+      SnacksPagesFolder="$(SnacksPagesOutput)"
       WebTemplate="$(WebTemplate)"
       WebPagesFolder="$(WebPagesOutput)" />
   </Target>
@@ -412,6 +474,8 @@
       <Content Include="@(WebPage)" Link="wwwroot\web\%(WebPage.Filename)%(WebPage.Extension)" />
       <CatrionaPage Include="$(CatrionaPagesOutput)\*.html" />
       <Content Include="@(CatrionaPage)" Link="wwwroot\CatrionaAgg\%(CatrionaPage.Filename)%(CatrionaPage.Extension)" />
+      <SnacksPage Include="$(SnacksPagesOutput)\*.html" />
+      <Content Include="@(SnacksPage)" Link="wwwroot\snacks\%(SnacksPage.Filename)%(SnacksPage.Extension)" />
     </ItemGroup>
   </Target>
 

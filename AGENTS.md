@@ -21,6 +21,7 @@ what every task needs; the rest is in `docs/`, a file per topic (see "Topics").
 - `tools/` - file-based C# tools (`dotnet run tools/x.cs -- args`), see `docs/testing.md`.
 - `CatrionaAgg/` - the library of Catriona Agg's puzzles at /CatrionaAgg (see
   `docs/catriona-agg.md`).
+- `snacks/` - the Geometry Snacks library at /snacks (see `docs/snacks.md`).
 
 ## Working rules
 
@@ -136,6 +137,8 @@ topic gets a file of its own, listed here.
   of the expression language, a new file attribute, a changed `Recalculate`, `HitTest`,
   `ReadXml` or sampler goes into the player in the same change: read it before any of those.
 - `docs/catriona-agg.md` - the Catriona Agg library at /CatrionaAgg.
+- `docs/snacks.md` - the Geometry Snacks library at /snacks: the terms with the authors, which
+  puzzles, the books' look.
 - `docs/deployment.md` - deploying, caching, web.config, link previews, the static pages
   (/history, /embed, /web).
 - `docs/macos.md` - what is the Mac's own.

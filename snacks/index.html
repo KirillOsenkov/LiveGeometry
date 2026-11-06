@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry Snacks · Live Geometry</title>
+<meta name="description" content="Puzzles from Geometry Snacks and More Geometry Snacks by Ed Southall and Vincent Pantaloni, redrawn as live constructions you can drag.">
+<meta property="og:title" content="Geometry Snacks on Live Geometry">
+<meta property="og:description" content="Puzzles from Geometry Snacks and More Geometry Snacks by Ed Southall and Vincent Pantaloni, redrawn as live constructions you can drag.">
+<meta property="og:url" content="https://livegeometry.com/snacks">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Live Geometry">
+<meta property="og:image" content="https://livegeometry.com/snacks/previews/index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://livegeometry.com/snacks">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/favicon.ico">
+<!-- Google tag (gtag.js), the same as the app's index.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-10ZM10J6RW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-10ZM10J6RW');
+</script>
+<!-- The Geometry Snacks library: puzzles from the two books by Ed Southall and Vincent Pantaloni,
+     redrawn as drawings of the JavaScript player (/player/1/player.js). This page is the list
+     at /snacks, and puzzle.html a puzzle at /snacks/<slug> (web.config answers a puzzle's
+     address with a copy of it whose head names the puzzle, written at build). The catalog is
+     puzzles.json, the drawings are drawings/<slug>.lgf, each drawn by hand. Pages of their own
+     beside the app, like /CatrionaAgg, no build step: both share snacks.css and snacks.js. -->
+<!-- The theme before anything paints: the choice the app stored, else the system's -->
+<script>
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem('LiveGeometry.Theme'); } catch (e) { }
+    if (theme !== 'Light' && theme !== 'Dark') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light';
+    }
+    document.documentElement.setAttribute('data-theme', theme.toLowerCase());
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/snacks/snacks.css">
+<!-- the catalog on its way with the scripts, not after them (snacks.js fetches it once it runs) -->
+<link rel="preload" href="/snacks/puzzles.json" as="fetch" crossorigin>
+<script src="/player/1/player.js" defer></script>
+<script src="/snacks/snacks.js" defer></script>
+</head>
+<body>
+
+<!-- What a search engine reads, and a reader without script -->
+<div id="seo" class="visually-hidden">
+  <h1>Geometry Snacks, live</h1>
+  <p>Puzzles from Geometry Snacks and More Geometry Snacks by Ed Southall and Vincent Pantaloni, redrawn as live constructions you can drag.</p>
+</div>
+
+<!-- ======================= the list ======================= -->
+<div id="gallery-view">
+  <header class="topbar" id="gallery-bar">
+    <a class="brand" href="/" title="Live Geometry"><img src="/logo.svg" alt=""><span class="site">Live Geometry</span></a>
+    <span class="crumb-sep"></span>
+    <a class="crumb" href="/snacks">Geometry Snacks</a>
+    <span class="spacer"></span>
+    <button class="icon-button theme" type="button" aria-label="Light or dark"><svg class="moon"><use href="/snacks/icons.svg#icon-moon"/></svg><svg class="sun"><use href="/snacks/icons.svg#icon-sun"/></svg></button>
+    <a class="icon-button" href="https://github.com/KirillOsenkov/LiveGeometry" title="Live Geometry on GitHub" target="_blank" rel="noopener"><svg style="width: 17px; height: 17px"><use href="/snacks/icons.svg#icon-github"/></svg></a>
+  </header>
+
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <h1>Geometry Snacks<span class="sub">Bite size problems... made interactive!</span></h1>
+        <!-- three shapes as the books draw them: solid red, inked outline -->
+        <svg class="shapes" viewBox="0 0 132 34" aria-hidden="true">
+          <rect x="2" y="2" width="30" height="30" />
+          <polygon points="52,32 82,32 67,3" />
+          <polygon points="117,2 128,9.5 128,24.5 117,32 106,24.5 106,9.5" />
+        </svg>
+        <p class="lede"><strong>Geometry Snacks</strong> and <strong>More Geometry Snacks</strong> are two books of bite size geometry puzzles by <strong>Ed Southall</strong> and <strong>Vincent Pantaloni</strong>, published by Tarquin. Each puzzle fits on a page with its figure, and each has more than one way to solve it.</p>
+        <p class="lede">Here a selection of the puzzles is redrawn as Live Geometry drawings. Drag the white points to experiment! The solutions are in the books.</p>
+        <div class="books" id="books">
+          <div class="book">
+            <span class="cover">1</span>
+            <span class="about"><b>Geometry Snacks</b><small>Ed Southall and Vincent Pantaloni · Tarquin, 2018</small></span>
+            <span class="shops">
+              <a href="https://www.amazon.com/dp/B0HD9GWL6C" target="_blank" rel="noopener">Amazon<svg class="out"><use href="/snacks/icons.svg#icon-out"/></svg></a>
+              <a href="https://www.tarquingroup.com/collections/books/products/geometry-snacks" target="_blank" rel="noopener">Tarquin<svg class="out"><use href="/snacks/icons.svg#icon-out"/></svg></a>
+            </span>
+          </div>
+          <div class="book">
+            <span class="cover">2</span>
+            <span class="about"><b>More Geometry Snacks</b><small>Ed Southall and Vincent Pantaloni · Tarquin, 2019</small></span>
+            <span class="shops">
+              <a href="https://www.amazon.com/dp/B07X37DQCX" target="_blank" rel="noopener">Amazon<svg class="out"><use href="/snacks/icons.svg#icon-out"/></svg></a>
+              <a href="https://www.tarquingroup.com/collections/books/products/more-geometry-snacks" target="_blank" rel="noopener">Tarquin<svg class="out"><use href="/snacks/icons.svg#icon-out"/></svg></a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- the right half of the hero is left open for now -->
+      <div class="hero-side" aria-hidden="true"></div>
+    </section>
+
+    <div class="listing-head">
+      <h2>All puzzles</h2>
+      <span class="count" id="count"></span>
+    </div>
+    <main class="groups" id="groups"></main>
+    <p class="empty" id="empty" hidden></p>
+
+    <footer class="footer">
+      <p>Every puzzle here is <strong>Ed Southall</strong> and <strong>Vincent Pantaloni</strong>'s, from their books <a href="https://www.amazon.com/dp/B0HD9GWL6C" target="_blank" rel="noopener">Geometry Snacks</a> and <a href="https://www.amazon.com/dp/B07X37DQCX" target="_blank" rel="noopener">More Geometry Snacks</a>, published by <a href="https://www.tarquingroup.com" target="_blank" rel="noopener">Tarquin</a>. Only some of the puzzles are here, with no solutions: the books have all of them, each solved more than one way.</p>
+      <p>The drawings are redrawn for <a href="/">Live Geometry</a>, a free and open source geometry website, with the authors' permission. Live Geometry is not affiliated with the authors or the publisher. Live Geometry is mostly hand-written by Kirill Osenkov, but AI assistance was used to modernize it. The interactive drawings are free to use and MIT licensed. For any questions or feedback please <a href="https://github.com/KirillOsenkov/LiveGeometry/issues" target="_blank" rel="noopener">open an issue</a>.</p>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
