@@ -42,8 +42,9 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
   in a function so that the host page sees one global,
   `LiveGeometry` (`play(element, options)`, `playAll`, `players`, and the classes for a
   page that builds on it). The Browser serves it as `/player/1/player.js`, every
-  gallery drawing as `/gallery/<file>.lgf` and every Catriona Agg puzzle as
-  `/CatrionaAgg/drawings/<slug>.lgf` (all `no-cache` and with
+  gallery drawing as `/gallery/<file>.lgf`, every Catriona Agg puzzle as
+  `/CatrionaAgg/drawings/<slug>.lgf` and every Geometry Snacks puzzle as
+  `/snacks/drawings/<slug>.lgf` (all `no-cache` and with
   `Access-Control-Allow-Origin: *` in `web.config`, the `shared-file` precondition, since a
   page on another site fetches the `.lgf` and the browser blocks that otherwise; a script
   tag needs no CORS. A new folder of drawings to embed goes into that precondition: the
@@ -61,8 +62,8 @@ else - no ribbon, grid, list or gallery, no undo, no selection.
   must allow CORS - that goes for a page opened from `file://` too, whose origin is `null`:
   it plays the site's drawings but can't fetch a file beside itself on the disk). A page's
   link works as `data-src` where `Player.drawingAddress` knows the drawing behind it: a
-  share link (`/s/<id>` is `/s/<id>.lgf`) and a Catriona Agg puzzle (`/CatrionaAgg/<slug>`
-  is `/CatrionaAgg/drawings/<slug>.lgf`). Options: `data-theme`
+  share link (`/s/<id>` is `/s/<id>.lgf`) and a puzzle of a library (`/CatrionaAgg/<slug>`
+  is `/CatrionaAgg/drawings/<slug>.lgf`, and `/snacks/<slug>` the same under `snacks/`). Options: `data-theme`
   (light, dark, auto), `data-font`, `data-wheel="zoom"` (else the wheel zooms only with
   Ctrl, so an embed doesn't take a blog's scrolling), `data-fit="content"`. "Save as .html"
   writes the player into the page. Fonts: the host page's, and the browser's own emoji

@@ -15,6 +15,13 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   board): about half the puzzles at most, no answers or solutions anywhere on the pages, both
   authors credited, links to the books (Amazon and Tarquin), and the prototype shown to them for
   review before it is published. Until then nothing links to /snacks from the start page.
+  **What a deployment publishes anyway** (checked against the Catriona Agg library on
+  2026-11-05): the pages at /snacks and /snacks/<slug> with their titles, descriptions,
+  canonical addresses and link-preview pictures (`previews/`, rendered by CI), and the
+  sitemap lists them all, so a search engine finds them once deployed. **What is held back
+  for the authors' go-ahead**: the start page's intro (`wwwroot/index.html`), the /web page's
+  library chip (`web/index.html`) and the app's Libraries section (`GalleryView.Libraries`)
+  link only /CatrionaAgg; /snacks gets the same three links then.
 - **Which puzzles**: only those that gain something from dragging, so a puzzle whose figure the
   statement fixes completely is left out. Doubtful ones are listed for the maintainer to decide.
   The aim is 30 to 50 percent of the puzzles, not more, so the books keep their point.

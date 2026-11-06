@@ -187,8 +187,8 @@ class Player {
     /**
      * Where to fetch the drawing at a URL from: a share link as the app copies it
      * (https://livegeometry.com/s/<id>, the page that plays it) is its drawing,
-     * /s/<id>.lgf, and a Catriona Agg puzzle's page (/CatrionaAgg/<slug>) is its drawing,
-     * /CatrionaAgg/drawings/<slug>.lgf; anything else is taken as it is
+     * /s/<id>.lgf, and a puzzle's page in a library (/CatrionaAgg/<slug>, /snacks/<slug>) is
+     * its drawing, /CatrionaAgg/drawings/<slug>.lgf; anything else is taken as it is
      */
     static drawingAddress(url) {
         const shared = /^([^?#]*\/s\/[a-z2-7]{8,})\/?([?#].*)?$/.exec(url);
@@ -196,7 +196,7 @@ class Player {
             return shared[1] + ".lgf";
         }
 
-        const puzzle = /^([^?#]*\/CatrionaAgg)\/([a-z0-9-]+)\/?([?#].*)?$/.exec(url);
+        const puzzle = /^([^?#]*\/(?:CatrionaAgg|snacks))\/([a-z0-9-]+)\/?([?#].*)?$/.exec(url);
         if (puzzle != null) {
             return puzzle[1] + "/drawings/" + puzzle[2] + ".lgf";
         }
