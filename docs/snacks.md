@@ -23,8 +23,9 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   (`#D9333F`) and the ink light. The second book draws in a lavender blue (`#B9B9FF`) instead;
   its drawings will say so. The pages take the Catriona Agg pages' layout with a red accent;
   no "Newest" card (the right half of the hero is left open), no search or arrangement controls,
-  no date, no author links, no technique or solution links and no tags on a puzzle. The
-  catalog's `books` carry the links, each puzzle its `book`, `number`, `chapter` (the book's
+  no date, no author links, no technique or solution links and no tags on a puzzle. The hero
+  shows the two covers under the title (`book1.jpg`, `book2.jpg`, the publisher's pictures at
+  600 px) with a Tarquin and an Amazon link under each, then the two paragraphs. The catalog's `books` carry the links, each puzzle its `book`, `number`, `chapter` (the book's
   running header), `title` (ours; the books number their puzzles without naming them),
   `statement` (the book's wording) and `drawing`.
 - **The donut** of the books' cover turns slowly behind the hero at 30% opacity, centered on
@@ -43,6 +44,11 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   first is `a-parallelogram-in-a-square.lgf` (book 1, #1): a square from two points by
   perpendiculars and circles, the handle on the top side, the opposite vertex where the line
   through the center meets the bottom side.
+- **The 30th drawing**, `a-star-in-an-octagon` (book 1, #46), is the one fixed figure, chosen for
+  its look: no handle, `live` false in the catalog so its tile carries no drag badge. The regular
+  octagon is built about its center by reflections through it, a perpendicular and the lines
+  through the midpoints of two chords; the star's points are the triangles cut off each side
+  by the two diagonals that skip two vertices.
 - **The 29 drawings of 2026-11-05** (16 from book 1, 13 from book 2) were made in parallel by
   agents from a brief (`C:\temp\Snacks\BRIEF.md`, outside the repo) and checked on the real
   puzzle page by a copy of the Catriona checker (`C:\temp\Snacks\snackcheck.cs`, built to

@@ -178,16 +178,6 @@ svg { display: block; }
 }
 
 /* three shapes as the books draw them */
-.shapes {
-  width: 132px;
-  height: 34px;
-  margin: 22px 0 22px 2px;
-  fill: var(--red);
-  stroke: var(--figure-ink);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
 .lede {
   max-width: 640px;
   margin: 0;
@@ -200,48 +190,40 @@ svg { display: block; }
 
 .lede strong { color: var(--ink); font-weight: 600; }
 
-/* the two books, each with where to buy it */
+/* the two books side by side under the title: the cover, and under it where to buy it */
 .books {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 26px;
+  gap: 24px;
+  margin: 26px 0 28px;
 }
 
 .book {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 10px 14px 10px 10px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  transition: box-shadow 0.25s var(--ease), border-color 0.2s;
+  gap: 10px;
+  max-width: min(190px, 42vw);  /* no wider than its cover, so the links wrap on a phone */
 }
 
-.book:hover { box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
-
-/* a red square with the book's number, as a figure of the books */
+/* the cover as the publisher prints it, the two at one height so the links under them line up;
+   the shadow deepens under the mouse, nothing moves */
 .book .cover {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  flex: none;
-  border: 2.5px solid var(--figure-ink);
-  background: var(--red);
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 18px;
+  display: block;
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.25s var(--ease);
 }
 
-.book .about { display: block; min-width: 0; }
-.book b { display: block; font-size: 15px; font-weight: 600; white-space: nowrap; }
-.book small { display: block; font-size: 12.5px; color: var(--ink-soft); line-height: 1.35; }
+.book .cover:hover { box-shadow: var(--shadow-lift); }
 
-.book .shops { display: flex; gap: 6px; margin-left: 6px; }
+.book .cover img {
+  display: block;
+  height: min(190px, 42vw);
+  width: auto;
+  border-radius: 6px;
+}
+
+.book .shops { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
 
 .book .shops a {
   display: inline-flex;
@@ -554,8 +536,7 @@ svg { display: block; }
   .brand .site, .crumb-sep.optional { display: none; }
   .hero h1 { font-size: 46px; }
   .lede { font-size: 16px; }
-  .book { flex-wrap: wrap; }
-  .book .shops { margin-left: 58px; }
+  .books { gap: 16px; }
   .stage-tools span { display: none; }
   .stage-tools button { padding: 0 9px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }

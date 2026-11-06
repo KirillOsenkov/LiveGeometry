@@ -90,11 +90,11 @@
       <Dependency Name="Eighth" />
       <Dependency Name="B" />
     </CircleByRadius>
-    <IntersectionPoint Name="L2" Visible="false" Algorithm="IntersectCircleAndCircle1">
+    <IntersectionPoint Name="L2" Visible="false" Algorithm="IntersectCircleAndCircle2">
       <Dependency Name="circumcircle" />
       <Dependency Name="nearL" />
     </IntersectionPoint>
-    <IntersectionPoint Name="B2" Visible="false" Algorithm="IntersectCircleAndCircle2">
+    <IntersectionPoint Name="B2" Visible="false" Algorithm="IntersectCircleAndCircle1">
       <Dependency Name="circumcircle" />
       <Dependency Name="nearB" />
     </IntersectionPoint>
@@ -151,10 +151,33 @@
       <Dependency Name="S" />
       <Dependency Name="B" />
     </Segment>
-    <AngleArc Name="asked" Style="RedMark" Radius="40">
+    <!-- the mark of the asked angle at S, a sector of radius 3/32 of LB: shorter than SB and SQ wherever S is on the
+         slide (both are at least an eighth of LB), so it never runs past B -->
+    <MidPoint Name="Sixteenth" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="Eighth" />
+    </MidPoint>
+    <MidPoint Name="MarkRadius" Visible="false">
+      <Dependency Name="Sixteenth" />
+      <Dependency Name="Eighth" />
+    </MidPoint>
+    <CircleByRadius Name="markCircle" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="MarkRadius" />
       <Dependency Name="S" />
-      <Dependency Name="B" />
-      <Dependency Name="Q" />
-    </AngleArc>
+    </CircleByRadius>
+    <IntersectionPoint Name="MarkB" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="SB" />
+      <Dependency Name="markCircle" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="MarkQ" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="atS" />
+      <Dependency Name="markCircle" />
+    </IntersectionPoint>
+    <CircleSector Name="asked" Style="RedMark" Sweep="Smaller">
+      <Dependency Name="S" />
+      <Dependency Name="MarkB" />
+      <Dependency Name="MarkQ" />
+    </CircleSector>
   </Figures>
 </Drawing>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #46 (What's the Area?), drawn by hand as a ruler-and-compass construction. The figure is fixed
+     by the statement (a regular octagon of unit side), so nothing is dragged.
+     A regular octagon about the hidden center O from the vertex V0: V4 is V0 reflected through O; the perpendicular
+     to OV0 at O cuts the circle through V0 in V2, and V6 is its reflection; V1 is where the line from O through the
+     midpoint of V0V2 meets the circle, V3 likewise from V2 and V4, and V5, V7 are their reflections through O. The
+     eight diagonals skip two vertices (Vi to Vi+3); the diagonals from the two ends of a side cross at a right angle
+     and the triangle they cut off the side is a point of the star. -->
+<Drawing Version="1">
+  <Viewport Left="-3" Top="3" Right="3" Bottom="-3" />
+  <Scene Left="-3" Top="3" Right="3" Bottom="-3" />
+  <Styles>
+    <ShapeStyle Name="Red" Color="#FF000000" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFE8EBF0" Fill="#FFD9333F" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="V0" Visible="false" Locked="true" X="-1" Y="2.4142135623730951" />
+    <Circle Name="c" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="V0" />
+    </Circle>
+    <LineTwoPoints Name="axis" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="V0" />
+    </LineTwoPoints>
+    <ReflectedPoint Name="V4" Visible="false">
+      <Dependency Name="V0" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <PerpendicularLine Name="p" Visible="false">
+      <Dependency Name="axis" />
+      <Dependency Name="O" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="V2" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="p" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="V6" Visible="false">
+      <Dependency Name="V2" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <MidPoint Name="M1" Visible="false">
+      <Dependency Name="V0" />
+      <Dependency Name="V2" />
+    </MidPoint>
+    <LineTwoPoints Name="m1" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="M1" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="V1" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="m1" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="V5" Visible="false">
+      <Dependency Name="V1" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <MidPoint Name="M3" Visible="false">
+      <Dependency Name="V2" />
+      <Dependency Name="V4" />
+    </MidPoint>
+    <LineTwoPoints Name="m3" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="M3" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="V3" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="m3" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="V7" Visible="false">
+      <Dependency Name="V3" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <LineTwoPoints Name="d0" Visible="false">
+      <Dependency Name="V0" />
+      <Dependency Name="V3" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d1" Visible="false">
+      <Dependency Name="V1" />
+      <Dependency Name="V4" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d2" Visible="false">
+      <Dependency Name="V2" />
+      <Dependency Name="V5" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d3" Visible="false">
+      <Dependency Name="V3" />
+      <Dependency Name="V6" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d4" Visible="false">
+      <Dependency Name="V4" />
+      <Dependency Name="V7" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d5" Visible="false">
+      <Dependency Name="V5" />
+      <Dependency Name="V0" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d6" Visible="false">
+      <Dependency Name="V6" />
+      <Dependency Name="V1" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="d7" Visible="false">
+      <Dependency Name="V7" />
+      <Dependency Name="V2" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="T0" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d0" />
+      <Dependency Name="d6" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T1" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d1" />
+      <Dependency Name="d7" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T2" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d2" />
+      <Dependency Name="d0" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T3" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d3" />
+      <Dependency Name="d1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T4" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d4" />
+      <Dependency Name="d2" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T5" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d5" />
+      <Dependency Name="d3" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T6" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d6" />
+      <Dependency Name="d4" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="T7" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="d7" />
+      <Dependency Name="d5" />
+    </IntersectionPoint>
+    <Polygon Name="Octagon" Style="Frame">
+      <Dependency Name="V0" />
+      <Dependency Name="V1" />
+      <Dependency Name="V2" />
+      <Dependency Name="V3" />
+      <Dependency Name="V4" />
+      <Dependency Name="V5" />
+      <Dependency Name="V6" />
+      <Dependency Name="V7" />
+    </Polygon>
+    <Polygon Name="P0" Style="Red">
+      <Dependency Name="V0" />
+      <Dependency Name="V1" />
+      <Dependency Name="T0" />
+    </Polygon>
+    <Polygon Name="P1" Style="Red">
+      <Dependency Name="V1" />
+      <Dependency Name="V2" />
+      <Dependency Name="T1" />
+    </Polygon>
+    <Polygon Name="P2" Style="Red">
+      <Dependency Name="V2" />
+      <Dependency Name="V3" />
+      <Dependency Name="T2" />
+    </Polygon>
+    <Polygon Name="P3" Style="Red">
+      <Dependency Name="V3" />
+      <Dependency Name="V4" />
+      <Dependency Name="T3" />
+    </Polygon>
+    <Polygon Name="P4" Style="Red">
+      <Dependency Name="V4" />
+      <Dependency Name="V5" />
+      <Dependency Name="T4" />
+    </Polygon>
+    <Polygon Name="P5" Style="Red">
+      <Dependency Name="V5" />
+      <Dependency Name="V6" />
+      <Dependency Name="T5" />
+    </Polygon>
+    <Polygon Name="P6" Style="Red">
+      <Dependency Name="V6" />
+      <Dependency Name="V7" />
+      <Dependency Name="T6" />
+    </Polygon>
+    <Polygon Name="P7" Style="Red">
+      <Dependency Name="V7" />
+      <Dependency Name="V0" />
+      <Dependency Name="T7" />
+    </Polygon>
+  </Figures>
+</Drawing>

@@ -195,6 +195,17 @@
       "live": true
     },
     {
+      "slug": "a-star-in-an-octagon",
+      "title": "A Star in an Octagon",
+      "book": 1,
+      "number": 46,
+      "chapter": "What's the Area?",
+      "page": "snacks1-page-078.png",
+      "statement": "Find the area of this red star made using diagonals in a regular octagon of unit side length.",
+      "drawing": "a-star-in-an-octagon.lgf",
+      "live": false
+    },
+    {
       "slug": "a-point-in-a-square",
       "title": "A Point in a Square",
       "book": 2,

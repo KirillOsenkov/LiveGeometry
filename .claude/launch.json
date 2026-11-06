@@ -44,6 +44,12 @@
       "port": 5012
     },
     {
+      "name": "snacks-review",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5014", "--overlay", "snacks=snacks", "--overlay", "review=C:/temp/Snacks", "--reload"],
+      "port": 5014
+    },
+    {
       "name": "donut-dev",
       "runtimeExecutable": "dotnet",
       "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/snacks/donut", "5013"],
