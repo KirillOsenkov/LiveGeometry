@@ -479,12 +479,17 @@ public class GalleryView : DockPanel
     static Library[] Libraries()
     {
         const string catriona = "https://livegeometry.com/CatrionaAgg";
-        // the paper of the /CatrionaAgg page
+        // const string snacks = "https://livegeometry.com/snacks";
+        // the paper of the /CatrionaAgg and /snacks pages
         var paper = Color.Parse("#F7F5F0");
 
         return
         [
-            new Library("Catriona Agg's Puzzles", catriona, paper, "440", HexagonsPicture)
+            new Library("Catriona Agg's Puzzles", catriona, paper, "440", HexagonsPicture),
+            // off until the Geometry Snacks library is shown to its authors (docs/snacks.md): to
+            // turn it on, uncomment this line, the chip in web/index.html and the link in
+            // wwwroot/index.html
+            // new Library("Geometry Snacks", snacks, paper, "30", DonutPicture)
         ];
     }
 
@@ -725,6 +730,145 @@ public class GalleryView : DockPanel
             StrokeThickness = 0.5,
             StrokeJoin = PenLineJoin.Round
         };
+    }
+
+    /// <summary>
+    /// The low-poly donut of the Geometry Snacks covers in miniature (snacks/donut.js is the
+    /// same donut, large and turning, on the library's page): a torus of a few facets tipped
+    /// toward the viewer, each facet flat-shaded from a light at the upper left, pink frosting
+    /// over brown dough, the facets' corners strayed from their grid by a fixed random
+    /// sequence. The /web page draws it the same way (web/index.html, drawDonut) from the same
+    /// numbers, so the two chips show one picture. The height of a chip's picture, a pixel of
+    /// room around.
+    /// </summary>
+    static Control DonutPicture()
+    {
+        const double size = 26;
+        const int around = 12;
+        const int across = 7;
+        const double ringRadius = 1;
+        const double tubeRadius = 0.56;
+        const double jitter = 0.45;
+        const double bumps = 0.08;
+        const double tilt = 50 * System.Math.PI / 180;
+        double cosTilt = System.Math.Cos(tilt);
+        double sinTilt = System.Math.Sin(tilt);
+
+        // mulberry32, as donut.js has it: the same seed gives the same strays everywhere
+        uint seed = 7;
+        double Random()
+        {
+            unchecked
+            {
+                seed += 0x6D2B79F5u;
+                uint t = (seed ^ (seed >> 15)) * (1u | seed);
+                t = (t + ((t ^ (t >> 7)) * (61u | t))) ^ t;
+                return (t ^ (t >> 14)) / 4294967296.0;
+            }
+        }
+
+        // a corner of the grid: u around the ring, v around the tube, both strayed, and the
+        // tube a little thicker or thinner there; on the screen, x across, y up, depth toward
+        // the viewer
+        var screen = new Point[around, across];
+        var depth = new double[around, across];
+        for (int i = 0; i < around; i++)
+        {
+            for (int j = 0; j < across; j++)
+            {
+                double u = 2 * System.Math.PI * (i + jitter * (Random() - 0.5)) / around;
+                double v = 2 * System.Math.PI * (j + jitter * (Random() - 0.5)) / across;
+                double tube = tubeRadius * (1 + bumps * (Random() - 0.5));
+                double x = (ringRadius + tube * System.Math.Cos(v)) * System.Math.Cos(u);
+                double y = (ringRadius + tube * System.Math.Cos(v)) * System.Math.Sin(u);
+                double z = tube * System.Math.Sin(v);
+                screen[i, j] = new Point(x, y * cosTilt + z * sinTilt);
+                depth[i, j] = -y * sinTilt + z * cosTilt;
+            }
+        }
+
+        // the light: from the left, above, in front
+        double lightX = -0.5;
+        double lightY = 0.65;
+        double lightZ = 0.58;
+        double lightLength = System.Math.Sqrt(lightX * lightX + lightY * lightY + lightZ * lightZ);
+        lightX /= lightLength;
+        lightY /= lightLength;
+        lightZ /= lightLength;
+
+        // a facet per cell, lit by the torus's normal at the cell's middle, painted far to near
+        var facets = new List<(double Depth, Point[] Corners, Color Color)>();
+        for (int i = 0; i < around; i++)
+        {
+            for (int j = 0; j < across; j++)
+            {
+                int i2 = (i + 1) % around;
+                int j2 = (j + 1) % across;
+                Point[] corners = [screen[i, j], screen[i2, j], screen[i2, j2], screen[i, j2]];
+                double facetDepth = (depth[i, j] + depth[i2, j] + depth[i2, j2] + depth[i, j2]) / 4;
+                double u = 2 * System.Math.PI * (i + 0.5) / around;
+                double v = 2 * System.Math.PI * (j + 0.5) / across;
+                double nx = System.Math.Cos(v) * System.Math.Cos(u);
+                double ny = System.Math.Cos(v) * System.Math.Sin(u);
+                double nz = System.Math.Sin(v);
+                double viewX = nx;
+                double viewY = ny * cosTilt + nz * sinTilt;
+                double viewZ = -ny * sinTilt + nz * cosTilt;
+                double lit = System.Math.Max(0, viewX * lightX + viewY * lightY + viewZ * lightZ);
+                double shade = 0.42 + 0.72 * lit + 0.14 * (Random() - 0.5);
+                // the frosting runs over the top and the outer rim, a little below the equator
+                bool frosting = nz > -0.25;
+                byte Channel(int value)
+                {
+                    return (byte)System.Math.Min(255, System.Math.Max(0, (int)System.Math.Round(value * shade)));
+                }
+
+                var color = frosting
+                    ? Color.FromRgb(Channel(243), Channel(158), Channel(176))
+                    : Color.FromRgb(Channel(214), Channel(128), Channel(48));
+                facets.Add((facetDepth, corners, color));
+            }
+        }
+
+        facets.Sort((a, b) => a.Depth.CompareTo(b.Depth));
+
+        // the donut's y goes up; the canvas's goes down, in pixels, from a pixel above the top
+        double left = double.MaxValue;
+        double right = double.MinValue;
+        double top = double.MinValue;
+        double bottom = double.MaxValue;
+        foreach (var corner in screen)
+        {
+            left = System.Math.Min(left, corner.X);
+            right = System.Math.Max(right, corner.X);
+            top = System.Math.Max(top, corner.Y);
+            bottom = System.Math.Min(bottom, corner.Y);
+        }
+
+        double scale = (size - 2) / (top - bottom);
+        var canvas = new Canvas()
+        {
+            Width = (right - left) * scale + 2,
+            Height = size,
+            Margin = new Thickness(10, 0, 0, 0),
+            VerticalAlignment = VerticalAlignment.Center
+        };
+        foreach (var facet in facets)
+        {
+            var points = facet.Corners.Select(corner => new Point((corner.X - left) * scale + 1, (top - corner.Y) * scale + 1)).ToList();
+            var brush = new SolidColorBrush(facet.Color);
+            canvas.Children.Add(new Path()
+            {
+                Data = new PolylineGeometry(points, isFilled: true),
+                Fill = brush,
+                // a hairline of the facet's own color over the seam between neighbors
+                Stroke = brush,
+                StrokeThickness = 0.4,
+                StrokeJoin = PenLineJoin.Round
+            });
+        }
+
+        return canvas;
     }
 
 

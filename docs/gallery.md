@@ -41,9 +41,13 @@
   clutter at that size. A click opens the library's page through the launcher: a new tab in
   the browser head, the browser on the desktop. `HeadingRow` lays the line out: the chips
   in a line after the heading while all fit, else under the heading, one under another (a
-  phone). A second library is one more line of the table and a miniature of its own. The
-  `/web` page has the same chip in HTML and SVG (`web/index.html`, see "`/web`" in
-  deployment.md): a change here goes there too.
+  phone). The second library (2026-11-05) is Geometry Snacks (see snacks.md); its miniature
+  is the low-poly donut of the books' covers (`DonutPicture`: a torus of 12 by 7 facets
+  tipped 50° toward the viewer, flat-shaded from the upper left, pink frosting over brown
+  dough, the corners strayed by a fixed random sequence; the same colors under both themes).
+  The `/web` page has the same chips in HTML and SVG (`web/index.html`, see "`/web`" in
+  deployment.md; its donut is drawn by `drawDonut` from the same numbers in the same order,
+  so it is the same picture): a change here goes there too.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly. They were forked once from the
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must
