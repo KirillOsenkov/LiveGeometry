@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More Geometry Snacks #3 (Curiosity Closet), drawn by hand as a ruler-and-compass construction.
-     The center O and a radius point are the hidden base points; the handle Tp, the big pentagon's top vertex, goes
-     round the hidden circumcircle and turns the whole figure (the figure is rigid otherwise: see below). The big
+     The figure is rigid (see below), and a handle could only turn it, so nothing is dragged: the center O and the
+     big pentagon's top vertex Tp are the hidden base points, and the circumcircle is the circle about O through Tp. The big
      pentagon is the classic compass construction on O and Tp: W on the perpendicular diameter, M its midpoint, the
      circle about M through Tp cutting the diameter at N, and TpN is the side, stepped round the circumcircle to R and
      BR; L and BL are their reflections in the axis OTp. The dashed diagonal is BL Tp. The small pentagon is the
@@ -14,9 +14,6 @@
   <Viewport Left="-4.7" Top="4.7" Right="4.7" Bottom="-4.7" />
   <Scene Left="-4.7" Top="4.7" Right="4.7" Bottom="-4.7" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <PointStyle Name="Dot" Size="8" Fill="#FF404040" Color="#FF404040" StrokeWidth="1">
       <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
     </PointStyle>
@@ -35,14 +32,11 @@
   </Styles>
   <Figures>
     <FreePoint Name="O" Style="Dot" Locked="true" X="0" Y="0" />
-    <FreePoint Name="P0" Visible="false" Locked="true" X="0" Y="4" />
+    <FreePoint Name="Tp" Visible="false" Locked="true" X="0" Y="4" />
     <Circle Name="circumcircle" Visible="false">
       <Dependency Name="O" />
-      <Dependency Name="P0" />
+      <Dependency Name="Tp" />
     </Circle>
-    <PointOnFigure Name="Tp" Style="Handle" X="0" Y="4" Parameter="1.5707963268">
-      <Dependency Name="circumcircle" />
-    </PointOnFigure>
     <Segment Name="OTp" Visible="false">
       <Dependency Name="O" />
       <Dependency Name="Tp" />

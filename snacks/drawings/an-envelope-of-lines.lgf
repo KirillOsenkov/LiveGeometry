@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Geometry Snacks #38 (What's the Area?), drawn by hand as a ruler-and-compass construction.
+     The figure is fixed by the statement (both segments 5 cm), so nothing is dragged.
      The hidden points O and E are a unit apart (one of the five equal parts). The vertical segment is stepped off on
      the ray OE with circles of radius OE: V2, V3, V4 and V5, its top. The horizontal segment lies on the perpendicular
-     to OE at O; its end H is the handle, sliding along a hidden track from P1 (one unit from O, where the unit circle
-     meets the perpendicular) to T (seven units from O: the circle of radius OV5 about O gives T5 at five units, and the
-     circle of radius OV2 about T5 gives T). The five equal parts of OH come from the parallels to V5H through E, V2,
-     V3 and V4 (the intercept theorem); the first on one segment is joined to the last on the other, and so on. The red
-     quadrilateral is O, H2, the crossing X of the lines V4H2 and V2H4, and V2. The book has both segments 5 cm; H
-     starts there and stretches the horizontal one from one unit to seven. -->
+     to OE at O; its end H is where the circle of radius OV5 about O meets that perpendicular, five units out. The five
+     equal parts of OH come from the parallels to V5H through E, V2, V3 and V4 (the intercept theorem); the first on
+     one segment is joined to the last on the other, and so on. The red quadrilateral is O, H2, the crossing X of the
+     lines V4H2 and V2H4, and V2. -->
 <Drawing Version="1">
-  <Viewport Left="-1.2" Top="7" Right="8.2" Bottom="-1.6" />
-  <Scene Left="-1.2" Top="7" Right="8.2" Bottom="-1.6" />
+  <Viewport Left="-0.8" Top="5.8" Right="5.8" Bottom="-0.8" />
+  <Scene Left="-0.8" Top="5.8" Right="5.8" Bottom="-0.8" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <PointStyle Name="Dot" Size="11" Fill="#FF000000" Color="#FF000000" StrokeWidth="0">
       <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
     </PointStyle>
@@ -32,10 +28,6 @@
       <Dependency Name="O" />
       <Dependency Name="E" />
     </Ray>
-    <Circle Name="unit" Visible="false">
-      <Dependency Name="O" />
-      <Dependency Name="E" />
-    </Circle>
     <CircleByRadius Name="c2" Visible="false">
       <Dependency Name="O" />
       <Dependency Name="E" />
@@ -76,34 +68,14 @@
       <Dependency Name="up" />
       <Dependency Name="O" />
     </PerpendicularLine>
-    <IntersectionPoint Name="P1" Visible="false" Algorithm="IntersectLineAndEllipse2">
-      <Dependency Name="across" />
-      <Dependency Name="unit" />
-    </IntersectionPoint>
     <Circle Name="c5across" Visible="false">
       <Dependency Name="O" />
       <Dependency Name="V5" />
     </Circle>
-    <IntersectionPoint Name="T5" Visible="false" Algorithm="IntersectLineAndEllipse2">
+    <IntersectionPoint Name="H" Style="Dot" Algorithm="IntersectLineAndEllipse2">
       <Dependency Name="across" />
       <Dependency Name="c5across" />
     </IntersectionPoint>
-    <CircleByRadius Name="c7" Visible="false">
-      <Dependency Name="O" />
-      <Dependency Name="V2" />
-      <Dependency Name="T5" />
-    </CircleByRadius>
-    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndEllipse2">
-      <Dependency Name="across" />
-      <Dependency Name="c7" />
-    </IntersectionPoint>
-    <Segment Name="track" Visible="false">
-      <Dependency Name="P1" />
-      <Dependency Name="T" />
-    </Segment>
-    <PointOnFigure Name="H" Style="Handle" X="5" Y="0" Parameter="0.6666666667">
-      <Dependency Name="track" />
-    </PointOnFigure>
     <Segment Name="vertical" Style="Ink">
       <Dependency Name="O" />
       <Dependency Name="V5" />

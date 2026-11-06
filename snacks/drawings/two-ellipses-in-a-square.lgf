@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks, Curiosity Closet #2, drawn by hand as a ruler-and-compass construction. The figure is
+     fixed by the statement (the square fixes both ellipses), so nothing is dragged.
+     The dotted square ABCD on the hidden points A and B: perpendiculars to AB at A and B, cut by the circles of
+     radius AB about them; O is its center. The ellipse with foci A and C through B and D has its center at O, its
+     major axis along the diagonal AC with the semi-axis equal to the side (B is a side from each focus, so the string
+     is two sides), and B and D as the ends of its minor axis: it is drawn from O, the point M1 of the diagonal AC a
+     side away from O (the circle of radius AB about O) and B. The other ellipse is the same on the diagonal BD, with A
+     at the end of its minor axis. The two meet on the midlines of the square (the perpendicular bisectors of AB and
+     of BC), where each ellipse is cut; those four points are the shaded square. -->
+<Drawing Version="1">
+  <Viewport Left="-1.8" Top="5.8" Right="5.8" Bottom="-1.8" />
+  <Scene Left="-1.8" Top="5.8" Right="5.8" Bottom="-1.8" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <ShapeStyle Name="DashedFrame" Color="#FF000000" StrokeWidth="3" Dash="Dash" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PerpendicularLine Name="a" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="A" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="b" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="B" />
+    </PerpendicularLine>
+    <Circle Name="ca" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cb" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="A" />
+    </Circle>
+    <IntersectionPoint Name="D" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="a" />
+      <Dependency Name="ca" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="b" />
+      <Dependency Name="cb" />
+    </IntersectionPoint>
+    <Segment Name="BC" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <MidPoint Name="O" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <LineTwoPoints Name="diagonalAC" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="C" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="diagonalBD" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <!-- a side away from O along each diagonal: the ends of the major axes -->
+    <CircleByRadius Name="sideAboutO" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <IntersectionPoint Name="M1" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="diagonalAC" />
+      <Dependency Name="sideAboutO" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="M2" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="diagonalBD" />
+      <Dependency Name="sideAboutO" />
+    </IntersectionPoint>
+    <Ellipse Name="E1" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="M1" />
+      <Dependency Name="B" />
+    </Ellipse>
+    <Ellipse Name="E2" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="M2" />
+      <Dependency Name="A" />
+    </Ellipse>
+    <!-- the second square: where the ellipses cross, on the midlines -->
+    <SegmentBisector Name="midlineAB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </SegmentBisector>
+    <SegmentBisector Name="midlineBC" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </SegmentBisector>
+    <IntersectionPoint Name="V1" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="midlineAB" />
+      <Dependency Name="E1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="V3" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="midlineAB" />
+      <Dependency Name="E1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="V2" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="midlineBC" />
+      <Dependency Name="E1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="V4" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="midlineBC" />
+      <Dependency Name="E1" />
+    </IntersectionPoint>
+    <Polygon Name="Inner" Style="Blue">
+      <Dependency Name="V1" />
+      <Dependency Name="V2" />
+      <Dependency Name="V3" />
+      <Dependency Name="V4" />
+    </Polygon>
+    <Polygon Name="Dotted" Style="DashedFrame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+  </Figures>
+</Drawing>

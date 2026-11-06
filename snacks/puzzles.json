@@ -104,7 +104,7 @@
       "page": "snacks1-page-038.png",
       "statement": "Three equal line segments are constructed from the same point on a circle as shown. Find the value of the missing angle.",
       "drawing": "three-equal-segments-in-a-circle.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "a-trapezium-in-a-semicircle",
@@ -137,7 +137,7 @@
       "page": "snacks1-page-053.png",
       "statement": "Three squares are constructed as shown. Prove that the area of the large red square is five times greater than the area of the shaded square.",
       "drawing": "three-squares.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "a-point-in-an-equilateral-triangle",
@@ -192,7 +192,7 @@
       "page": "snacks1-page-070.png",
       "statement": "Two perpendicular line segments of length 5 cm with equally spaced points form a curve as shown. Find the area of the red region.",
       "drawing": "an-envelope-of-lines.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "a-star-in-an-octagon",
@@ -237,6 +237,17 @@
       "statement": "A shaded region is constructed within an equilateral triangle using the midpoint A of a side, and the midpoint between AB. What fraction is shaded?",
       "drawing": "two-midpoints-in-an-equilateral-triangle.lgf",
       "live": true
+    },
+    {
+      "slug": "a-six-petal-rosette",
+      "title": "A Six-Petal Rosette",
+      "book": 2,
+      "number": 7,
+      "chapter": "What Fraction is Shaded?",
+      "page": "snacks2-page-011.png (right)",
+      "statement": "A six petaled rosette is constructed using unit circles, and is enclosed by a rectangle as shown. What fraction of the rectangle is shaded?",
+      "drawing": "a-six-petal-rosette.lgf",
+      "live": false
     },
     {
       "slug": "a-star-in-a-square",
@@ -294,26 +305,15 @@
       "live": true
     },
     {
-      "slug": "a-path-across-a-cube",
-      "title": "A Path across a Cube",
+      "slug": "two-ellipses-in-a-square",
+      "title": "Two Ellipses in a Square",
       "book": 2,
-      "number": 7,
-      "chapter": "3D Geometry",
-      "page": "snacks2-page-077.png (left)",
-      "statement": "You want to connect the point on the front face of this cube to one of the four points on the right face by staying on the surface of the cube, whose edges measure 4 units. For which of these four points will the shortest path require to go through the top face?",
-      "drawing": "a-path-across-a-cube.lgf",
-      "live": true
-    },
-    {
-      "slug": "folding-a-sheet-into-a-tetrahedron",
-      "title": "Folding a Sheet into a Tetrahedron",
-      "book": 2,
-      "number": 10,
-      "chapter": "3D Geometry",
-      "page": "snacks2-page-079.png (right)",
-      "statement": "In a rectangular sheet 8 x 12 you choose a point on one long side and cut out the white corners. By folding the blue net using the midpoints, you want the greatest volume. Among the three possibilities shown here, which one would you choose?",
-      "drawing": "folding-a-sheet-into-a-tetrahedron.lgf",
-      "live": true
+      "number": 2,
+      "chapter": "Curiosity Closet",
+      "page": "snacks2-page-091.png (right)",
+      "statement": "Two ellipses are constructed using opposite vertices of the dotted square as foci such that the remaining vertices also lie on each ellipse. A second square is then constructed using the points where the two ellipses intersect. What is the ratio of the areas of each square?",
+      "drawing": "two-ellipses-in-a-square.lgf",
+      "live": false
     },
     {
       "slug": "two-concentric-pentagons",
@@ -324,7 +324,7 @@
       "page": "snacks2-page-093.png (left)",
       "statement": "Two concentric regular pentagons are constructed with parallel sides such that the upper left vertex of the smaller pentagon is on a diagonal of the big one. What is the missing angle?",
       "drawing": "two-concentric-pentagons.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "two-semicircles-on-a-line",
@@ -344,7 +344,7 @@
       "number": 6,
       "chapter": "Curiosity Closet",
       "page": "snacks2-page-095.png (right)",
-      "statement": "From a point inside a rectangle, a perpendicular to the sides is drawn. Prove that the area of the shaded triangle is equal to the difference of the areas of the two hatched triangles.",
+      "statement": "From a point inside a rectangle, a perpendicular to the sides is drawn. Prove that the area of the blue triangle is equal to the difference of the areas of the two red triangles.",
       "drawing": "a-point-in-a-rectangle.lgf",
       "live": true
     }

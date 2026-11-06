@@ -2,8 +2,8 @@
 <!-- Geometry Snacks #29 (Prove it!), drawn by hand as a ruler-and-compass construction.
      The figure is rigid: the three tick-marked segments are equal, the two small squares meet at the vertex V at 45°
      (the shaded one is tilted, the white one upright), and that fixes the white square's side as the shaded square's
-     diagonal. So the handle only turns the figure: P1, the shaded square's bottom vertex, slides round a hidden circle
-     about V through the hidden point U, and everything turns with it. The shaded square stands on P1V (perpendiculars
+     diagonal. A handle could only turn the figure, so nothing is dragged: P1, the shaded square's bottom vertex, is a
+     hidden point below and to the left of V, as the book has it. The shaded square stands on P1V (perpendiculars
      and circles); the white square's far corner P3 is the mirror image of the shaded square's left vertex through V
      (the diagonal through V carried on); the white square stands on VP3. P4 is the fourth vertex of the parallelogram
      P1 V P3 P4 (V reflected through the midpoint of P1P3), so VP4 = P4P3 = P1V. The red square stands on P1P3. -->
@@ -11,9 +11,6 @@
   <Viewport Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
   <Scene Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
       <Dark Color="#FFE8EBF0" />
     </ShapeStyle>
@@ -29,14 +26,7 @@
   </Styles>
   <Figures>
     <FreePoint Name="V" Visible="false" Locked="true" X="0" Y="0" />
-    <FreePoint Name="U" Visible="false" Locked="true" X="-1.6" Y="0" />
-    <Circle Name="track" Visible="false">
-      <Dependency Name="V" />
-      <Dependency Name="U" />
-    </Circle>
-    <PointOnFigure Name="P1" Style="Handle" X="-1.13137" Y="-1.13137" Parameter="3.926991">
-      <Dependency Name="track" />
-    </PointOnFigure>
+    <FreePoint Name="P1" Visible="false" Locked="true" X="-1.13137" Y="-1.13137" />
     <!-- the shaded square on P1V, to the left of the way from P1 to V -->
     <Segment Name="P1V" Visible="false">
       <Dependency Name="P1" />

@@ -101,10 +101,25 @@
       <div class="hero-side" aria-hidden="true"></div>
     </section>
 
-    <div class="listing-head">
-      <h2>All puzzles</h2>
+    <!-- the controls as the Catriona Agg library has them: a search, the arrangement (the books' order, by book,
+         by chapter), and under them the sections as filters -->
+    <div class="controls" id="controls">
+      <label class="search">
+        <svg><use href="/snacks/icons.svg#icon-search"/></svg>
+        <span class="visually-hidden">Search the puzzles</span>
+        <input id="search" type="search" placeholder="Search: square, circle, angle…" autocomplete="off" spellcheck="false">
+      </label>
+      <div class="segmented" id="arrange" role="group" aria-label="Arrange by">
+        <span class="thumb" id="arrange-thumb"></span>
+        <span class="group-label">By</span>
+        <button type="button" data-group="none">All</button>
+        <button type="button" data-group="book">Book</button>
+        <button type="button" data-group="chapter">Chapter</button>
+      </div>
       <span class="count" id="count"></span>
     </div>
+    <nav class="jump" id="jump" aria-label="Sections" hidden></nav>
+
     <main class="groups" id="groups"></main>
     <p class="empty" id="empty" hidden></p>
 

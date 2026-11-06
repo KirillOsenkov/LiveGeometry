@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Geometry Snacks #24 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
+<!-- Geometry Snacks #24 (What's the Angle?), drawn by hand as a ruler-and-compass construction. The figure is fixed
+     by the given 52° (the asked angle is four times the given one less 180°, so nothing can move without changing
+     both), so nothing is dragged.
      A circle about the hidden point O through the hidden point R; the line OR cuts it again at L, so LR is a diameter
-     and its midpoint M the centre dot. The handle Q slides along the diameter LR. P is the point of the circle above
-     the diameter equidistant from L and Q (the perpendicular bisector of LQ meets the circle there), and the circle
-     about P through L cuts the circle again at S, so PL = PQ = PS wherever Q is. The arc at L marks the angle between
-     the diameter and PL; it is 52° where the book has Q and changes with it, from 90° with Q at L (where the segments
-     shrink to nothing) to 45° with Q at R. The red wedge at P is the asked angle between PQ and PS. The "52°" sits on
-     the bisector of the angle at L, 1.5 units out (three midpoints of LM and a circle about L). -->
+     and its midpoint M the centre dot. The hidden point Q is on the diameter where the angle at L comes out 52°
+     (PL = LR cos 52°, and LQ = 2 PL cos 52°, so Q is 2 LR cos² 52° from L). P is the point of the circle above the diameter
+     equidistant from L and Q (the perpendicular bisector of LQ meets the circle there), and the circle about P
+     through L cuts the circle again at S, so PL = PQ = PS. The arc at L marks the given angle between the diameter and
+     PL; the red wedge at P is the asked angle between PQ and PS. The "52°" sits on the bisector of the angle at L,
+     1.5 units out (three midpoints of LM and a circle about L). -->
 <Drawing Version="1">
   <Viewport Left="-4.9" Top="4.9" Right="4.9" Bottom="-4.9" />
   <Scene Left="-4.9" Top="4.9" Right="4.9" Bottom="-4.9" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
       <Dark Color="#FFE8EBF0" />
     </ShapeStyle>
@@ -54,9 +53,7 @@
       <Dependency Name="L" />
       <Dependency Name="R" />
     </Segment>
-    <PointOnFigure Name="Q" Style="Handle" X="2.06462" Y="0" Parameter="0.758078">
-      <Dependency Name="LR" />
-    </PointOnFigure>
+    <FreePoint Name="Q" Visible="false" Locked="true" X="2.064624" Y="0" />
     <SegmentBisector Name="bisectorLQ" Visible="false">
       <Dependency Name="L" />
       <Dependency Name="Q" />

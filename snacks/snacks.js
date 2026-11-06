@@ -2,8 +2,9 @@
 // first): the list at /snacks (index.html) and a puzzle at /snacks/<slug> (puzzle.html, and
 // the copy of it the build writes for each puzzle). Each page runs its own part; the catalog
 // and the theme are shared. It is the Catriona Agg library's script (CatrionaAgg/catriona.js)
-// without the gallery's arrangement: the puzzles are listed in the books' order, and a
-// puzzle's arrows step through them in that order.
+// cut down: the list is searched and arranged (the books' order, by book, by chapter) with the
+// same controls, kept for the tab so that a puzzle's arrows step through the list as shown,
+// and without the newest puzzle's card, the order toggle, the tags and the outside links.
 
 document.addEventListener('DOMContentLoaded', function () {
   'use strict';
@@ -142,6 +143,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var HandoffKey = 'LiveGeometry.Handoff';
 
+  function readSession(key) {
+    try { return sessionStorage.getItem(key); } catch (e) { return null; }
+  }
+
   function writeSession(key, value) {
     try {
       if (value == null) {
@@ -150,6 +155,101 @@ document.addEventListener('DOMContentLoaded', function () {
         sessionStorage.setItem(key, value);
       }
     } catch (e) { }
+  }
+
+  // ---------- the arrangement of the list, kept for the tab ----------
+
+  // As the Catriona Agg library: the list is searched and arranged (the books' order, by book,
+  // by chapter), one section can be shown alone (only: its slug, or '' for all), and the
+  // arrangement is kept for the tab so that a puzzle's arrows step through the list as shown.
+  var DefaultState = { group: 'none', query: '', only: '' };
+  var StateKey = 'Snacks.Arrangement';
+  var ScrollKey = 'Snacks.GalleryScroll';
+  var ReturnKey = 'Snacks.Returning';
+
+  // the books' chapters, in the order the books have them (a chapter not here goes last)
+  var Chapters = ['What Fraction is Shaded?', "What's the Angle?", 'Prove it!', "What's the Area?", 'Sangaku', '3D Geometry', 'Curiosity Closet'];
+
+  function validState(state) {
+    var group = ['none', 'book', 'chapter'].indexOf(state.group) >= 0 ? state.group : 'none';
+    return {
+      group: group,
+      query: typeof state.query === 'string' ? state.query : '',
+      only: group !== 'none' && typeof state.only === 'string' && /^[a-z0-9-]+$/.test(state.only) ? state.only : ''
+    };
+  }
+
+  function storedState() {
+    try {
+      var text = readSession(StateKey);
+      return text != null ? validState(JSON.parse(text)) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function storeState(state) {
+    writeSession(StateKey, JSON.stringify(state));
+  }
+
+  function matches(puzzle, words) {
+    return words.every(function (word) { return puzzle.searchText.indexOf(word) >= 0; });
+  }
+
+  // the chapters of the shown puzzles, in the books' order
+  function chaptersOf(shown) {
+    var seen = Array.from(new Set(shown.map(function (puzzle) { return puzzle.chapter; })));
+    return seen.sort(function (a, b) {
+      var ia = Chapters.indexOf(a);
+      var ib = Chapters.indexOf(b);
+      return (ia < 0 ? Chapters.length : ia) - (ib < 0 ? Chapters.length : ib);
+    });
+  }
+
+  // the list's sections for a state and what is in each, in the order they show
+  function arrangement(state) {
+    var words = state.query.toLowerCase().split(/\s+/).filter(function (word) { return word !== ''; });
+    var shown = puzzles.filter(function (puzzle) { return matches(puzzle, words); });
+    var sections = [];
+    var add = function (name, list) {
+      if (list.length > 0) {
+        sections.push({ name: name, puzzles: list });
+      }
+    };
+    if (state.group === 'none') {
+      add(null, shown);
+    } else if (state.group === 'book') {
+      books.forEach(function (book) { add(book.title, shown.filter(function (puzzle) { return puzzle.book === book.book; })); });
+    } else if (state.group === 'chapter') {
+      chaptersOf(shown).forEach(function (chapter) { add(chapter, shown.filter(function (puzzle) { return puzzle.chapter === chapter; })); });
+    }
+
+    // one section alone: the others are left out until the filter is taken off
+    var all = sections;
+    if (state.only !== '') {
+      sections = all.filter(function (section) { return sectionSlug(section.name) === state.only; });
+      shown = sections.length > 0 ? sections[0].puzzles : [];
+    }
+
+    return { shown: shown, sections: sections, all: all };
+  }
+
+  // the puzzles as the list shows them for a state
+  function orderOf(state) {
+    var order = [];
+    arrangement(state).sections.forEach(function (section) {
+      section.puzzles.forEach(function (puzzle) { order.push(puzzle); });
+    });
+    return order;
+  }
+
+  // a section's name in an address: "More Geometry Snacks" is more-geometry-snacks, "What’s the angle?" what-s-the-angle
+  function sectionSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  function sectionId(name) {
+    return 'group-' + sectionSlug(name);
   }
 
   // ---------- the pictures of the tiles ----------
@@ -542,37 +642,301 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  // ---------- the list ----------
+  // ---------- the list: search, arrangement ----------
 
-  function startGallery() {
-    var groupsHost = document.getElementById('groups');
-    var group = document.createElement('section');
-    group.className = 'group';
-    var grid = document.createElement('div');
-    grid.className = 'grid';
-    puzzles.forEach(function (puzzle) {
-      var tile = new Tile(puzzle);
-      tiles.push(tile);
-      grid.appendChild(tile.element);
+  var state = Object.assign({}, DefaultState);
+  var tilePool = new Map();  // slug -> the tiles made for the puzzle, taken again at each layout
+  var groupsHost = document.getElementById('groups');
+  var countText = document.getElementById('count');
+  var emptyText = document.getElementById('empty');
+  var jump = document.getElementById('jump');
+  var searchBox = document.getElementById('search');
+  var arrange = document.getElementById('arrange');
+  var arrangeThumb = document.getElementById('arrange-thumb');
+
+  // The address says the arrangement when it says anything (a link to the list as arranged),
+  // else the tab's last one, else the books' order.
+  function readGalleryState() {
+    var query = new URLSearchParams(location.search);
+    if (query.has('by') || query.has('q')) {
+      var only = (query.get('only') || (/^#group-/.test(location.hash) ? decodeURIComponent(location.hash.substring(7)) : '')).replace(/^-+|-+$/g, '');
+      return validState({ group: query.get('by'), query: query.get('q') || '', only: only });
+    }
+
+    return storedState() || Object.assign({}, DefaultState);
+  }
+
+  function galleryAddress() {
+    var query = new URLSearchParams();
+    if (state.group !== 'none') { query.set('by', state.group); }
+    if (state.only !== '') { query.set('only', state.only); }
+    if (state.query.trim() !== '') { query.set('q', state.query.trim()); }
+    var text = query.toString();
+    return Base + (text !== '' ? '?' + text : '');
+  }
+
+  // the arrangement goes into the address (to be shared) and into the tab (for the puzzles' arrows)
+  function publishState() {
+    storeState(state);
+    history.replaceState(null, '', galleryAddress());
+  }
+
+  // Lays the list out for the state, the tiles that stay gliding to their new places
+  // (FLIP: where each was, where it is now, and a transform from one to the other that goes to nothing).
+  function render(animate) {
+    endHover();
+    var result = arrangement(state);
+    var shownCount = result.shown.length;
+    var before = new Map();
+    if (animate && !reduceMotion) {
+      tiles.forEach(function (tile) {
+        if (tile.near && !before.has(tile.puzzle.slug)) {
+          before.set(tile.puzzle.slug, tile.element.getBoundingClientRect());
+        }
+      });
+    }
+
+    // every tile made so far can be taken again for its puzzle (with its picture), each once a layout
+    var used = new Set();
+    var take = function (puzzle) {
+      var list = tilePool.get(puzzle.slug);
+      if (list == null) {
+        list = [];
+        tilePool.set(puzzle.slug, list);
+      }
+
+      var tile = list.find(function (made) { return !used.has(made); });
+      if (tile == null) {
+        tile = new Tile(puzzle);
+        list.push(tile);
+      }
+
+      used.add(tile);
+      return tile;
+    };
+
+    var nextTiles = [];
+    var fragment = document.createDocumentFragment();
+    result.sections.forEach(function (section) {
+      var group = document.createElement('section');
+      group.className = 'group';
+      if (section.name != null) {
+        group.id = sectionId(section.name);
+        var heading = document.createElement('h2');
+        heading.textContent = section.name;
+        var count = document.createElement('span');
+        count.className = 'n';
+        count.textContent = section.puzzles.length;
+        heading.appendChild(count);
+        group.appendChild(heading);
+      }
+
+      var grid = document.createElement('div');
+      grid.className = 'grid';
+      section.puzzles.forEach(function (puzzle) {
+        var tile = take(puzzle);
+        nextTiles.push(tile);
+        grid.appendChild(tile.element);
+      });
+      group.appendChild(grid);
+      fragment.appendChild(group);
     });
-    group.appendChild(grid);
-    groupsHost.replaceChildren(group);
+
+    // what was not taken stays in the pool, off the page
+    tiles.forEach(function (tile) {
+      if (!used.has(tile)) {
+        observer.unobserve(tile.element);
+        tile.near = false;
+        Thumbs.unwant(tile);
+      }
+    });
+
+    groupsHost.replaceChildren(fragment);
+    tiles = nextTiles;
     tiles.forEach(function (tile) {
       tile.element.tile = tile;
       observer.observe(tile.element);
+      Thumbs.show(tile);
     });
 
-    document.getElementById('count').textContent = puzzles.length + (puzzles.length === 1 ? ' puzzle' : ' puzzles');
-    var emptyText = document.getElementById('empty');
-    emptyText.hidden = puzzles.length > 0;
-    emptyText.textContent = 'Nothing here yet.';
+    countText.textContent = shownCount === puzzles.length
+      ? puzzles.length + ' puzzles'
+      : shownCount + ' of ' + puzzles.length + ' puzzles';
+    emptyText.hidden = shownCount > 0;
+    if (shownCount === 0) {
+      emptyText.textContent = state.query.trim() !== ''
+        ? 'Nothing here matches “' + state.query.trim() + '”.'
+        : 'Nothing here yet.';
+    }
+
+    updateJump(result.all);
+
+    if (before.size > 0) {
+      var viewHeight = window.innerHeight;
+      tiles.forEach(function (tile, index) {
+        var rect = tile.element.getBoundingClientRect();
+        if (rect.bottom < -200 || rect.top > viewHeight + 200) {
+          return;
+        }
+
+        var old = before.get(tile.puzzle.slug);
+        if (old != null) {
+          var dx = old.left - rect.left;
+          var dy = old.top - rect.top;
+          if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+            tile.element.animate([
+              { transform: 'translate(' + dx + 'px, ' + dy + 'px)' },
+              { transform: 'translate(0, 0)' }
+            ], { duration: 560, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+          }
+        } else {
+          tile.element.animate([
+            { opacity: 0, transform: 'scale(0.92)' },
+            { opacity: 1, transform: 'scale(1)' }
+          ], { duration: 420, delay: Math.min(index, 12) * 18, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)', fill: 'backwards' });
+        }
+      });
+      groupsHost.querySelectorAll('.group h2').forEach(function (heading) {
+        heading.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'ease-out' });
+      });
+    }
+  }
+
+  // the top of the results just under the sticky controls, when the page is below it or when asked
+  function scrollToResults(always) {
+    var controls = document.getElementById('controls');
+    var top = jump.getBoundingClientRect().top + window.scrollY - parseFloat(getComputedStyle(controls).top) - controls.offsetHeight - 4;
+    if (always || window.scrollY > top) {
+      window.scrollTo(0, Math.max(0, top));
+    }
+  }
+
+  // The sections of the arrangement, each a filter: one shows that section alone, All the
+  // whole arrangement again (a section a search leaves empty keeps its button while chosen)
+  function updateJump(sections) {
+    jump.replaceChildren();
+    jump.hidden = state.group === 'none' || (sections.length < 2 && state.only === '');
+    if (jump.hidden) {
+      return;
+    }
+
+    var choose = function (only) {
+      if (only === state.only) {
+        return;
+      }
+
+      state.only = only;
+      stateChanged(true);
+      scrollToResults(false);
+    };
+    var add = function (text, count, only) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = text;
+      button.setAttribute('aria-pressed', only === state.only ? 'true' : 'false');
+      if (count != null) {
+        var number = document.createElement('span');
+        number.textContent = count;
+        button.appendChild(number);
+      }
+
+      // the chosen section's button takes the filter off again
+      button.addEventListener('click', function () { choose(only === state.only ? '' : only); });
+      jump.appendChild(button);
+    };
+    add('All', null, '');
+    var chosenFound = false;
+    sections.forEach(function (section) {
+      var slug = sectionSlug(section.name);
+      chosenFound = chosenFound || slug === state.only;
+      add(section.name, section.puzzles.length, slug);
+    });
+    if (state.only !== '' && !chosenFound) {
+      add(state.only.replace(/-/g, ' '), 0, state.only);
+    }
+  }
+
+  function updateControls() {
+    searchBox.value = state.query;
+    arrange.querySelectorAll('button').forEach(function (button) {
+      button.setAttribute('aria-pressed', button.getAttribute('data-group') === state.group ? 'true' : 'false');
+    });
+    placeArrangeThumb();
+  }
+
+  function placeArrangeThumb() {
+    var chosen = arrange.querySelector('button[aria-pressed="true"]');
+    if (chosen == null) {
+      return;
+    }
+
+    arrangeThumb.style.width = chosen.offsetWidth + 'px';
+    arrangeThumb.style.transform = 'translateX(' + chosen.offsetLeft + 'px)';
+  }
+
+  function stateChanged(animate) {
+    updateControls();
+    publishState();
+    render(animate);
+  }
+
+  function startGallery() {
+    // the page comes back where it was when the reader returns to it (the scroll is ours to
+    // restore: the browser's comes before the tiles are there)
+    history.scrollRestoration = 'manual';
+    var navigation = performance.getEntriesByType('navigation')[0];
+    var returning = readSession(ReturnKey) != null || (navigation != null && navigation.type === 'back_forward');
+    writeSession(ReturnKey, null);
+
+    state = readGalleryState();
+    updateControls();
+    publishState();
+    render(false);
+
+    if (state.only !== '' && !returning) {
+      // a link to one section: the results in view
+      scrollToResults(true);
+    } else if (returning) {
+      var scroll = parseFloat(readSession(ScrollKey));
+      if (scroll > 0) {
+        window.scrollTo(0, scroll);
+      }
+    }
+
+    arrange.addEventListener('click', function (e) {
+      var button = e.target.closest('button');
+      if (button == null || button.getAttribute('data-group') === state.group) {
+        return;
+      }
+
+      // another arrangement has other sections: the filter goes
+      state.group = button.getAttribute('data-group');
+      state.only = '';
+      stateChanged(true);
+    });
+
+    var searchTimer = 0;
+    searchBox.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        state.query = searchBox.value;
+        publishState();
+        render(true);
+      }, 140);
+    });
+
+    window.addEventListener('resize', placeArrangeThumb);
 
     var galleryBar = document.getElementById('gallery-bar');
     window.addEventListener('scroll', function () {
       galleryBar.classList.toggle('scrolled', window.scrollY > 4);
     }, { passive: true });
 
-    window.addEventListener('pagehide', endHover);
+    window.addEventListener('pagehide', function () {
+      endHover();
+      writeSession(ScrollKey, String(window.scrollY));
+    });
+
     Thumbs.schedule();
   }
 
@@ -603,14 +967,20 @@ document.addEventListener('DOMContentLoaded', function () {
     bookLink.href = book.amazon;
   }
 
-  // The arrows step through the puzzles in the books' order
+  // The arrows step through the puzzles in the order the list showed them in this tab; the
+  // books' order when it showed none, or a selection without this puzzle.
   function setUpStepper(puzzle) {
-    var index = puzzles.indexOf(puzzle);
-    var previous = puzzles[(index + puzzles.length - 1) % puzzles.length];
-    var next = puzzles[(index + 1) % puzzles.length];
+    var order = orderOf(storedState() || DefaultState);
+    if (order.indexOf(puzzle) < 0) {
+      order = puzzles;
+    }
+
+    var index = order.indexOf(puzzle);
+    var previous = order[(index + order.length - 1) % order.length];
+    var next = order[(index + 1) % order.length];
     document.getElementById('previous').href = Base + '/' + previous.slug;
     document.getElementById('next').href = Base + '/' + next.slug;
-    document.getElementById('position').textContent = (index + 1) + ' / ' + puzzles.length;
+    document.getElementById('position').textContent = (index + 1) + ' / ' + order.length;
 
     // the neighbors' drawings, for the next step
     [previous, next].forEach(function (neighbor) {
@@ -647,6 +1017,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  // back to the list, which takes the reader back to where they were in it
+  function goToGallery() {
+    writeSession(ReturnKey, '1');
+    location.href = Base;
+  }
+
   function startPuzzle() {
     var slug = slugOfPath(location.pathname);
     var puzzle = bySlug.get(slug);
@@ -676,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('back').addEventListener('click', function (e) {
       if (isPlainClick(e)) {
         e.preventDefault();
-        location.href = Base;
+        goToGallery();
       }
     });
     document.getElementById('edit').addEventListener('click', function () {
@@ -696,7 +1072,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       if (e.key === 'Escape') {
-        location.href = Base;
+        goToGallery();
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         location.href = document.getElementById('previous').href;
@@ -755,6 +1131,8 @@ document.addEventListener('DOMContentLoaded', function () {
     puzzles.forEach(function (puzzle) {
       puzzle.live = puzzle.live === true;
       bySlug.set(puzzle.slug, puzzle);
+      // what a search looks through: the title, the statement, the chapter, the book and the number
+      puzzle.searchText = [puzzle.title, puzzle.statement, puzzle.chapter, bookOf(puzzle).title, 'book ' + puzzle.book, '#' + puzzle.number].join(' ').toLowerCase();
     });
     // the drawings' numbers are in the page's font
     return fontsReady;

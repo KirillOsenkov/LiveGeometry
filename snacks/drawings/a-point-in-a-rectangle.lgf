@@ -3,9 +3,10 @@
      The rectangle ABKH on the hidden points A and B: the corner K is a handle on a hidden vertical stretch above B,
      which sets the rectangle's height, and H is where the perpendicular at A meets the parallel to AB through K. The
      handle P is a point inside the rectangle. The parallel to AB through P meets the sides at L and Q, with right angles
-     there, marked by small squares built with a circle of radius AB/32; the segments AP and PK close the two hatched
-     triangles ALP and KPQ (drawn in a lighter blue, the player has no hatching), and HPB is the shaded triangle. Its
-     area is the difference of the hatched ones wherever P and K are. -->
+     there, marked by small squares built with a circle of radius AB/32; the segments AP and PK close the two triangles
+     ALP and KPQ that the book hatches (drawn solid red here, the player has no hatching, and the statement says red),
+     and HPB is the shaded triangle, drawn last with a fill that is 70% opaque so the red shows through where they
+     overlap, as the hatching does in the book. Its area is the difference of the red ones wherever P and K are. -->
 <Drawing Version="1">
   <Viewport Left="-0.8" Top="8.3" Right="7.8" Bottom="-0.8" />
   <Scene Left="-0.8" Top="8.3" Right="7.8" Bottom="-0.8" />
@@ -13,11 +14,11 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
-      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#B3B9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#B37F86D6" />
     </ShapeStyle>
-    <ShapeStyle Name="Hatched" Color="#FF000000" StrokeWidth="3" Fill="#FFDCDCFF">
-      <Dark Color="#FFE8EBF0" Fill="#FF5C62A8" />
+    <ShapeStyle Name="Red" Color="#FF000000" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFE8EBF0" Fill="#FFD9333F" />
     </ShapeStyle>
     <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
       <Dark Color="#FFE8EBF0" />
@@ -86,12 +87,12 @@
       <Dependency Name="p" />
       <Dependency Name="BK" />
     </IntersectionPoint>
-    <Polygon Name="LowerHatched" Style="Hatched">
+    <Polygon Name="LowerRed" Style="Red">
       <Dependency Name="A" />
       <Dependency Name="L" />
       <Dependency Name="P" />
     </Polygon>
-    <Polygon Name="UpperHatched" Style="Hatched">
+    <Polygon Name="UpperRed" Style="Red">
       <Dependency Name="K" />
       <Dependency Name="P" />
       <Dependency Name="Q" />

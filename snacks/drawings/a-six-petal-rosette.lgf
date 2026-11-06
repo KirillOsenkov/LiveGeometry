@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks, What Fraction is Shaded? #7, drawn by hand as a ruler-and-compass construction. The figure
+     is fixed by the statement (unit circles, the rectangle around them), so nothing is dragged.
+     A circle c about the hidden center O through the hidden point C0. The circle about C0 through O cuts c in C1 and C5,
+     and C2, C3, C4 are C5, C0, C1 reflected through O: the six points of a regular hexagon on c. The six circles k0 to
+     k5 are the ones about C0 to C5 through O, each the size of c. The petal pointing at Ci is the lens where the circles
+     about its two neighbors overlap (a Region, the intersection of k(i-1) and k(i+1)): both pass through O and Ci. The
+     rectangle's top side is the line C1C2, its bottom C4C5, and its left and right sides the perpendiculars to the top
+     through C3 and C0, so it touches all six petal tips. -->
+<Drawing Version="1">
+  <Viewport Left="-2.5" Top="2.5" Right="2.5" Bottom="-2.5" />
+  <Scene Left="-2.5" Top="2.5" Right="2.5" Bottom="-2.5" />
+  <Styles>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="C0" Visible="false" Locked="true" X="2" Y="0" />
+    <Circle Name="c" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="C0" />
+    </Circle>
+    <Circle Name="k0" Visible="false">
+      <Dependency Name="C0" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="C1" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="k0" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="C5" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="c" />
+      <Dependency Name="k0" />
+    </IntersectionPoint>
+    <ReflectedPoint Name="C2" Visible="false">
+      <Dependency Name="C5" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="C3" Visible="false">
+      <Dependency Name="C0" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <ReflectedPoint Name="C4" Visible="false">
+      <Dependency Name="C1" />
+      <Dependency Name="O" />
+    </ReflectedPoint>
+    <Circle Name="k1" Visible="false">
+      <Dependency Name="C1" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="k2" Visible="false">
+      <Dependency Name="C2" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="k3" Visible="false">
+      <Dependency Name="C3" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="k4" Visible="false">
+      <Dependency Name="C4" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="k5" Visible="false">
+      <Dependency Name="C5" />
+      <Dependency Name="O" />
+    </Circle>
+    <!-- the rectangle around the rosette -->
+    <LineTwoPoints Name="top" Visible="false">
+      <Dependency Name="C1" />
+      <Dependency Name="C2" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="bottom" Visible="false">
+      <Dependency Name="C4" />
+      <Dependency Name="C5" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="right" Visible="false">
+      <Dependency Name="top" />
+      <Dependency Name="C0" />
+    </PerpendicularLine>
+    <PerpendicularLine Name="left" Visible="false">
+      <Dependency Name="top" />
+      <Dependency Name="C3" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="TR" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="top" />
+      <Dependency Name="right" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="TL" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="top" />
+      <Dependency Name="left" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="BL" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bottom" />
+      <Dependency Name="left" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="BR" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bottom" />
+      <Dependency Name="right" />
+    </IntersectionPoint>
+    <Polygon Name="Rectangle" Style="Frame">
+      <Dependency Name="TL" />
+      <Dependency Name="TR" />
+      <Dependency Name="BR" />
+      <Dependency Name="BL" />
+    </Polygon>
+    <!-- the six petals: the petal at Ci is the overlap of the circles about Ci's two neighbors -->
+    <Region Name="Petal0" Style="Blue" Operation="Intersection">
+      <Dependency Name="k5" />
+      <Dependency Name="k1" />
+    </Region>
+    <Region Name="Petal1" Style="Blue" Operation="Intersection">
+      <Dependency Name="k0" />
+      <Dependency Name="k2" />
+    </Region>
+    <Region Name="Petal2" Style="Blue" Operation="Intersection">
+      <Dependency Name="k1" />
+      <Dependency Name="k3" />
+    </Region>
+    <Region Name="Petal3" Style="Blue" Operation="Intersection">
+      <Dependency Name="k2" />
+      <Dependency Name="k4" />
+    </Region>
+    <Region Name="Petal4" Style="Blue" Operation="Intersection">
+      <Dependency Name="k3" />
+      <Dependency Name="k5" />
+    </Region>
+    <Region Name="Petal5" Style="Blue" Operation="Intersection">
+      <Dependency Name="k4" />
+      <Dependency Name="k0" />
+    </Region>
+  </Figures>
+</Drawing>

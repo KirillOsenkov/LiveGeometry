@@ -264,29 +264,143 @@ svg { display: block; }
   display: block;
 }
 
-.listing-head {
+/* the controls: search and arrangement, as the Catriona Agg library's */
+.controls {
+  position: sticky;
+  top: 56px;
+  z-index: 10;
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 8px 0 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  padding: 12px 0;
+  background: var(--page);
 }
 
-.listing-head h2 {
-  margin: 0 2px 0 0;
-  font-weight: 700;
-  font-size: 24px;
-  letter-spacing: -0.02em;
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 240px;
+  max-width: 360px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search svg { width: 17px; height: 17px; color: var(--ink-faint); flex: none; }
+
+.search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+}
+
+.search input::placeholder { color: var(--ink-faint); }
+
+.segmented {
+  position: relative;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--chip);
+}
+
+.segmented button {
+  position: relative;
+  z-index: 1;
+  height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--chip-ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.segmented button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+
+/* the plate under the chosen button slides from one to the next */
+.segmented .thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  border-radius: 9px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 0.35s var(--ease), width 0.35s var(--ease);
+}
+
+.segmented .group-label {
+  align-self: center;
+  padding: 0 6px 0 8px;
+  font-size: 13px;
+  color: var(--ink-faint);
 }
 
 .count {
+  margin-left: auto;
   font-size: 13px;
   color: var(--ink-faint);
   white-space: nowrap;
 }
 
+/* the sections of the arrangement, each a filter */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 6px;
+}
+
+.jump button {
+  height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 15px;
+  background: var(--chip);
+  color: var(--chip-ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.jump button:hover { background: var(--line-strong); }
+.jump button span { color: var(--ink-faint); margin-left: 4px; font-weight: 400; }
+
+/* the section shown alone, or All when none is */
+.jump button[aria-pressed="true"] { background: var(--ink); color: var(--page); font-weight: 600; }
+.jump button[aria-pressed="true"] span { color: inherit; opacity: 0.7; }
+
 .groups { padding-bottom: 30px; }
 
-.group { padding-top: 4px; }
+.group { padding-top: 18px; scroll-margin-top: 130px; }
+
+.group h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 2px 14px;
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.group h2 .n { font-size: 14px; font-weight: 500; color: var(--ink-faint); }
 
 .grid {
   display: grid;
@@ -537,6 +651,12 @@ svg { display: block; }
   .hero h1 { font-size: 46px; }
   .lede { font-size: 16px; }
   .books { gap: 16px; }
+  .controls { top: 56px; gap: 8px; }
+  .search { max-width: none; flex-basis: 100%; }
+  .segmented { overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+  .segmented::-webkit-scrollbar { display: none; }
+  .segmented .group-label { display: none; }
+  .count { margin-left: 0; }
   .stage-tools span { display: none; }
   .stage-tools button { padding: 0 9px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
