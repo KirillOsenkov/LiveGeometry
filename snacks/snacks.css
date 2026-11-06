@@ -20,6 +20,7 @@
   --shadow-lift: 0 2px 4px rgba(40, 32, 20, 0.08), 0 14px 34px rgba(40, 32, 20, 0.14);
   /* the books' red fill and black ink */
   --red: #EF303F;
+  --blue: #0000FF;
   --figure-ink: #000000;
   --sans: "Inter", "Segoe UI", system-ui, sans-serif;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -42,6 +43,7 @@
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.25);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 16px 36px rgba(0, 0, 0, 0.45);
   --red: #D9333F;
+  --blue: #9DA3FF;
   --figure-ink: #E8EBF0;
   color-scheme: dark;
 }
@@ -601,7 +603,8 @@ svg { display: block; }
   box-shadow: var(--shadow);
 }
 
-/* the books' red along the edge of the question */
+/* the book's color along the edge of the question: the first book's red, the second's blue
+   (the class is set by snacks.js, and written into a puzzle's page at build) */
 .question::before {
   content: "";
   position: absolute;
@@ -612,6 +615,8 @@ svg { display: block; }
   border-radius: 0 4px 4px 0;
   background: var(--red);
 }
+
+.question.book-2::before { background: var(--blue); }
 
 .question p {
   margin: 0;

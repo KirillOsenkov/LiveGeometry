@@ -30,7 +30,9 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
 - **The look** is the books': the figures are a solid red (`#EF303F`, sampled from the pages)
   with black outlines of 3 px, on white; under the dark theme the red is a touch deeper
   (`#D9333F`) and the ink light. The second book draws in a lavender blue (`#B9B9FF`) instead;
-  its drawings will say so. The pages take the Catriona Agg pages' layout with a red accent;
+  its drawings say so, and so does the bar along its puzzles' questions (blue, `--blue`,
+  for the first book's red: the `book-2` class on the question, set by snacks.js and written
+  into the puzzle's page at build so it is blue from the first paint). The pages take the Catriona Agg pages' layout with a red accent;
   no "Newest" card (the right half of the hero is left open), no date, no author links, no
   technique or solution links and no tags on a puzzle. The list has the Catriona controls
   (2026-11-05): a search over the title, the statement, the chapter, the book and the number,

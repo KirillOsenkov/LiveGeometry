@@ -962,6 +962,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('p-where').textContent = placeOf(puzzle) + ' · ' + puzzle.chapter;
     document.getElementById('p-title').textContent = puzzle.title;
     document.getElementById('p-question').textContent = puzzle.statement;
+    // the bar along the question in the book's color: the second book draws in blue
+    document.getElementById('p-question').parentElement.classList.toggle('book-2', puzzle.book === 2);
     var bookLink = document.getElementById('p-book');
     bookLink.textContent = book.title;
     bookLink.href = book.amazon;
