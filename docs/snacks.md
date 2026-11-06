@@ -27,6 +27,15 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   catalog's `books` carry the links, each puzzle its `book`, `number`, `chapter` (the book's
   running header), `title` (ours; the books number their puzzles without naming them),
   `statement` (the book's wording) and `drawing`.
+- **The donut** of the books' cover turns slowly behind the hero at 30% opacity, centered on
+  the hero's open second column, on a canvas as wide as the window so it isn't cut at the
+  column's edge (`donut.js`, no dependencies: a jittered torus grid
+  with a random diagonal per cell, flat shading from a fixed light, facets sorted far to near
+  on a 2D canvas; the mouse drags it and a fling slows down, a finger scrolls the page instead;
+  it always turns, reduced motion or not; drawn only while on screen, and drawn again inside
+  the resize handler so a resize of the window shows no blank frame). Hidden below 980 px,
+  where the hero is one column. Chosen on 2026-11-05 over a card in the right half; the lab
+  with both placements and the options table is `C:\temp\snacks\donut` (outside the repo).
 - **The drawings are ruler-and-compass constructions**, as every new drawing is (see "Ruler
   and compass from now on" in catriona-agg.md): a hand-written `.lgf` per puzzle, with a comment
   at the top saying how it is built, the `Handle` point style for what a reader drags, every

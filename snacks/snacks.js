@@ -723,6 +723,14 @@ document.addEventListener('DOMContentLoaded', function () {
     missing.append('.');
   }
 
+  // ---------- the donut behind the hero ----------
+
+  var donutCanvas = document.getElementById('donut');
+  if (donutCanvas != null && typeof Donut !== 'undefined') {
+    // centered on the open right half of the hero; a finger scrolls the page rather than turning it
+    new Donut(donutCanvas, { shadow: false, fit: 0.9, anchor: document.querySelector('.hero-side'), touch: false });
+  }
+
   // ---------- start ----------
 
   if (typeof LiveGeometry === 'undefined') {

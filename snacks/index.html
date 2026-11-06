@@ -49,6 +49,7 @@
 <!-- the catalog on its way with the scripts, not after them (snacks.js fetches it once it runs) -->
 <link rel="preload" href="/snacks/puzzles.json" as="fetch" crossorigin>
 <script src="/player/1/player.js" defer></script>
+<script src="/snacks/donut.js" defer></script>
 <script src="/snacks/snacks.js" defer></script>
 </head>
 <body>
@@ -72,6 +73,8 @@
 
   <div class="wrap">
     <section class="hero">
+      <!-- the low-poly donut of the books' cover, turning slowly behind the hero (donut.js, started by snacks.js) -->
+      <canvas class="donut" id="donut" aria-hidden="true"></canvas>
       <div>
         <h1>Geometry Snacks<span class="sub">Bite size problems... made interactive!</span></h1>
         <!-- three shapes as the books draw them: solid red, inked outline -->
@@ -101,7 +104,7 @@
           </div>
         </div>
       </div>
-      <!-- the right half of the hero is left open for now -->
+      <!-- the right half of the hero is open: the donut shows through it -->
       <div class="hero-side" aria-hidden="true"></div>
     </section>
 

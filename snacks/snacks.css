@@ -152,6 +152,7 @@ svg { display: block; }
 }
 
 .hero {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap: 48px;
@@ -260,8 +261,26 @@ svg { display: block; }
 .book .shops a:hover { background: var(--line-strong); color: var(--ink); }
 .book .out { width: 12px; height: 12px; color: var(--ink-faint); }
 
-/* the right half of the hero, open for now */
+/* the right half of the hero is open: the donut turns behind the whole hero, under the text */
+.hero > div { position: relative; z-index: 1; }
+
 .hero-side { min-height: 1px; }
+
+/* the low-poly donut of the books' cover (donut.js), subdued; the mouse turns it. The canvas
+   spans the window, not the column, so the donut (centered on the open right half) isn't cut
+   at the column's edge; the list clips what reaches under the scrollbar */
+#gallery-view { overflow-x: clip; }
+
+.donut {
+  position: absolute;
+  z-index: 0;
+  top: -30px;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  height: calc(100% + 60px);
+  opacity: 0.3;
+  display: block;
+}
 
 .listing-head {
   display: flex;
@@ -525,7 +544,7 @@ svg { display: block; }
 /* ---------- smaller windows ---------- */
 @media (max-width: 980px) {
   .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 22px; }
-  .hero-side { display: none; }
+  .hero-side, .donut { display: none; }
   .puzzle-body { grid-template-columns: minmax(0, 1fr) 360px; }
 }
 
