@@ -73,9 +73,15 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   the maintainer dropped on 2026-11-05) and `two-ellipses-in-a-square` (book 2, Curiosity #2,
   put in for the folded tetrahedron, dropped the same day: the three small variants and the
   heights were not readable; each `Ellipse` is center, the end of its major axis and the end of
-  its minor axis, and the inner square is where the midlines cut one of them) and `two-concentric-pentagons`
-  (book 2, Curiosity #3, rigid, whose handle only turned it): no handle, `live` false in the catalog so
-  the tile carries no drag badge. The star's regular
+  its minor axis, and the inner square is where the midlines cut one of them), `two-concentric-pentagons`
+  (book 2, Curiosity #3, rigid, whose handle only turned it) and `eight-triangles-around-a-square`
+  (book 2, Fraction #12, fixed on 2026-11-06: eight congruent triangles with four mirror lines
+  leave the tips' height free and the fraction changes with it, so the handle on a tip misled;
+  the book's figure, and its solution, have the triangles equilateral, which the drawing now
+  constructs by a 75° ray from a corner, and its fraction is the book's √3 − 1): no handle,
+  `live` false in the catalog so the tile carries no drag badge. The lesson: a puzzle whose
+  words leave a degree of freedom that the picture fixes is a fixed figure, since the handle
+  would change the answer. The star's regular
   octagon is built about its center by reflections through it, a perpendicular and the lines
   through the midpoints of two chords; the star's points are the triangles cut off each side
   by the two diagonals that skip two vertices.

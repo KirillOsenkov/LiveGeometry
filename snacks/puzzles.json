@@ -269,7 +269,7 @@
       "page": "snacks2-page-017.png (left)",
       "statement": "Eight congruent triangles are arranged around a square to form this octagon with 4 mirror lines. What fraction of the octagon is shaded?",
       "drawing": "eight-triangles-around-a-square.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "a-square-on-an-isosceles-triangle",

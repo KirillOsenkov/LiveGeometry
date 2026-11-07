@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More Geometry Snacks #12 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
-     The square A B Q2 Q1 stands on the hidden points A and B (perpendiculars and circles of the side). The handle T is
-     the tip above the top side: it slides on a hidden track along the perpendicular bisector of AB, from the midpoint
-     M of the top side (the tip on the side, the octagon folded flat) to a side and a diagonal above it. The corner K1
-     of the octagon is on the diagonal through Q1, as far from Q1 as T is (a circle about Q1 through T), so the two
-     shaded triangles at Q1 are congruent; the other tips and corners are its reflections in the diagonal, the
-     vertical axis and the center O, which gives the octagon its four mirror lines. The eight triangles are the shaded
-     ones, each a polygon of its own; the hole between them is the square with a white triangle on each side. The
-     handle starts where the triangles are equilateral, as in the book. -->
+     A fixed figure: eight congruent triangles with four mirror lines leave the tip's height free, and the fraction
+     changes with it, so the figure is the book's, whose triangles are equilateral (2026-11-06; it had a handle on the
+     tip before). The square A B Q2 Q1 stands on the hidden points A and B (perpendiculars and circles of the side).
+     The tip T above the top side is on the perpendicular bisector of AB, where the ray from Q1 at 75 degrees to the
+     top side meets it: the bisector of the angle between Q1E, E the apex of the equilateral triangle on Q1Q2 (the
+     circles about Q1 and Q2 through each other), and the side's perpendicular at Q1. The corner K1 of the octagon is
+     on the diagonal through Q1, as far from Q1 as T is (a circle about Q1 through T), so the two shaded triangles at
+     Q1 are congruent, and equilateral; the other tips and corners are its reflections in the diagonal, the vertical
+     axis and the center O, which gives the octagon its four mirror lines. The eight triangles are the shaded ones,
+     each a polygon of its own; the hole between them is the square with a white triangle on each side. -->
 <Drawing Version="1">
-  <Viewport Left="-6.4" Top="6.4" Right="6.4" Bottom="-6.4" />
-  <Scene Left="-6.4" Top="6.4" Right="6.4" Bottom="-6.4" />
+  <Viewport Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
+  <Scene Left="-5.2" Top="5.2" Right="5.2" Bottom="-5.2" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
       <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
     </ShapeStyle>
@@ -66,32 +65,33 @@
       <Dependency Name="Q1" />
       <Dependency Name="B" />
     </LineTwoPoints>
-    <!-- the track: a diagonal and then a side up the axis from M -->
-    <CircleByRadius Name="reach1" Visible="false">
+    <!-- the tip T: the ray from Q1 at 75 degrees to the top side (halfway between the equilateral apex E at 60 and
+         the perpendicular at 90) meets the axis -->
+    <Circle Name="cq1" Visible="false">
       <Dependency Name="Q1" />
-      <Dependency Name="B" />
-      <Dependency Name="M" />
-    </CircleByRadius>
-    <IntersectionPoint Name="U1" Visible="false" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="axis" />
-      <Dependency Name="reach1" />
+      <Dependency Name="Q2" />
+    </Circle>
+    <Circle Name="cq2" Visible="false">
+      <Dependency Name="Q2" />
+      <Dependency Name="Q1" />
+    </Circle>
+    <IntersectionPoint Name="E" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="cq1" />
+      <Dependency Name="cq2" />
     </IntersectionPoint>
-    <CircleByRadius Name="reach2" Visible="false">
+    <ReflectedPoint Name="Up" Visible="false">
       <Dependency Name="A" />
-      <Dependency Name="B" />
-      <Dependency Name="U1" />
-    </CircleByRadius>
-    <IntersectionPoint Name="U2" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="Q1" />
+    </ReflectedPoint>
+    <AngleBisector Name="ray75" Visible="false">
+      <Dependency Name="Q1" />
+      <Dependency Name="E" />
+      <Dependency Name="Up" />
+    </AngleBisector>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="ray75" />
       <Dependency Name="axis" />
-      <Dependency Name="reach2" />
     </IntersectionPoint>
-    <Segment Name="track" Visible="false">
-      <Dependency Name="M" />
-      <Dependency Name="U2" />
-    </Segment>
-    <PointOnFigure Name="T" Style="Handle" X="0" Y="4.7320508076" Parameter="0.7730">
-      <Dependency Name="track" />
-    </PointOnFigure>
     <Circle Name="ct" Visible="false">
       <Dependency Name="Q1" />
       <Dependency Name="T" />
