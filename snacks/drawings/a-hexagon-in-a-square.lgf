@@ -2,8 +2,10 @@
 <!-- More Geometry Snacks #8 (What's the Angle?), drawn by hand as a ruler-and-compass construction.
      The square S1 S2 S3 S4 stands on the hidden points S1 and S2. Two handles: the hexagon's center O is free inside a
      hidden square (the square shrunk by half its diagonal's half, the corners cut on the diagonals by circles of half
-     a side about the corners), and its top vertex A is free inside a hidden circle of that same reach about O, so the
-     hexagon can be moved, turned and resized and still fits in the square. The hexagon is drawn by compass: the circle
+     a side about the corners), and its top vertex A is free inside a hidden sector of that same reach about O, from
+     45 to 105 degrees (2026-11-06: a full circle before, which let the hexagon turn until a dashed line no longer met
+     its side of the square and the marked angles were not the puzzle's), so the hexagon can be moved, turned a little
+     and resized and still fits in the square. The hexagon is drawn by compass: the circle
      about O through A, the circle about A through O cutting it at the two neighbors of A, and the other three vertices
      by reflection through O. The line AB through A and its right-hand neighbor is extended to the square's right side
      at B, the line CD through the lower-left vertex C and the bottom vertex to the bottom side at D, both dashed in
@@ -146,8 +148,48 @@
       <Dependency Name="H" />
       <Dependency Name="O" />
     </CircleByRadius>
-    <PointInRegion Name="A" Style="Handle" X="3.17" Y="3.73">
+    <!-- the room for the top vertex: the sector of the reach from 45 to 105 degrees about O (the parallel to the
+         diagonal through O cuts the reach at 45, and the equilateral triangle on that radius turns it to 105), so the
+         lines AB and CD keep reaching the right and the bottom side: at 30 degrees CD is parallel to the bottom, at
+         120 AB to the right side, and past either the marked angles are no longer the puzzle's -->
+    <ParallelLine Name="diagonalThroughO" Visible="false">
+      <Dependency Name="d1" />
+      <Dependency Name="O" />
+    </ParallelLine>
+    <IntersectionPoint Name="SectorBegin" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="diagonalThroughO" />
       <Dependency Name="reach" />
+    </IntersectionPoint>
+    <Circle Name="aboutBegin" Visible="false">
+      <Dependency Name="SectorBegin" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="SectorEnd" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="reach" />
+      <Dependency Name="aboutBegin" />
+    </IntersectionPoint>
+    <CircleSector Name="turn" Visible="false" Sweep="Smaller">
+      <Dependency Name="O" />
+      <Dependency Name="SectorBegin" />
+      <Dependency Name="SectorEnd" />
+    </CircleSector>
+    <!-- less a hole of half the reach about O, so the hexagon cannot shrink to a point when the handle is pulled
+         to the other side of O (the nearest point of the sector would be O itself) -->
+    <MidPoint Name="H2" Visible="false">
+      <Dependency Name="H" />
+      <Dependency Name="S1" />
+    </MidPoint>
+    <CircleByRadius Name="hole" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="H2" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <Region Name="turnRoom" Visible="false" Operation="Difference">
+      <Dependency Name="turn" />
+      <Dependency Name="hole" />
+    </Region>
+    <PointInRegion Name="A" Style="Handle" X="3.17" Y="3.73">
+      <Dependency Name="turnRoom" />
     </PointInRegion>
     <Circle Name="c" Visible="false">
       <Dependency Name="O" />

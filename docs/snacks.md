@@ -78,10 +78,22 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
   (book 2, Fraction #12, fixed on 2026-11-06: eight congruent triangles with four mirror lines
   leave the tips' height free and the fraction changes with it, so the handle on a tip misled;
   the book's figure, and its solution, have the triangles equilateral, which the drawing now
-  constructs by a 75° ray from a corner, and its fraction is the book's √3 − 1): no handle,
+  constructs by a 75° ray from a corner, and its fraction is the book's √3 − 1) and
+  `cotangent-circles-in-a-rectangle` (book 2, Sangaku #9, fixed the same day: the radius 3 and the
+  length 8 are given in words, and the handle stretched the rectangle; the small radius
+  11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12): no handle,
   `live` false in the catalog so the tile carries no drag badge. The lesson: a puzzle whose
   words leave a degree of freedom that the picture fixes is a fixed figure, since the handle
-  would change the answer. The star's regular
+  would change the answer. **The audit of 2026-11-06** went over all 30 with that eye: every
+  live drawing was swept by moving its handles in the player (`moveTo` and
+  `recalculateAllDependents` on the handle figures, reading the areas, angles and lengths
+  asked about), and the answers held, except for the two above and `a-hexagon-in-a-square`,
+  whose vertex handle could turn the hexagon until a dashed line no longer met its side of
+  the square and the marked angles were not the puzzle's: its handle is now kept to a
+  sector of 45° to 105° about the center, less a hole, where the sum is 90° throughout. The
+  live drawings that keep the answer while leaving the wording (a square that becomes a
+  rectangle or a parallelogram, an equilateral triangle that becomes any triangle) stay
+  live by the maintainer's decision: the fraction is affine. The star's regular
   octagon is built about its center by reflections through it, a perpendicular and the lines
   through the midpoints of two chords; the star's points are the triangles cut off each side
   by the two diagonals that skip two vertices.

@@ -302,7 +302,7 @@
       "page": "snacks2-page-059.png (left)",
       "statement": "Cotangent circles are enclosed in a rectangle as shown. If the radius of the large circle is 3, and the length of the rectangle is 8, what is the radius of the small circle?",
       "drawing": "cotangent-circles-in-a-rectangle.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "two-ellipses-in-a-square",
