@@ -1228,6 +1228,17 @@ public abstract partial class Behavior : INotifyPropertyChanged
         else if (e.InitialPressMouseButton == MouseButton.Left)
         {
             SafeMouseUp(sender, e);
+
+            // what the press did changed what is under the cursor (the point the second
+            // click of the Segment tool made is there now): the tool looks anew, as after a
+            // move, and the cursor with it - or both stayed as they were before the click
+            // until the mouse moved (a cross and no halo over the new point)
+            OfferClickOptions(e);
+            SafeMouseMove(sender, e);
+            if (!errorHappened)
+            {
+                UpdateCursor(e);
+            }
         }
 
         // what the press did may have changed what a click here does (a dragged point

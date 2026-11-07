@@ -192,7 +192,11 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   the click picks something already there - a figure the tool needs, an existing point, or a
   place defined by figures (intersection, midpoint); arrow = everything else, including a new
   point sliding along a figure and clicks that do nothing. `winauto cursor` prints the cursor
-  showing now (screenshots don't include it).
+  showing now (screenshots don't include it). The release of a click runs the tool's
+  hover again and sets the cursor (`Behavior.PointerReleasedHandler`): what the click
+  made is under the cursor now, and the tool's hover state is from the move before the
+  click - the second click of the Segment tool left a cross and no halo over the point
+  it had just made, until the mouse moved (2026-11-07).
 - **Any figure is draggable**: dragging a dependent figure moves its root free points, so gallery
   text can say "drag the circle" even when the points it is built on are hidden. Labels are the
   exception (`AllowMove`): a drag moves the label, not what it measures or names. A point by
