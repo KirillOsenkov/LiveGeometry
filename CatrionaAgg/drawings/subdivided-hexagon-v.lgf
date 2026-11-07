@@ -11,17 +11,17 @@
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
     </PointStyle>
-    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF8EC9EE" Texture="Crayon">
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FFA5DFF4" Texture="Crayon">
       <Dark Texture="None">
         <Fill>
           <LinearGradientBrush>
-            <GradientStop Color="#FF4FAEE3" />
-            <GradientStop Color="#FF2E8FC6" Offset="1" />
+            <GradientStop Color="#FF4FB8E0" />
+            <GradientStop Color="#FF2E98C2" Offset="1" />
           </LinearGradientBrush>
         </Fill>
       </Dark>
     </ShapeStyle>
-    <LineStyle Name="BlueLine" Color="#FF1E28C8" StrokeWidth="2.5">
+    <LineStyle Name="BlueLine" Color="#FF0000FD" StrokeWidth="4">
       <Dark Color="#FFA6ABF2" />
     </LineStyle>
     <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
