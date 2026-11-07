@@ -479,17 +479,14 @@ public class GalleryView : DockPanel
     static Library[] Libraries()
     {
         const string catriona = "https://livegeometry.com/CatrionaAgg";
-        // const string snacks = "https://livegeometry.com/snacks";
+        const string snacks = "https://livegeometry.com/snacks";
         // the paper of the /CatrionaAgg and /snacks pages
         var paper = Color.Parse("#F7F5F0");
 
         return
         [
             new Library("Catriona Agg's Puzzles", catriona, paper, "440", HexagonsPicture),
-            // off until the Geometry Snacks library is shown to its authors (docs/snacks.md): to
-            // turn it on, uncomment this line, the chip in web/index.html and the link in
-            // wwwroot/index.html
-            // new Library("Geometry Snacks", snacks, paper, "30", DonutPicture)
+            new Library("Geometry Snacks", snacks, paper, "30", DonutPicture)
         ];
     }
 

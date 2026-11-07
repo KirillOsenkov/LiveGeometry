@@ -14,16 +14,14 @@ the head (`tools/previews.cs` renders the pictures for both libraries). The dev 
 - **Terms with the authors** (Vincent Pantaloni said yes by email on 2026-11-06, Ed Southall is on
   board): about half the puzzles at most, no answers or solutions anywhere on the pages, both
   authors credited, links to the books (Amazon and Tarquin), and the prototype shown to them for
-  review before it is published. The library is set up to be linked as the Catriona Agg one
-  is (checked against it on 2026-11-05), but the links are **off until the authors have
-  seen it**, each commented out with a note saying so: a chip on the start page
-  (`GalleryView.Libraries`, its miniature the low-poly donut of the covers, `DonutPicture`,
-  which stays compiled) and on /web (`web/index.html`, the same donut drawn by `drawDonut`
-  from the same numbers), and a line in the start page's intro for crawlers
-  (`wwwroot/index.html`). Turning them on is uncommenting those three places. What goes out
-  anyway: the pages at /snacks and /snacks/<slug> with their titles, descriptions, canonical
-  addresses and link-preview pictures (`previews/`, rendered by CI), and the sitemap lists
-  them all.
+  review before it is published. The library is linked as the Catriona Agg one is (checked
+  against it on 2026-11-05): a chip on the start page (`GalleryView.Libraries`, its miniature
+  the low-poly donut of the covers, `DonutPicture`) and on /web (`web/index.html`, the same
+  donut drawn by `drawDonut` from the same numbers), and a line in the start page's intro
+  for crawlers (`wwwroot/index.html`). The three were commented out until the authors had
+  seen the prototype, and turned on on 2026-11-07. The pages at /snacks and /snacks/<slug>
+  carry their titles, descriptions, canonical addresses and link-preview pictures
+  (`previews/`, rendered by CI), and the sitemap lists them all.
 - **Which puzzles**: only those that gain something from dragging, so a puzzle whose figure the
   statement fixes completely is left out. Doubtful ones are listed for the maintainer to decide.
   The aim is 30 to 50 percent of the puzzles, not more, so the books keep their point.

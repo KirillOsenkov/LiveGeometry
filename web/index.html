@@ -625,16 +625,13 @@
             <div class="caption">Catriona Agg's Puzzles <span class="badge">440</span></div>
           </a>
           <!-- The Geometry Snacks chip: the low-poly donut of the books' covers, drawn by drawDonut
-               below from the same numbers as the app's chip (GalleryView.DonutPicture). Off until
-               the library is shown to its authors (docs/snacks.md): to turn it on, uncomment it
-               here, the Library line in GalleryView.Libraries and the link in wwwroot/index.html.
+               below from the same numbers as the app's chip (GalleryView.DonutPicture). -->
           <a class="tile chip" href="/snacks" target="_blank" rel="noopener" style="--tile-plate: #F7F5F0" title="Puzzles from Geometry Snacks and More Geometry Snacks, redrawn live">
             <div class="picture">
               <svg class="donut" id="donut" aria-hidden="true"></svg>
             </div>
             <div class="caption">Geometry Snacks <span class="badge">30</span></div>
           </a>
-          -->
         </div>
       </div>
       <div class="tiles" id="tiles"></div>
@@ -1074,11 +1071,8 @@
         tilesHost.appendChild(tile.element);
       });
 
-      // the Geometry Snacks chip, while it is there (see the markup above)
-      var donut = document.getElementById('donut');
-      if (donut != null) {
-        drawDonut(donut);
-      }
+      // the Geometry Snacks chip
+      drawDonut(document.getElementById('donut'));
 
       // the start tiles and the chips have plates too, deepened under the dark theme like the others
       document.querySelectorAll('.tile.start, .tile.chip').forEach(function (element) {
