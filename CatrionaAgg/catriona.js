@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
       puzzlePlayer.applyTheme(currentTheme());
     }
 
-    if (featurePlayer != null) {
-      featurePlayer.applyTheme(currentTheme());
+    if (heroPlayer != null) {
+      heroPlayer.applyTheme(currentTheme());
     }
 
     if (hover != null) {
@@ -967,34 +967,30 @@ document.addEventListener('DOMContentLoaded', function () {
     render(animate);
   }
 
-  // ---------- the newest puzzle, alive, beside the introduction ----------
+  // ---------- the newest puzzle, alive, beside the book ----------
 
-  var featurePlayer = null;
+  var heroPlayer = null;
 
-  function showFeature() {
+  // the newest puzzle with something to drag, played on the page itself: no paper, its
+  // handles shown and draggable, the scene fitted into the hero's open right part
+  function showHeroLive() {
+    var element = document.getElementById('hero-live');
     var featured = puzzles.find(function (puzzle) { return puzzle.live; }) || puzzles[0];
-    if (featured == null || Player == null) {
+    if (element == null || featured == null || Player == null || getComputedStyle(element).display === 'none') {
       return;
     }
 
-    var feature = document.getElementById('feature');
-    var art = document.getElementById('feature-art');
-    feature.href = Base + '/' + featured.slug;
-    document.getElementById('feature-name').textContent = featured.title;
-    feature.hidden = false;
-    if (getComputedStyle(feature).display === 'none') {
-      return;
-    }
-
+    element.title = featured.title;
     fetchText(featured).then(function (text) {
-      featurePlayer = new LivePlayer(art, {}, function () {
-        var rect = art.getBoundingClientRect();
-        return rect.width > 0 ? rect.width / ThumbSize * (window.devicePixelRatio || 1) : null;
-      });
-      featurePlayer.measureElement();
-      featurePlayer.load(withoutHandles(text));
-      if (!reduceMotion) {
-        drift(featurePlayer, 30, 6);
+      var HeroPlayer = class extends Player {
+        show(drawing) {
+          drawing.paintsPaper = false;
+          super.show(drawing);
+        }
+      };
+      heroPlayer = new HeroPlayer(element, { lgf: text, theme: currentTheme() });
+      if (heroPlayer.loadErrors != null) {
+        console.warn('CatrionaAgg: ' + featured.slug + ': ' + heroPlayer.loadErrors);
       }
     }).catch(function (error) {
       console.error('CatrionaAgg: ' + error.message);
@@ -1013,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateControls();
     publishState();
     render(false);
-    showFeature();
+    showHeroLive();
 
     if (state.only !== '' && !returning) {
       // a puzzle's tag: its section alone, the results in view

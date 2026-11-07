@@ -121,6 +121,37 @@ page shows it), never copied.
   then give it the styles of this file's neighbors by hand: the `Handle` point style for the
   handle, every other point and helper line hidden, her fills and inks, the scene over the
   handle's whole range, no title or description labels.
+- **The introduction** (2026-11-07) shows her book in the hero's right half (`book.jpg`, the
+  cover at 585 x 898, 272 px tall, with an Amazon link under it, the way the Snacks page shows
+  its two under the title; under the text where the hero is one column), 20 px from the text,
+  whose column is as wide as the text itself (`fit-content(640px)`), and beside the book the
+  newest puzzle with something to drag, alive: a plain player (`showHeroLive`, `heroPlayer`)
+  on the page itself, no paper, no caption, no frame, its handles shown and draggable, the
+  scene fitted into what the hero has left on the right (at least 300 px; hidden where the
+  hero is one column). Until then that half was a card of the newest puzzle without its
+  handles, drifting. **The cover's squares as
+  a background** were tried the same day and taken out again, none of the placements being
+  good enough; what was made is kept for another try. The pattern is four rings of twelve
+  squares, one color per ring, the maintainer's own construction in the app
+  (`docs/BookCover12Squares.lgf`, with its helper lines): a regular 12-gon, an equilateral
+  triangle on each side, a square on each free side of the triangles, and each ring outward
+  built on the corners of the one inside it; rigid. `docs/BookCoverSquares.lgf` is a copy with
+  every point and helper hidden and the sides inked, which `dotnet run tools/previews.cs --
+  <publish>/wwwroot --one docs/BookCoverSquares.lgf <out.png> 800` renders to a square,
+  transparent 1600 px picture. The placements tried, all at 30% opacity or less: a square as
+  tall as the hero centered on its open right half; the cover standing on the right at 320 px
+  in front of a pattern 1.44 times the hero's height; the pattern pinned behind the whole page
+  at the window's top right, or centered behind the text too; and the pattern continuing the
+  cover's own, which needs the picture as a pseudo-element of the cover link, sized in
+  percentages of the cover's box: center 25.77% across and 23.36% down the cover, side 228.9%
+  of the cover's width (1.4909 times its height), turned 4.1° clockwise (`transform:
+  translate(-50%, -50%) rotate(4.1deg)`, `isolation: isolate` on the link and `z-index: -1` on
+  the pseudo-element). Those numbers came from a search over the cover picture for the
+  center, scale and turn that lay the pattern's ink lines on the cover's dark lines best (the
+  picture holds 284.2 drawing units across 1559 of its 1600 px; the cover 4.59 px per unit);
+  the search, an overlay checker and the script that hides the helpers are outside the repo
+  (`C:\temp\LiveGeometry\CoverFit`), as are the spiral of growing squares and the rings of
+  diamonds tried before the maintainer's construction (`SquareSpiral`, `SquareRings` there).
 - **Tiles** are pictures: each drawing is played once off screen without its handles and kept
   as a PNG (an object URL) that every tile of it shows, only near the view, the nearest first;
   the texts of every tile near the view are fetched at once, the drawing is one tile at a time
@@ -137,8 +168,9 @@ page shows it), never copied.
 - **Embedding**: a puzzle plays on another page like a gallery drawing (see "The JavaScript
   player"): `data-src` takes the puzzle's own link, `https://livegeometry.com/CatrionaAgg/<slug>`,
   which the player turns into `/CatrionaAgg/drawings/<slug>.lgf`, served with CORS.
-- **Working on it**: `.claude/launch.json` has "catriona-dev": `tools/serve.cs` over a folder
-  holding `player/1/player.js` (copied from a build's `obj/player/1/`) with
+- **Working on it**: `.claude/launch.json` has "catriona-dev": `tools/serve.cs` over a publish
+  of the browser head (`C:\temp\LiveGeometry\site\wwwroot`, the folder every dev server there
+  serves since 2026-11-07) with
   `--overlay CatrionaAgg=CatrionaAgg --route CatrionaAgg=CatrionaAgg/puzzle.html --reload`
-  (every puzzle's address gets `puzzle.html` itself, the build's copies not being there);
+  (every puzzle's address gets the repo's `puzzle.html` itself, not the build's copy);
   `window.catrionaPlayer` is the puzzle's player.

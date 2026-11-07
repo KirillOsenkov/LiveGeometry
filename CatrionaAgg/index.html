@@ -83,10 +83,17 @@
         <p class="lede"><a href="https://bsky.app/profile/mathforge.org" target="_blank" rel="noopener">Andrew Stacey</a> has catalogued every puzzle, and gathered the techniques and solutions, at <a href="https://notes.mathforge.org/notes/published/HomePage" target="_blank" rel="noopener">Mathforge Notes</a>.</p>
         <p class="lede">Here each puzzle is redrawn as a Live Geometry drawing. Drag the white points to experiment!</p>
       </div>
-      <a class="feature" id="feature" href="/CatrionaAgg" hidden>
-        <div class="art" id="feature-art"></div>
-        <div class="caption"><span class="label">Newest</span><span class="name" id="feature-name"></span></div>
-      </a>
+      <!-- her book, in the hero's right half: the cover, and under it where to buy it -->
+      <div class="books">
+        <div class="book">
+          <a class="cover" href="https://www.amazon.com/dp/1095672460" target="_blank" rel="noopener"><img src="/CatrionaAgg/book.jpg" width="585" height="898" alt="Geometry Puzzles in Felt Tip, the book"></a>
+          <span class="shops">
+            <a href="https://www.amazon.com/dp/1095672460" target="_blank" rel="noopener">Amazon<svg class="out"><use href="/CatrionaAgg/icons.svg#icon-out"/></svg></a>
+          </span>
+        </div>
+      </div>
+      <!-- the newest puzzle, alive and draggable, on nothing: no caption, no frame (catriona.js) -->
+      <div class="hero-live" id="hero-live"></div>
     </section>
 
     <div class="controls" id="controls">

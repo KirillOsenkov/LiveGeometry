@@ -1,0 +1,1642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The squares of the cover of Catriona Agg's book "Geometry Puzzles in Felt Tip", the maintainer's own construction
+     (docs/BookCover12Squares.lgf, where the helper lines show) with every point and helper hidden and the sides inked: a regular
+     12-gon, an equilateral triangle on each side, a square on each free side of the triangles, and each ring outward built on
+     the corners of the one inside it, twelve squares and one color per ring. Rigid: nothing to drag. -->
+<Drawing Version="1">
+  <Viewport Left="-411.708659255" Top="205.6337278132" Right="327.8283763252" Bottom="-89.7959108795" />
+  <Styles>
+    <LineStyle Name="Line" Color="#FF000000" StrokeWidth="3">
+      <Dark Color="#FFD3D3D3" />
+    </LineStyle>
+    <ShapeStyle Name="1" Fill="#FF2C8FB2" Color="#00FFFFFF">
+      <Dark Fill="#46D8CC96" />
+    </ShapeStyle>
+    <ShapeStyle Name="2" Fill="#FF52C1DB" Color="#00FFFFFF">
+      <Dark Fill="#46D8CC96" />
+    </ShapeStyle>
+    <ShapeStyle Name="3" Fill="#FFA6B5B5" Color="#00FFFFFF">
+      <Dark Fill="#46D8CC96" />
+    </ShapeStyle>
+    <ShapeStyle Name="4" Fill="#FFEEECE8" Color="#00FFFFFF">
+      <Dark Fill="#46D8CC96" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="1.5">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" X="-48.4881256341" Y="52.1412753764" Visible="false" />
+    <FreePoint Name="B" X="-31.9255774414" Y="76.599922126" Visible="false" />
+    <PointByCoordinates Name="C" X="(1 - sqrt(3) / 2) * A.X + 0.5 * A.Y + sqrt(3) / 2 * B.X - 0.5 * B.Y" Y="-0.5 * A.X + (1 - sqrt(3) / 2) * A.Y + 0.5 * B.X + sqrt(3) / 2 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" X="0.5 * A.X + sqrt(3) / 2 * A.Y + 0.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X + 0.5 * A.Y + sqrt(3) / 2 * B.X + 0.5 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" X="A.X + A.Y - B.Y" Y="-A.X + A.Y + B.X" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" X="1.5 * A.X + sqrt(3) / 2 * A.Y - 0.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X + 1.5 * A.Y + sqrt(3) / 2 * B.X - 0.5 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G" X="(1 + sqrt(3) / 2) * A.X + 0.5 * A.Y - sqrt(3) / 2 * B.X - 0.5 * B.Y" Y="-0.5 * A.X + (1 + sqrt(3) / 2) * A.Y + 0.5 * B.X - sqrt(3) / 2 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H" X="2 * A.X - B.X" Y="2 * A.Y - B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I" X="(1 + sqrt(3) / 2) * A.X - 0.5 * A.Y - sqrt(3) / 2 * B.X + 0.5 * B.Y" Y="0.5 * A.X + (1 + sqrt(3) / 2) * A.Y - 0.5 * B.X - sqrt(3) / 2 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J" X="1.5 * A.X - sqrt(3) / 2 * A.Y - 0.5 * B.X + sqrt(3) / 2 * B.Y" Y="sqrt(3) / 2 * A.X + 1.5 * A.Y - sqrt(3) / 2 * B.X - 0.5 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K" X="A.X - A.Y + B.Y" Y="A.X + A.Y - B.X" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L" X="0.5 * A.X - sqrt(3) / 2 * A.Y + 0.5 * B.X + sqrt(3) / 2 * B.Y" Y="sqrt(3) / 2 * A.X + 0.5 * A.Y - sqrt(3) / 2 * B.X + 0.5 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M" X="(1 - sqrt(3) / 2) * A.X - 0.5 * A.Y + sqrt(3) / 2 * B.X + 0.5 * B.Y" Y="0.5 * A.X + (1 - sqrt(3) / 2) * A.Y - 0.5 * B.X + sqrt(3) / 2 * B.Y" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="BC" Visible="false" Style="Ink">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Polygon Name="p" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+      <Dependency Name="J" />
+      <Dependency Name="K" />
+      <Dependency Name="L" />
+      <Dependency Name="M" />
+    </Polygon>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <Ray Name="AN" Style="FaintLine" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="N" />
+    </Ray>
+    <Circle Name="c" Style="DottedLine" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Circle>
+    <IntersectionPoint Name="O" Algorithm="IntersectLineAndEllipse2" Visible="false">
+      <Dependency Name="AN" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <PointByCoordinates Name="P" X="B.X - B.Y + O.Y" Y="B.X + B.Y - O.X" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q" X="-B.Y + O.X + O.Y" Y="B.X - O.X + O.Y" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <Segment Name="BO" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Segment>
+    <Segment Name="BP" Style="Ink">
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="PQ" Style="Ink">
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Segment>
+    <Segment Name="OQ" Style="Ink">
+      <Dependency Name="Q" />
+      <Dependency Name="O" />
+    </Segment>
+    <Polygon Name="BOQP" Style="1">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+      <Dependency Name="Q" />
+    </Polygon>
+    <PointByCoordinates Name="R" X="C.Y + O.X - O.Y" Y="-C.X + O.X + O.Y" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S" X="C.X + C.Y - O.Y" Y="-C.X + C.Y + O.X" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+    </PointByCoordinates>
+    <Segment Name="CO" Style="Ink">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+    </Segment>
+    <Segment Name="OR" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+    </Segment>
+    <Segment Name="RS" Style="Ink">
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="CS" Style="Ink">
+      <Dependency Name="S" />
+      <Dependency Name="C" />
+    </Segment>
+    <Polygon Name="CORS" Style="1">
+      <Dependency Name="C" />
+      <Dependency Name="O" />
+      <Dependency Name="R" />
+      <Dependency Name="S" />
+    </Polygon>
+    <PointByCoordinates Name="T" X="M.X - M.Y + P.Y" Y="M.X + M.Y - P.X" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U" X="-M.Y + P.X + P.Y" Y="M.X - P.X + P.Y" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="MP" Style="Ink">
+      <Dependency Name="P" />
+      <Dependency Name="M" />
+    </Segment>
+    <Segment Name="MT" Style="Ink">
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="TU" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Segment>
+    <Segment Name="PU" Style="Ink">
+      <Dependency Name="U" />
+      <Dependency Name="P" />
+    </Segment>
+    <Polygon Name="MPUT" Style="1">
+      <Dependency Name="P" />
+      <Dependency Name="M" />
+      <Dependency Name="T" />
+      <Dependency Name="U" />
+    </Polygon>
+    <PointByCoordinates Name="V" X="L.X - L.Y + T.Y" Y="L.X + L.Y - T.X" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W" X="-L.Y + T.X + T.Y" Y="L.X - T.X + T.Y" Visible="false">
+      <Dependency Name="L" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Segment Name="LT" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+    </Segment>
+    <Segment Name="LV" Style="Ink">
+      <Dependency Name="L" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="VW" Style="Ink">
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </Segment>
+    <Segment Name="TW" Style="Ink">
+      <Dependency Name="W" />
+      <Dependency Name="T" />
+    </Segment>
+    <Polygon Name="LTWV" Style="1">
+      <Dependency Name="T" />
+      <Dependency Name="L" />
+      <Dependency Name="V" />
+      <Dependency Name="W" />
+    </Polygon>
+    <PointByCoordinates Name="X" X="K.X - K.Y + V.Y" Y="K.X + K.Y - V.X" Visible="false">
+      <Dependency Name="K" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Y" X="-K.Y + V.X + V.Y" Y="K.X - V.X + V.Y" Visible="false">
+      <Dependency Name="K" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <Segment Name="KV" Style="Ink">
+      <Dependency Name="V" />
+      <Dependency Name="K" />
+    </Segment>
+    <Segment Name="KX" Style="Ink">
+      <Dependency Name="K" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="XY" Style="Ink">
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </Segment>
+    <Segment Name="VY" Style="Ink">
+      <Dependency Name="Y" />
+      <Dependency Name="V" />
+    </Segment>
+    <Polygon Name="KVYX" Style="1">
+      <Dependency Name="V" />
+      <Dependency Name="K" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </Polygon>
+    <PointByCoordinates Name="Z" X="J.X - J.Y + X.Y" Y="J.X + J.Y - X.X" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A1" X="-J.Y + X.X + X.Y" Y="J.X - X.X + X.Y" Visible="false">
+      <Dependency Name="J" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Segment Name="JX" Style="Ink">
+      <Dependency Name="X" />
+      <Dependency Name="J" />
+    </Segment>
+    <Segment Name="JZ" Style="Ink">
+      <Dependency Name="J" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="ZA1" Style="Ink">
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Segment>
+    <Segment Name="XA1" Style="Ink">
+      <Dependency Name="A1" />
+      <Dependency Name="X" />
+    </Segment>
+    <Polygon Name="JXA1Z" Style="1">
+      <Dependency Name="X" />
+      <Dependency Name="J" />
+      <Dependency Name="Z" />
+      <Dependency Name="A1" />
+    </Polygon>
+    <PointByCoordinates Name="B1" X="I.X - I.Y + Z.Y" Y="I.X + I.Y - Z.X" Visible="false">
+      <Dependency Name="I" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C1" X="-I.Y + Z.X + Z.Y" Y="I.X - Z.X + Z.Y" Visible="false">
+      <Dependency Name="I" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Segment Name="IZ" Style="Ink">
+      <Dependency Name="Z" />
+      <Dependency Name="I" />
+    </Segment>
+    <Segment Name="IB1" Style="Ink">
+      <Dependency Name="I" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="B1C1" Style="Ink">
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </Segment>
+    <Segment Name="ZC1" Style="Ink">
+      <Dependency Name="C1" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Polygon Name="IZC1B1" Style="1">
+      <Dependency Name="Z" />
+      <Dependency Name="I" />
+      <Dependency Name="B1" />
+      <Dependency Name="C1" />
+    </Polygon>
+    <PointByCoordinates Name="D1" X="B1.Y + H.X - H.Y" Y="-B1.X + H.X + H.Y" Visible="false">
+      <Dependency Name="B1" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E1" X="B1.X + B1.Y - H.Y" Y="-B1.X + B1.Y + H.X" Visible="false">
+      <Dependency Name="B1" />
+      <Dependency Name="H" />
+    </PointByCoordinates>
+    <Segment Name="HB1" Style="Ink">
+      <Dependency Name="B1" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="HD1" Style="Ink">
+      <Dependency Name="H" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="D1E1" Style="Ink">
+      <Dependency Name="D1" />
+      <Dependency Name="E1" />
+    </Segment>
+    <Segment Name="B1E1" Style="Ink">
+      <Dependency Name="E1" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Polygon Name="HB1E1D1" Style="1">
+      <Dependency Name="B1" />
+      <Dependency Name="H" />
+      <Dependency Name="D1" />
+      <Dependency Name="E1" />
+    </Polygon>
+    <PointByCoordinates Name="F1" X="D1.Y + G.X - G.Y" Y="-D1.X + G.X + G.Y" Visible="false">
+      <Dependency Name="D1" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G1" X="D1.X + D1.Y - G.Y" Y="-D1.X + D1.Y + G.X" Visible="false">
+      <Dependency Name="D1" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <Segment Name="GD1" Style="Ink">
+      <Dependency Name="D1" />
+      <Dependency Name="G" />
+    </Segment>
+    <Segment Name="GF1" Style="Ink">
+      <Dependency Name="G" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Segment Name="F1G1" Style="Ink">
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </Segment>
+    <Segment Name="D1G1" Style="Ink">
+      <Dependency Name="G1" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Polygon Name="GD1G1F1" Style="1">
+      <Dependency Name="D1" />
+      <Dependency Name="G" />
+      <Dependency Name="F1" />
+      <Dependency Name="G1" />
+    </Polygon>
+    <PointByCoordinates Name="H1" X="F.X - F.Y + F1.Y" Y="F.X + F.Y - F1.X" Visible="false">
+      <Dependency Name="F" />
+      <Dependency Name="F1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I1" X="-F.Y + F1.X + F1.Y" Y="F.X - F1.X + F1.Y" Visible="false">
+      <Dependency Name="F" />
+      <Dependency Name="F1" />
+    </PointByCoordinates>
+    <Segment Name="FF1" Style="Ink">
+      <Dependency Name="F1" />
+      <Dependency Name="F" />
+    </Segment>
+    <Segment Name="FH1" Style="Ink">
+      <Dependency Name="F" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Segment Name="H1I1" Style="Ink">
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </Segment>
+    <Segment Name="F1I1" Style="Ink">
+      <Dependency Name="I1" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Polygon Name="FF1I1H1" Style="1">
+      <Dependency Name="F1" />
+      <Dependency Name="F" />
+      <Dependency Name="H1" />
+      <Dependency Name="I1" />
+    </Polygon>
+    <PointByCoordinates Name="J1" X="`E`.X - `E`.Y + H1.Y" Y="`E`.X + `E`.Y - H1.X" Visible="false">
+      <Dependency Name="E" />
+      <Dependency Name="H1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K1" X="-`E`.Y + H1.X + H1.Y" Y="`E`.X - H1.X + H1.Y" Visible="false">
+      <Dependency Name="E" />
+      <Dependency Name="H1" />
+    </PointByCoordinates>
+    <Segment Name="EH1" Style="Ink">
+      <Dependency Name="H1" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="EJ1" Style="Ink">
+      <Dependency Name="E" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="J1K1" Style="Ink">
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+    </Segment>
+    <Segment Name="H1K1" Style="Ink">
+      <Dependency Name="K1" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Polygon Name="EH1K1J1" Style="1">
+      <Dependency Name="H1" />
+      <Dependency Name="E" />
+      <Dependency Name="J1" />
+      <Dependency Name="K1" />
+    </Polygon>
+    <PointByCoordinates Name="L1" X="-D.Y + J1.X + J1.Y" Y="D.X - J1.X + J1.Y" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <Segment Name="DJ1" Style="Ink">
+      <Dependency Name="J1" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="DS" Style="Ink">
+      <Dependency Name="D" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="SL1" Style="Ink">
+      <Dependency Name="S" />
+      <Dependency Name="L1" />
+    </Segment>
+    <Segment Name="J1L1" Style="Ink">
+      <Dependency Name="L1" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Polygon Name="DSL1J1" Style="1">
+      <Dependency Name="J1" />
+      <Dependency Name="D" />
+      <Dependency Name="S" />
+      <Dependency Name="L1" />
+    </Polygon>
+    <Ray Name="AQ" Style="FaintLine" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="Q" />
+    </Ray>
+    <Ray Name="AR" Style="FaintLine" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="R" />
+    </Ray>
+    <ParallelLine Name="g" Style="FaintLine" Visible="false">
+      <Dependency Name="BC" />
+      <Dependency Name="O" />
+    </ParallelLine>
+    <IntersectionPoint Name="M1" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="g" />
+    </IntersectionPoint>
+    <Circle Name="d" Style="DottedLine" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="M1" />
+    </Circle>
+    <IntersectionPoint Name="N1" Algorithm="IntersectLineAndEllipse2" Visible="false">
+      <Dependency Name="AN" />
+      <Dependency Name="d" />
+    </IntersectionPoint>
+    <Ray Name="QN1" Style="FaintLine" Visible="false">
+      <Dependency Name="Q" />
+      <Dependency Name="N1" />
+    </Ray>
+    <Ray Name="RN1" Style="FaintLine" Visible="false">
+      <Dependency Name="R" />
+      <Dependency Name="N1" />
+    </Ray>
+    <IntersectionPoint Name="O1" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="RN1" />
+    </IntersectionPoint>
+    <PointByCoordinates Name="P1" X="O.Y + O1.X - O1.Y" Y="-O.X + O1.X + O1.Y" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="O1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Q1" X="O.X + O.Y - O1.Y" Y="-O.X + O.Y + O1.X" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="O1" />
+    </PointByCoordinates>
+    <Segment Name="OO1" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Segment Name="O1P1" Style="Ink">
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+    </Segment>
+    <Segment Name="P1Q1" Style="Ink">
+      <Dependency Name="P1" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Segment Name="OQ1" Style="Ink">
+      <Dependency Name="Q1" />
+      <Dependency Name="O" />
+    </Segment>
+    <Polygon Name="OO1P1Q1" Style="2">
+      <Dependency Name="O" />
+      <Dependency Name="O1" />
+      <Dependency Name="P1" />
+      <Dependency Name="Q1" />
+    </Polygon>
+    <PointByCoordinates Name="R1" X="O1.Y + P.X - P.Y" Y="-O1.X + P.X + P.Y" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S1" X="O1.X + O1.Y - P.Y" Y="-O1.X + O1.Y + P.X" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="P" />
+    </PointByCoordinates>
+    <Segment Name="PO1" Style="Ink">
+      <Dependency Name="O1" />
+      <Dependency Name="P" />
+    </Segment>
+    <Segment Name="PR1" Style="Ink">
+      <Dependency Name="P" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Segment Name="R1S1" Style="Ink">
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </Segment>
+    <Segment Name="O1S1" Style="Ink">
+      <Dependency Name="S1" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Polygon Name="PO1S1R1" Style="2">
+      <Dependency Name="O1" />
+      <Dependency Name="P" />
+      <Dependency Name="R1" />
+      <Dependency Name="S1" />
+    </Polygon>
+    <PointByCoordinates Name="T1" X="R1.Y + T.X - T.Y" Y="-R1.X + T.X + T.Y" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U1" X="R1.X + R1.Y - T.Y" Y="-R1.X + R1.Y + T.X" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="T" />
+    </PointByCoordinates>
+    <Segment Name="TR1" Style="Ink">
+      <Dependency Name="R1" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="TT1" Style="Ink">
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="T1U1" Style="Ink">
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </Segment>
+    <Segment Name="R1U1" Style="Ink">
+      <Dependency Name="U1" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Polygon Name="TR1U1T1" Style="2">
+      <Dependency Name="R1" />
+      <Dependency Name="T" />
+      <Dependency Name="T1" />
+      <Dependency Name="U1" />
+    </Polygon>
+    <PointByCoordinates Name="V1" X="T1.Y + V.X - V.Y" Y="-T1.X + V.X + V.Y" Visible="false">
+      <Dependency Name="T1" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W1" X="T1.X + T1.Y - V.Y" Y="-T1.X + T1.Y + V.X" Visible="false">
+      <Dependency Name="T1" />
+      <Dependency Name="V" />
+    </PointByCoordinates>
+    <Segment Name="VT1" Style="Ink">
+      <Dependency Name="T1" />
+      <Dependency Name="V" />
+    </Segment>
+    <Segment Name="VV1" Style="Ink">
+      <Dependency Name="V" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Segment Name="V1W1" Style="Ink">
+      <Dependency Name="V1" />
+      <Dependency Name="W1" />
+    </Segment>
+    <Segment Name="T1W1" Style="Ink">
+      <Dependency Name="W1" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Polygon Name="VT1W1V1" Style="2">
+      <Dependency Name="T1" />
+      <Dependency Name="V" />
+      <Dependency Name="V1" />
+      <Dependency Name="W1" />
+    </Polygon>
+    <PointByCoordinates Name="X1" X="V1.Y + X.X - X.Y" Y="-V1.X + X.X + X.Y" Visible="false">
+      <Dependency Name="V1" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Y1" X="V1.X + V1.Y - X.Y" Y="-V1.X + V1.Y + X.X" Visible="false">
+      <Dependency Name="V1" />
+      <Dependency Name="X" />
+    </PointByCoordinates>
+    <Segment Name="XV1" Style="Ink">
+      <Dependency Name="V1" />
+      <Dependency Name="X" />
+    </Segment>
+    <Segment Name="XX1" Style="Ink">
+      <Dependency Name="X" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Segment Name="X1Y1" Style="Ink">
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+    </Segment>
+    <Segment Name="V1Y1" Style="Ink">
+      <Dependency Name="Y1" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Polygon Name="XV1Y1X1" Style="2">
+      <Dependency Name="V1" />
+      <Dependency Name="X" />
+      <Dependency Name="X1" />
+      <Dependency Name="Y1" />
+    </Polygon>
+    <PointByCoordinates Name="Z1" X="X1.Y + Z.X - Z.Y" Y="-X1.X + Z.X + Z.Y" Visible="false">
+      <Dependency Name="X1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A2" X="X1.X + X1.Y - Z.Y" Y="-X1.X + X1.Y + Z.X" Visible="false">
+      <Dependency Name="X1" />
+      <Dependency Name="Z" />
+    </PointByCoordinates>
+    <Segment Name="ZX1" Style="Ink">
+      <Dependency Name="X1" />
+      <Dependency Name="Z" />
+    </Segment>
+    <Segment Name="ZZ1" Style="Ink">
+      <Dependency Name="Z" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="Z1A2" Style="Ink">
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+    </Segment>
+    <Segment Name="X1A2" Style="Ink">
+      <Dependency Name="A2" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Polygon Name="ZX1A2Z1" Style="2">
+      <Dependency Name="X1" />
+      <Dependency Name="Z" />
+      <Dependency Name="Z1" />
+      <Dependency Name="A2" />
+    </Polygon>
+    <PointByCoordinates Name="B2" X="B1.X - B1.Y + Z1.Y" Y="B1.X + B1.Y - Z1.X" Visible="false">
+      <Dependency Name="B1" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C2" X="-B1.Y + Z1.X + Z1.Y" Y="B1.X - Z1.X + Z1.Y" Visible="false">
+      <Dependency Name="B1" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <Segment Name="B1Z1" Style="Ink">
+      <Dependency Name="Z1" />
+      <Dependency Name="B1" />
+    </Segment>
+    <Segment Name="B1B2" Style="Ink">
+      <Dependency Name="B1" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Segment Name="B2C2" Style="Ink">
+      <Dependency Name="B2" />
+      <Dependency Name="C2" />
+    </Segment>
+    <Segment Name="Z1C2" Style="Ink">
+      <Dependency Name="C2" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Polygon Name="B1Z1C2B2" Style="2">
+      <Dependency Name="Z1" />
+      <Dependency Name="B1" />
+      <Dependency Name="B2" />
+      <Dependency Name="C2" />
+    </Polygon>
+    <PointByCoordinates Name="D2" X="B2.Y + D1.X - D1.Y" Y="-B2.X + D1.X + D1.Y" Visible="false">
+      <Dependency Name="B2" />
+      <Dependency Name="D1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E2" X="B2.X + B2.Y - D1.Y" Y="-B2.X + B2.Y + D1.X" Visible="false">
+      <Dependency Name="B2" />
+      <Dependency Name="D1" />
+    </PointByCoordinates>
+    <Segment Name="D1B2" Style="Ink">
+      <Dependency Name="B2" />
+      <Dependency Name="D1" />
+    </Segment>
+    <Segment Name="D1D2" Style="Ink">
+      <Dependency Name="D1" />
+      <Dependency Name="D2" />
+    </Segment>
+    <Segment Name="D2E2" Style="Ink">
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+    </Segment>
+    <Segment Name="B2E2" Style="Ink">
+      <Dependency Name="E2" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Polygon Name="D1B2E2D2" Style="2">
+      <Dependency Name="B2" />
+      <Dependency Name="D1" />
+      <Dependency Name="D2" />
+      <Dependency Name="E2" />
+    </Polygon>
+    <PointByCoordinates Name="F2" X="D2.Y + F1.X - F1.Y" Y="-D2.X + F1.X + F1.Y" Visible="false">
+      <Dependency Name="D2" />
+      <Dependency Name="F1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G2" X="D2.X + D2.Y - F1.Y" Y="-D2.X + D2.Y + F1.X" Visible="false">
+      <Dependency Name="D2" />
+      <Dependency Name="F1" />
+    </PointByCoordinates>
+    <Segment Name="F1D2" Style="Ink">
+      <Dependency Name="D2" />
+      <Dependency Name="F1" />
+    </Segment>
+    <Segment Name="F1F2" Style="Ink">
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+    </Segment>
+    <Segment Name="F2G2" Style="Ink">
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </Segment>
+    <Segment Name="D2G2" Style="Ink">
+      <Dependency Name="G2" />
+      <Dependency Name="D2" />
+    </Segment>
+    <Polygon Name="F1D2G2F2" Style="2">
+      <Dependency Name="D2" />
+      <Dependency Name="F1" />
+      <Dependency Name="F2" />
+      <Dependency Name="G2" />
+    </Polygon>
+    <PointByCoordinates Name="H2" X="F2.Y + H1.X - H1.Y" Y="-F2.X + H1.X + H1.Y" Visible="false">
+      <Dependency Name="F2" />
+      <Dependency Name="H1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I2" X="F2.X + F2.Y - H1.Y" Y="-F2.X + F2.Y + H1.X" Visible="false">
+      <Dependency Name="F2" />
+      <Dependency Name="H1" />
+    </PointByCoordinates>
+    <Segment Name="H1F2" Style="Ink">
+      <Dependency Name="F2" />
+      <Dependency Name="H1" />
+    </Segment>
+    <Segment Name="H1H2" Style="Ink">
+      <Dependency Name="H1" />
+      <Dependency Name="H2" />
+    </Segment>
+    <Segment Name="H2I2" Style="Ink">
+      <Dependency Name="H2" />
+      <Dependency Name="I2" />
+    </Segment>
+    <Segment Name="F2I2" Style="Ink">
+      <Dependency Name="I2" />
+      <Dependency Name="F2" />
+    </Segment>
+    <Polygon Name="H1F2I2H2" Style="2">
+      <Dependency Name="F2" />
+      <Dependency Name="H1" />
+      <Dependency Name="H2" />
+      <Dependency Name="I2" />
+    </Polygon>
+    <PointByCoordinates Name="J2" X="H2.Y + J1.X - J1.Y" Y="-H2.X + J1.X + J1.Y" Visible="false">
+      <Dependency Name="H2" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K2" X="H2.X + H2.Y - J1.Y" Y="-H2.X + H2.Y + J1.X" Visible="false">
+      <Dependency Name="H2" />
+      <Dependency Name="J1" />
+    </PointByCoordinates>
+    <Segment Name="J1H2" Style="Ink">
+      <Dependency Name="H2" />
+      <Dependency Name="J1" />
+    </Segment>
+    <Segment Name="J1J2" Style="Ink">
+      <Dependency Name="J1" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Segment Name="J2K2" Style="Ink">
+      <Dependency Name="J2" />
+      <Dependency Name="K2" />
+    </Segment>
+    <Segment Name="H2K2" Style="Ink">
+      <Dependency Name="K2" />
+      <Dependency Name="H2" />
+    </Segment>
+    <Polygon Name="J1H2K2J2" Style="2">
+      <Dependency Name="H2" />
+      <Dependency Name="J1" />
+      <Dependency Name="J2" />
+      <Dependency Name="K2" />
+    </Polygon>
+    <PointByCoordinates Name="L2" X="J2.Y + S.X - S.Y" Y="-J2.X + S.X + S.Y" Visible="false">
+      <Dependency Name="J2" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M2" X="J2.X + J2.Y - S.Y" Y="-J2.X + J2.Y + S.X" Visible="false">
+      <Dependency Name="J2" />
+      <Dependency Name="S" />
+    </PointByCoordinates>
+    <Segment Name="SJ2" Style="Ink">
+      <Dependency Name="J2" />
+      <Dependency Name="S" />
+    </Segment>
+    <Segment Name="SL2" Style="Ink">
+      <Dependency Name="S" />
+      <Dependency Name="L2" />
+    </Segment>
+    <Segment Name="L2M2" Style="Ink">
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+    </Segment>
+    <Segment Name="J2M2" Style="Ink">
+      <Dependency Name="M2" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Polygon Name="SJ2M2L2" Style="2">
+      <Dependency Name="J2" />
+      <Dependency Name="S" />
+      <Dependency Name="L2" />
+      <Dependency Name="M2" />
+    </Polygon>
+    <PerpendicularLine Name="h" Style="FaintLine" RightAngleCorner="1" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="O1" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="N2" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AN" />
+      <Dependency Name="h" />
+    </IntersectionPoint>
+    <Circle Name="f" Style="DottedLine" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="N2" />
+    </Circle>
+    <Ray Name="AS1" Style="FaintLine" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="S1" />
+    </Ray>
+    <IntersectionPoint Name="O2" Algorithm="IntersectLineAndEllipse2" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="f" />
+    </IntersectionPoint>
+    <Ray Name="P1O2" Style="FaintLine" Visible="false">
+      <Dependency Name="P1" />
+      <Dependency Name="O2" />
+    </Ray>
+    <Ray Name="S1O2" Style="FaintLine" Visible="false">
+      <Dependency Name="S1" />
+      <Dependency Name="O2" />
+    </Ray>
+    <IntersectionPoint Name="P2" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AS1" />
+      <Dependency Name="P1O2" />
+    </IntersectionPoint>
+    <PointByCoordinates Name="Q2" X="O1.Y + P2.X - P2.Y" Y="-O1.X + P2.X + P2.Y" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="P2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="R2" X="O1.X + O1.Y - P2.Y" Y="-O1.X + O1.Y + P2.X" Visible="false">
+      <Dependency Name="O1" />
+      <Dependency Name="P2" />
+    </PointByCoordinates>
+    <Segment Name="O1P2" Style="Ink">
+      <Dependency Name="O1" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Segment Name="P2Q2" Style="Ink">
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+    </Segment>
+    <Segment Name="Q2R2" Style="Ink">
+      <Dependency Name="Q2" />
+      <Dependency Name="R2" />
+    </Segment>
+    <Segment Name="O1R2" Style="Ink">
+      <Dependency Name="R2" />
+      <Dependency Name="O1" />
+    </Segment>
+    <Polygon Name="O1P2Q2R2" Style="3">
+      <Dependency Name="O1" />
+      <Dependency Name="P2" />
+      <Dependency Name="Q2" />
+      <Dependency Name="R2" />
+    </Polygon>
+    <PointByCoordinates Name="S2" X="P2.Y + R1.X - R1.Y" Y="-P2.X + R1.X + R1.Y" Visible="false">
+      <Dependency Name="P2" />
+      <Dependency Name="R1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="T2" X="P2.X + P2.Y - R1.Y" Y="-P2.X + P2.Y + R1.X" Visible="false">
+      <Dependency Name="P2" />
+      <Dependency Name="R1" />
+    </PointByCoordinates>
+    <Segment Name="R1P2" Style="Ink">
+      <Dependency Name="P2" />
+      <Dependency Name="R1" />
+    </Segment>
+    <Segment Name="R1S2" Style="Ink">
+      <Dependency Name="R1" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Segment Name="S2T2" Style="Ink">
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+    </Segment>
+    <Segment Name="P2T2" Style="Ink">
+      <Dependency Name="T2" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Polygon Name="R1P2T2S2" Style="3">
+      <Dependency Name="P2" />
+      <Dependency Name="R1" />
+      <Dependency Name="S2" />
+      <Dependency Name="T2" />
+    </Polygon>
+    <PointByCoordinates Name="U2" X="S2.Y + T1.X - T1.Y" Y="-S2.X + T1.X + T1.Y" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="T1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="V2" X="S2.X + S2.Y - T1.Y" Y="-S2.X + S2.Y + T1.X" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="T1" />
+    </PointByCoordinates>
+    <Segment Name="T1S2" Style="Ink">
+      <Dependency Name="S2" />
+      <Dependency Name="T1" />
+    </Segment>
+    <Segment Name="T1U2" Style="Ink">
+      <Dependency Name="T1" />
+      <Dependency Name="U2" />
+    </Segment>
+    <Segment Name="U2V2" Style="Ink">
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </Segment>
+    <Segment Name="S2V2" Style="Ink">
+      <Dependency Name="V2" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Polygon Name="T1S2V2U2" Style="3">
+      <Dependency Name="S2" />
+      <Dependency Name="T1" />
+      <Dependency Name="U2" />
+      <Dependency Name="V2" />
+    </Polygon>
+    <PointByCoordinates Name="W2" X="U2.Y + V1.X - V1.Y" Y="-U2.X + V1.X + V1.Y" Visible="false">
+      <Dependency Name="U2" />
+      <Dependency Name="V1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="X2" X="U2.X + U2.Y - V1.Y" Y="-U2.X + U2.Y + V1.X" Visible="false">
+      <Dependency Name="U2" />
+      <Dependency Name="V1" />
+    </PointByCoordinates>
+    <Segment Name="V1U2" Style="Ink">
+      <Dependency Name="U2" />
+      <Dependency Name="V1" />
+    </Segment>
+    <Segment Name="V1W2" Style="Ink">
+      <Dependency Name="V1" />
+      <Dependency Name="W2" />
+    </Segment>
+    <Segment Name="W2X2" Style="Ink">
+      <Dependency Name="W2" />
+      <Dependency Name="X2" />
+    </Segment>
+    <Segment Name="U2X2" Style="Ink">
+      <Dependency Name="X2" />
+      <Dependency Name="U2" />
+    </Segment>
+    <Polygon Name="V1U2X2W2" Style="3">
+      <Dependency Name="U2" />
+      <Dependency Name="V1" />
+      <Dependency Name="W2" />
+      <Dependency Name="X2" />
+    </Polygon>
+    <PointByCoordinates Name="Y2" X="W2.Y + X1.X - X1.Y" Y="-W2.X + X1.X + X1.Y" Visible="false">
+      <Dependency Name="W2" />
+      <Dependency Name="X1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Z2" X="W2.X + W2.Y - X1.Y" Y="-W2.X + W2.Y + X1.X" Visible="false">
+      <Dependency Name="W2" />
+      <Dependency Name="X1" />
+    </PointByCoordinates>
+    <Segment Name="X1W2" Style="Ink">
+      <Dependency Name="W2" />
+      <Dependency Name="X1" />
+    </Segment>
+    <Segment Name="X1Y2" Style="Ink">
+      <Dependency Name="X1" />
+      <Dependency Name="Y2" />
+    </Segment>
+    <Segment Name="Y2Z2" Style="Ink">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+    </Segment>
+    <Segment Name="W2Z2" Style="Ink">
+      <Dependency Name="Z2" />
+      <Dependency Name="W2" />
+    </Segment>
+    <Polygon Name="X1W2Z2Y2" Style="3">
+      <Dependency Name="W2" />
+      <Dependency Name="X1" />
+      <Dependency Name="Y2" />
+      <Dependency Name="Z2" />
+    </Polygon>
+    <PointByCoordinates Name="A3" X="Y2.Y + Z1.X - Z1.Y" Y="-Y2.X + Z1.X + Z1.Y" Visible="false">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="B3" X="Y2.X + Y2.Y - Z1.Y" Y="-Y2.X + Y2.Y + Z1.X" Visible="false">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z1" />
+    </PointByCoordinates>
+    <Segment Name="Z1Y2" Style="Ink">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z1" />
+    </Segment>
+    <Segment Name="Z1A3" Style="Ink">
+      <Dependency Name="Z1" />
+      <Dependency Name="A3" />
+    </Segment>
+    <Segment Name="A3B3" Style="Ink">
+      <Dependency Name="A3" />
+      <Dependency Name="B3" />
+    </Segment>
+    <Segment Name="Y2B3" Style="Ink">
+      <Dependency Name="B3" />
+      <Dependency Name="Y2" />
+    </Segment>
+    <Polygon Name="Z1Y2B3A3" Style="3">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z1" />
+      <Dependency Name="A3" />
+      <Dependency Name="B3" />
+    </Polygon>
+    <PointByCoordinates Name="C3" X="A3.Y + B2.X - B2.Y" Y="-A3.X + B2.X + B2.Y" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="B2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D3" X="A3.X + A3.Y - B2.Y" Y="-A3.X + A3.Y + B2.X" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="B2" />
+    </PointByCoordinates>
+    <Segment Name="B2A3" Style="Ink">
+      <Dependency Name="A3" />
+      <Dependency Name="B2" />
+    </Segment>
+    <Segment Name="B2C3" Style="Ink">
+      <Dependency Name="B2" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="C3D3" Style="Ink">
+      <Dependency Name="C3" />
+      <Dependency Name="D3" />
+    </Segment>
+    <Segment Name="A3D3" Style="Ink">
+      <Dependency Name="D3" />
+      <Dependency Name="A3" />
+    </Segment>
+    <Polygon Name="B2A3D3C3" Style="3">
+      <Dependency Name="A3" />
+      <Dependency Name="B2" />
+      <Dependency Name="C3" />
+      <Dependency Name="D3" />
+    </Polygon>
+    <PointByCoordinates Name="E3" X="C3.Y + D2.X - D2.Y" Y="-C3.X + D2.X + D2.Y" Visible="false">
+      <Dependency Name="C3" />
+      <Dependency Name="D2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F3" X="C3.X + C3.Y - D2.Y" Y="-C3.X + C3.Y + D2.X" Visible="false">
+      <Dependency Name="C3" />
+      <Dependency Name="D2" />
+    </PointByCoordinates>
+    <Segment Name="D2C3" Style="Ink">
+      <Dependency Name="C3" />
+      <Dependency Name="D2" />
+    </Segment>
+    <Segment Name="D2E3" Style="Ink">
+      <Dependency Name="D2" />
+      <Dependency Name="E3" />
+    </Segment>
+    <Segment Name="E3F3" Style="Ink">
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+    </Segment>
+    <Segment Name="C3F3" Style="Ink">
+      <Dependency Name="F3" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Polygon Name="D2C3F3E3" Style="3">
+      <Dependency Name="C3" />
+      <Dependency Name="D2" />
+      <Dependency Name="E3" />
+      <Dependency Name="F3" />
+    </Polygon>
+    <PointByCoordinates Name="G3" X="E3.Y + F2.X - F2.Y" Y="-E3.X + F2.X + F2.Y" Visible="false">
+      <Dependency Name="E3" />
+      <Dependency Name="F2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="H3" X="E3.X + E3.Y - F2.Y" Y="-E3.X + E3.Y + F2.X" Visible="false">
+      <Dependency Name="E3" />
+      <Dependency Name="F2" />
+    </PointByCoordinates>
+    <Segment Name="F2E3" Style="Ink">
+      <Dependency Name="E3" />
+      <Dependency Name="F2" />
+    </Segment>
+    <Segment Name="F2G3" Style="Ink">
+      <Dependency Name="F2" />
+      <Dependency Name="G3" />
+    </Segment>
+    <Segment Name="G3H3" Style="Ink">
+      <Dependency Name="G3" />
+      <Dependency Name="H3" />
+    </Segment>
+    <Segment Name="E3H3" Style="Ink">
+      <Dependency Name="H3" />
+      <Dependency Name="E3" />
+    </Segment>
+    <Polygon Name="F2E3H3G3" Style="3">
+      <Dependency Name="E3" />
+      <Dependency Name="F2" />
+      <Dependency Name="G3" />
+      <Dependency Name="H3" />
+    </Polygon>
+    <PointByCoordinates Name="I3" X="G3.Y + H2.X - H2.Y" Y="-G3.X + H2.X + H2.Y" Visible="false">
+      <Dependency Name="G3" />
+      <Dependency Name="H2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="J3" X="G3.X + G3.Y - H2.Y" Y="-G3.X + G3.Y + H2.X" Visible="false">
+      <Dependency Name="G3" />
+      <Dependency Name="H2" />
+    </PointByCoordinates>
+    <Segment Name="H2G3" Style="Ink">
+      <Dependency Name="G3" />
+      <Dependency Name="H2" />
+    </Segment>
+    <Segment Name="H2I3" Style="Ink">
+      <Dependency Name="H2" />
+      <Dependency Name="I3" />
+    </Segment>
+    <Segment Name="I3J3" Style="Ink">
+      <Dependency Name="I3" />
+      <Dependency Name="J3" />
+    </Segment>
+    <Segment Name="G3J3" Style="Ink">
+      <Dependency Name="J3" />
+      <Dependency Name="G3" />
+    </Segment>
+    <Polygon Name="H2G3J3I3" Style="3">
+      <Dependency Name="G3" />
+      <Dependency Name="H2" />
+      <Dependency Name="I3" />
+      <Dependency Name="J3" />
+    </Polygon>
+    <PointByCoordinates Name="K3" X="I3.Y + J2.X - J2.Y" Y="-I3.X + J2.X + J2.Y" Visible="false">
+      <Dependency Name="I3" />
+      <Dependency Name="J2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="L3" X="I3.X + I3.Y - J2.Y" Y="-I3.X + I3.Y + J2.X" Visible="false">
+      <Dependency Name="I3" />
+      <Dependency Name="J2" />
+    </PointByCoordinates>
+    <Segment Name="J2I3" Style="Ink">
+      <Dependency Name="I3" />
+      <Dependency Name="J2" />
+    </Segment>
+    <Segment Name="J2K3" Style="Ink">
+      <Dependency Name="J2" />
+      <Dependency Name="K3" />
+    </Segment>
+    <Segment Name="K3L3" Style="Ink">
+      <Dependency Name="K3" />
+      <Dependency Name="L3" />
+    </Segment>
+    <Segment Name="I3L3" Style="Ink">
+      <Dependency Name="L3" />
+      <Dependency Name="I3" />
+    </Segment>
+    <Polygon Name="J2I3L3K3" Style="3">
+      <Dependency Name="I3" />
+      <Dependency Name="J2" />
+      <Dependency Name="K3" />
+      <Dependency Name="L3" />
+    </Polygon>
+    <PointByCoordinates Name="M3" X="K3.Y + Q1.X - Q1.Y" Y="-K3.X + Q1.X + Q1.Y" Visible="false">
+      <Dependency Name="K3" />
+      <Dependency Name="Q1" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="N3" X="K3.X + K3.Y - Q1.Y" Y="-K3.X + K3.Y + Q1.X" Visible="false">
+      <Dependency Name="K3" />
+      <Dependency Name="Q1" />
+    </PointByCoordinates>
+    <Segment Name="Q1K3" Style="Ink">
+      <Dependency Name="K3" />
+      <Dependency Name="Q1" />
+    </Segment>
+    <Segment Name="Q1M3" Style="Ink">
+      <Dependency Name="Q1" />
+      <Dependency Name="M3" />
+    </Segment>
+    <Segment Name="M3N3" Style="Ink">
+      <Dependency Name="M3" />
+      <Dependency Name="N3" />
+    </Segment>
+    <Segment Name="K3N3" Style="Ink">
+      <Dependency Name="N3" />
+      <Dependency Name="K3" />
+    </Segment>
+    <Polygon Name="Q1K3N3M3" Style="3">
+      <Dependency Name="K3" />
+      <Dependency Name="Q1" />
+      <Dependency Name="M3" />
+      <Dependency Name="N3" />
+    </Polygon>
+    <PerpendicularLine Name="k" Style="FaintLine" RightAngleCorner="2" Visible="false">
+      <Dependency Name="AN" />
+      <Dependency Name="M3" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="O3" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <Circle Name="m" Style="DottedLine" Visible="false">
+      <Dependency Name="M3" />
+      <Dependency Name="O3" />
+    </Circle>
+    <IntersectionPoint Name="P3" Algorithm="IntersectLineAndEllipse2" Visible="false">
+      <Dependency Name="AN" />
+      <Dependency Name="m" />
+    </IntersectionPoint>
+    <Ray Name="N3P3" Style="FaintLine" Visible="false">
+      <Dependency Name="N3" />
+      <Dependency Name="P3" />
+    </Ray>
+    <Ray Name="Q2P3" Style="FaintLine" Visible="false">
+      <Dependency Name="Q2" />
+      <Dependency Name="P3" />
+    </Ray>
+    <IntersectionPoint Name="Q3" Algorithm="IntersectLineAndLine" Visible="false">
+      <Dependency Name="AQ" />
+      <Dependency Name="N3P3" />
+    </IntersectionPoint>
+    <PointByCoordinates Name="R3" X="Q3.X - Q3.Y + R2.Y" Y="Q3.X + Q3.Y - R2.X" Visible="false">
+      <Dependency Name="Q3" />
+      <Dependency Name="R2" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="S3" X="-Q3.Y + R2.X + R2.Y" Y="Q3.X - R2.X + R2.Y" Visible="false">
+      <Dependency Name="Q3" />
+      <Dependency Name="R2" />
+    </PointByCoordinates>
+    <Segment Name="R2Q3" Style="Ink">
+      <Dependency Name="R2" />
+      <Dependency Name="Q3" />
+    </Segment>
+    <Segment Name="Q3R3" Style="Ink">
+      <Dependency Name="Q3" />
+      <Dependency Name="R3" />
+    </Segment>
+    <Segment Name="R3S3" Style="Ink">
+      <Dependency Name="R3" />
+      <Dependency Name="S3" />
+    </Segment>
+    <Segment Name="R2S3" Style="Ink">
+      <Dependency Name="S3" />
+      <Dependency Name="R2" />
+    </Segment>
+    <Polygon Name="R2Q3R3S3" Style="4">
+      <Dependency Name="R2" />
+      <Dependency Name="Q3" />
+      <Dependency Name="R3" />
+      <Dependency Name="S3" />
+    </Polygon>
+    <PointByCoordinates Name="T3" X="P2.X - P2.Y + Q3.Y" Y="P2.X + P2.Y - Q3.X" Visible="false">
+      <Dependency Name="P2" />
+      <Dependency Name="Q3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="U3" X="-P2.Y + Q3.X + Q3.Y" Y="P2.X - Q3.X + Q3.Y" Visible="false">
+      <Dependency Name="P2" />
+      <Dependency Name="Q3" />
+    </PointByCoordinates>
+    <Segment Name="P2Q3" Style="Ink">
+      <Dependency Name="Q3" />
+      <Dependency Name="P2" />
+    </Segment>
+    <Segment Name="P2T3" Style="Ink">
+      <Dependency Name="P2" />
+      <Dependency Name="T3" />
+    </Segment>
+    <Segment Name="T3U3" Style="Ink">
+      <Dependency Name="T3" />
+      <Dependency Name="U3" />
+    </Segment>
+    <Segment Name="Q3U3" Style="Ink">
+      <Dependency Name="U3" />
+      <Dependency Name="Q3" />
+    </Segment>
+    <Polygon Name="P2Q3U3T3" Style="4">
+      <Dependency Name="Q3" />
+      <Dependency Name="P2" />
+      <Dependency Name="T3" />
+      <Dependency Name="U3" />
+    </Polygon>
+    <PointByCoordinates Name="V3" X="S2.X - S2.Y + T3.Y" Y="S2.X + S2.Y - T3.X" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="T3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="W3" X="-S2.Y + T3.X + T3.Y" Y="S2.X - T3.X + T3.Y" Visible="false">
+      <Dependency Name="S2" />
+      <Dependency Name="T3" />
+    </PointByCoordinates>
+    <Segment Name="S2T3" Style="Ink">
+      <Dependency Name="T3" />
+      <Dependency Name="S2" />
+    </Segment>
+    <Segment Name="S2V3" Style="Ink">
+      <Dependency Name="S2" />
+      <Dependency Name="V3" />
+    </Segment>
+    <Segment Name="V3W3" Style="Ink">
+      <Dependency Name="V3" />
+      <Dependency Name="W3" />
+    </Segment>
+    <Segment Name="T3W3" Style="Ink">
+      <Dependency Name="W3" />
+      <Dependency Name="T3" />
+    </Segment>
+    <Polygon Name="S2T3W3V3" Style="4">
+      <Dependency Name="T3" />
+      <Dependency Name="S2" />
+      <Dependency Name="V3" />
+      <Dependency Name="W3" />
+    </Polygon>
+    <PointByCoordinates Name="X3" X="U2.X - U2.Y + V3.Y" Y="U2.X + U2.Y - V3.X" Visible="false">
+      <Dependency Name="U2" />
+      <Dependency Name="V3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="Y3" X="-U2.Y + V3.X + V3.Y" Y="U2.X - V3.X + V3.Y" Visible="false">
+      <Dependency Name="U2" />
+      <Dependency Name="V3" />
+    </PointByCoordinates>
+    <Segment Name="U2V3" Style="Ink">
+      <Dependency Name="V3" />
+      <Dependency Name="U2" />
+    </Segment>
+    <Segment Name="U2X3" Style="Ink">
+      <Dependency Name="U2" />
+      <Dependency Name="X3" />
+    </Segment>
+    <Segment Name="X3Y3" Style="Ink">
+      <Dependency Name="X3" />
+      <Dependency Name="Y3" />
+    </Segment>
+    <Segment Name="V3Y3" Style="Ink">
+      <Dependency Name="Y3" />
+      <Dependency Name="V3" />
+    </Segment>
+    <Polygon Name="U2V3Y3X3" Style="4">
+      <Dependency Name="V3" />
+      <Dependency Name="U2" />
+      <Dependency Name="X3" />
+      <Dependency Name="Y3" />
+    </Polygon>
+    <PointByCoordinates Name="Z3" X="W2.X - W2.Y + X3.Y" Y="W2.X + W2.Y - X3.X" Visible="false">
+      <Dependency Name="W2" />
+      <Dependency Name="X3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="A4" X="-W2.Y + X3.X + X3.Y" Y="W2.X - X3.X + X3.Y" Visible="false">
+      <Dependency Name="W2" />
+      <Dependency Name="X3" />
+    </PointByCoordinates>
+    <Segment Name="W2X3" Style="Ink">
+      <Dependency Name="X3" />
+      <Dependency Name="W2" />
+    </Segment>
+    <Segment Name="W2Z3" Style="Ink">
+      <Dependency Name="W2" />
+      <Dependency Name="Z3" />
+    </Segment>
+    <Segment Name="Z3A4" Style="Ink">
+      <Dependency Name="Z3" />
+      <Dependency Name="A4" />
+    </Segment>
+    <Segment Name="X3A4" Style="Ink">
+      <Dependency Name="A4" />
+      <Dependency Name="X3" />
+    </Segment>
+    <Polygon Name="W2X3A4Z3" Style="4">
+      <Dependency Name="X3" />
+      <Dependency Name="W2" />
+      <Dependency Name="Z3" />
+      <Dependency Name="A4" />
+    </Polygon>
+    <PointByCoordinates Name="B4" X="Y2.X - Y2.Y + Z3.Y" Y="Y2.X + Y2.Y - Z3.X" Visible="false">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z3" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="C4" X="-Y2.Y + Z3.X + Z3.Y" Y="Y2.X - Z3.X + Z3.Y" Visible="false">
+      <Dependency Name="Y2" />
+      <Dependency Name="Z3" />
+    </PointByCoordinates>
+    <Segment Name="Y2Z3" Style="Ink">
+      <Dependency Name="Z3" />
+      <Dependency Name="Y2" />
+    </Segment>
+    <Segment Name="Y2B4" Style="Ink">
+      <Dependency Name="Y2" />
+      <Dependency Name="B4" />
+    </Segment>
+    <Segment Name="B4C4" Style="Ink">
+      <Dependency Name="B4" />
+      <Dependency Name="C4" />
+    </Segment>
+    <Segment Name="Z3C4" Style="Ink">
+      <Dependency Name="C4" />
+      <Dependency Name="Z3" />
+    </Segment>
+    <Polygon Name="Y2Z3C4B4" Style="4">
+      <Dependency Name="Z3" />
+      <Dependency Name="Y2" />
+      <Dependency Name="B4" />
+      <Dependency Name="C4" />
+    </Polygon>
+    <PointByCoordinates Name="D4" X="A3.X - A3.Y + B4.Y" Y="A3.X + A3.Y - B4.X" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="B4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E4" X="-A3.Y + B4.X + B4.Y" Y="A3.X - B4.X + B4.Y" Visible="false">
+      <Dependency Name="A3" />
+      <Dependency Name="B4" />
+    </PointByCoordinates>
+    <Segment Name="A3B4" Style="Ink">
+      <Dependency Name="B4" />
+      <Dependency Name="A3" />
+    </Segment>
+    <Segment Name="A3D4" Style="Ink">
+      <Dependency Name="A3" />
+      <Dependency Name="D4" />
+    </Segment>
+    <Segment Name="D4E4" Style="Ink">
+      <Dependency Name="D4" />
+      <Dependency Name="E4" />
+    </Segment>
+    <Segment Name="B4E4" Style="Ink">
+      <Dependency Name="E4" />
+      <Dependency Name="B4" />
+    </Segment>
+    <Polygon Name="A3B4E4D4" Style="4">
+      <Dependency Name="B4" />
+      <Dependency Name="A3" />
+      <Dependency Name="D4" />
+      <Dependency Name="E4" />
+    </Polygon>
+    <PointByCoordinates Name="F4" X="C3.X - C3.Y + D4.Y" Y="C3.X + C3.Y - D4.X" Visible="false">
+      <Dependency Name="C3" />
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="G4" X="-C3.Y + D4.X + D4.Y" Y="C3.X - D4.X + D4.Y" Visible="false">
+      <Dependency Name="C3" />
+      <Dependency Name="D4" />
+    </PointByCoordinates>
+    <Segment Name="C3D4" Style="Ink">
+      <Dependency Name="D4" />
+      <Dependency Name="C3" />
+    </Segment>
+    <Segment Name="C3F4" Style="Ink">
+      <Dependency Name="C3" />
+      <Dependency Name="F4" />
+    </Segment>
+    <Segment Name="F4G4" Style="Ink">
+      <Dependency Name="F4" />
+      <Dependency Name="G4" />
+    </Segment>
+    <Segment Name="D4G4" Style="Ink">
+      <Dependency Name="G4" />
+      <Dependency Name="D4" />
+    </Segment>
+    <Polygon Name="C3D4G4F4" Style="4">
+      <Dependency Name="D4" />
+      <Dependency Name="C3" />
+      <Dependency Name="F4" />
+      <Dependency Name="G4" />
+    </Polygon>
+    <PointByCoordinates Name="H4" X="E3.X - E3.Y + F4.Y" Y="E3.X + E3.Y - F4.X" Visible="false">
+      <Dependency Name="E3" />
+      <Dependency Name="F4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I4" X="-E3.Y + F4.X + F4.Y" Y="E3.X - F4.X + F4.Y" Visible="false">
+      <Dependency Name="E3" />
+      <Dependency Name="F4" />
+    </PointByCoordinates>
+    <Segment Name="E3F4" Style="Ink">
+      <Dependency Name="F4" />
+      <Dependency Name="E3" />
+    </Segment>
+    <Segment Name="E3H4" Style="Ink">
+      <Dependency Name="E3" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Segment Name="H4I4" Style="Ink">
+      <Dependency Name="H4" />
+      <Dependency Name="I4" />
+    </Segment>
+    <Segment Name="F4I4" Style="Ink">
+      <Dependency Name="I4" />
+      <Dependency Name="F4" />
+    </Segment>
+    <Polygon Name="E3F4I4H4" Style="4">
+      <Dependency Name="F4" />
+      <Dependency Name="E3" />
+      <Dependency Name="H4" />
+      <Dependency Name="I4" />
+    </Polygon>
+    <PointByCoordinates Name="J4" X="G3.X - G3.Y + H4.Y" Y="G3.X + G3.Y - H4.X" Visible="false">
+      <Dependency Name="G3" />
+      <Dependency Name="H4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="K4" X="-G3.Y + H4.X + H4.Y" Y="G3.X - H4.X + H4.Y" Visible="false">
+      <Dependency Name="G3" />
+      <Dependency Name="H4" />
+    </PointByCoordinates>
+    <Segment Name="G3H4" Style="Ink">
+      <Dependency Name="H4" />
+      <Dependency Name="G3" />
+    </Segment>
+    <Segment Name="G3J4" Style="Ink">
+      <Dependency Name="G3" />
+      <Dependency Name="J4" />
+    </Segment>
+    <Segment Name="J4K4" Style="Ink">
+      <Dependency Name="J4" />
+      <Dependency Name="K4" />
+    </Segment>
+    <Segment Name="H4K4" Style="Ink">
+      <Dependency Name="K4" />
+      <Dependency Name="H4" />
+    </Segment>
+    <Polygon Name="G3H4K4J4" Style="4">
+      <Dependency Name="H4" />
+      <Dependency Name="G3" />
+      <Dependency Name="J4" />
+      <Dependency Name="K4" />
+    </Polygon>
+    <PointByCoordinates Name="L4" X="I3.X - I3.Y + J4.Y" Y="I3.X + I3.Y - J4.X" Visible="false">
+      <Dependency Name="I3" />
+      <Dependency Name="J4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="M4" X="-I3.Y + J4.X + J4.Y" Y="I3.X - J4.X + J4.Y" Visible="false">
+      <Dependency Name="I3" />
+      <Dependency Name="J4" />
+    </PointByCoordinates>
+    <Segment Name="I3J4" Style="Ink">
+      <Dependency Name="J4" />
+      <Dependency Name="I3" />
+    </Segment>
+    <Segment Name="I3L4" Style="Ink">
+      <Dependency Name="I3" />
+      <Dependency Name="L4" />
+    </Segment>
+    <Segment Name="L4M4" Style="Ink">
+      <Dependency Name="L4" />
+      <Dependency Name="M4" />
+    </Segment>
+    <Segment Name="J4M4" Style="Ink">
+      <Dependency Name="M4" />
+      <Dependency Name="J4" />
+    </Segment>
+    <Polygon Name="I3J4M4L4" Style="4">
+      <Dependency Name="J4" />
+      <Dependency Name="I3" />
+      <Dependency Name="L4" />
+      <Dependency Name="M4" />
+    </Polygon>
+    <PointByCoordinates Name="N4" X="K3.X - K3.Y + L4.Y" Y="K3.X + K3.Y - L4.X" Visible="false">
+      <Dependency Name="K3" />
+      <Dependency Name="L4" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="O4" X="-K3.Y + L4.X + L4.Y" Y="K3.X - L4.X + L4.Y" Visible="false">
+      <Dependency Name="K3" />
+      <Dependency Name="L4" />
+    </PointByCoordinates>
+    <Segment Name="K3L4" Style="Ink">
+      <Dependency Name="L4" />
+      <Dependency Name="K3" />
+    </Segment>
+    <Segment Name="K3N4" Style="Ink">
+      <Dependency Name="K3" />
+      <Dependency Name="N4" />
+    </Segment>
+    <Segment Name="N4O4" Style="Ink">
+      <Dependency Name="N4" />
+      <Dependency Name="O4" />
+    </Segment>
+    <Segment Name="L4O4" Style="Ink">
+      <Dependency Name="O4" />
+      <Dependency Name="L4" />
+    </Segment>
+    <Polygon Name="K3L4O4N4" Style="4">
+      <Dependency Name="L4" />
+      <Dependency Name="K3" />
+      <Dependency Name="N4" />
+      <Dependency Name="O4" />
+    </Polygon>
+  </Figures>
+</Drawing>

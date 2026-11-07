@@ -3,6 +3,12 @@
 // LiveGeometry.Browser.csproj writes for each drawing).
 //
 //   dotnet run tools/previews.cs -- <publish>/wwwroot [--browser <path>]
+//   dotnet run tools/previews.cs -- <publish>/wwwroot --one <drawing.lgf> <out.png> <size>
+//
+// --one renders one drawing alone: square, <size> CSS pixels (twice as many in the picture),
+// on a transparent canvas, its handles hidden - a drawing as a picture for a page, such as
+// the squares of Catriona Agg's book cover (docs/BookCoverSquares.lgf, size 800; see "The
+// introduction" in docs/catriona-agg.md).
 //
 // Each drawing of gallery/index.json is played by the JavaScript player (player/1/player.js)
 // in a headless Chrome or Edge as its gallery tile shows it - the caption left out, the
@@ -69,6 +75,17 @@ try
     // the 0: the script's last value is not asked to come back
     await cdp.Evaluate(File.ReadAllText(playerFile) + "\n;0");
     await cdp.Evaluate(Setup.Replace("FONT_BASE64", Convert.ToBase64String(File.ReadAllBytes(fontFile))));
+
+    int one = Array.IndexOf(args, "--one");
+    if (one >= 0)
+    {
+        string drawing = File.ReadAllText(args[one + 1]);
+        var rendered = JsonNode.Parse(await cdp.Evaluate("renderSquare(" + JsonValue.Create(drawing).ToJsonString() + ", " + int.Parse(args[one + 3]) + ")"));
+        string picture = (string)rendered["png"];
+        File.WriteAllBytes(args[one + 2], Convert.FromBase64String(picture.Substring(picture.IndexOf(',') + 1)));
+        Console.WriteLine($"{args[one + 2]}: {rendered["width"]} px" + (rendered["errors"] is JsonNode problems ? ", errors: " + problems : ""));
+        return 0;
+    }
 
     int count = 0;
     var warnings = new List<string>();
@@ -412,6 +429,11 @@ partial class Program
 
             window.renderPreview = (text, hideHandles) => play(parse(text, hideHandles), player =>
                 JSON.stringify({ png: player.canvasElement.toDataURL("image/png"), errors: player.loadErrors ?? null }));
+
+            // one drawing alone (--one): square, on nothing, its handles hidden
+            window.renderSquare = (text, size) => play(parse(text, true), player =>
+                JSON.stringify({ png: player.canvasElement.toDataURL("image/png"), width: player.canvasElement.width, errors: player.loadErrors ?? null }),
+                { size: [size, size], paintsPaper: false });
 
             // The library's own picture: the drawings as cards on its warm paper, four by two
             window.renderMosaic = texts => {
