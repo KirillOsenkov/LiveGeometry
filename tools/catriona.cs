@@ -283,6 +283,23 @@ foreach (var puzzle in puzzles)
     array.Add((JsonNode)entry);
 }
 
+// a puzzle written into the catalog by hand before Mathforge lists it (no "name": the page
+// shows no links there) is kept as it is, in date order; once Mathforge lists it under the
+// same slug the entry above takes over, and its hand-written fields are carried over
+var listed = puzzles.Select(p => p.Slug).ToHashSet(StringComparer.OrdinalIgnoreCase);
+foreach (var old in kept.Values.Where(o => !listed.Contains((string)o["slug"])))
+{
+    string date = (string)old["date"] ?? "";
+    int at = 0;
+    while (at < array.Count && string.CompareOrdinal((string)array[at]["date"], date) > 0)
+    {
+        at++;
+    }
+
+    array.Insert(at, old.DeepClone());
+    Console.WriteLine($"kept (not on Mathforge): {old["slug"]}");
+}
+
 var catalog = new JsonObject
 {
     ["source"] = Site + "/notes/published/HomePage",

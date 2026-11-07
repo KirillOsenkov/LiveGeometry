@@ -55,7 +55,14 @@ page shows it), never copied.
   and the page shows no links to Mathforge. Their question, where her picture has one in
   print (two rectangles and a square ii), is written into `puzzles.json` by hand and kept by
   catriona.cs; without one the page, and the link preview `WriteGalleryIndex` writes, say it
-  has no description. Each is her diagram as a
+  has no description. A puzzle Mathforge doesn't list yet (she posts on BlueSky first, Andrew's
+  page comes later) is written into the catalog by hand, at its place by date, with no `name`
+  (the name is Mathforge's page name): the page shows no Mathforge links then, and catriona.cs
+  keeps the entry as it is until Mathforge lists the puzzle. Once it does under the same slug,
+  the tool's entry takes over and the hand-written fields are carried over; under another
+  name, rename the drawing to his slug and drop the hand-written entry. The slug and title are
+  a guess at his naming (his series go "Subdivided Hexagon", "... II", "... III"; 2026-11-07,
+  the first: `subdivided-hexagon-v`). Each is her diagram as a
   construction over one or two handles (points on hidden segments or arcs that keep them in
   range) so that what the puzzle says holds while it is dragged - for an invariance puzzle the
   answer stays put. Hidden points by coordinates over the handles carry the geometry; a puzzle

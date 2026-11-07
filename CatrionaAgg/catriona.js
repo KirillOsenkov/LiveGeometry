@@ -1113,9 +1113,10 @@ document.addEventListener('DOMContentLoaded', function () {
       asked.appendChild(thread);
     }
 
+    // no links for a puzzle without a page of its own on Mathforge, or not listed there yet (no name in the catalog)
     var links = document.getElementById('p-links');
     links.replaceChildren();
-    if (puzzle.page !== false) {
+    if (puzzle.page !== false && puzzle.name != null) {
       links.append(
         linkCard(mathforge(puzzle.name), '#14B67F', 'icon-picture', 'Original', 'Catriona’s original drawing, on Mathforge Notes'),
         linkCard(mathforge(puzzle.name + ' techniques'), '#F26313', 'icon-tools', 'Techniques', 'The techniques a solution uses, on Mathforge Notes'),
@@ -1266,7 +1267,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#puzzle-view .stepper').style.visibility = 'hidden';
     var missing = element('p', 'missing', text);
     document.getElementById('puzzle-view').appendChild(missing);
-    if (known != null) {
+    if (known != null && known.name != null && known.page !== false) {
       var link = element('a', null, 'See it on Mathforge Notes');
       link.href = mathforge(known.name);
       missing.appendChild(link);

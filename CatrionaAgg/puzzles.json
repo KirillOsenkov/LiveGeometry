@@ -2,6 +2,17 @@
   "source": "https://notes.mathforge.org/notes/published/HomePage",
   "puzzles": [
     {
+      "slug": "subdivided-hexagon-v",
+      "title": "Subdivided Hexagon V",
+      "date": "2026-11-07",
+      "statement": "What fraction of this regular hexagon is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3mzpojhmwp22n",
+      "categories": [],
+      "techniques": [],
+      "drawing": "subdivided-hexagon-v.lgf",
+      "live": true
+    },
+    {
       "slug": "three-hexagons-on-a-circle",
       "name": "three hexagons on a circle",
       "title": "Three Hexagons on a Circle",

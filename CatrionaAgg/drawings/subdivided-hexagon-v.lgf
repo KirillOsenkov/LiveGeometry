@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawn by hand (not by tools/catrionadrawings.cs): a ruler-and-compass construction with the library's styles.
+     A regular hexagon ABCDEF built on its bottom side AB with the Polygon tool (C to F are the tool's points by
+     coordinates). The handle P slides along AB; from P, segments to the four corners across from it (C, D, E, F)
+     cut the hexagon into five regions, and the three triangles PDE, PFA and PBC are shaded. With P at A the
+     left triangle is gone and the right one is half the bottom; with P at B the other way round. -->
+<Drawing Version="1">
+  <Viewport Left="-2.28" Top="2.0120508076" Right="2.28" Bottom="-2.0120508076" />
+  <Scene Left="-2.28" Top="2.0120508076" Right="2.28" Bottom="-2.0120508076" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#00000000" StrokeWidth="2.5" Fill="#FF8EC9EE" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF4FAEE3" />
+            <GradientStop Color="#FF2E8FC6" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF1E28C8" StrokeWidth="2.5">
+      <Dark Color="#FFA6ABF2" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" X="-1" Y="-1.7320508076" />
+    <FreePoint Name="B" Visible="false" X="1" Y="-1.7320508076" />
+    <PointByCoordinates Name="C" Visible="false" X="-0.5 * A.X + sqrt(3) / 2 * A.Y + 1.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X - 0.5 * A.Y + sqrt(3) / 2 * B.X + 1.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="sqrt(3) * A.Y + B.X - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + sqrt(3) * B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" Visible="false" X="A.X + sqrt(3) * A.Y - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + A.Y + sqrt(3) * B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="1.5 * A.X + sqrt(3) / 2 * A.Y - 0.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X + 1.5 * A.Y + sqrt(3) / 2 * B.X - 0.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <PointOnFigure Name="P" Style="Handle" X="0.32" Y="-1.7320508076" Parameter="0.66">
+      <Dependency Name="AB" />
+    </PointOnFigure>
+    <Polygon Name="PDE" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+    </Polygon>
+    <Polygon Name="PFA" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+      <Dependency Name="A" />
+    </Polygon>
+    <Polygon Name="PBC" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Polygon>
+    <Polygon Name="ABCDEF" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Polygon>
+    <Segment Name="PC" Style="BlueLine">
+      <Dependency Name="P" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="PD" Style="BlueLine">
+      <Dependency Name="P" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="PE" Style="BlueLine">
+      <Dependency Name="P" />
+      <Dependency Name="E" />
+    </Segment>
+    <Segment Name="PF" Style="BlueLine">
+      <Dependency Name="P" />
+      <Dependency Name="F" />
+    </Segment>
+  </Figures>
+</Drawing>
