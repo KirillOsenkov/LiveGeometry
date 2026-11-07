@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function showHeroLive() {
     var element = document.getElementById('hero-live');
     var featured = puzzles.find(function (puzzle) { return puzzle.live; }) || puzzles[0];
-    if (element == null || featured == null || Player == null || getComputedStyle(element).display === 'none') {
+    if (element == null || featured == null || Player == null) {
       return;
     }
 
@@ -991,6 +991,24 @@ document.addEventListener('DOMContentLoaded', function () {
       heroPlayer = new HeroPlayer(element, { lgf: text, theme: currentTheme() });
       if (heroPlayer.loadErrors != null) {
         console.warn('CatrionaAgg: ' + featured.slug + ': ' + heroPlayer.loadErrors);
+      }
+
+      // The scene fitted again whenever the box changes size. The player keeps its fit on a
+      // resize only until a handle is dragged; after that, a box hidden where the hero is one
+      // column and shown again when the window widens, or a box of another width, kept the
+      // view fitted for the old size. The drag's result stays; only the view is fitted.
+      if (window.ResizeObserver) {
+        var fitted = null;
+        new ResizeObserver(function (entries) {
+          var rect = entries[0].contentRect;
+          var size = Math.round(rect.width) + 'x' + Math.round(rect.height);
+          if (rect.width > 0 && rect.height > 0 && size !== fitted) {
+            fitted = size;
+            heroPlayer.keepFitted = true;
+            heroPlayer.fitInitial();
+            heroPlayer.invalidate();
+          }
+        }).observe(element);
       }
     }).catch(function (error) {
       console.error('CatrionaAgg: ' + error.message);
