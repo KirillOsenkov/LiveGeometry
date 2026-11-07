@@ -47,7 +47,12 @@
   dough, the corners strayed by a fixed random sequence; the same colors under both themes).
   The `/web` page has the same chips in HTML and SVG (`web/index.html`, see "`/web`" in
   deployment.md; its donut is drawn by `drawDonut` from the same numbers in the same order,
-  so it is the same picture): a change here goes there too.
+  so it is the same picture): a change here goes there too. The counts are read off the
+  catalogs at build (2026-11-07, after the app said 440 when the catalog had 441): the
+  number of `"slug":` fields in each `puzzles.json`, written by `LiveGeometry.App.csproj`
+  into `obj\LibraryCounts.g.cs` (`LibraryCounts.CatrionaAgg`, `.Snacks`) for the app, and by
+  `WriteGalleryIndex` into the badges of the published `/web` pages; the number in
+  `web/index.html` itself is only what a dev server showing the repo's file says.
 - **Gallery drawings** are embedded `.lgf` (`Gallery/Drawings`, order and titles in
   `GalleryCatalog`) and are *the* source: edit them directly. They were forked once from the
   Windows Phone samples and the DG 1.0 CD library; `tools/gallerize.cs` made that fork and must

@@ -72,8 +72,9 @@
     <!-- the embed page, a static site of its own at /embed (web.config routes it), like /history -->
     <Content Include="..\..\..\embed\**" Link="wwwroot\embed\%(RecursiveDir)%(Filename)%(Extension)" />
     <!-- the gallery and its drawings played by the player, no .NET: /web and /web/<slug>
-         (web.config routes every extensionless path under /web to the page) -->
-    <Content Include="..\..\..\web\**" Link="wwwroot\web\%(RecursiveDir)%(Filename)%(Extension)" />
+         (web.config routes every extensionless path under /web to the page); the page itself
+         is written by WriteGalleryIndex below, with the libraries' counts on its chips -->
+    <Content Include="..\..\..\web\**" Exclude="..\..\..\web\index.html" Link="wwwroot\web\%(RecursiveDir)%(Filename)%(Extension)" />
     <!-- Catriona Agg's puzzles, played by the player: /CatrionaAgg and /CatrionaAgg/<slug>
          (web.config routes them; each puzzle's own page is written by WriteGalleryIndex below) -->
     <Content Include="..\..\..\CatrionaAgg\**" Link="wwwroot\CatrionaAgg\%(RecursiveDir)%(Filename)%(Extension)" />
@@ -110,7 +111,10 @@
        show a link's preview read only the page's HTML, never what its script draws, and
        every /gallery/<slug> was the same page (web.config serves these in its place).
        /web/<slug>.html: the same for the gallery without .NET, web/index.html with the
-       drawing's tags (web.config serves it for /web/<slug> when it is there).
+       drawing's tags (web.config serves it for /web/<slug> when it is there), and
+       /web/index.html the page itself; both with the libraries' counts on the chips
+       (the number of "slug" fields in each catalog, as LiveGeometry.App.csproj counts them
+       for the app's chips).
        /sitemap.xml: the site's pages, the drawings among them.
        /CatrionaAgg/<slug>.html: the same for each of Catriona Agg's puzzles that has a drawing
        (CatrionaAgg/puzzles.json): the library's puzzle.html with the puzzle's title, its question
@@ -255,6 +259,22 @@
                 File.Delete(stale);
             }
         }
+
+        // the chips of the /web page say how many puzzles each library has: the number of
+        // entries in its catalog, written into the page and every drawing's copy of it
+        int CountPuzzles(string folder) => Regex.Matches(File.ReadAllText(Path.Combine(folder, "puzzles.json")), "\"slug\":").Count;
+        try
+        {
+            webTemplate = ReplaceOnce(webTemplate, "Catriona Agg's Puzzles <span class=\"badge\">[0-9]+</span>", m => "Catriona Agg's Puzzles <span class=\"badge\">" + CountPuzzles(CatrionaFolder) + "</span>", WebTemplate);
+            webTemplate = ReplaceOnce(webTemplate, "Geometry Snacks <span class=\"badge\">[0-9]+</span>", m => "Geometry Snacks <span class=\"badge\">" + CountPuzzles(SnacksFolder) + "</span>", WebTemplate);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Log.LogError(ex.Message);
+            return false;
+        }
+
+        File.WriteAllText(Path.Combine(WebPagesFolder, "index.html"), webTemplate, new UTF8Encoding(false));
 
         var sitemap = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n");
         foreach (string page in new[] { "/", "/history", "/history/tabula", "/embed" })

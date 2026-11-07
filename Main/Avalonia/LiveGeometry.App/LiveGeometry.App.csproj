@@ -34,4 +34,39 @@
     <AssemblyMetadata Include="ShareService" Value="$(ShareService)" />
   </ItemGroup>
 
+  <!-- The counts on the start page's library chips (GalleryView.Libraries) are read off the
+       libraries' catalogs at build, so that a puzzle added to a library is counted without a
+       number to keep in step: obj\LibraryCounts.g.cs holds how many entries each puzzles.json
+       has (its "slug" fields). The /web page gets the same counts from the browser head's
+       build (WriteGalleryIndex in LiveGeometry.Browser.csproj). -->
+  <PropertyGroup>
+    <CatrionaCatalog>$(MSBuildProjectDirectory)\..\..\..\CatrionaAgg\puzzles.json</CatrionaCatalog>
+    <SnacksCatalog>$(MSBuildProjectDirectory)\..\..\..\snacks\puzzles.json</SnacksCatalog>
+    <LibraryCountsOutput>$(MSBuildProjectDirectory)\obj\LibraryCounts.g.cs</LibraryCountsOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(LibraryCountsOutput)" />
+  </ItemGroup>
+
+  <Target Name="WriteLibraryCounts" BeforeTargets="CoreCompile" Inputs="$(CatrionaCatalog);$(SnacksCatalog);$(MSBuildProjectFullPath)" Outputs="$(LibraryCountsOutput)">
+    <PropertyGroup>
+      <CatrionaCatalogText>$([System.IO.File]::ReadAllText('$(CatrionaCatalog)'))</CatrionaCatalogText>
+      <SnacksCatalogText>$([System.IO.File]::ReadAllText('$(SnacksCatalog)'))</SnacksCatalogText>
+      <CatrionaCount>$([System.Text.RegularExpressions.Regex]::Matches($(CatrionaCatalogText), '"slug":').Count)</CatrionaCount>
+      <SnacksCount>$([System.Text.RegularExpressions.Regex]::Matches($(SnacksCatalogText), '"slug":').Count)</SnacksCount>
+    </PropertyGroup>
+    <ItemGroup>
+      <LibraryCountsLine Include="// Written at build by the WriteLibraryCounts target of LiveGeometry.App.csproj: not edited by hand." />
+      <LibraryCountsLine Include="namespace LiveGeometry%3B%0A" />
+      <LibraryCountsLine Include="/// &lt;summary&gt;How many puzzles each library's catalog lists, for the chips of the start page&lt;/summary&gt;" />
+      <LibraryCountsLine Include="public static class LibraryCounts" />
+      <LibraryCountsLine Include="{" />
+      <LibraryCountsLine Include="%20%20%20%20public const int CatrionaAgg = $(CatrionaCount)%3B" />
+      <LibraryCountsLine Include="%20%20%20%20public const int Snacks = $(SnacksCount)%3B" />
+      <LibraryCountsLine Include="}" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(LibraryCountsOutput)" Lines="@(LibraryCountsLine)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
 </Project>

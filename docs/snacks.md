@@ -9,8 +9,9 @@ library" in catriona-agg.md, whose pages these are copies of, cut down): `index.
 drawings in `drawings/`. web.config routes the addresses, the csproj links the folder and
 `WriteGalleryIndex` writes a page per puzzle with its title, question and preview picture in
 the head (`tools/previews.cs` renders the pictures for both libraries). The dev server is
-`.claude/launch.json`'s "snacks-dev" (port 5012, over the same publish folder as "catriona-dev",
-`C:\temp\LiveGeometry\aggsite`); `window.snacksPlayer` is the puzzle's player.
+`.claude/launch.json`'s "snacks-dev" (port 5012, the repo's `snacks/` folder over a publish of
+the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there since
+2026-11-07); `window.snacksPlayer` is the puzzle's player.
 - **Terms with the authors** (Vincent Pantaloni said yes by email on 2026-11-06, Ed Southall is on
   board): about half the puzzles at most, no answers or solutions anywhere on the pages, both
   authors credited, links to the books (Amazon and Tarquin), and the prototype shown to them for

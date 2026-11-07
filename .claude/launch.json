@@ -16,7 +16,7 @@
     {
       "name": "embed-dev",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/publish-rename/wwwroot", "5006", "--overlay", "embed=embed", "--reload"],
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/site/wwwroot", "5006", "--overlay", "embed=embed", "--reload"],
       "port": 5006
     },
     {
@@ -28,25 +28,25 @@
     {
       "name": "web-dev",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/publish-rename/wwwroot", "5008", "--overlay", "web=web", "--reload"],
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/site/wwwroot", "5008", "--overlay", "web=web", "--reload"],
       "port": 5008
     },
     {
       "name": "catriona-dev",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5011", "--overlay", "CatrionaAgg=CatrionaAgg", "--route", "CatrionaAgg=CatrionaAgg/puzzle.html", "--reload"],
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/site/wwwroot", "5011", "--overlay", "CatrionaAgg=CatrionaAgg", "--route", "CatrionaAgg=CatrionaAgg/puzzle.html", "--reload"],
       "port": 5011
     },
     {
       "name": "snacks-dev",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5012", "--overlay", "snacks=snacks", "--route", "snacks=snacks/puzzle.html", "--reload"],
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/site/wwwroot", "5012", "--overlay", "snacks=snacks", "--route", "snacks=snacks/puzzle.html", "--reload"],
       "port": 5012
     },
     {
       "name": "snacks-review",
       "runtimeExecutable": "dotnet",
-      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/aggsite", "5014", "--overlay", "snacks=snacks", "--overlay", "review=C:/temp/Snacks", "--reload"],
+      "runtimeArgs": ["run", "tools/serve.cs", "--", "C:/temp/LiveGeometry/site/wwwroot", "5014", "--overlay", "snacks=snacks", "--overlay", "review=C:/temp/Snacks", "--reload"],
       "port": 5014
     },
     {

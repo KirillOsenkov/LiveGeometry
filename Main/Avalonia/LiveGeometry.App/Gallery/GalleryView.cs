@@ -472,9 +472,9 @@ public class GalleryView : DockPanel
 
     /// <summary>A puzzle library of the site, a page of its own, as the start page links it</summary>
     /// <param name="Plate">The tint of its chip</param>
-    /// <param name="Count">How many puzzles it holds</param>
+    /// <param name="Count">How many puzzles it holds (LibraryCounts, read off the catalogs at build)</param>
     /// <param name="Picture">The miniature on its chip</param>
-    public record Library(string Title, string Url, Color Plate, string Count, Func<Control> Picture);
+    public record Library(string Title, string Url, Color Plate, int Count, Func<Control> Picture);
 
     static Library[] Libraries()
     {
@@ -485,8 +485,8 @@ public class GalleryView : DockPanel
 
         return
         [
-            new Library("Catriona Agg's Puzzles", catriona, paper, "440", HexagonsPicture),
-            new Library("Geometry Snacks", snacks, paper, "30", DonutPicture)
+            new Library("Catriona Agg's Puzzles", catriona, paper, LibraryCounts.CatrionaAgg, HexagonsPicture),
+            new Library("Geometry Snacks", snacks, paper, LibraryCounts.Snacks, DonutPicture)
         ];
     }
 
@@ -591,7 +591,7 @@ public class GalleryView : DockPanel
             var chip = new GalleryTile(library.Picture(), library.Title, library.Plate, () => OpenLibrary(library.Url))
             {
                 IsChip = true,
-                Badge = library.Count,
+                Badge = library.Count.ToString(),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 // the same above and below, so that a line of chips is centered on the
                 // heading as the chip itself would be, and stacked chips stand apart
