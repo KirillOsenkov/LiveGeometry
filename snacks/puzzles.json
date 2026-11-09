@@ -49,7 +49,7 @@
       "page": "snacks1-page-009.png",
       "statement": "Equally spaced points across two sides of a square form triangles with one shared vertex as shown. What fraction of the square is shaded?",
       "drawing": "equally-spaced-points-in-a-square.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "bisectors-in-a-quadrilateral",

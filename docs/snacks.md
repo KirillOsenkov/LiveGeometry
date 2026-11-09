@@ -80,10 +80,14 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   constructs by a 75° ray from a corner, and its fraction is the book's √3 − 1) and
   `cotangent-circles-in-a-rectangle` (book 2, Sangaku #9, fixed the same day: the radius 3 and the
   length 8 are given in words, and the handle stretched the rectangle; the small radius
-  11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12) and `a-triangle-on-two-midpoints`
+  11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12), `a-triangle-on-two-midpoints`
   (book 1, #2, fixed on 2026-11-08 after a reader's issue, KirillOsenkov/LiveGeometry#5: the
   statement says the triangle is equilateral and its handle made it any triangle; the apex is
-  now where the circles of the base's radius about its ends cross): no handle,
+  now where the circles of the base's radius about its ends cross) and
+  `equally-spaced-points-in-a-square` (book 1, #3, fixed the same day after the same reader's
+  KirillOsenkov/LiveGeometry#6: the statement says a square and its handle made it a
+  rectangle; the fourth vertex is now where the perpendicular at a base corner meets the
+  circle of the base's radius about it): no handle,
   `live` false in the catalog so the tile carries no drag badge. The lesson: a puzzle whose
   words leave a degree of freedom that the picture fixes is a fixed figure, since the handle
   would change the answer. **The audit of 2026-11-06** went over all 30 with that eye: every
@@ -96,8 +100,9 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   live drawings that keep the answer while leaving the wording (a square that becomes a
   rectangle or a parallelogram) stay live by the maintainer's decision: the fraction is
   affine. An equilateral triangle that became any triangle (`a-triangle-on-two-midpoints`)
-  was one of them until a reader objected (issue #5, 2026-11-08) and it was fixed: a drawing
-  is expected to match the statement's words. The star's regular
+  and a square that became a rectangle (`equally-spaced-points-in-a-square`) were among them
+  until a reader objected (issues #5 and #6, 2026-11-08) and both were fixed: a drawing is
+  expected to match the statement's words. The star's regular
   octagon is built about its center by reflections through it, a perpendicular and the lines
   through the midpoints of two chords; the star's points are the triangles cut off each side
   by the two diagonals that skip two vertices.
