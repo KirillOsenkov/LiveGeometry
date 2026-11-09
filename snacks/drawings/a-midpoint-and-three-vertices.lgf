@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More Geometry Snacks #2 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
-     The bottom side AB is between the hidden points A and B. The handle C, the top right corner, slides along a hidden
-     track on the perpendicular to AB at B, from Q at a quarter of AB above B (so the rectangle never flattens out) up to
-     T at one and a half times AB: S is where the circle of radius AB about B meets the perpendicular, Half the midpoint
-     of BS, Q the midpoint of B and Half, and T is where the circle of radius BS/2 about S meets the perpendicular; D
-     closes the rectangle on the perpendicular at A. M is the midpoint of the top side DC, marked by the ticks on DM and MC;
-     X is where the diagonal DB crosses the line MA, and the triangle ABX on the bottom side is shaded. The book's
-     figure is a square, where C starts; the fraction is the same for every rectangle. -->
+     The bottom side AB is between the hidden points A and B. The square ABCD: C is where the circle of radius AB about
+     B meets the perpendicular to AB at B, and D closes the square on the perpendicular at A. M is the midpoint of the
+     top side DC, marked by the ticks on DM and MC; X is where the diagonal DB crosses the line MA, and the triangle
+     ABX on the bottom side is shaded.
+     A fixed figure: the statement says a square, so there is no handle (2026-11-08, with issues #5 and #6; until
+     then C slid along the perpendicular at B and the square became a rectangle). -->
 <Drawing Version="1">
   <Viewport Left="-1.6" Top="6.6" Right="5.6" Bottom="-0.6" />
   <Scene Left="-1.6" Top="6.6" Right="5.6" Bottom="-0.6" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
       <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
     </ShapeStyle>
@@ -43,34 +39,10 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
-    <IntersectionPoint Name="S" Visible="false" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="b" />
       <Dependency Name="cb" />
     </IntersectionPoint>
-    <MidPoint Name="Half" Visible="false">
-      <Dependency Name="B" />
-      <Dependency Name="S" />
-    </MidPoint>
-    <CircleByRadius Name="cs" Visible="false">
-      <Dependency Name="B" />
-      <Dependency Name="Half" />
-      <Dependency Name="S" />
-    </CircleByRadius>
-    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="b" />
-      <Dependency Name="cs" />
-    </IntersectionPoint>
-    <MidPoint Name="Q" Visible="false">
-      <Dependency Name="B" />
-      <Dependency Name="Half" />
-    </MidPoint>
-    <Segment Name="track" Visible="false">
-      <Dependency Name="Q" />
-      <Dependency Name="T" />
-    </Segment>
-    <PointOnFigure Name="C" Style="Handle" X="4" Y="4" Parameter="0.6">
-      <Dependency Name="track" />
-    </PointOnFigure>
     <ParallelLine Name="topLine" Visible="false">
       <Dependency Name="AB" />
       <Dependency Name="C" />

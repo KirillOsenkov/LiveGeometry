@@ -83,11 +83,16 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12), `a-triangle-on-two-midpoints`
   (book 1, #2, fixed on 2026-11-08 after a reader's issue, KirillOsenkov/LiveGeometry#5: the
   statement says the triangle is equilateral and its handle made it any triangle; the apex is
-  now where the circles of the base's radius about its ends cross) and
+  now where the circles of the base's radius about its ends cross),
   `equally-spaced-points-in-a-square` (book 1, #3, fixed the same day after the same reader's
   KirillOsenkov/LiveGeometry#6: the statement says a square and its handle made it a
   rectangle; the fourth vertex is now where the perpendicular at a base corner meets the
-  circle of the base's radius about it): no handle,
+  circle of the base's radius about it) and, from the review of all the live drawings those
+  two issues prompted the same day, `a-midpoint-and-three-vertices` (book 2, Fraction #2, a
+  square that became a rectangle), `two-midpoints-in-an-equilateral-triangle` (book 2,
+  Fraction #5, an equilateral triangle that became any triangle) and `a-star-in-a-square`
+  (book 2, Fraction #11, a square that leaned into a parallelogram), each now built from its
+  base by perpendiculars and circles of the base's radius: no handle,
   `live` false in the catalog so the tile carries no drag badge. The lesson: a puzzle whose
   words leave a degree of freedom that the picture fixes is a fixed figure, since the handle
   would change the answer. **The audit of 2026-11-06** went over all 30 with that eye: every
@@ -97,12 +102,14 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   whose vertex handle could turn the hexagon until a dashed line no longer met its side of
   the square and the marked angles were not the puzzle's: its handle is now kept to a
   sector of 45° to 105° about the center, less a hole, where the sum is 90° throughout. The
-  live drawings that keep the answer while leaving the wording (a square that becomes a
-  rectangle or a parallelogram) stay live by the maintainer's decision: the fraction is
-  affine. An equilateral triangle that became any triangle (`a-triangle-on-two-midpoints`)
-  and a square that became a rectangle (`equally-spaced-points-in-a-square`) were among them
-  until a reader objected (issues #5 and #6, 2026-11-08) and both were fixed: a drawing is
-  expected to match the statement's words. The star's regular
+  live drawings that kept the answer while leaving the wording (a square that became a
+  rectangle or a parallelogram, an equilateral triangle that became any triangle: the
+  fraction is affine) stayed live by the maintainer's decision until a reader objected to two
+  of them (issues #5 and #6, 2026-11-08); then all five were fixed (the list above), and the
+  rule since is that a drawing matches the statement's words for every position of its
+  handles: a shape the statement names (square, equilateral, isosceles, regular) stays that
+  shape, and what the statement leaves free (a point inside, a general triangle, a
+  rectangle's height, a circle's radius) is what the handles move. The star's regular
   octagon is built about its center by reflections through it, a perpendicular and the lines
   through the midpoints of two chords; the star's points are the triangles cut off each side
   by the two diagonals that skip two vertices.

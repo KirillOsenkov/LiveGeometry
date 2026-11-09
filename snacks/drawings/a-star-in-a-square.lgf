@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More Geometry Snacks #11 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
-     The bottom side AB is fixed on the hidden points A and B. The top-left corner D is the handle: it slides along a
-     hidden track on the parallel to AB a side's length above it (from two sides to the left of A to one side to the
-     right), so the square leans into a parallelogram either way; C is where the parallel to AD through B meets that
-     line. The star is the pentagram on D and the four midpoints Mt, Mr, Mb, Ml of the sides, drawn as the ten-cornered
-     polygon of its tips and the crossings of its chords, with the five chords over it. Its fraction of the
-     parallelogram is the same wherever D is; the handle starts at the square. -->
+     The bottom side AB is fixed on the hidden points A and B. The square ABCD: D and C are where the perpendiculars to
+     AB at A and B meet the circles of radius AB about them. The star is the pentagram on D and the four midpoints Mt,
+     Mr, Mb, Ml of the sides, drawn as the ten-cornered polygon of its tips and the crossings of its chords, with the
+     five chords over it.
+     A fixed figure: the statement says a square, so there is no handle (2026-11-08, with issues #5 and #6; until
+     then D slid along the top line and the square leaned into a parallelogram). -->
 <Drawing Version="1">
   <Viewport Left="-2.6" Top="6.4" Right="8.6" Bottom="-2.4" />
   <Scene Left="-2.6" Top="6.4" Right="8.6" Bottom="-2.4" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
       <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
     </ShapeStyle>
@@ -46,51 +43,18 @@
       <Dependency Name="B" />
       <Dependency Name="A" />
     </Circle>
-    <IntersectionPoint Name="D0" Visible="false" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="D" Visible="false" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="a" />
       <Dependency Name="ca" />
     </IntersectionPoint>
-    <IntersectionPoint Name="C0" Visible="false" Algorithm="IntersectLineAndEllipse1">
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndEllipse1">
       <Dependency Name="b" />
       <Dependency Name="cb" />
     </IntersectionPoint>
-    <ParallelLine Name="top" Visible="false">
-      <Dependency Name="AB" />
-      <Dependency Name="D0" />
-    </ParallelLine>
     <MidPoint Name="Mb" Visible="false">
       <Dependency Name="A" />
       <Dependency Name="B" />
     </MidPoint>
-    <!-- the track: half a side's radius about D0 reaches two sides to the left of A -->
-    <CircleByRadius Name="half" Visible="false">
-      <Dependency Name="A" />
-      <Dependency Name="Mb" />
-      <Dependency Name="D0" />
-    </CircleByRadius>
-    <IntersectionPoint Name="T0" Visible="false" Algorithm="IntersectLineAndEllipse1">
-      <Dependency Name="top" />
-      <Dependency Name="half" />
-    </IntersectionPoint>
-    <Segment Name="track" Visible="false">
-      <Dependency Name="T0" />
-      <Dependency Name="C0" />
-    </Segment>
-    <PointOnFigure Name="D" Style="Handle" X="0" Y="4" Parameter="0.3333333333">
-      <Dependency Name="track" />
-    </PointOnFigure>
-    <LineTwoPoints Name="ad" Visible="false">
-      <Dependency Name="A" />
-      <Dependency Name="D" />
-    </LineTwoPoints>
-    <ParallelLine Name="bc" Visible="false">
-      <Dependency Name="ad" />
-      <Dependency Name="B" />
-    </ParallelLine>
-    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndLine">
-      <Dependency Name="bc" />
-      <Dependency Name="top" />
-    </IntersectionPoint>
     <Polygon Name="ABCD" Style="Frame">
       <Dependency Name="A" />
       <Dependency Name="B" />

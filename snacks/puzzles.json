@@ -225,7 +225,7 @@
       "page": "snacks2-page-007.png (left)",
       "statement": "A square is segmented using the midpoint of a side, and three vertices as shown. What fraction is shaded?",
       "drawing": "a-midpoint-and-three-vertices.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "two-midpoints-in-an-equilateral-triangle",
@@ -236,7 +236,7 @@
       "page": "snacks2-page-009.png (right)",
       "statement": "A shaded region is constructed within an equilateral triangle using the midpoint A of a side, and the midpoint between AB. What fraction is shaded?",
       "drawing": "two-midpoints-in-an-equilateral-triangle.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "a-six-petal-rosette",
@@ -258,7 +258,7 @@
       "page": "snacks2-page-015.png (right)",
       "statement": "A five-pointed star is formed in a square by joining a vertex and its four midpoints as shown. What fraction of the square is shaded?",
       "drawing": "a-star-in-a-square.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "eight-triangles-around-a-square",

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- More Geometry Snacks #5 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
-     The base PB is between the hidden points P and B. The handle T, the apex, is a point inside a hidden rectangle
-     above the base; it starts at (2, 2 sqrt 3), the apex of the equilateral triangle on PB (where the circles of radius
-     PB about P and B meet). A is the midpoint of the left side PT, N the midpoint of AB, and the triangle PBN on the
-     base is shaded. The fraction is the same for every triangle, so T is free. The dots at A, N and B are the book's;
-     B's is where the lines of the two sides at B meet, so that the letter has a shown point to hang on. -->
+     The base PB is between the hidden points P and B. The apex T is where the circles of radius PB about P and B
+     meet, so PBT is equilateral. A is the midpoint of the left side PT, N the midpoint of AB, and the triangle PBN
+     on the base is shaded. The dots at A, N and B are the book's; B's is where the lines of the two sides at B meet,
+     so that the letter has a shown point to hang on.
+     A fixed figure: the statement says an equilateral triangle, so there is no handle (2026-11-08, with issues #5
+     and #6; until then T was free inside a hidden rectangle and the triangle became any triangle). -->
 <Drawing Version="1">
   <Viewport Left="-2" Top="6.4" Right="6" Bottom="-1.2" />
   <Scene Left="-2" Top="6.4" Right="6" Bottom="-1.2" />
   <Styles>
-    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
-      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
-    </PointStyle>
     <PointStyle Name="Dot" Size="12" Fill="#FF000000" Color="#FF000000" StrokeWidth="0">
       <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
     </PointStyle>
@@ -28,19 +26,18 @@
   <Figures>
     <FreePoint Name="P" Visible="false" Locked="true" X="0" Y="0" />
     <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
-    <FreePoint Name="R1" Visible="false" Locked="true" X="-1.5" Y="0.6" />
-    <FreePoint Name="R2" Visible="false" Locked="true" X="5.5" Y="0.6" />
-    <FreePoint Name="R3" Visible="false" Locked="true" X="5.5" Y="5.4" />
-    <FreePoint Name="R4" Visible="false" Locked="true" X="-1.5" Y="5.4" />
-    <Polygon Name="range" Visible="false">
-      <Dependency Name="R1" />
-      <Dependency Name="R2" />
-      <Dependency Name="R3" />
-      <Dependency Name="R4" />
-    </Polygon>
-    <PointInRegion Name="T" Style="Handle" X="2" Y="3.4641016151">
-      <Dependency Name="range" />
-    </PointInRegion>
+    <Circle Name="cP" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </Circle>
+    <Circle Name="cB" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="P" />
+    </Circle>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="cP" />
+      <Dependency Name="cB" />
+    </IntersectionPoint>
     <Polygon Name="PBT" Style="Frame">
       <Dependency Name="P" />
       <Dependency Name="B" />
