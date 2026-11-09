@@ -123,7 +123,11 @@ and fails with words (`playerparity.cs`'s `Webauto`).
     `eval "localStorage.setItem('LiveGeometry.Theme','Dark')"` and a `nav`; `--guest` starts
     with an empty storage every time.
 - `tools/serve.cs <publish>/wwwroot [port]` - static server for a publish output (blocks; run in
-  the background). Separate file because a running server locks its own exe.
+  the background). Separate file because a running server locks its own exe. `serve.cmd` at
+  the repo root (2026-11-09) is the whole site from the working tree at
+  http://localhost:5012 with nothing outside the repo: a Debug publish of the Browser head
+  without AOT into its `bin/site` (a minute the first time, some ten seconds after), served
+  with the libraries, `/web`, `/embed` and `/history` overlaid from the repo and live reload.
 
 Web smoke test (run before deploying changes that touch file I/O, clipboard, fonts, or anything
 reflection-based): publish Release, `serve` its wwwroot, `webauto start http://localhost:5005/`,
