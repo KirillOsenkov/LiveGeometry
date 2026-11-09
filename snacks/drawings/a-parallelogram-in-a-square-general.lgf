@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Geometry Snacks #1 (What Fraction is Shaded?), the generalized variant of a-parallelogram-in-a-square.lgf, shown
+     by the puzzle page's Generalize switch (see "Generalize" in docs/snacks.md): the statement's "square" becomes
+     "parallelogram".
+     The corner A is a hidden fixed point. Three handles: B, the other end of the bottom side, slides along a hidden
+     stretch of the base line (from 2.5 to 5.5 units from A); D, the top-left corner, is free inside a hidden rectangle
+     above the base, kept so that C stays in the scene; C is where the parallel to AD through B meets the parallel to
+     AB through D, so ABCD is a parallelogram whatever the two do, and both start at the square. P slides along the top
+     side DC as in the book's drawing. M and N are the midpoints of the left and right sides, O the center; Q is where
+     the line PO meets the bottom side, so that O is the midpoint of PQ and MPNQ is a parallelogram with two vertices
+     at the midpoints of opposite sides. Its area is half the outer parallelogram's wherever the handles are (an
+     affine map takes any parallelogram to the square). The scene is wider than the book drawing's, to leave room. -->
+<Drawing Version="1">
+  <Viewport Left="-1.7" Top="5.4" Right="7.7" Bottom="-0.6" />
+  <Scene Left="-1.7" Top="5.4" Right="7.7" Bottom="-0.6" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#FF000000" StrokeWidth="3" Fill="#FFEF303F">
+      <Dark Color="#FFE8EBF0" Fill="#FFD9333F" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <!-- the stretch of the base line B slides on -->
+    <FreePoint Name="Bnear" Visible="false" Locked="true" X="2.5" Y="0" />
+    <FreePoint Name="Bfar" Visible="false" Locked="true" X="5.5" Y="0" />
+    <Segment Name="track" Visible="false">
+      <Dependency Name="Bnear" />
+      <Dependency Name="Bfar" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="4" Y="0" Parameter="0.5">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <!-- the room D moves in -->
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-1.5" Y="1.2" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="2" Y="1.2" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="2" Y="5.2" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-1.5" Y="5.2" />
+    <Polygon Name="Room" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="D" Style="Handle" X="0" Y="4">
+      <Dependency Name="Room" />
+    </PointInRegion>
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <LineTwoPoints Name="ad" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <ParallelLine Name="bc" Visible="false">
+      <Dependency Name="ad" />
+      <Dependency Name="B" />
+    </ParallelLine>
+    <ParallelLine Name="top" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="D" />
+    </ParallelLine>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bc" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <Segment Name="AD" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </Segment>
+    <Segment Name="BC" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </Segment>
+    <Segment Name="DC" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </Segment>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <MidPoint Name="N" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="O" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="N" />
+    </MidPoint>
+    <PointOnFigure Name="P" Style="Handle" X="1" Y="4" Parameter="0.25">
+      <Dependency Name="DC" />
+    </PointOnFigure>
+    <LineTwoPoints Name="PO" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="O" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="Q" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="PO" />
+      <Dependency Name="AB" />
+    </IntersectionPoint>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <Polygon Name="MPNQ" Style="Red">
+      <Dependency Name="M" />
+      <Dependency Name="P" />
+      <Dependency Name="N" />
+      <Dependency Name="Q" />
+    </Polygon>
+  </Figures>
+</Drawing>

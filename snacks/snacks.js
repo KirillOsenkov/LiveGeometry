@@ -957,11 +957,36 @@ document.addEventListener('DOMContentLoaded', function () {
     return made;
   }
 
+  // A generalized statement's markup (the catalog's "general"): [-the book's words-] the
+  // puzzle doesn't need, crossed out once the reader generalizes, and [+ the words+] in their
+  // place, hidden until then; the rest is the book's text.
+  function writeStatement(target, markup) {
+    target.textContent = '';
+    var pattern = /\[([-+])([\s\S]*?)\1\]/g;
+    var last = 0;
+    var match;
+    while ((match = pattern.exec(markup)) != null) {
+      target.append(markup.slice(last, match.index));
+      target.appendChild(element(match[1] === '-' ? 'del' : 'ins', null, match[2]));
+      last = pattern.lastIndex;
+    }
+
+    target.append(markup.slice(last));
+  }
+
   function fillPanel(puzzle) {
     var book = bookOf(puzzle);
     document.getElementById('p-where').textContent = placeOf(puzzle) + ' · ' + puzzle.chapter;
     document.getElementById('p-title').textContent = puzzle.title;
-    document.getElementById('p-question').textContent = puzzle.statement;
+    if (puzzle.general != null) {
+      writeStatement(document.getElementById('p-question'), puzzle.general.statement);
+      if (puzzle.general.title != null) {
+        writeStatement(document.getElementById('p-title'), puzzle.general.title);
+      }
+    } else {
+      document.getElementById('p-question').textContent = puzzle.statement;
+    }
+
     // the bar along the question in the book's color: the second book draws in blue
     document.getElementById('p-question').parentElement.classList.toggle('book-2', puzzle.book === 2);
     var bookLink = document.getElementById('p-book');
@@ -1038,7 +1063,9 @@ document.addEventListener('DOMContentLoaded', function () {
     setUpStepper(puzzle);
 
     var playerElement = document.getElementById('player');
+    // the text of the drawing on the stage: the book's, or the generalized one while the switch is on
     var currentText = null;
+    var applyGeneralization = function () { };
     fetchText(puzzle).then(function (text) {
       currentText = text;
       puzzlePlayer = new Player(playerElement, { lgf: text, theme: currentTheme(), wheel: 'zoom' });
@@ -1047,9 +1074,41 @@ document.addEventListener('DOMContentLoaded', function () {
       if (puzzlePlayer.loadErrors != null) {
         console.warn('Snacks: ' + puzzle.slug + ': ' + puzzlePlayer.loadErrors);
       }
+
+      applyGeneralization();
     }).catch(function (error) {
       console.error('Snacks: ' + error.message);
     });
+
+    // Generalize: the switch under the question crosses out the words the puzzle doesn't need
+    // and puts the generalized drawing, with its handles, on the stage (see "Generalize" in
+    // docs/snacks.md); off again, the book's words and figure are back.
+    var generalize = document.getElementById('generalize');
+    var generalBox = document.getElementById('generalize-box');
+    if (puzzle.general != null) {
+      generalize.hidden = false;
+      var generalText = fetchText({ slug: puzzle.slug + '-general', drawing: puzzle.general.drawing });
+      generalText.catch(function (error) {
+        console.error('Snacks: ' + error.message);
+      });
+      applyGeneralization = function () {
+        var on = generalBox.checked;
+        document.getElementById('p-question').parentElement.classList.toggle('generalized', on);
+        document.getElementById('p-title').classList.toggle('generalized', on);
+        Promise.all([fetchText(puzzle), generalText]).then(function (texts) {
+          if (generalBox.checked !== on || puzzlePlayer == null) {
+            return;
+          }
+
+          var text = on ? texts[1] : texts[0];
+          if (text !== currentText) {
+            currentText = text;
+            puzzlePlayer.load(text);
+          }
+        }).catch(function () { });
+      };
+      generalBox.addEventListener('change', applyGeneralization);
+    }
 
     document.getElementById('back').addEventListener('click', function (e) {
       if (isPlainClick(e)) {
@@ -1086,6 +1145,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (puzzlePlayer != null) {
           puzzlePlayer.fit();
         }
+      } else if ((e.key === 'g' || e.key === 'G') && !generalize.hidden) {
+        generalBox.checked = !generalBox.checked;
+        applyGeneralization();
       }
     });
   }

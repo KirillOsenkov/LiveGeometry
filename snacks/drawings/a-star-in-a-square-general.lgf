@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #11 (What Fraction is Shaded?), the generalized variant of a-star-in-a-square.lgf, shown by
+     the puzzle page's Generalize switch (see "Generalize" in docs/snacks.md): the statement's "square" becomes
+     "parallelogram".
+     The corner A is a hidden fixed point. Two handles: B, the other end of the bottom side, slides along a hidden
+     stretch of the base line (from 2.5 to 6 units from A), and D, the top-left corner, is free inside a hidden
+     rectangle above the base, kept so that C stays in the scene; C is where the parallel to AD through B meets the
+     parallel to AB through D, so ABCD is a parallelogram whatever the two handles do. Both start at the square. The
+     star is the pentagram on D and the four midpoints Mt, Mr, Mb, Ml of the sides, drawn as the ten-cornered polygon
+     of its tips and the crossings of its chords, with the five chords over it. Its fraction of the parallelogram,
+     7/24, is the same wherever B and D are (an affine map takes any parallelogram to the square). -->
+<Drawing Version="1">
+  <Viewport Left="-2.6" Top="6.4" Right="8.6" Bottom="-2.4" />
+  <Scene Left="-2.6" Top="6.4" Right="8.6" Bottom="-2.4" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <LineStyle Name="BlueLine" Color="#FF0000FF" StrokeWidth="3">
+      <Dark Color="#FF9DA3FF" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
+    <!-- the stretch of the base line B slides on -->
+    <FreePoint Name="Bnear" Visible="false" Locked="true" X="2.5" Y="0" />
+    <FreePoint Name="Bfar" Visible="false" Locked="true" X="6" Y="0" />
+    <Segment Name="track" Visible="false">
+      <Dependency Name="Bnear" />
+      <Dependency Name="Bfar" />
+    </Segment>
+    <PointOnFigure Name="B" Style="Handle" X="4" Y="0" Parameter="0.4285714286">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <!-- the room D moves in -->
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-2.4" Y="1" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="2.5" Y="1" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="2.5" Y="6" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-2.4" Y="6" />
+    <Polygon Name="Room" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="D" Style="Handle" X="0" Y="4">
+      <Dependency Name="Room" />
+    </PointInRegion>
+    <Segment Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </Segment>
+    <LineTwoPoints Name="ad" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </LineTwoPoints>
+    <ParallelLine Name="bc" Visible="false">
+      <Dependency Name="ad" />
+      <Dependency Name="B" />
+    </ParallelLine>
+    <ParallelLine Name="top" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="D" />
+    </ParallelLine>
+    <IntersectionPoint Name="C" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="bc" />
+      <Dependency Name="top" />
+    </IntersectionPoint>
+    <Polygon Name="ABCD" Style="Frame">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Polygon>
+    <MidPoint Name="Mb" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <MidPoint Name="Mt" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="Mr" Visible="false">
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+    </MidPoint>
+    <MidPoint Name="Ml" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <Segment Name="s1" Visible="false">
+      <Dependency Name="D" />
+      <Dependency Name="Mr" />
+    </Segment>
+    <Segment Name="s2" Visible="false">
+      <Dependency Name="Mr" />
+      <Dependency Name="Ml" />
+    </Segment>
+    <Segment Name="s3" Visible="false">
+      <Dependency Name="Ml" />
+      <Dependency Name="Mt" />
+    </Segment>
+    <Segment Name="s4" Visible="false">
+      <Dependency Name="Mt" />
+      <Dependency Name="Mb" />
+    </Segment>
+    <Segment Name="s5" Visible="false">
+      <Dependency Name="Mb" />
+      <Dependency Name="D" />
+    </Segment>
+    <IntersectionPoint Name="I1" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="s1" />
+      <Dependency Name="s3" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I2" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="s4" />
+      <Dependency Name="s1" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I3" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="s2" />
+      <Dependency Name="s4" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I4" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="s5" />
+      <Dependency Name="s2" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="I5" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="s3" />
+      <Dependency Name="s5" />
+    </IntersectionPoint>
+    <Polygon Name="star" Style="Blue">
+      <Dependency Name="D" />
+      <Dependency Name="I1" />
+      <Dependency Name="Mt" />
+      <Dependency Name="I2" />
+      <Dependency Name="Mr" />
+      <Dependency Name="I3" />
+      <Dependency Name="Mb" />
+      <Dependency Name="I4" />
+      <Dependency Name="Ml" />
+      <Dependency Name="I5" />
+    </Polygon>
+    <Segment Name="DMr" Style="BlueLine">
+      <Dependency Name="D" />
+      <Dependency Name="Mr" />
+    </Segment>
+    <Segment Name="MrMl" Style="BlueLine">
+      <Dependency Name="Mr" />
+      <Dependency Name="Ml" />
+    </Segment>
+    <Segment Name="MlMt" Style="BlueLine">
+      <Dependency Name="Ml" />
+      <Dependency Name="Mt" />
+    </Segment>
+    <Segment Name="MtMb" Style="BlueLine">
+      <Dependency Name="Mt" />
+      <Dependency Name="Mb" />
+    </Segment>
+    <Segment Name="MbD" Style="BlueLine">
+      <Dependency Name="Mb" />
+      <Dependency Name="D" />
+    </Segment>
+  </Figures>
+</Drawing>

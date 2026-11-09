@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- More Geometry Snacks #5 (What Fraction is Shaded?), the generalized variant of
+     two-midpoints-in-an-equilateral-triangle.lgf, shown by the puzzle page's Generalize switch (see "Generalize" in
+     docs/snacks.md): the statement's "equilateral" is dropped.
+     The base PB is between the hidden points P and B. The handle T, the apex, is a point inside a hidden rectangle
+     above the base; it starts at (2, 2 sqrt 3), the apex of the equilateral triangle on PB (where the circles of radius
+     PB about P and B meet), so the figure is the book's until T is dragged. A is the midpoint of the left side PT, N
+     the midpoint of AB, and the triangle PBN on the base is shaded. The fraction is the same for every triangle, so T
+     is free. The dots at A, N and B are the book's; B's is where the lines of the two sides at B meet, so that the
+     letter has a shown point to hang on. -->
+<Drawing Version="1">
+  <Viewport Left="-2" Top="6.4" Right="6" Bottom="-1.2" />
+  <Scene Left="-2" Top="6.4" Right="6" Bottom="-1.2" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <PointStyle Name="Dot" Size="12" Fill="#FF000000" Color="#FF000000" StrokeWidth="0">
+      <Dark Fill="#FFE8EBF0" Color="#FFE8EBF0" />
+    </PointStyle>
+    <ShapeStyle Name="Blue" Color="#FF0000FF" StrokeWidth="3" Fill="#FFB9B9FF">
+      <Dark Color="#FF9DA3FF" Fill="#FF7F86D6" />
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF000000" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE8EBF0" />
+    </ShapeStyle>
+    <TextStyle Name="Letter" FontSize="30" Color="#FF000000" FontFamily="Segoe UI" Italic="true">
+      <Dark Color="#FFE8EBF0" />
+    </TextStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="P" Visible="false" Locked="true" X="0" Y="0" />
+    <FreePoint Name="B" Visible="false" Locked="true" X="4" Y="0" />
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-1.5" Y="0.6" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="5.5" Y="0.6" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="5.5" Y="5.4" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-1.5" Y="5.4" />
+    <Polygon Name="range" Visible="false">
+      <Dependency Name="R1" />
+      <Dependency Name="R2" />
+      <Dependency Name="R3" />
+      <Dependency Name="R4" />
+    </Polygon>
+    <PointInRegion Name="T" Style="Handle" X="2" Y="3.4641016151">
+      <Dependency Name="range" />
+    </PointInRegion>
+    <Polygon Name="PBT" Style="Frame">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+      <Dependency Name="T" />
+    </Polygon>
+    <MidPoint Name="A" Style="Dot">
+      <Dependency Name="P" />
+      <Dependency Name="T" />
+    </MidPoint>
+    <MidPoint Name="N" Style="Dot">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <Polygon Name="PBN" Style="Blue">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+      <Dependency Name="N" />
+    </Polygon>
+    <LineTwoPoints Name="linePB" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="lineTB" Visible="false">
+      <Dependency Name="T" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="Bd" Style="Dot" Algorithm="IntersectLineAndLine">
+      <Dependency Name="linePB" />
+      <Dependency Name="lineTB" />
+    </IntersectionPoint>
+    <AttachedLabel Name="LabelA" Style="Letter" Z="1" OffsetX="-46" OffsetY="-26" Text="A">
+      <Dependency Name="A" />
+    </AttachedLabel>
+    <AttachedLabel Name="LabelB" Style="Letter" Z="1" OffsetX="16" OffsetY="-20" Text="B">
+      <Dependency Name="Bd" />
+    </AttachedLabel>
+  </Figures>
+</Drawing>
