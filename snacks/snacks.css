@@ -652,6 +652,13 @@ svg { display: block; }
 
 .panel .generalized ins { display: inline; }
 
+/* the title and the statement with markup hold the text twice in one grid cell: the one read,
+   and an invisible copy in the generalized state, so that the height is the taller of the two
+   and the checkbox under them stays put when the box is ticked (writeStatement in snacks.js) */
+.panel .diff { display: grid; }
+.panel .diff > span { grid-area: 1 / 1; }
+.panel .diff > .ghost { visibility: hidden; user-select: none; pointer-events: none; }
+
 /* a checkbox, and the word in a gradient from the site's red to its blue */
 .generalize {
   display: inline-flex;

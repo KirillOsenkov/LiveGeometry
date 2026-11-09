@@ -4,10 +4,12 @@
      them. M and N are the midpoints of the left and right sides, O the center of the square. The handle P slides along
      the top side DC; Q is where the line PO meets the bottom side, so that O is the midpoint of PQ and MPNQ is a
      parallelogram with two vertices at the midpoints of opposite sides. Its area is half the square's wherever P is;
-     at either end of DC the parallelogram leans on a corner. -->
+     at either end of DC the parallelogram leans on a corner. The scene is the generalized drawing's
+     (a-parallelogram-in-a-square-general.lgf, shown by the puzzle page's Generalize switch), with room around the
+     square, so that the figure stays in place when the switch is toggled. -->
 <Drawing Version="1">
-  <Viewport Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
-  <Scene Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
+  <Viewport Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
+  <Scene Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
   <Styles>
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />

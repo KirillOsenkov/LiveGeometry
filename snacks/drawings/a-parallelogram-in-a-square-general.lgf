@@ -3,16 +3,17 @@
      by the puzzle page's Generalize switch (see "Generalize" in docs/snacks.md): the statement's "square" becomes
      "parallelogram".
      The corner A is a hidden fixed point. Three handles: B, the other end of the bottom side, slides along a hidden
-     stretch of the base line (from 2.5 to 5.5 units from A); D, the top-left corner, is free inside a hidden rectangle
-     above the base, kept so that C stays in the scene; C is where the parallel to AD through B meets the parallel to
+     stretch of the base line (from 2.5 to 5 units from A); D, the top-left corner, is free inside a hidden rectangle
+     above the base, cut so that the parallelogram stays within the scene and centered on the square; C is where the parallel to AD through B meets the parallel to
      AB through D, so ABCD is a parallelogram whatever the two do, and both start at the square. P slides along the top
      side DC as in the book's drawing. M and N are the midpoints of the left and right sides, O the center; Q is where
      the line PO meets the bottom side, so that O is the midpoint of PQ and MPNQ is a parallelogram with two vertices
      at the midpoints of opposite sides. Its area is half the outer parallelogram's wherever the handles are (an
-     affine map takes any parallelogram to the square). The scene is wider than the book drawing's, to leave room. -->
+     affine map takes any parallelogram to the square). The book's drawing shares this scene, so the figure stays in
+     place when the switch is toggled. -->
 <Drawing Version="1">
-  <Viewport Left="-1.7" Top="5.4" Right="7.7" Bottom="-0.6" />
-  <Scene Left="-1.7" Top="5.4" Right="7.7" Bottom="-0.6" />
+  <Viewport Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
+  <Scene Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
   <Styles>
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
@@ -28,19 +29,19 @@
     <FreePoint Name="A" Visible="false" Locked="true" X="0" Y="0" />
     <!-- the stretch of the base line B slides on -->
     <FreePoint Name="Bnear" Visible="false" Locked="true" X="2.5" Y="0" />
-    <FreePoint Name="Bfar" Visible="false" Locked="true" X="5.5" Y="0" />
+    <FreePoint Name="Bfar" Visible="false" Locked="true" X="5" Y="0" />
     <Segment Name="track" Visible="false">
       <Dependency Name="Bnear" />
       <Dependency Name="Bfar" />
     </Segment>
-    <PointOnFigure Name="B" Style="Handle" X="4" Y="0" Parameter="0.5">
+    <PointOnFigure Name="B" Style="Handle" X="4" Y="0" Parameter="0.6">
       <Dependency Name="track" />
     </PointOnFigure>
     <!-- the room D moves in -->
-    <FreePoint Name="R1" Visible="false" Locked="true" X="-1.5" Y="1.2" />
-    <FreePoint Name="R2" Visible="false" Locked="true" X="2" Y="1.2" />
-    <FreePoint Name="R3" Visible="false" Locked="true" X="2" Y="5.2" />
-    <FreePoint Name="R4" Visible="false" Locked="true" X="-1.5" Y="5.2" />
+    <FreePoint Name="R1" Visible="false" Locked="true" X="-2" Y="1.2" />
+    <FreePoint Name="R2" Visible="false" Locked="true" X="1" Y="1.2" />
+    <FreePoint Name="R3" Visible="false" Locked="true" X="1" Y="5" />
+    <FreePoint Name="R4" Visible="false" Locked="true" X="-2" Y="5" />
     <Polygon Name="Room" Visible="false">
       <Dependency Name="R1" />
       <Dependency Name="R2" />

@@ -959,19 +959,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // A generalized statement's markup (the catalog's "general"): [-the book's words-] the
   // puzzle doesn't need, crossed out once the reader generalizes, and [+ the words+] in their
-  // place, hidden until then; the rest is the book's text.
+  // place, hidden until then; the rest is the book's text. The text is written twice, over
+  // each other: the one read, and an invisible copy in the generalized state, so that the
+  // element is as tall as the longer of the two and nothing below it moves on the toggle
+  // (the "diff" grid in snacks.css).
   function writeStatement(target, markup) {
-    target.textContent = '';
     var pattern = /\[([-+])([\s\S]*?)\1\]/g;
-    var last = 0;
-    var match;
-    while ((match = pattern.exec(markup)) != null) {
-      target.append(markup.slice(last, match.index));
-      target.appendChild(element(match[1] === '-' ? 'del' : 'ins', null, match[2]));
-      last = pattern.lastIndex;
-    }
+    var write = function (into) {
+      var last = 0;
+      var match;
+      pattern.lastIndex = 0;
+      while ((match = pattern.exec(markup)) != null) {
+        into.append(markup.slice(last, match.index));
+        into.appendChild(element(match[1] === '-' ? 'del' : 'ins', null, match[2]));
+        last = pattern.lastIndex;
+      }
 
-    target.append(markup.slice(last));
+      into.append(markup.slice(last));
+      return into;
+    };
+    target.textContent = '';
+    target.classList.add('diff');
+    target.appendChild(write(element('span', 'text')));
+    var ghost = write(element('span', 'ghost generalized'));
+    ghost.setAttribute('aria-hidden', 'true');
+    target.appendChild(ghost);
   }
 
   function fillPanel(puzzle) {

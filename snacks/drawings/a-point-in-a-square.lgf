@@ -2,10 +2,12 @@
 <!-- More Geometry Snacks #1 (What Fraction is Shaded?), drawn by hand as a ruler-and-compass construction.
      A square ABCD on the hidden points A and B: perpendiculars to AB at A and B, cut by the circles of radius AB about
      them. The handle P is a point inside the square, free in both directions; the triangles on the top and the bottom
-     sides with their apex at P are shaded. Their area is half the square's wherever P is, a side included. -->
+     sides with their apex at P are shaded. Their area is half the square's wherever P is, a side included. The scene
+     is the generalized drawing's (a-point-in-a-square-general.lgf, shown by the puzzle page's Generalize switch),
+     with room around the square, so that the figure stays in place when the switch is toggled. -->
 <Drawing Version="1">
-  <Viewport Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
-  <Scene Left="-0.6" Top="4.6" Right="4.6" Bottom="-0.6" />
+  <Viewport Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
+  <Scene Left="-2.2" Top="5.2" Right="6.2" Bottom="-0.6" />
   <Styles>
     <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
       <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />

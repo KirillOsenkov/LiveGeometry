@@ -132,10 +132,15 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   `[+ the words+]` in the markup, the space inside the insertion, which is not displayed at
   all while the box is off, so that the text reads as printed (`writeStatement` in
   snacks.js, `del` and `ins` under `.question` in snacks.css); and the generalized drawing is loaded on the stage with its
-  handles (`Player.load`; where the generalized drawing fits in the book drawing's scene the
-  two files share a viewport, so the figure is in the same place until a handle is dragged;
-  the two square puzzles' generalized drawings have a wider scene, for the base and the corner
-  to move in, so the view refits on the toggle and the square is shown smaller). Off, the book's words and drawing are shown again. The G key
+  handles (`Player.load`; the two files share a viewport, so the figure is in the same place
+  until a handle is dragged: the player fits whatever it loads, and a wider scene on the
+  generalized drawing alone made the square jump left and shrink on the toggle. So the two
+  square puzzles' book drawings have the generalized drawing's scene, with room around the
+  square, cut so that the parallelogram stays centered on it; their tiles show the square
+  at half the width instead of three quarters, as the star's does). The title and the
+  statement with markup are written twice over each other (`writeStatement`, the `diff`
+  grid): the text read, and an invisible copy in the generalized state, so that each is as
+  tall as the longer of its two states and the checkbox under them stays put on the toggle. Off, the book's words and drawing are shown again. The G key
   toggles the box; Start over and Edit act on whichever drawing is on the stage. A
   generalization is offered only where the quantity asked for is the same for every position
   of the handles (checked by sweeping them in the player, as in the audit above); where it
