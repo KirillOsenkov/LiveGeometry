@@ -38,7 +38,7 @@
       "page": "snacks1-page-008.png",
       "statement": "The shaded triangle is constructed using the midpoints and a vertex of an equilateral triangle as shown. What fraction of the equilateral triangle is shaded?",
       "drawing": "a-triangle-on-two-midpoints.lgf",
-      "live": true
+      "live": false
     },
     {
       "slug": "equally-spaced-points-in-a-square",

@@ -80,7 +80,10 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   constructs by a 75° ray from a corner, and its fraction is the book's √3 − 1) and
   `cotangent-circles-in-a-rectangle` (book 2, Sangaku #9, fixed the same day: the radius 3 and the
   length 8 are given in words, and the handle stretched the rectangle; the small radius
-  11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12): no handle,
+  11 − 4√6 is constructed, √96 as the geometric mean of 8 and 12) and `a-triangle-on-two-midpoints`
+  (book 1, #2, fixed on 2026-11-08 after a reader's issue, KirillOsenkov/LiveGeometry#5: the
+  statement says the triangle is equilateral and its handle made it any triangle; the apex is
+  now where the circles of the base's radius about its ends cross): no handle,
   `live` false in the catalog so the tile carries no drag badge. The lesson: a puzzle whose
   words leave a degree of freedom that the picture fixes is a fixed figure, since the handle
   would change the answer. **The audit of 2026-11-06** went over all 30 with that eye: every
@@ -91,8 +94,10 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   the square and the marked angles were not the puzzle's: its handle is now kept to a
   sector of 45° to 105° about the center, less a hole, where the sum is 90° throughout. The
   live drawings that keep the answer while leaving the wording (a square that becomes a
-  rectangle or a parallelogram, an equilateral triangle that becomes any triangle) stay
-  live by the maintainer's decision: the fraction is affine. The star's regular
+  rectangle or a parallelogram) stay live by the maintainer's decision: the fraction is
+  affine. An equilateral triangle that became any triangle (`a-triangle-on-two-midpoints`)
+  was one of them until a reader objected (issue #5, 2026-11-08) and it was fixed: a drawing
+  is expected to match the statement's words. The star's regular
   octagon is built about its center by reflections through it, a perpendicular and the lines
   through the midpoints of two chords; the star's points are the triangles cut off each side
   by the two diagonals that skip two vertices.
