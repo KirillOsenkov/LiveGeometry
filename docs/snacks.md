@@ -123,19 +123,20 @@ the browser head, `C:\temp\LiveGeometry\site\wwwroot`, as every dev server there
   shape: the right angle's handle leaves its perpendicular for a room, the two squares get
   the star's two outer handles), and a `general` entry in
   the catalog with the marked-up statement, the marked-up title where it names the shape too,
-  and that drawing. The puzzle page shows a switch under the question, "Generalize!", the
-  word in a rainbow gradient with a spark that lights up when it is on, its knob drawn as a
-  handle (the white point of the drawings) on a track that takes the gradient when on. On,
-  the book's words the puzzle doesn't need are struck through in red and the
-  words in their place are shown in green, a diff for children: `[-the book's words-]` and
+  and that drawing. The puzzle page shows a checkbox under the question, "Generalize!", the
+  word in a gradient from the site's red to its blue (a switch drawn as a handle on a track,
+  with a rainbow word and a spark, was tried first and found too much; the checkbox is the
+  browser's own, in the accent). On, the book's words the puzzle doesn't need are struck
+  through in red and the words in their place are shown in green, a diff for children, both
+  at once with no animation: `[-the book's words-]` and
   `[+ the words+]` in the markup, the space inside the insertion, which is not displayed at
-  all while the switch is off, so that the text reads as printed (`writeStatement` in
+  all while the box is off, so that the text reads as printed (`writeStatement` in
   snacks.js, `del` and `ins` under `.question` in snacks.css); and the generalized drawing is loaded on the stage with its
   handles (`Player.load`; where the generalized drawing fits in the book drawing's scene the
   two files share a viewport, so the figure is in the same place until a handle is dragged;
   the two square puzzles' generalized drawings have a wider scene, for the base and the corner
   to move in, so the view refits on the toggle and the square is shown smaller). Off, the book's words and drawing are shown again. The G key
-  toggles the switch; Start over and Edit act on whichever drawing is on the stage. A
+  toggles the box; Start over and Edit act on whichever drawing is on the stage. A
   generalization is offered only where the quantity asked for is the same for every position
   of the handles (checked by sweeping them in the player, as in the audit above); where it
   changes (the fixed figures with given angles and lengths) there is none. The star's

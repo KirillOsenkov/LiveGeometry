@@ -1063,7 +1063,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setUpStepper(puzzle);
 
     var playerElement = document.getElementById('player');
-    // the text of the drawing on the stage: the book's, or the generalized one while the switch is on
+    // the text of the drawing on the stage: the book's, or the generalized one while the box is ticked
     var currentText = null;
     var applyGeneralization = function () { };
     fetchText(puzzle).then(function (text) {
@@ -1080,7 +1080,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Snacks: ' + error.message);
     });
 
-    // Generalize: the switch under the question crosses out the words the puzzle doesn't need
+    // Generalize: the checkbox under the question crosses out the words the puzzle doesn't need
     // and puts the generalized drawing, with its handles, on the stage (see "Generalize" in
     // docs/snacks.md); off again, the book's words and figure are back.
     var generalize = document.getElementById('generalize');
