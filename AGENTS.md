@@ -84,8 +84,14 @@ what every task needs; the rest is in `docs/`, a file per topic (see "Topics").
   separate `PointLabel` figure that depends on it) and opened from the command line to check it.
   On a Mac the executable is `bin/Debug/net10.0/LiveGeometry.Desktop` (no `.exe`), and the
   same build runs as is: see `docs/macos.md`.
-- Browser: needs the `wasm-tools` workload (`WasmBuildNative=true` links Skia/HarfBuzz; without
+- Browser: needs the wasm workload (`WasmBuildNative=true` links Skia/HarfBuzz; without
   it Skia throws DllNotFoundException). Do a full bin/obj clean when native assets change.
+  The newest installed SDK builds it, and the workload's name depends on that SDK: `wasm-tools`
+  under SDK 10, `wasm-tools-net10` under SDK 11 (NETSDK1147 names the missing one).
+  `dotnet workload restore Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj`
+  installs the right one, as CI does since 2026-11-14 (the runner image got SDK 11.0.100).
+  Not net11 yet: .NET 11's wasm toolchain is emscripten 6.0.2, and SkiaSharp 3.119.4 (what
+  Avalonia 12.1.x references, up to 12.1.6) has static libraries only up to emscripten 3.1.56.
 - Browser publish: `dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o <dir>`.
   Output is `<dir>/web.config` + `<dir>/wwwroot/`. CI (`.github/workflows/main_livegeometry.yml`)
   does exactly this and deploys to Azure App Service (IIS). A publish compiles the .NET code

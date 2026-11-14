@@ -26,10 +26,13 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Install wasm-tools workload
+      - name: Install the wasm workload
         # Required because LiveGeometry.Browser sets WasmBuildNative=true
-        # (links the SkiaSharp/HarfBuzz native libraries into the runtime).
-        run: dotnet workload install wasm-tools
+        # (links the SkiaSharp/HarfBuzz native libraries into the runtime). The newest SDK on
+        # the runner is used, whatever setup-dotnet adds, and its name for the workload differs:
+        # SDK 10 calls it wasm-tools, SDK 11 wasm-tools-net10 (wasm-tools there is net11's).
+        # A restore installs the one the project needs from the SDK in use.
+        run: dotnet workload restore Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj
 
       - name: dotnet publish
         # Publish output is a self-contained static site: web.config at the root
