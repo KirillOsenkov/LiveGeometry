@@ -2,6 +2,17 @@
   "source": "https://notes.mathforge.org/notes/published/HomePage",
   "puzzles": [
     {
+      "slug": "two-quarter-circles-and-a-semi-circle-iii",
+      "title": "Two Quarter Circles and a Semi-Circle III",
+      "date": "2026-11-14",
+      "statement": "The red and yellow areas are equal. Altogether, what fraction of the large quarter circle do they cover?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3n2bc2t3un22w",
+      "categories": [],
+      "techniques": [],
+      "drawing": "two-quarter-circles-and-a-semi-circle-iii.lgf",
+      "live": true
+    },
+    {
       "slug": "subdivided-hexagon-v",
       "title": "Subdivided Hexagon V",
       "date": "2026-11-07",

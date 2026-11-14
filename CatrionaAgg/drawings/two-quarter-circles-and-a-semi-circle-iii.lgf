@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawn by hand (not by tools/catrionadrawings.cs): a ruler-and-compass construction with the library's styles.
+     A quarter circle with center O and radius OX, its other corner Y on the perpendicular to OX at O. The handle P
+     slides along the quarter circle's arc between 30° and 60° (cut by the circles of radius OX around Y and around X).
+     The tangent at P, cut by a circle of half the radius around P, gives two points whose lines from O meet the arc
+     at A and B: the chord AB is perpendicular to OP, and its distance from O is twice its half. The semicircle on AB
+     (yellow) is on O's side, and the small quarter circle around O has the semicircle's radius, so it touches the
+     semicircle. Then the red area equals the yellow one, and together they are 4/5 of the large quarter circle,
+     wherever P is. With P at 30° the semicircle touches OX (her picture), with P at 60° it touches OY. -->
+<Drawing Version="1">
+  <Viewport Left="-0.5" Top="4.5" Right="4.5" Bottom="-0.5" />
+  <Scene Left="-0.5" Top="4.5" Right="4.5" Bottom="-0.5" />
+  <Styles>
+    <PointStyle Name="Handle" Size="15" Fill="#FFFFFFFF" Color="#FF1E1E1E" StrokeWidth="2.5">
+      <Dark Fill="#FF1E2228" Color="#FFF2F2F2" />
+    </PointStyle>
+    <ShapeStyle Name="Red" Color="#00000000" StrokeWidth="3" Fill="#FFFD0302" Texture="FeltTip">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDB3E3D" />
+            <GradientStop Color="#FFBD1F1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Yellow" Color="#FF1E1E1E" StrokeWidth="3" Fill="#FFFFFF01" Texture="FeltTip">
+      <Dark Color="#FFE6E6E6" Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FFDBDB3D" />
+            <GradientStop Color="#FFBDBD1F" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="3" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+    <LineStyle Name="Ink" Color="#FF1E1E1E" StrokeWidth="3">
+      <Dark Color="#FFE6E6E6" />
+    </LineStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="O" Visible="false" X="0" Y="0" />
+    <FreePoint Name="X" Visible="false" X="4" Y="0" />
+    <Segment Name="OX" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Segment>
+    <Circle Name="c" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+    </Circle>
+    <PerpendicularLine Name="o" Visible="false">
+      <Dependency Name="OX" />
+      <Dependency Name="O" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="Y" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="o" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <Segment Name="OY" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="Y" />
+    </Segment>
+    <!-- the handle's range: 30° and 60° on the arc, where circles of the radius around Y and around X cut it -->
+    <Circle Name="cY" Visible="false">
+      <Dependency Name="Y" />
+      <Dependency Name="O" />
+    </Circle>
+    <Circle Name="cX" Visible="false">
+      <Dependency Name="X" />
+      <Dependency Name="O" />
+    </Circle>
+    <IntersectionPoint Name="From" Visible="false" Algorithm="IntersectCircleAndCircle1">
+      <Dependency Name="c" />
+      <Dependency Name="cY" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="To" Visible="false" Algorithm="IntersectCircleAndCircle2">
+      <Dependency Name="c" />
+      <Dependency Name="cX" />
+    </IntersectionPoint>
+    <CircleArc Name="track" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="From" />
+      <Dependency Name="To" />
+    </CircleArc>
+    <PointOnFigure Name="P" Style="Handle" X="3.4641016151" Y="2" Parameter="0.5235987756">
+      <Dependency Name="track" />
+    </PointOnFigure>
+    <!-- the chord: the tangent at P cut by a circle of half the radius around P, joined to O -->
+    <LineTwoPoints Name="OP" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="t" Visible="false">
+      <Dependency Name="OP" />
+      <Dependency Name="P" />
+    </PerpendicularLine>
+    <MidPoint Name="H" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="P" />
+    </MidPoint>
+    <Circle Name="k" Visible="false">
+      <Dependency Name="P" />
+      <Dependency Name="H" />
+    </Circle>
+    <IntersectionPoint Name="QA" Visible="false" Algorithm="IntersectLineAndEllipse1">
+      <Dependency Name="t" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="QB" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="t" />
+      <Dependency Name="k" />
+    </IntersectionPoint>
+    <LineTwoPoints Name="OQA" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="QA" />
+    </LineTwoPoints>
+    <LineTwoPoints Name="OQB" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="QB" />
+    </LineTwoPoints>
+    <IntersectionPoint Name="A" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="OQA" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="B" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="OQB" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <MidPoint Name="M" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </MidPoint>
+    <!-- the small quarter circle: around O with the semicircle's radius -->
+    <CircleByRadius Name="s" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+      <Dependency Name="O" />
+    </CircleByRadius>
+    <IntersectionPoint Name="U" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="OX" />
+      <Dependency Name="s" />
+    </IntersectionPoint>
+    <IntersectionPoint Name="V" Visible="false" Algorithm="IntersectLineAndEllipse2">
+      <Dependency Name="OY" />
+      <Dependency Name="s" />
+    </IntersectionPoint>
+    <CircleSector Name="large" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </CircleSector>
+    <CircleSector Name="small" Visible="false">
+      <Dependency Name="O" />
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </CircleSector>
+    <CircleSegment Name="half" Visible="false">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <Region Name="red" Style="Red" Operation="Difference">
+      <Dependency Name="large" />
+      <Dependency Name="small" />
+      <Dependency Name="half" />
+    </Region>
+    <CircleSegment Name="yellow" Style="Yellow">
+      <Dependency Name="M" />
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </CircleSegment>
+    <CircleArc Name="UV" Style="Ink">
+      <Dependency Name="O" />
+      <Dependency Name="U" />
+      <Dependency Name="V" />
+    </CircleArc>
+    <CircleSector Name="OXY" Style="Frame">
+      <Dependency Name="O" />
+      <Dependency Name="X" />
+      <Dependency Name="Y" />
+    </CircleSector>
+  </Figures>
+</Drawing>
