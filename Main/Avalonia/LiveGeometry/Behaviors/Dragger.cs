@@ -39,6 +39,12 @@ public partial class Dragger : Behavior
         // Where the point dragged with Alt goes if dropped now; null while it is free
         public PointPlacement Snap;
 
+        // The status says what the keys do to the dragged point (not for a finger, which
+        // has no keys), and the hint said last: it is updated when Alt releases the point
+        // or snaps it
+        public bool ShowsKeyHint;
+        public string KeyHint;
+
         // A text dragged with Alt: the figure it goes onto if dropped now, or whether an
         // attached one lets go of its figure (over the paper)
         public IFigure AttachTarget;
@@ -492,13 +498,8 @@ public partial class Dragger : Behavior
                 // the handles next to an anchor of a Bezier path show while it is dragged
                 BezierPath.ShowHandlesWhileDragging(Drawing, found);
 
-                // (a finger has no keys to hold)
-                var hint = e.Pointer.Type == PointerType.Touch ? null : ModifierHint(found);
-                if (hint != null)
-                {
-                    Drawing.RaiseStatusNotification(hint);
-                    showsModifierHint = true;
-                }
+                drag.ShowsKeyHint = e.Pointer.Type != PointerType.Touch;
+                ShowKeyHint(drag);
             }
 
             // a text: Alt attaches it to a figure, or lets an attached one go
@@ -564,6 +565,11 @@ public partial class Dragger : Behavior
                 {
                     offset = landing.Minus(inside.Coordinates);
                 }
+            }
+
+            if (drag.ShowsKeyHint)
+            {
+                ShowKeyHint(drag);
             }
 
             AimText(drag, Coordinates(e, false, false, false));
@@ -833,6 +839,45 @@ public partial class Dragger : Behavior
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// The status says what the keys do to the dragged point as it is now: Alt releases a
+    /// point on a figure in the middle of the drag (the free point then snaps), and while
+    /// a free point is snapped the status says what the drop does
+    /// </summary>
+    void ShowKeyHint(Drag drag)
+    {
+        var hint = drag.Snap != null && drag.Found is FreePoint
+            ? SnapHint(drag.Snap)
+            : ModifierHint(drag.Found);
+        if (hint == null || hint == drag.KeyHint)
+        {
+            return;
+        }
+
+        drag.KeyHint = hint;
+        showsModifierHint = true;
+        Drawing.RaiseStatusNotification(hint);
+    }
+
+    /// <summary>What the drop of a point snapped with Alt does, for the status</summary>
+    static string SnapHint(PointPlacement snap)
+    {
+        var sources = string.Join(" and ", snap.Sources.Select(ConstructionText.Of));
+        var action = snap.Kind switch
+        {
+            PointPlacementKind.Existing when !string.IsNullOrEmpty(snap.ExistingPoint?.Name)
+                => "join the point to " + ConstructionText.Of(snap.ExistingPoint),
+            PointPlacementKind.OnFigure or PointPlacementKind.InRegion when snap.Sources.Count > 0
+                => "put the point on " + sources,
+            PointPlacementKind.Intersection when snap.Sources.Count > 0
+                => "put the point at the intersection of " + sources,
+            PointPlacementKind.Midpoint when snap.Sources.Count > 0
+                => "put the point at the midpoint of " + sources,
+            _ => "snap the point",
+        };
+        return "Release to " + action + ". Let go of " + KeyNames.Alt + " to leave it free.";
     }
 
     #region Alt-drag: snapping and releasing points
