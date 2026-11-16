@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
@@ -38,9 +39,106 @@ public class StatusBar : WrapPanel
             MaxWidth = 640
         };
         TextBlock.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
-        border.Child = TextBlock;
+
+        targetText.BindTheme(TextBlock.ForegroundProperty, nameof(AppTheme.Text));
+        DockPanel.SetDock(targetIcon, Dock.Left);
+        targetRow.Children.Add(targetIcon);
+        targetRow.Children.Add(targetText);
+
+        var lines = new StackPanel();
+        lines.Children.Add(targetRow);
+        lines.Children.Add(TextBlock);
+        border.Child = lines;
 
         this.Children.Add(border);
+    }
+
+    const double IconSize = 16;
+    const double IconGap = 6;
+
+    // What a click at the cursor takes, a line over the hint: the figure's icon, its name
+    // bold and its construction faded, as a row of the Figure List has them. The plate is
+    // at the bottom of the window, so the hint under the line is not moved by it.
+    readonly DockPanel targetRow = new DockPanel() { IsVisible = false };
+
+    readonly Decorator targetIcon = new Decorator()
+    {
+        Width = IconSize,
+        Height = IconSize,
+        Margin = new Thickness(0, 0, IconGap, 0),
+        VerticalAlignment = VerticalAlignment.Top
+    };
+
+    readonly TextBlock targetText = new TextBlock()
+    {
+        FontSize = 12,
+        TextWrapping = TextWrapping.Wrap,
+        MaxWidth = 640 - IconSize - IconGap,
+        VerticalAlignment = VerticalAlignment.Center
+    };
+
+    ClickStatus target;
+    readonly List<IDisposable> fadedBindings = new();
+
+    /// <summary>What a click at the cursor takes, shown over the <see cref="Text"/>; null for nothing</summary>
+    public ClickStatus Target
+    {
+        get => target;
+        set
+        {
+            if (value == null ? target == null : value.SameAs(target))
+            {
+                return;
+            }
+
+            bool sameIcon = value != null && target != null && value.IconKey == target.IconKey;
+            target = value;
+            targetRow.IsVisible = value != null;
+            foreach (var binding in fadedBindings)
+            {
+                binding.Dispose();
+            }
+
+            fadedBindings.Clear();
+            targetText.Inlines ??= new InlineCollection();
+            targetText.Inlines.Clear();
+            if (value == null)
+            {
+                targetIcon.Child = null;
+                return;
+            }
+
+            if (!sameIcon)
+            {
+                targetIcon.Child = value.IconKey == null ? null : FigureIcons.Create(value.IconKey, IconSize);
+            }
+
+            targetIcon.IsVisible = targetIcon.Child != null;
+            foreach (var (text, style) in value.Pieces)
+            {
+                var run = new Run(text);
+                if (style == ClickStatusStyle.Name)
+                {
+                    run.FontWeight = FontWeight.Bold;
+                }
+                else if (style == ClickStatusStyle.Faded)
+                {
+                    fadedBindings.Add(run.Bind(TextElement.ForegroundProperty, this.GetResourceObservable(nameof(AppTheme.TextMuted))));
+                }
+
+                targetText.Inlines.Add(run);
+            }
+
+            PlaceLines();
+        }
+    }
+
+    // the hint is not there while it says nothing; a gap between the two lines
+    void PlaceLines()
+    {
+        bool hasText = !string.IsNullOrEmpty(TextBlock.Text) || TextBlock.Inlines?.Count > 0;
+        TextBlock.IsVisible = hasText;
+        targetRow.Margin = new Thickness(0, 0, 0, hasText ? 4 : 0);
     }
 
     public string Text
@@ -50,6 +148,7 @@ public class StatusBar : WrapPanel
         {
             TextBlock.Inlines?.Clear();
             TextBlock.Text = value;
+            PlaceLines();
         }
     }
 
@@ -81,6 +180,7 @@ public class StatusBar : WrapPanel
         // baseline and the link is drawn a few pixels too high)
         TextBlock.Inlines.Add(new InlineUIContainer(anchor) { BaselineAlignment = BaselineAlignment.Bottom });
         TextBlock.Inlines.Add(new Run(text.Substring(at + linkText.Length)));
+        PlaceLines();
     }
 
     new 

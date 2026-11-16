@@ -138,59 +138,107 @@ public class ClickChoice
     /// <summary>What an option is, in words: "Segment AB", "A point on line g", "Intersection of circle c and line g"</summary>
     public static string Describe(object option)
     {
+        return Describe(option, withConstruction: false).Text;
+    }
+
+    /// <summary>
+    /// An option for the status, as a row of the Figure List shows a figure: its icon, its
+    /// name bold, and how it is built, faded ("Midpoint E of AB", "Perpendicular line h to
+    /// segment AB through C"). A point not yet made has the icon of the figure it goes on,
+    /// or of the tool that makes such a point (a crossing, a midpoint).
+    /// </summary>
+    public static ClickStatus DescribeForStatus(object option)
+    {
+        return Describe(option, withConstruction: true);
+    }
+
+    static ClickStatus Describe(object option, bool withConstruction)
+    {
+        var status = new ClickStatus();
         switch (option)
         {
             case PointPlacement { ExistingPoint: not null } placement:
-                return Describe(placement.ExistingPoint);
+                return Describe(placement.ExistingPoint, withConstruction);
             case PointPlacement placement:
                 switch (placement.Kind)
                 {
                     case PointPlacementKind.OnFigure:
-                        return "A point on " + ConstructionText.Of(placement.Sources[0]);
+                        status.IconKey = IconOf(placement.Sources[0]);
+                        status.Add("A point on ");
+                        AddReference(status, placement.Sources[0]);
+                        break;
                     case PointPlacementKind.Intersection:
-                        return "Intersection of " + ConstructionText.Of(placement.Sources[0]) + " and " + ConstructionText.Of(placement.Sources[1]);
+                        status.IconKey = FigureIcons.GetKey(typeof(IntersectionPoint));
+                        status.Add("Intersection of ");
+                        AddReference(status, placement.Sources[0]);
+                        status.Add(" and ");
+                        AddReference(status, placement.Sources[1]);
+                        break;
                     case PointPlacementKind.Midpoint:
-                        return "The midpoint of " + ConstructionText.Of(placement.Sources[0]);
+                        status.IconKey = FigureIcons.GetKey(typeof(MidPoint));
+                        status.Add("The midpoint of ");
+                        AddReference(status, placement.Sources[0]);
+                        break;
                     case PointPlacementKind.InRegion:
-                        return "A point inside " + ConstructionText.Of(placement.Sources[0]);
+                        status.IconKey = IconOf(placement.Sources[0]);
+                        status.Add("A point inside ");
+                        AddReference(status, placement.Sources[0]);
+                        break;
                     default:
-                        return "A free point";
+                        status.IconKey = FigureIcons.GetKey(typeof(FreePoint));
+                        status.Add("A free point");
+                        break;
                 }
 
+                return status;
             case IFigurePart part:
                 var words = ConstructionText.Of(part);
-                return words.Length > 0 ? char.ToUpperInvariant(words[0]) + words.Substring(1) : words;
+                status.IconKey = IconOf(part);
+                return status.Add(words.Length > 0 ? char.ToUpperInvariant(words[0]) + words.Substring(1) : words);
             case ReferenceOption reference:
-                return "Insert " + reference.Text + " (" + reference.Description + ")";
+                status.IconKey = IconOf(reference.Figure);
+                return status
+                    .Add("Insert ")
+                    .Add(reference.Text, ClickStatusStyle.Name)
+                    .Add(" (" + reference.Description + ")");
             case FigureBase figure:
-                return figure.Title;
+                status.IconKey = IconOf(figure);
+                var (kind, name) = figure.TitleParts;
+                status.Add(kind == null || name == null ? kind : kind + " ");
+                status.Add(name, ClickStatusStyle.Name);
+                if (withConstruction && !string.IsNullOrEmpty(figure.Construction))
+                {
+                    status.Add(" " + figure.Construction, ClickStatusStyle.Faded);
+                }
+
+                return status;
             case IFigure figure:
-                return ConstructionText.Of(figure);
+                status.IconKey = IconOf(figure);
+                return status.Add(ConstructionText.Of(figure));
             default:
-                return "";
+                return status;
         }
     }
 
-    /// <summary>
-    /// An option with how it is built, for the status: "Midpoint E of AB", "Perpendicular
-    /// line h to segment AB through C"; <see cref="Describe"/> for anything else
-    /// </summary>
-    public static string DescribeInFull(object option)
+    static string IconOf(IFigure figure)
     {
-        var words = Describe(option);
-        if (option is FigureBase figure && !string.IsNullOrEmpty(figure.Construction))
-        {
-            words += " " + figure.Construction;
-        }
-
-        return words;
+        return figure == null ? null : FigureIcons.GetKey(figure);
     }
 
-    /// <summary>
-    /// Whether the status names what a click takes also when there is nothing else to choose
-    /// (the Drag tool: whatever is under the cursor); off, it speaks only of a choice
-    /// </summary>
-    public bool DescribesSingle { get; set; }
+    // "circle c", "E": the figure as a construction names it, its name bold
+    static void AddReference(ClickStatus status, IFigure figure)
+    {
+        var words = ConstructionText.Of(figure);
+        var name = figure is FigureBase && !(figure is IFigurePart) ? NameDisplay.Format(figure.Name) : null;
+        if (string.IsNullOrEmpty(name) || !words.EndsWith(name, StringComparison.Ordinal))
+        {
+            status.Add(words);
+            return;
+        }
+
+        status.Add(words.Substring(0, words.Length - name.Length));
+        status.Add(name, ClickStatusStyle.Name);
+    }
 
     /// <summary>
     /// Whether the options are references for an expression box (<see cref="ReferencePicker"/>),
@@ -199,25 +247,68 @@ public class ClickChoice
     public bool Picking { get; set; }
 
     /// <summary>
-    /// For the status bar while there is a choice: "Segment AB (2 of 3): Tab for the next.";
-    /// the one option alone with <see cref="DescribesSingle"/>; null while there is nothing
+    /// For the status bar: what a click takes, and while there is a choice which of how many
+    /// it is ("Segment AB (2 of 3): Tab for the next."). The one option alone only where the
+    /// tool has the status name it (<paramref name="describeSingle"/>,
+    /// <see cref="Behavior.DescribesSingle"/>) or while <see cref="Picking"/>; null while
+    /// there is nothing to say.
     /// </summary>
-    public string StatusText
+    public ClickStatus GetStatus(bool describeSingle)
     {
-        get
+        if (offered.Count == 0 || (offered.Count == 1 && !describeSingle && !Picking))
         {
-            if (offered.Count == 0 || (offered.Count == 1 && !DescribesSingle && !Picking))
-            {
-                return null;
-            }
-
-            var words = DescribeInFull(Current);
-            if (offered.Count == 1)
-            {
-                return words;
-            }
-
-            return words + " (" + (index + 1) + " of " + offered.Count + "): Tab for the next.";
+            return null;
         }
+
+        var status = DescribeForStatus(Current);
+        if (offered.Count > 1)
+        {
+            status.Add(" (" + (index + 1) + " of " + offered.Count + "): Tab for the next.");
+        }
+
+        return status;
+    }
+}
+
+/// <summary>How a piece of a <see cref="ClickStatus"/> is drawn</summary>
+public enum ClickStatusStyle
+{
+    Plain,
+
+    /// <summary>A figure's name: bold, as in the Figure List</summary>
+    Name,
+
+    /// <summary>How the figure is built: faded, as in the Figure List</summary>
+    Faded
+}
+
+/// <summary>
+/// What the status shows of the thing under the cursor, over the tool's hint, the way a row
+/// of the Figure List shows a figure: an icon (a key of <see cref="FigureIcons"/>; null for
+/// none), then the words in pieces - plain, a name, a construction.
+/// </summary>
+public class ClickStatus
+{
+    public string IconKey { get; set; }
+
+    public List<(string Text, ClickStatusStyle Style)> Pieces { get; } = new();
+
+    /// <summary>The words run together</summary>
+    public string Text => string.Concat(Pieces.Select(piece => piece.Text));
+
+    public ClickStatus Add(string text, ClickStatusStyle style = ClickStatusStyle.Plain)
+    {
+        if (!string.IsNullOrEmpty(text))
+        {
+            Pieces.Add((text, style));
+        }
+
+        return this;
+    }
+
+    /// <summary>Whether the status bar would show the two alike</summary>
+    public bool SameAs(ClickStatus other)
+    {
+        return other != null && IconKey == other.IconKey && Pieces.SequenceEqual(other.Pieces);
     }
 }

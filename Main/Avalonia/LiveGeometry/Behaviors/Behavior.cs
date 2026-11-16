@@ -313,7 +313,7 @@ public abstract partial class Behavior : INotifyPropertyChanged
     object lastMoveSender;
 
     // what the status says of the choice, null while there is none
-    string shownChoiceStatus;
+    ClickStatus shownChoiceStatus;
 
     /// <summary>
     /// What a click here could take, best first: the figures the step wants, or the points
@@ -425,13 +425,35 @@ public abstract partial class Behavior : INotifyPropertyChanged
         return true;
     }
 
+    /// <summary>
+    /// Whether the status names what a click takes also when it is the one thing there
+    /// (the Drag tool: whatever is under the cursor; a construction: what the step takes).
+    /// Not by default: the status then speaks only of a choice.
+    /// </summary>
+    protected virtual bool DescribesSingle(object option)
+    {
+        return false;
+    }
+
     void ShowChoiceStatus()
     {
-        var text = Choice.StatusText ?? hoverStatus;
-        if (text != shownChoiceStatus)
+        ClickStatus status;
+        if (hoverStatus != null && Choice.Count < 2)
         {
-            shownChoiceStatus = text;
-            Drawing?.RaiseChoiceStatus(text);
+            // what the click does there, with the icon of what it is done to
+            status = new ClickStatus().Add(hoverStatus);
+            status.IconKey = Choice.Count == 1 ? ClickChoice.DescribeForStatus(Choice.Current).IconKey : null;
+        }
+        else
+        {
+            status = Choice.GetStatus(describeSingle: Choice.Count == 1 && DescribesSingle(Choice.Current));
+        }
+
+        bool same = status == null ? shownChoiceStatus == null : status.SameAs(shownChoiceStatus);
+        if (!same)
+        {
+            shownChoiceStatus = status;
+            Drawing?.RaiseChoiceStatus(status);
         }
     }
 

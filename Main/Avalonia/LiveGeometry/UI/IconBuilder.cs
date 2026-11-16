@@ -51,6 +51,13 @@ public partial class IconBuilder
         return this;
     }
 
+    /// <summary>A free point <paramref name="size"/> pixels across, where it is the whole icon and <see cref="PointSize"/> is too small</summary>
+    public IconBuilder PointOfSize(double x, double y, double size)
+    {
+        AddPoint(x, y, nameof(AppTheme.FreePointFill), size);
+        return this;
+    }
+
     public IconBuilder TransparentPoint(double x, double y, double transparency)
     {
         AddPoint(x, y, nameof(AppTheme.FreePointFill)).Opacity = transparency;
@@ -59,9 +66,14 @@ public partial class IconBuilder
 
     Shape AddPoint(double x, double y, string fillThemeColor)
     {
+        return AddPoint(x, y, fillThemeColor, PointSize);
+    }
+
+    Shape AddPoint(double x, double y, string fillThemeColor, double size)
+    {
         Shape point = Factory.CreatePointShape();
-        point.Width = PointSize;
-        point.Height = PointSize;
+        point.Width = size;
+        point.Height = size;
         point.BindTheme(Shape.StrokeProperty, nameof(AppTheme.Ink));
         if (fillThemeColor != null)
         {

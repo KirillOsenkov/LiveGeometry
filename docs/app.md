@@ -6,7 +6,8 @@ The Figure List, Save, Export, share links, the toolbar, settings between runs, 
   360 px at first - 240 cut most titles and cramped the step rows at the foot, 2026-11-03):
   top-level figures but the grid and point labels, by `Title`, with the ribbon icon of the
   tool that makes each (`UI/FigureIcons.cs`: figure type -> tool, walking base types; a new
-  figure kind wants an entry). Hidden and `Auxiliary` figures are faded. Its selection *is*
+  figure kind wants an entry; a point's own icon is drawn bigger than the Point tool's,
+  `FigureIcons.LonePointSize`, 5 px across in a row and not 3, 2026-11-16). Hidden and `Auxiliary` figures are faded. Its selection *is*
   the drawing's (`Selected` + one `RaiseSelectionChanged`); arrows in the left margin go from
   the keyboard's row to its dependencies (blue), and with `FigureExplorer.RecursiveArrows`
   (off; no UI for it) on up from those (gray), one trunk per figure, a step left of the

@@ -679,18 +679,18 @@ public partial class DrawingHost : Grid
         ShowHint(status);
     }
 
-    // the hint, and what a click at the cursor would take while it could take more than
-    // one thing (ClickChoice), which is shown over the hint until it goes
+    // the hint, and what a click at the cursor would take (ClickChoice), which is a line
+    // of its own over the hint
     string hint;
-    string choiceHint;
+    ClickStatus choiceHint;
 
     // the part of the hint that is a link, and where it leads
     string hintLinkText;
     Uri hintLink;
 
-    void mCurrentDrawing_ChoiceStatus(string text)
+    void mCurrentDrawing_ChoiceStatus(ClickStatus status)
     {
-        choiceHint = text;
+        choiceHint = status;
         UpdateStatusBar();
     }
 
@@ -718,8 +718,8 @@ public partial class DrawingHost : Grid
             return;
         }
 
-        var text = choiceHint ?? hint;
-        if (choiceHint == null && IsDragHint(hint))
+        var text = hint;
+        if (IsDragHint(hint))
         {
             if (dragHintDismissed)
             {
@@ -731,13 +731,14 @@ public partial class DrawingHost : Grid
             }
         }
 
-        if (text.IsEmpty())
+        if (text.IsEmpty() && choiceHint == null)
         {
             StatusBar.Visibility = Visibility.Collapsed;
         }
         else
         {
-            if (choiceHint == null && hintLink != null)
+            StatusBar.Target = choiceHint;
+            if (hintLink != null && !text.IsEmpty())
             {
                 StatusBar.Show(text, hintLinkText, hintLink);
             }

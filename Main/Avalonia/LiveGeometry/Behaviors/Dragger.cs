@@ -65,10 +65,10 @@ public partial class Dragger : Behavior
     /// <summary>In pixels: how far the cursor goes from where it was pressed before the press is a drag and not a click</summary>
     public static double DragThreshold = 3;
 
-    public Dragger()
+    // the status says what is under the cursor also when it is one thing
+    protected override bool DescribesSingle(object option)
     {
-        // the status says what is under the cursor also when it is one thing
-        Choice.DescribesSingle = true;
+        return true;
     }
 
     Drag FindDrag(IPointer pointer)

@@ -655,6 +655,22 @@ public abstract partial class FigureCreator : Behavior
     /// <summary>What the status says over a point a click finishes the figure on (<see cref="FinishesOn"/>)</summary>
     protected virtual string FinishStatus => null;
 
+    /// <summary>
+    /// The status names what a click takes for the step: a point there is, a point it would
+    /// make on a figure, at a crossing or a middle, a figure. Not a free point, which is what
+    /// a click on empty paper makes (the line would never go), and not a figure the
+    /// construction has, whose click is ignored.
+    /// </summary>
+    protected override bool DescribesSingle(object option)
+    {
+        if (option is PointPlacement placement)
+        {
+            return placement.Kind != PointPlacementKind.Free && !IsTaken(placement.ExistingPoint);
+        }
+
+        return !IsTaken(option as IFigure);
+    }
+
     protected override string GetHoverStatus(MouseEventArgs e)
     {
         if (FinishStatus == null)

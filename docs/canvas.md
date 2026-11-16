@@ -112,13 +112,14 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   when its list has it, nothing when another list does. A choice holds for one click
   (forgotten after the press, on leaving the canvas, for typed coordinates). The status
   says it ("A point on circle c (2 of 3): Tab for the next.") through
-  `Drawing.ChoiceStatus`, over the hint, which `DrawingHost` brings back when it goes. A
+  `Drawing.ChoiceStatus`, in a line of its own over the hint (see "The status names what
+  is under the cursor"). A
   tap where there is a choice asks in a menu (`Behavior.AskWhatTapMeans`) and is the
   option picked; dismissed, it is nothing. A tool whose click on a figure is a shortcut
   (Midpoint on a segment, Angle Bisector on an angle, Area on a shape, Angle at a vertex)
   offers no choice where it applies, or the status would promise what the click doesn't
   do. Under the Drag tool the status names whatever is under the cursor, with its
-  construction ("Midpoint E of AB"; `ClickChoice.DescribesSingle`, `DescribeInFull`), and
+  construction ("Midpoint E of AB"; `Behavior.DescribesSingle`, `ClickChoice.DescribeForStatus`), and
   every figure there is an option, in the order a press takes them (a point over the
   segments through it: "Point A (1 of 3)"), so Tab reaches a figure under another and the
   press, the right click and the halo go to the one chosen - not an axis or a caption,
@@ -126,6 +127,24 @@ The view, what a click, a drag or a key does on the canvas, the cursor, the orde
   point). A finger is offered the handles of a Bezier path only, or every tap on a point
   on a figure asked in a menu. Its context menu also lists the figures under the click
   ("Choose figure") and selects the one picked.
+- **The status names what is under the cursor** (2026-11-16; `ClickStatus`,
+  `ClickChoice.DescribeForStatus`, `StatusBar.Target`). The plate has two lines: the tool's
+  hint, and over it what a click at the cursor takes, drawn as a row of the Figure List -
+  the figure's icon (`FigureIcons`), the kind, the name bold, the construction faded. The
+  plate is at the bottom of the window, so the hint is not moved when the line is added or
+  removed. It was one text, `choiceHint ?? hint`: a choice replaced the instruction, and a
+  single thing under the cursor was named only under the Drag tool. A tool says whether one
+  thing alone is named (`Behavior.DescribesSingle`): Drag always; a `FigureCreator` for
+  what its step takes - a point there is, a point it would make on a figure ("A point on
+  circle **c**", the circle's icon), at a crossing or a middle (the Intersection or
+  Midpoint tool's icon), a figure - but not for a free point (a click on empty paper makes
+  one: the line would be there all the time) and not for a figure the construction has
+  (`IsTaken`: the click is ignored, and right after a click the cursor is still over the
+  point just taken). A tool's own words for a place (`GetHoverStatus`: "Click this point
+  to close the polygon.") go before the name of a single thing and get its icon. The words
+  are those of `ClickChoice.Describe`, which the tap's menu and the context menu use too:
+  a tool adds no strings for this. A finger has no hover, so nothing of it is seen on a
+  phone.
 - **The reach of a click is in pixels**, the cursor's tolerance plus half the stroke, for
   every figure. A circle, ellipse or arc is hit by its distance from the curve along the
   ray from the center (`Math.RadialDistanceToEllipse`); it was the left side of the

@@ -59,6 +59,9 @@ public static class FigureIcons
 
     static readonly Dictionary<string, Behavior> toolsMade = new();
 
+    /// <summary>How many pixels across, of the icon's 32, the point of a point's icon is (5 at a row's 16)</summary>
+    public static double LonePointSize = 10;
+
     /// <summary>Tells which icon the figure gets, so that a list can see when it changes (a triangle given a fourth vertex)</summary>
     public static string GetKey(IFigure figure)
     {
@@ -82,7 +85,13 @@ public static class FigureIcons
             }
         }
 
-        for (var type = figure.GetType(); type != null; type = type.BaseType)
+        return GetKey(figure.GetType());
+    }
+
+    /// <summary>The icon of the figures of a type, whatever their points (a midpoint not yet made)</summary>
+    public static string GetKey(Type type)
+    {
+        for (; type != null; type = type.BaseType)
         {
             if (tools.ContainsKey(type))
             {
@@ -127,6 +136,13 @@ public static class FigureIcons
                 return GetTool(key, () => new RegionIntersectionCreator()).CreateIcon();
             case nameof(RegionUnionCreator):
                 return GetTool(key, () => new RegionUnionCreator()).CreateIcon();
+        }
+
+        // A point alone is drawn bigger than the Point tool draws it: the tool's 6 pixels
+        // of 32 are 3 across in a row of a list, a speck next to the other icons.
+        if (key == typeof(PointBase).FullName)
+        {
+            return IconBuilder.BuildIcon().PointOfSize(0.5, 0.5, LonePointSize).Canvas;
         }
 
         var entry = tools.First(pair => pair.Key.FullName == key);

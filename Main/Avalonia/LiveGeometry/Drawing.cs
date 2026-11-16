@@ -824,13 +824,13 @@ public partial class Drawing : IThemeOverridable, IConditionalProperties, INotif
     }
 
     /// <summary>
-    /// What a click at the cursor would take, while it could take more than one thing
-    /// (<see cref="ClickChoice"/>): shown over the status, which comes back with null
+    /// What a click at the cursor would take (<see cref="ClickChoice"/>): shown as a line
+    /// of its own over the status, until null
     /// </summary>
-    public event Action<string> ChoiceStatus;
-    public void RaiseChoiceStatus(string text)
+    public event Action<ClickStatus> ChoiceStatus;
+    public void RaiseChoiceStatus(ClickStatus status)
     {
-        ChoiceStatus?.Invoke(text);
+        ChoiceStatus?.Invoke(status);
     }
 
     public event Action ZoomChanged;    // Used by Tabula.
