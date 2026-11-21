@@ -2,6 +2,16 @@
   "source": "https://notes.mathforge.org/notes/published/HomePage",
   "puzzles": [
     {
+      "slug": "a-square-and-a-hexagon-ii",
+      "title": "A Square and a Hexagon II",
+      "date": "2026-11-21",
+      "statement": "The green lines meet at the centre of the regular hexagon. What fraction of the square is shaded?",
+      "thread": "https://bsky.app/profile/catrionaagg.bsky.social/post/3n2spvmm5js2y",
+      "categories": [],
+      "techniques": [],
+      "drawing": "a-square-and-a-hexagon-ii.lgf"
+    },
+    {
       "slug": "two-quarter-circles-and-a-semi-circle-iii",
       "title": "Two Quarter Circles and a Semi-Circle III",
       "date": "2026-11-14",

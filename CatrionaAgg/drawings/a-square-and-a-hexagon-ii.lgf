@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawn by hand (not by tools/catrionadrawings.cs): a ruler-and-compass construction with the library's styles.
+     A regular hexagon ABCDEF built on its bottom side AB with the Polygon tool (C to F are the tool's points by
+     coordinates), its center O the midpoint of the opposite corners A and D. The perpendicular to the line AB through
+     the hexagon's right corner C meets the line at G, and the square AGHI is built on AG with the Square tool (H and I
+     are the tool's points by coordinates): the square and the hexagon share the corner A, the hexagon's side AB is part
+     of the square's bottom side, and C is on the square's right side. The square's top side IH crosses the hexagon's
+     side CD at T. The shaded quadrilateral OTCB is bounded by the green segments OT and OB and by two sides of the
+     hexagon; it is 1/3 of the square. The conditions fix the figure, so there is no handle. -->
+<Drawing Version="1">
+  <Viewport Left="-2.28" Top="2.0120508076" Right="2.28" Bottom="-2.0120508076" />
+  <Scene Left="-2.28" Top="2.0120508076" Right="2.28" Bottom="-2.0120508076" />
+  <Styles>
+    <ShapeStyle Name="Green" Color="#00000000" StrokeWidth="2.5" Fill="#FF96F7D8" Texture="Crayon">
+      <Dark Texture="None">
+        <Fill>
+          <LinearGradientBrush>
+            <GradientStop Color="#FF55E8B9" />
+            <GradientStop Color="#FF37C99B" Offset="1" />
+          </LinearGradientBrush>
+        </Fill>
+      </Dark>
+    </ShapeStyle>
+    <LineStyle Name="GreenLine" Color="#FF05C98C" StrokeWidth="3">
+      <Dark Color="#FF9EFADD" />
+    </LineStyle>
+    <ShapeStyle Name="Frame" Color="#FF1E1E1E" StrokeWidth="2.5" IsFilled="false">
+      <Dark Color="#FFE6E6E6" />
+    </ShapeStyle>
+  </Styles>
+  <Figures>
+    <FreePoint Name="A" Visible="false" X="-1" Y="-1.7320508076" />
+    <FreePoint Name="B" Visible="false" X="1" Y="-1.7320508076" />
+    <PointByCoordinates Name="C" Visible="false" X="-0.5 * A.X + sqrt(3) / 2 * A.Y + 1.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X - 0.5 * A.Y + sqrt(3) / 2 * B.X + 1.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="D" Visible="false" X="sqrt(3) * A.Y + B.X - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + sqrt(3) * B.X + B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="E" Visible="false" X="A.X + sqrt(3) * A.Y - sqrt(3) * B.Y" Y="-sqrt(3) * A.X + A.Y + sqrt(3) * B.X">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="F" Visible="false" X="1.5 * A.X + sqrt(3) / 2 * A.Y - 0.5 * B.X - sqrt(3) / 2 * B.Y" Y="-sqrt(3) / 2 * A.X + 1.5 * A.Y + sqrt(3) / 2 * B.X - 0.5 * B.Y">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </PointByCoordinates>
+    <!-- the two outlines are inked over the green segments (Z 1), as she drew them -->
+    <Polygon Name="ABCDEF" Style="Frame" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+      <Dependency Name="E" />
+      <Dependency Name="F" />
+    </Polygon>
+    <MidPoint Name="O" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="D" />
+    </MidPoint>
+    <!-- the square: its bottom side from A to the foot of the perpendicular from C -->
+    <LineTwoPoints Name="AB" Visible="false">
+      <Dependency Name="A" />
+      <Dependency Name="B" />
+    </LineTwoPoints>
+    <PerpendicularLine Name="c" Visible="false">
+      <Dependency Name="AB" />
+      <Dependency Name="C" />
+    </PerpendicularLine>
+    <IntersectionPoint Name="G" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="AB" />
+      <Dependency Name="c" />
+    </IntersectionPoint>
+    <PointByCoordinates Name="H" Visible="false" X="A.Y + G.X - G.Y" Y="-A.X + G.X + G.Y">
+      <Dependency Name="A" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <PointByCoordinates Name="I" Visible="false" X="A.X + A.Y - G.Y" Y="-A.X + A.Y + G.X">
+      <Dependency Name="A" />
+      <Dependency Name="G" />
+    </PointByCoordinates>
+    <Polygon Name="AGHI" Style="Frame" Z="1">
+      <Dependency Name="A" />
+      <Dependency Name="G" />
+      <Dependency Name="H" />
+      <Dependency Name="I" />
+    </Polygon>
+    <!-- where the square's top side crosses the hexagon -->
+    <Segment Name="IH" Visible="false">
+      <Dependency Name="I" />
+      <Dependency Name="H" />
+    </Segment>
+    <Segment Name="CD" Visible="false">
+      <Dependency Name="C" />
+      <Dependency Name="D" />
+    </Segment>
+    <IntersectionPoint Name="T" Visible="false" Algorithm="IntersectLineAndLine">
+      <Dependency Name="IH" />
+      <Dependency Name="CD" />
+    </IntersectionPoint>
+    <Polygon Name="OTCB" Style="Green">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+      <Dependency Name="C" />
+      <Dependency Name="B" />
+    </Polygon>
+    <Segment Name="OT" Style="GreenLine">
+      <Dependency Name="O" />
+      <Dependency Name="T" />
+    </Segment>
+    <Segment Name="OB" Style="GreenLine">
+      <Dependency Name="O" />
+      <Dependency Name="B" />
+    </Segment>
+  </Figures>
+</Drawing>
