@@ -16,7 +16,7 @@
 - Better, with an elevated shell (ETW needs admin on Windows; not on a Mac): the Ultra
   profiler (`dotnet tool install -g Ultra`) and the UltraMcp server (`dotnet tool install -g
   ultramcp`, an MCP server that reads its traces). Build Release, then
-  `ultra profile --duration 15 -o <name> -- <...>/bin/Release/net10.0/LiveGeometry.Desktop.exe [--gallery <slug>]`
+  `ultra profile --duration 15 -o <name> -- <...>/bin/Release/net11.0/LiveGeometry.Desktop.exe [--gallery <slug>]`
   in a scratch folder: it samples every thread 8190 times a second (kernel, native and
   managed stacks, JIT and GC markers) and writes `<name>.json.gz` in the Firefox Profiler
   format; the app stays open when the time is up (close it). The MCP tools read the `.gz`

@@ -923,7 +923,7 @@ public class Program
         using var window = new TestWindow(drawing.Canvas);
         var system = drawing.CoordinateSystem;
         string status = null;
-        drawing.ChoiceStatus += text => status = text;
+        drawing.ChoiceStatus += text => status = text?.Text;
         var a = AddPoint(drawing, x: 0, y: 0);
         var b = AddPoint(drawing, x: 6, y: 0);
         var c = AddPoint(drawing, x: 0, y: 6);
@@ -2051,7 +2051,7 @@ public class Program
 
         // not shown, the handles on an anchor are still there to be taken with Tab
         string hidden = null;
-        Action<string> watch = text => hidden = text;
+        Action<ClickStatus> watch = text => hidden = text?.Text;
         drawing.ChoiceStatus += watch;
         Hover(drawing, system.ToPhysical(a.Coordinates));
         // (the point, its hidden handle, the path)
@@ -2075,7 +2075,7 @@ public class Program
         Require(string.Join(" ", shown) == "In2 In3 Out1 Out2", "Handles shown: " + string.Join(" ", shown));
 
         string status = null;
-        drawing.ChoiceStatus += text => status = text;
+        drawing.ChoiceStatus += text => status = text?.Text;
         var atB = system.ToPhysical(b.Coordinates);
         Hover(drawing, atB);
         // (the point and its two handles, which the path's own hit test answers with)
@@ -5226,7 +5226,7 @@ public class Program
         using var window = new TestWindow(drawing.Canvas);
         var system = drawing.CoordinateSystem;
         string status = null;
-        drawing.ChoiceStatus += text => status = text;
+        drawing.ChoiceStatus += text => status = text?.Text;
 
         // segment AB along the x axis and line CD up the y axis, crossing at (0, 0)
         var segment = Factory.CreateSegment(drawing, AddPoint(drawing, x: -1, y: 0), AddPoint(drawing, x: 5, y: 0));

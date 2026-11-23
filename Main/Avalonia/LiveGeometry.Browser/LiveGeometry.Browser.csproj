@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.WebAssembly">
 
   <PropertyGroup>
-    <TargetFramework>net10.0-browser</TargetFramework>
+    <TargetFramework>net11.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <WasmBuildNative>true</WasmBuildNative>
     <!-- The .NET code compiled ahead of time to native wasm on publish (2026-10-07): the
@@ -506,7 +506,19 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Browser" Version="12.1.0" />
+    <PackageReference Include="Avalonia.Browser" Version="12.2.0" />
+    <!-- Avalonia.Browser 12.2.0 references SkiaSharp 4.151.2 and HarfBuzzSharp 14.2.1.200 for
+         net11.0-browser, and their static libraries are built with emscripten 5.0.6 (a
+         .NET 11 preview's), while the released .NET 11 links with emscripten 6.0.2. The
+         versions named here have libraries for 6.0.2. Not 4.157.0 and 14.4.0.200 yet:
+         the AOT compiler of .NET 11.0.0 crashes on those assemblies (an assertion at
+         sgen-alloc.c:409, dotnet/runtime#136351), so a Release publish fails. Avalonia.Skia
+         and the SVG export (LiveGeometry.App) are compiled against SkiaSharp 3.119.4, and
+         every member they reference is in 4.156.2 (checked 2026-11-23). -->
+    <PackageReference Include="SkiaSharp" Version="4.156.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.156.2" />
+    <PackageReference Include="HarfBuzzSharp" Version="14.4.0.102" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.4.0.102" />
   </ItemGroup>
 
   <ItemGroup>

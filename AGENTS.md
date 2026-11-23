@@ -12,8 +12,8 @@ what every task needs; the rest is in `docs/`, a file per topic (see "Topics").
     the WPF sources rewritten onto Avalonia, plus `WpfCompat/` shims.
   - `LiveGeometry.App/` - shared UI (`MainView`), used by both heads (assembly
     `LiveGeometry.App`, namespace `LiveGeometry`: its `App` class is `LiveGeometry.App`).
-  - `LiveGeometry.Desktop/` - desktop head (net10.0).
-  - `LiveGeometry.Browser/` - WASM head (net10.0-browser), deployed to https://livegeometry.com.
+  - `LiveGeometry.Desktop/` - desktop head (net11.0).
+  - `LiveGeometry.Browser/` - WASM head (net11.0-browser), deployed to https://livegeometry.com.
 - `Main/DynamicGeometryLibrary`, `Main/WPFClient`, `Main/Silverlight*` - the older WPF/Silverlight
   generation. Reference only.
 - `Reference/VB6/Source/` - source of the original VB6 app ("DG"). A built copy may exist outside
@@ -78,20 +78,28 @@ what every task needs; the rest is in `docs/`, a file per topic (see "Topics").
 ## Build and run
 
 - Desktop: `dotnet build Main/Avalonia/LiveGeometry.Desktop/LiveGeometry.Desktop.csproj`, then
-  run `bin/Debug/net10.0/LiveGeometry.Desktop.exe [drawing.lgf|.dgf]`. Fastest loop; use it for
+  run `bin/Debug/net11.0/LiveGeometry.Desktop.exe [drawing.lgf|.dgf]`. Fastest loop; use it for
   feature work. A drawing can be hand-written as XML (`docs/*.lgf` are examples: styles, then
   figures by type name with `<Dependency Name=...>` children; a point's name shows through a
   separate `PointLabel` figure that depends on it) and opened from the command line to check it.
-  On a Mac the executable is `bin/Debug/net10.0/LiveGeometry.Desktop` (no `.exe`), and the
+  On a Mac the executable is `bin/Debug/net11.0/LiveGeometry.Desktop` (no `.exe`), and the
   same build runs as is: see `docs/macos.md`.
 - Browser: needs the wasm workload (`WasmBuildNative=true` links Skia/HarfBuzz; without
   it Skia throws DllNotFoundException). Do a full bin/obj clean when native assets change.
-  The newest installed SDK builds it, and the workload's name depends on that SDK: `wasm-tools`
-  under SDK 10, `wasm-tools-net10` under SDK 11 (NETSDK1147 names the missing one).
+  The workload is SDK 11's `wasm-tools` (NETSDK1147 names a missing one), and
   `dotnet workload restore Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj`
-  installs the right one, as CI does since 2026-11-14 (the runner image got SDK 11.0.100).
-  Not net11 yet: .NET 11's wasm toolchain is emscripten 6.0.2, and SkiaSharp 3.119.4 (what
-  Avalonia 12.1.x references, up to 12.1.6) has static libraries only up to emscripten 3.1.56.
+  installs it, as CI does.
+  net11.0 and Avalonia 12.2.0 since 2026-11-23. .NET 11's wasm toolchain is emscripten 6.0.2,
+  and the Browser head references SkiaSharp 4.156.2 and HarfBuzzSharp 14.4.0.102 itself, which
+  have static libraries for it: the versions Avalonia.Browser 12.2.0 references under
+  net11.0-browser (4.151.2, 14.2.1.200) have them for emscripten 5.0.6 only, and the AOT
+  compiler of .NET 11.0.0 crashes on 4.157.0 and 14.4.0.200 (assertion at `sgen-alloc.c:409`,
+  dotnet/runtime#136351), so a Release publish fails with those until a .NET 11 servicing
+  release has the fix. The desktop head is on SkiaSharp 3.119.4, the version Avalonia.Skia
+  references; code that calls SkiaSharp (the SVG export) is compiled against that and runs
+  on 4.x in the browser. With Avalonia 12.2 its scripts are published to
+  `_content/Avalonia.Browser/` and `avalonia-sw.js` at the root (they were in `_framework/`):
+  `web.config` lists them among the files that revalidate.
 - Browser publish: `dotnet publish Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj -c Release -o <dir>`.
   Output is `<dir>/web.config` + `<dir>/wwwroot/`. CI (`.github/workflows/main_livegeometry.yml`)
   does exactly this and deploys to Azure App Service (IIS). A publish compiles the .NET code

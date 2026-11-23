@@ -24,14 +24,13 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
+          dotnet-version: '11.x'
 
       - name: Install the wasm workload
         # Required because LiveGeometry.Browser sets WasmBuildNative=true
-        # (links the SkiaSharp/HarfBuzz native libraries into the runtime). The newest SDK on
-        # the runner is used, whatever setup-dotnet adds, and its name for the workload differs:
-        # SDK 10 calls it wasm-tools, SDK 11 wasm-tools-net10 (wasm-tools there is net11's).
-        # A restore installs the one the project needs from the SDK in use.
+        # (links the SkiaSharp/HarfBuzz native libraries into the runtime). A restore installs
+        # the workload the project needs from the SDK in use: wasm-tools of SDK 11, for
+        # net11.0-browser.
         run: dotnet workload restore Main/Avalonia/LiveGeometry.Browser/LiveGeometry.Browser.csproj
 
       - name: dotnet publish
