@@ -54,6 +54,8 @@ public class ExpressionTreeBuilder
             case NodeType.Constant:
                 // the language writes decimals with a point, whatever the user's culture
                 return Classified(new BoundConstant(double.Parse(root.Token.Text, CultureInfo.InvariantCulture)), root.Token, ExpressionClass.Number);
+            case NodeType.Fraction:
+                return CreateFractionExpression(root);
             case NodeType.FunctionCall:
                 return CreateCallExpression(root);
             case NodeType.PropertyAccess:
@@ -67,6 +69,18 @@ public class ExpressionTreeBuilder
             default:
                 return null;
         }
+    }
+
+    /// <summary>
+    /// ½, ⅔: the division the character writes (its token reads 1/2), not the decimals of
+    /// it, so that a third is a third to the exact forms (<see cref="LinearForms"/>)
+    /// </summary>
+    BoundExpression CreateFractionExpression(Node root)
+    {
+        var parts = root.Token.Text.Split('/');
+        var numerator = new BoundConstant(double.Parse(parts[0], CultureInfo.InvariantCulture));
+        var denominator = new BoundConstant(double.Parse(parts[1], CultureInfo.InvariantCulture));
+        return Classified(new BoundBinary(BoundOperator.Divide, numerator, denominator), root.Token, ExpressionClass.Number);
     }
 
     /// <summary>30°, a°: the number in radians, what trigonometry takes (GeoGebra's degree sign)</summary>

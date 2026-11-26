@@ -1,7 +1,8 @@
 // Port of Main/Avalonia/LiveGeometry/Expressions/Parser/Parser.cs: a precedence-climbing
 // parser. A minus in front takes everything up to the next + - * /, powers included; ^ is
 // right-associative; a number right before a name or a parenthesis multiplies it (2x);
-// comparisons come last, ° follows a term and |x| is between bars.
+// comparisons come last, ° and a raised power (x²) follow a term, |x| is between bars, √x
+// is sqrt and ½ a division.
 
 class Parser {
     constructor(tokens) {
@@ -96,11 +97,12 @@ class Parser {
         return leftOperand;
     }
 
-    /** A number just read, and a name or a parenthesis right after it */
+    /** A number just read (½ is one), and a name, a parenthesis or a root right after it */
     isImplicitMultiplication() {
-        return this.current > 0
-            && this.tokens[this.current - 1].kind === TokenType.NumericLiteral
-            && (this.currentToken.kind === TokenType.Identifier || this.currentToken.kind === TokenType.OpenParen || this.currentToken.kind === TokenType.Angle);
+        const previous = this.current > 0 ? this.tokens[this.current - 1].kind : TokenType.Unknown;
+        const kind = this.currentToken.kind;
+        return (previous === TokenType.NumericLiteral || previous === TokenType.Fraction)
+            && (kind === TokenType.Identifier || kind === TokenType.OpenParen || kind === TokenType.Angle || kind === TokenType.Root);
     }
 
     get eof() {
@@ -133,14 +135,22 @@ class Parser {
         }
     }
 
-    /** A term and the degree signs after it: 30°, angle(A, B, C)°, (a + b)° */
+    /** A term and what is written after it: degree signs (30°, angle(A, B, C)°, (a + b)°) and raised powers (x², AB², (a + b)²) */
     parseTerm(precedence) {
         let term = this.parsePrimary(precedence);
-        while (term != null && this.currentTokenKind === TokenType.Degree) {
-            // (the sign is the node's token, to be colored as pi is)
-            const degrees = new SyntaxNode(NodeType.Degrees, this.currentToken);
-            degrees.children.push(term);
-            term = degrees;
+        while (term != null) {
+            if (this.currentTokenKind === TokenType.Degree) {
+                // (the sign is the node's token, to be colored as pi is)
+                const degrees = new SyntaxNode(NodeType.Degrees, this.currentToken);
+                degrees.children.push(term);
+                term = degrees;
+            } else if (this.currentTokenKind === TokenType.Superscript) {
+                // x² is x^2 with the 2 right on the x: 5π² is five of π², -x² is -(x²), 2^x² is 2^(x²)
+                term = new SyntaxNode(NodeType.Power, [term, new SyntaxNode(NodeType.Constant, this.currentToken)]);
+            } else {
+                break;
+            }
+
             this.advanceToken();
         }
 
@@ -150,10 +160,26 @@ class Parser {
     parsePrimary(precedence) {
         let result = null;
         switch (this.currentToken.kind) {
-            case TokenType.NumericLiteral:
+            case TokenType.NumericLiteral: {
+                const number = this.currentToken;
                 result = this.constant();
                 this.advanceToken();
+
+                // 2½ is two and a half: the fraction right after the number, nothing between
+                if (this.currentTokenKind === TokenType.Fraction && this.currentToken.start === number.start + number.length) {
+                    result = new SyntaxNode(NodeType.Addition, [result, new SyntaxNode(NodeType.Fraction, this.currentToken)]);
+                    this.advanceToken();
+                }
+
                 break;
+            }
+
+            case TokenType.Fraction:
+                result = new SyntaxNode(NodeType.Fraction, this.currentToken);
+                this.advanceToken();
+                break;
+            case TokenType.Root:
+                return this.parseRoot();
             case TokenType.Identifier: {
                 const next = this.next;
                 if (next == null) {
@@ -226,6 +252,22 @@ class Parser {
 
         result.children.push(this.variable());
         this.advanceToken();
+        return result;
+    }
+
+    /**
+     * √x, ∛x: a call of sqrt or cbrt (the sign is one of its names). √(x + 1) is sqrt(x + 1),
+     * what the parentheses hold; without them the root is of what follows up to the next
+     * + - * /, powers included: √x² is √(x²), and 2√3 is two of √3.
+     */
+    parseRoot() {
+        if (this.next?.kind === TokenType.OpenParen) {
+            return this.parseFunctionCall();
+        }
+
+        const result = new SyntaxNode(NodeType.FunctionCall, this.currentToken);
+        this.advanceToken();
+        result.children.push(this.parseExpression(Parser.getPrecedence(NodeType.Power)));
         return result;
     }
 

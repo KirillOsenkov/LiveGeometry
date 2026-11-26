@@ -51,7 +51,25 @@ The expression language: renames, cycles, the language itself, exact forms, bind
   `≤` `>` `>=` `≥` `=` `==` `≠` `!=` come last and give 1 or 0, numbers equal but for
   rounding being equal (`Math.TangencyTolerance`), for `if(condition, a, b)` -
   `if(condition, a)` has no value where it doesn't hold. `−`, `×`, `·`, `÷` are the
-  operators they look like. **`∠ABC` is `angle(A, B, C)`** (2026-10-28): ∠ is another name
+  operators they look like. **A formula pasted from a page or a document is read as it is
+  written** (2026-11-26; `16·x·(π − x) / (5π² − 4·x·(π − x))` compiles as pasted). A raised
+  whole number is a power: `x²`, `AB²`, `x⁻¹`, `x¹⁰` (the scanner's `Superscript` token,
+  whose text is the digits it writes; `ParseTerm` makes a `Power` node of it, next to the
+  degree sign, so `5π²` is 5·(π²), `-x²` is -(x²), `2^x²` is 2^(x²)). `√` and `∛` are
+  other names of sqrt and cbrt (`ParseRoot`): `√(x + 1)` is the call `sqrt(x + 1)`, and
+  without parentheses the root is of what follows up to the next + - * /, powers included -
+  `√x²` is √(x²), `√4x` is (√4)·x, `2√3` is a product. `½`, `⅔` and the other fraction
+  characters are the division they write (a `Fraction` node, bound as numerator /
+  denominator and not as decimals, so that ⅓ is exact to the exact forms); `2½` with
+  nothing between is two and a half, `½x` and `½(a + b)` are products. Whatever a pasted
+  text has for a space is skipped as a space is (`Scanner.IsSpace`: tab, line break,
+  non-breaking, thin, zero-width). The hyphens and the en dash are a minus (the em dash is
+  not), `⋅ ∙ ∗ •` multiply, `∕ ⁄` divide, `⩽ ⩾` compare. Not read: a power raised on a
+  function's name (`sin²(x)`), and a name before a parenthesis is a call as ever, so
+  `π(π − x)` is an error and `π·(π − x)` the product. The invisible and look-alike
+  characters are escapes in the sources (`'\x2011'` in C#, `"\u{2011}"` in the player): an
+  editing tool given ` ` wrote the character itself, a line break inside a literal.
+  **`∠ABC` is `angle(A, B, C)`** (2026-10-28): ∠ is another name
   of angle (`∠(A, B, C)` too), and a function of points also takes their names run together
   into one name, as AB is a distance: `angle(ABC)`, `directedangle(ABC)`, `distance(AB)`,
   and `area(ABCD)` with as many names as are run together, three at least (2026-11-01;

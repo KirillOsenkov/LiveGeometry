@@ -272,7 +272,7 @@ const FunctionCatalog = {
         { name: "arcsin", aliases: ["asin"] }, { name: "arccos", aliases: ["acos"] }, { name: "arctan", aliases: ["atan"] },
         { name: "atan2" }, { name: "sinh" }, { name: "cosh" }, { name: "tanh" },
         { name: "arcsinh", aliases: ["asinh"] }, { name: "arccosh", aliases: ["acosh"] }, { name: "arctanh", aliases: ["atanh"] },
-        { name: "sqrt" }, { name: "cbrt" }, { name: "nthroot" }, { name: "exp" }, { name: "ln" }, { name: "log" },
+        { name: "sqrt", aliases: ["√"] }, { name: "cbrt", aliases: ["∛"] }, { name: "nthroot" }, { name: "exp" }, { name: "ln" }, { name: "log" },
         { name: "abs" }, { name: "round", counts: [1, 2] }, { name: "floor" }, { name: "ceil", aliases: ["ceiling"] }, { name: "sign" },
         { name: "mod" }, { name: "min", variadic: true }, { name: "max", variadic: true }, { name: "clamp" },
         { name: "gcd", variadic: true }, { name: "lcm", variadic: true }, { name: "deg" }, { name: "rad" },

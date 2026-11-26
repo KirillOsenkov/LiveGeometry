@@ -27,16 +27,35 @@ class Scanner {
                 // (the signs a caption writes, also when one is pasted in)
                 case "-":
                 case "−":
+                // (what a page or a word processor has for a minus: the hyphen, the
+                // non-breaking hyphen, the figure dash, the en dash)
+                case "\u{2010}":
+                case "\u{2011}":
+                case "\u{2012}":
+                case "\u{2013}":
                     this.addTokenOfType(TokenType.Minus);
                     break;
                 case "*":
                 case "×":
                 case "·":
+                // (the dot operator, the bullet operator, the asterisk operator, the bullet)
+                case "\u{22C5}":
+                case "\u{2219}":
+                case "\u{2217}":
+                case "\u{2022}":
                     this.addTokenOfType(TokenType.Multiply);
                     break;
                 case "/":
                 case "÷":
+                // (the division slash, the fraction slash)
+                case "\u{2215}":
+                case "\u{2044}":
                     this.addTokenOfType(TokenType.Divide);
+                    break;
+                // √x, ∛x, as in class
+                case "√":
+                case "∛":
+                    this.addTokenOfType(TokenType.Root);
                     break;
                 case "°":
                     this.addTokenOfType(TokenType.Degree);
@@ -55,9 +74,11 @@ class Scanner {
                     this.addTokenOfType(this.nextChar() === "=" ? TokenType.GreaterOrEqual : TokenType.Greater, this.nextChar() === "=" ? 2 : 1);
                     break;
                 case "≤":
+                case "⩽":
                     this.addTokenOfType(TokenType.LessOrEqual);
                     break;
                 case "≥":
+                case "⩾":
                     this.addTokenOfType(TokenType.GreaterOrEqual);
                     break;
                 // = as in class, == as programmers and GeoGebra write it
@@ -111,7 +132,12 @@ class Scanner {
                         this.scanNumericLiteral();
                     } else if (Scanner.isLetter(currentChar)) {
                         this.scanIdentifier();
-                    } else {
+                    } else if (Scanner.isSpace(currentChar)) {
+                        this.current++;
+                    } else if (Scanner.fractions.has(currentChar)) {
+                        this.result.tokens.push(new Token(Scanner.fractions.get(currentChar), this.current, TokenType.Fraction, 1));
+                        this.current++;
+                    } else if (!this.scanSuperscript()) {
                         this.reportError("Invalid character");
                         return;
                     }
@@ -119,6 +145,56 @@ class Scanner {
                     break;
             }
         }
+    }
+
+    /** What a pasted text has between its words besides the space: a tab, a line break, the non-breaking and the thin spaces of a page, the zero-width ones nobody sees */
+    static isSpace(ch) {
+        return ch === " "
+            || (ch >= "\t" && ch <= "\r")
+            || ch === "\u{0085}"
+            || ch === "\u{00A0}"
+            || ch === "\u{1680}"
+            || (ch >= "\u{2000}" && ch <= "\u{200B}")
+            || ch === "\u{2028}"
+            || ch === "\u{2029}"
+            || ch === "\u{202F}"
+            || ch === "\u{205F}"
+            || ch === "\u{2060}"
+            || ch === "\u{3000}"
+            || ch === "\u{FEFF}";
+    }
+
+    /** The digit a raised one writes (² is 2), or -1 */
+    static superscriptDigit(ch) {
+        return "⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(ch);
+    }
+
+    /**
+     * A raised whole number, x² or x⁻¹: one token that reads as the digits it writes (2, -1)
+     * and takes the raised ones' place in the text. False when there is none here.
+     */
+    scanSuperscript() {
+        const text = this.text;
+        const start = this.current;
+        let digits = "";
+        let index = this.current;
+        if (text[index] === "⁻") {
+            digits = "-";
+            index++;
+        }
+
+        while (index < this.length && Scanner.superscriptDigit(text[index]) >= 0) {
+            digits += Scanner.superscriptDigit(text[index]);
+            index++;
+        }
+
+        if (digits === "" || digits === "-") {
+            return false;
+        }
+
+        this.current = index;
+        this.result.tokens.push(new Token(digits, start, TokenType.Superscript, this.current - start));
+        return true;
     }
 
     reportError(error) {
@@ -265,3 +341,9 @@ class Scanner {
         this.current += length;
     }
 }
+
+/** The division a fraction's character writes (½ is 1/2) */
+Scanner.fractions = new Map([
+    ["½", "1/2"], ["⅓", "1/3"], ["⅔", "2/3"], ["¼", "1/4"], ["¾", "3/4"], ["⅕", "1/5"], ["⅖", "2/5"], ["⅗", "3/5"], ["⅘", "4/5"],
+    ["⅙", "1/6"], ["⅚", "5/6"], ["⅐", "1/7"], ["⅛", "1/8"], ["⅜", "3/8"], ["⅝", "5/8"], ["⅞", "7/8"], ["⅑", "1/9"], ["⅒", "1/10"]
+]);

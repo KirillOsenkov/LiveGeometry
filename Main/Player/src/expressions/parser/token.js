@@ -22,6 +22,9 @@ const TokenType = {
     Equal: "Equal",
     NotEqual: "NotEqual",
     Angle: "Angle",
+    Superscript: "Superscript",
+    Fraction: "Fraction",
+    Root: "Root",
     Unknown: "Unknown"
 };
 

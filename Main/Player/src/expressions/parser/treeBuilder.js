@@ -38,6 +38,12 @@ class ExpressionTreeBuilder {
             case NodeType.Constant:
                 // the language writes decimals with a point, whatever the user's culture
                 return this.classified(new BoundConstant(Number(root.token.text)), root.token, ExpressionClass.Number);
+            case NodeType.Fraction: {
+                // ½, ⅔: the division the character writes (its token reads 1/2)
+                const parts = root.token.text.split("/");
+                return this.classified(new BoundBinary(BoundOperator.Divide, new BoundConstant(Number(parts[0])), new BoundConstant(Number(parts[1]))), root.token, ExpressionClass.Number);
+            }
+
             case NodeType.FunctionCall:
                 return this.createCallExpression(root);
             case NodeType.PropertyAccess:

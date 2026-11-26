@@ -22,5 +22,8 @@ public enum TokenType
     Equal,
     NotEqual,
     Angle,
+    Superscript,
+    Fraction,
+    Root,
     Unknown
 }

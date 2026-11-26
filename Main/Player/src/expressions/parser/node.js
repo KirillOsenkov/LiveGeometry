@@ -12,6 +12,7 @@ const NodeType = {
     PropertyAccess: "PropertyAccess",
     FunctionCall: "FunctionCall",
     Constant: "Constant",
+    Fraction: "Fraction",
     Variable: "Variable",
     Degrees: "Degrees",
     AbsoluteValue: "AbsoluteValue",

@@ -39,16 +39,35 @@ public class Scanner
                 // (the signs a caption writes, also when one is pasted in)
                 case '-':
                 case '−':
+                // (what a page or a word processor has for a minus: the hyphen, the
+                // non-breaking hyphen, the figure dash, the en dash)
+                case '\x2010':
+                case '\x2011':
+                case '\x2012':
+                case '\x2013':
                     AddToken(TokenType.Minus);
                     break;
                 case '*':
                 case '×':
                 case '·':
+                // (the dot operator, the bullet operator, the asterisk operator, the bullet)
+                case '\x22C5':
+                case '\x2219':
+                case '\x2217':
+                case '\x2022':
                     AddToken(TokenType.Multiply);
                     break;
                 case '/':
                 case '÷':
+                // (the division slash, the fraction slash)
+                case '\x2215':
+                case '\x2044':
                     AddToken(TokenType.Divide);
+                    break;
+                // √x, ∛x, as in class
+                case '√':
+                case '∛':
+                    AddToken(TokenType.Root);
                     break;
                 case '°':
                     AddToken(TokenType.Degree);
@@ -83,9 +102,11 @@ public class Scanner
 
                     break;
                 case '≤':
+                case '⩽':
                     AddToken(TokenType.LessOrEqual);
                     break;
                 case '≥':
+                case '⩾':
                     AddToken(TokenType.GreaterOrEqual);
                     break;
                 // = as in class, == as programmers and GeoGebra write it
@@ -147,7 +168,16 @@ public class Scanner
                     {
                         ScanIdentifier();
                     }
-                    else
+                    else if (IsSpace(currentChar))
+                    {
+                        current++;
+                    }
+                    else if (FractionOf(currentChar) is string fraction)
+                    {
+                        AddToken(new Token(fraction, current, length: 1, TokenType.Fraction, isQuoted: false));
+                        current++;
+                    }
+                    else if (!ScanSuperscript())
                     {
                         ReportError("Invalid character");
                         return;
@@ -155,6 +185,99 @@ public class Scanner
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// What a pasted text has between its words besides the space: a tab, a line break, the
+    /// non-breaking and the thin spaces of a page, the zero-width ones nobody sees
+    /// </summary>
+    private static bool IsSpace(char ch)
+    {
+        return ch == ' '
+            || (ch >= '\t' && ch <= '\r')
+            || ch == '\x0085'
+            || ch == '\x00A0'
+            || ch == '\x1680'
+            || (ch >= '\x2000' && ch <= '\x200B')
+            || ch == '\x2028'
+            || ch == '\x2029'
+            || ch == '\x202F'
+            || ch == '\x205F'
+            || ch == '\x2060'
+            || ch == '\x3000'
+            || ch == '\xFEFF';
+    }
+
+    /// <summary>The digit a raised one writes (² is 2), or -1</summary>
+    private static int SuperscriptDigit(char ch)
+    {
+        return ch switch
+        {
+            '⁰' => 0,
+            '¹' => 1,
+            '²' => 2,
+            '³' => 3,
+            >= '⁴' and <= '⁹' => ch - '⁴' + 4,
+            _ => -1
+        };
+    }
+
+    /// <summary>
+    /// A raised whole number, x² or x⁻¹: one token that reads as the digits it writes (2, -1)
+    /// and takes the raised ones' place in the text. False when there is none here.
+    /// </summary>
+    private bool ScanSuperscript()
+    {
+        int start = current;
+        var digits = new StringBuilder();
+        int index = current;
+        if (text[index] == '⁻')
+        {
+            digits.Append('-');
+            index++;
+        }
+
+        while (index < length && SuperscriptDigit(text[index]) >= 0)
+        {
+            digits.Append((char)('0' + SuperscriptDigit(text[index])));
+            index++;
+        }
+
+        if (digits.Length == 0 || digits[^1] == '-')
+        {
+            return false;
+        }
+
+        current = index;
+        AddToken(new Token(digits.ToString(), start, current - start, TokenType.Superscript, isQuoted: false));
+        return true;
+    }
+
+    /// <summary>The division a fraction's character writes (½ is 1/2), or null for any other character</summary>
+    private static string FractionOf(char ch)
+    {
+        return ch switch
+        {
+            '½' => "1/2",
+            '⅓' => "1/3",
+            '⅔' => "2/3",
+            '¼' => "1/4",
+            '¾' => "3/4",
+            '⅕' => "1/5",
+            '⅖' => "2/5",
+            '⅗' => "3/5",
+            '⅘' => "4/5",
+            '⅙' => "1/6",
+            '⅚' => "5/6",
+            '⅐' => "1/7",
+            '⅛' => "1/8",
+            '⅜' => "3/8",
+            '⅝' => "5/8",
+            '⅞' => "7/8",
+            '⅑' => "1/9",
+            '⅒' => "1/10",
+            _ => null
+        };
     }
 
     private void ReportError(string error)

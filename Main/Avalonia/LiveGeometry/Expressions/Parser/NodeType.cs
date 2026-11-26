@@ -12,6 +12,7 @@ public enum NodeType
     PropertyAccess,
     FunctionCall,
     Constant,
+    Fraction,
     Variable,
     Degrees,
     AbsoluteValue,

@@ -152,12 +152,12 @@ public class Parser
         return leftOperand;
     }
 
-    /// <summary>A number just read, and a name or a parenthesis right after it</summary>
+    /// <summary>A number just read (½ is one), and a name, a parenthesis or a root right after it</summary>
     private bool IsImplicitMultiplication()
     {
         return current > 0
-            && tokens[current - 1].Kind == TokenType.NumericLiteral
-            && (Current.Kind == TokenType.Identifier || Current.Kind == TokenType.OpenParen || Current.Kind == TokenType.Angle);
+            && tokens[current - 1].Kind is TokenType.NumericLiteral or TokenType.Fraction
+            && Current.Kind is TokenType.Identifier or TokenType.OpenParen or TokenType.Angle or TokenType.Root;
     }
 
     private bool EOF => current >= length;
@@ -201,16 +201,34 @@ public class Parser
         };
     }
 
-    /// <summary>A term and the degree signs after it: 30°, angle(A, B, C)°, (a + b)°</summary>
+    /// <summary>
+    /// A term and what is written after it: degree signs (30°, angle(A, B, C)°, (a + b)°)
+    /// and raised powers (x², AB², (a + b)²)
+    /// </summary>
     private Node ParseTerm(int precedence)
     {
         var term = ParsePrimary(precedence);
-        while (term != null && CurrentTokenKind == TokenType.Degree)
+        while (term != null)
         {
-            // (the sign is the node's token, to be colored as pi is)
-            var degrees = new Node(NodeType.Degrees, Current);
-            degrees.Children.Add(term);
-            term = degrees;
+            if (CurrentTokenKind == TokenType.Degree)
+            {
+                // (the sign is the node's token, to be colored as pi is)
+                var degrees = new Node(NodeType.Degrees, Current);
+                degrees.Children.Add(term);
+                term = degrees;
+            }
+            else if (CurrentTokenKind == TokenType.Superscript)
+            {
+                // x² is x^2 with the 2 right on the x: 5π² is five of π², -x² is -(x²),
+                // 2^x² is 2^(x²). (The raised digits are the exponent's token, to be
+                // colored as a number is.)
+                term = new Node(NodeType.Power, term, new Node(NodeType.Constant, Current));
+            }
+            else
+            {
+                break;
+            }
+
             AdvanceToken();
         }
 
@@ -226,7 +244,21 @@ public class Parser
             case TokenType.NumericLiteral:
                 result = Constant();
                 AdvanceToken();
+
+                // 2½ is two and a half: the fraction right after the number, nothing between
+                if (CurrentTokenKind == TokenType.Fraction && Current.Start == tokens[current - 1].Start + tokens[current - 1].Length)
+                {
+                    result = new Node(NodeType.Addition, result, new Node(NodeType.Fraction, Current));
+                    AdvanceToken();
+                }
+
                 break;
+            case TokenType.Fraction:
+                result = new Node(NodeType.Fraction, Current);
+                AdvanceToken();
+                break;
+            case TokenType.Root:
+                return ParseRoot();
             case TokenType.Identifier:
                 var next = Next;
                 if (next == null)
@@ -307,6 +339,24 @@ public class Parser
 
         AddArgument(result, Variable());
         AdvanceToken();
+        return result;
+    }
+
+    /// <summary>
+    /// √x, ∛x: a call of sqrt or cbrt (the sign is one of its names). √(x + 1) is
+    /// sqrt(x + 1), what the parentheses hold; without them the root is of what follows up
+    /// to the next + - * /, powers included: √x² is √(x²), and 2√3 is two of √3.
+    /// </summary>
+    private Node ParseRoot()
+    {
+        if (Next?.Kind == TokenType.OpenParen)
+        {
+            return ParseFunctionCall();
+        }
+
+        var result = new Node(NodeType.FunctionCall, Current);
+        AdvanceToken();
+        AddArgument(result, ParseExpression(GetPrecedence(NodeType.Power)));
         return result;
     }
 
