@@ -46,6 +46,8 @@ class ExpressionTreeBuilder {
 
             case NodeType.FunctionCall:
                 return this.createCallExpression(root);
+            case NodeType.PoweredCall:
+                return this.createPoweredCallExpression(root);
             case NodeType.PropertyAccess:
                 return this.createPropertyAccessExpression(root);
             case NodeType.Degrees: {
@@ -230,6 +232,40 @@ class ExpressionTreeBuilder {
         this.status.classify(figureToken, ExpressionClass.Figure);
         this.status.classify(root.children[1].token, ExpressionClass.Property);
         return new BoundProperty(figure, property);
+    }
+
+    /**
+     * sin²(x): the call raised to the power written on its name, (sin(x))². With ⁻¹ it is
+     * the inverse function, as in class: sin⁻¹(x) is arcsin(x), not 1 / sin(x). A function
+     * with no inverse in the language (sec⁻¹, ln⁻¹) is an error that says how the
+     * reciprocal is written.
+     */
+    createPoweredCallExpression(root) {
+        const call = root.children[0];
+        const power = root.children[1];
+        if (Number(power.token.text) !== -1) {
+            const value = this.createExpressionCore(call);
+            const exponent = value == null ? null : this.createExpressionCore(power);
+            return exponent == null ? null : new BoundBinary(BoundOperator.Power, value, exponent);
+        }
+
+        const name = call.token.text;
+        const function_ = FunctionCatalog.find(name);
+        if (function_ == null && ExpressionReflection.logBaseOf(name) == null) {
+            this.status.addMethodNotFoundError(name);
+            return null;
+        }
+
+        const inverse = FunctionCatalog.inverseOf(function_);
+        if (inverse == null) {
+            this.status.addError(name + "⁻¹ would be the inverse of " + name + ", which is not a function here. For 1 over " + name + ", write 1 / " + name + "(...).");
+            return null;
+        }
+
+        // arcsin in the place of the name, and the ⁻¹ colored as a part of the name
+        const inverseCall = new SyntaxNode(NodeType.FunctionCall, new Token(inverse.name, call.token.start, TokenType.Identifier, call.token.length));
+        inverseCall.children.push(...call.children);
+        return this.classified(this.createCallExpression(inverseCall), power.token, ExpressionClass.Function);
     }
 
     createCallExpression(root) {

@@ -279,6 +279,21 @@ public class Parser
                     return ParseFunctionCall();
                 }
 
+                // sin²(x): the power on the function's name
+                if (next.Kind == TokenType.Superscript
+                    && !Current.IsQuoted
+                    && current + 2 < length
+                    && tokens[current + 2].Kind == TokenType.OpenParen)
+                {
+                    return ParsePoweredCall(next, powerTokenCount: 1);
+                }
+
+                // sin^2(x), sin^-1(x): the same typed with a caret
+                if (IsCaretPoweredCall(out var caretPower, out int caretTokenCount))
+                {
+                    return ParsePoweredCall(caretPower, caretTokenCount);
+                }
+
                 result = Variable();
                 AdvanceToken();
                 break;
@@ -307,15 +322,84 @@ public class Parser
     {
         var result = new Node(NodeType.FunctionCall, Current);
         AdvanceToken();
+        ParseArguments(result);
+        return result;
+    }
+
+    /// <summary>
+    /// sin²(x), sin⁻¹(x): a call with a power written on the function's name, as in class.
+    /// The call and the power, for the binder to read: sin²(x) is (sin(x))², and sin⁻¹ is
+    /// arcsin, not one over the sine.
+    /// </summary>
+    /// <param name="power">The power as a number's token: the raised digits, or what follows the caret</param>
+    /// <param name="powerTokenCount">How many tokens the power takes between the name and the parenthesis</param>
+    private Node ParsePoweredCall(Token power, int powerTokenCount)
+    {
+        var call = new Node(NodeType.FunctionCall, Current);
+        current += 1 + powerTokenCount;
+        ParseArguments(call);
+        return new Node(NodeType.PoweredCall, call, new Node(NodeType.Constant, power));
+    }
+
+    /// <summary>
+    /// sin^2(x), sin^-1(x): the name of a function here, then a caret, a number (a minus
+    /// before it or not) and a parenthesis. Only for a name the language has a function by:
+    /// a^2(x + 1) is a product, a squared times the sum. The power comes out as one token,
+    /// the minus in it, which takes the place of both in the text.
+    /// </summary>
+    private bool IsCaretPoweredCall(out Token power, out int tokenCount)
+    {
+        power = null;
+        tokenCount = 0;
+        if (Current.IsQuoted
+            || Next?.Kind != TokenType.Power
+            || (FunctionCatalog.Find(Current.Text) == null && ExpressionReflection.LogBaseOf(Current.Text) == null))
+        {
+            return false;
+        }
+
+        int number = current + 2;
+        Token minus = null;
+        if (number < length && tokens[number].Kind == TokenType.Minus)
+        {
+            minus = tokens[number];
+            number++;
+        }
+
+        if (number + 1 >= length
+            || tokens[number].Kind != TokenType.NumericLiteral
+            || tokens[number + 1].Kind != TokenType.OpenParen)
+        {
+            return false;
+        }
+
+        power = tokens[number];
+        if (minus != null)
+        {
+            power = new Token(
+                "-" + power.Text,
+                minus.Start,
+                power.Start + power.Length - minus.Start,
+                TokenType.NumericLiteral,
+                isQuoted: false);
+        }
+
+        tokenCount = number - current;
+        return true;
+    }
+
+    /// <summary>The arguments of a call, from its ( to its )</summary>
+    private void ParseArguments(Node functionCall)
+    {
         AdvanceToken(TokenType.OpenParen);
-        AddArgument(result, ParseExpression());
+        AddArgument(functionCall, ParseExpression());
         while (CurrentTokenKind == TokenType.Comma)
         {
             AdvanceToken();
-            AddArgument(result, ParseExpression());
+            AddArgument(functionCall, ParseExpression());
         }
+
         AdvanceToken(TokenType.CloseParen);
-        return result;
     }
 
     /// <summary>

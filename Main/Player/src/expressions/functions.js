@@ -296,6 +296,11 @@ const FunctionCatalog = {
         return FunctionCatalog.byName.get(name.toLowerCase()) ?? null;
     },
 
+    /** The function that f⁻¹ names, as in class: arcsin for sin, and so for cos, tan and the hyperbolic three; null for any other */
+    inverseOf(function_) {
+        return function_ != null && ["sin", "cos", "tan", "sinh", "cosh", "tanh"].includes(function_.name) ? FunctionCatalog.find("arc" + function_.name) : null;
+    },
+
     takesRadians(function_) {
         return function_ != null && ["sin", "cos", "tan", "sec", "csc", "cot"].includes(function_.name);
     },

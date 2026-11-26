@@ -93,6 +93,15 @@ public static class FunctionCatalog
         return name != null && byName.TryGetValue(name, out var function) ? function : null;
     }
 
+    /// <summary>
+    /// The function that f⁻¹ names, as in class: arcsin for sin, and so for cos, tan and the
+    /// hyperbolic three. Null for any other, whose ⁻¹ the language has no function for.
+    /// </summary>
+    public static FunctionInfo InverseOf(FunctionInfo function)
+    {
+        return function?.Name is "sin" or "cos" or "tan" or "sinh" or "cosh" or "tanh" ? Find("arc" + function.Name) : null;
+    }
+
     /// <summary>The trigonometric functions, which take radians: a degree-valued argument there is a mistake (<see cref="GivesDegrees"/>)</summary>
     public static bool TakesRadians(FunctionInfo function)
     {

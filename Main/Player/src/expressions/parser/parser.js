@@ -197,6 +197,20 @@ class Parser {
                     return this.parseFunctionCall();
                 }
 
+                // sin²(x): the power on the function's name
+                if (next.kind === TokenType.Superscript
+                    && !this.currentToken.isQuoted
+                    && this.current + 2 < this.length
+                    && this.tokens[this.current + 2].kind === TokenType.OpenParen) {
+                    return this.parsePoweredCall(next, 1);
+                }
+
+                // sin^2(x), sin^-1(x): the same typed with a caret
+                const caret = this.caretPoweredCall();
+                if (caret != null) {
+                    return this.parsePoweredCall(caret.power, caret.tokenCount);
+                }
+
                 result = this.variable();
                 this.advanceToken();
                 break;
@@ -226,15 +240,67 @@ class Parser {
     parseFunctionCall() {
         const result = new SyntaxNode(NodeType.FunctionCall, this.currentToken);
         this.advanceToken();
+        this.parseArguments(result);
+        return result;
+    }
+
+    /**
+     * sin²(x), sin⁻¹(x): a call with a power written on the function's name, as in class.
+     * The call and the power, for the binder to read: sin²(x) is (sin(x))², and sin⁻¹ is
+     * arcsin, not one over the sine.
+     */
+    parsePoweredCall(power, powerTokenCount) {
+        const call = new SyntaxNode(NodeType.FunctionCall, this.currentToken);
+        this.current += 1 + powerTokenCount;
+        this.parseArguments(call);
+        return new SyntaxNode(NodeType.PoweredCall, [call, new SyntaxNode(NodeType.Constant, power)]);
+    }
+
+    /**
+     * sin^2(x), sin^-1(x): the name of a function here, then a caret, a number (a minus
+     * before it or not) and a parenthesis. Only for a name the language has a function by:
+     * a^2(x + 1) is a product, a squared times the sum. The power comes out as one token,
+     * the minus in it, which takes the place of both in the text; null when it is no such call.
+     */
+    caretPoweredCall() {
+        const name = this.currentToken;
+        if (name.isQuoted
+            || this.next?.kind !== TokenType.Power
+            || (FunctionCatalog.find(name.text) == null && ExpressionReflection.logBaseOf(name.text) == null)) {
+            return null;
+        }
+
+        let number = this.current + 2;
+        let minus = null;
+        if (number < this.length && this.tokens[number].kind === TokenType.Minus) {
+            minus = this.tokens[number];
+            number++;
+        }
+
+        if (number + 1 >= this.length
+            || this.tokens[number].kind !== TokenType.NumericLiteral
+            || this.tokens[number + 1].kind !== TokenType.OpenParen) {
+            return null;
+        }
+
+        let power = this.tokens[number];
+        if (minus != null) {
+            power = new Token("-" + power.text, minus.start, TokenType.NumericLiteral, power.start + power.length - minus.start);
+        }
+
+        return { power, tokenCount: number - this.current };
+    }
+
+    /** The arguments of a call, from its ( to its ) */
+    parseArguments(functionCall) {
         this.expectToken(TokenType.OpenParen);
-        result.children.push(this.parseExpression());
+        functionCall.children.push(this.parseExpression());
         while (this.currentTokenKind === TokenType.Comma) {
             this.advanceToken();
-            result.children.push(this.parseExpression());
+            functionCall.children.push(this.parseExpression());
         }
 
         this.expectToken(TokenType.CloseParen);
-        return result;
     }
 
     /** ∠ABC: a call of angle (the sign is one of its names) with the three points' names in one, as angle(ABC); ∠(A, B, C) is angle(A, B, C) */

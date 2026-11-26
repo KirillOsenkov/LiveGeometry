@@ -11,6 +11,7 @@ const NodeType = {
     Power: "Power",
     PropertyAccess: "PropertyAccess",
     FunctionCall: "FunctionCall",
+    PoweredCall: "PoweredCall",
     Constant: "Constant",
     Fraction: "Fraction",
     Variable: "Variable",

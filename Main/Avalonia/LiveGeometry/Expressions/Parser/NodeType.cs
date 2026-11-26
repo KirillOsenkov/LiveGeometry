@@ -11,6 +11,7 @@ public enum NodeType
     Power,
     PropertyAccess,
     FunctionCall,
+    PoweredCall,
     Constant,
     Fraction,
     Variable,

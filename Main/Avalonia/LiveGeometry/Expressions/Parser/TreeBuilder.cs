@@ -58,6 +58,8 @@ public class ExpressionTreeBuilder
                 return CreateFractionExpression(root);
             case NodeType.FunctionCall:
                 return CreateCallExpression(root);
+            case NodeType.PoweredCall:
+                return CreatePoweredCallExpression(root);
             case NodeType.PropertyAccess:
                 return CreatePropertyAccessExpression(root);
             case NodeType.Degrees:
@@ -400,6 +402,54 @@ public class ExpressionTreeBuilder
         }
 
         return CreatePointFunctionCallExpression(function, method, arguments);
+    }
+
+    /// <summary>
+    /// sin²(x): the call raised to the power written on its name, (sin(x))². With ⁻¹ it is
+    /// the inverse function, as in class: sin⁻¹(x) is arcsin(x), not 1 / sin(x)
+    /// (<see cref="FunctionCatalog.InverseOf"/>). A function with no inverse in the language
+    /// (sec⁻¹, ln⁻¹) is an error that says how the reciprocal is written.
+    /// </summary>
+    BoundExpression CreatePoweredCallExpression(Node root)
+    {
+        var call = root.Children[0];
+        var power = root.Children[1];
+        if (double.Parse(power.Token.Text, CultureInfo.InvariantCulture) != -1)
+        {
+            var value = CreateExpressionCore(call);
+            var exponent = value == null ? null : CreateExpressionCore(power);
+            return exponent == null ? null : new BoundBinary(BoundOperator.Power, value, exponent);
+        }
+
+        string name = call.Token.Text;
+        var function = FunctionCatalog.Find(name);
+        if (function == null && ExpressionReflection.LogBaseOf(name) == null)
+        {
+            Status.AddMethodNotFoundError(name);
+            return null;
+        }
+
+        var inverse = FunctionCatalog.InverseOf(function);
+        if (inverse == null)
+        {
+            Status.AddError(string.Format("{0}⁻¹ would be the inverse of {0}, which is not a function here. For 1 over {0}, write 1 / {0}(...).", name));
+            return null;
+        }
+
+        // arcsin in the place of the name, and the ⁻¹ colored as a part of the name
+        var inverseName = new Token(
+            inverse.Name,
+            call.Token.Start,
+            call.Token.Length,
+            TokenType.Identifier,
+            isQuoted: false);
+        var inverseCall = new Node(NodeType.FunctionCall, inverseName);
+        foreach (var argument in call.Children)
+        {
+            inverseCall.Children.Add(argument);
+        }
+
+        return Classified(CreateCallExpression(inverseCall), power.Token, ExpressionClass.Function);
     }
 
     /// <summary>

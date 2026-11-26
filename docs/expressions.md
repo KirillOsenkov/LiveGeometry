@@ -64,9 +64,17 @@ The expression language: renames, cycles, the language itself, exact forms, bind
   nothing between is two and a half, `½x` and `½(a + b)` are products. Whatever a pasted
   text has for a space is skipped as a space is (`Scanner.IsSpace`: tab, line break,
   non-breaking, thin, zero-width). The hyphens and the en dash are a minus (the em dash is
-  not), `⋅ ∙ ∗ •` multiply, `∕ ⁄` divide, `⩽ ⩾` compare. Not read: a power raised on a
-  function's name (`sin²(x)`), and a name before a parenthesis is a call as ever, so
-  `π(π − x)` is an error and `π·(π − x)` the product. The invisible and look-alike
+  not), `⋅ ∙ ∗ •` multiply, `∕ ⁄` divide, `⩽ ⩾` compare. A power raised on a function's
+  name is the call's: `sin²(x)` is (sin(x))², `sin⁻²(x)` its reciprocal (a name, the raised
+  number and a parenthesis: `ParsePoweredCall`, a `PoweredCall` node of the call and the
+  power). **`sin⁻¹(x)` is `arcsin(x)`**, as in class, not 1 / sin(x): ⁻¹ names the inverse
+  for sin, cos, tan and the hyperbolic three (`FunctionCatalog.InverseOf`), and on any
+  other function it is an error that says to write `1 / sec(...)`. `sin^2(x)` and
+  `sin^-1(x)`, typed with a caret, are the same two (`Parser.IsCaretPoweredCall`: a name
+  the language has a function by, a caret, a number with or without a minus, a
+  parenthesis), and only for a function's name: `a^2(x + 1)` is the product it was, while
+  `a²(x + 1)` is a call of a and an error. A name before a parenthesis is a call as
+  ever, so `π(π − x)` is an error and `π·(π − x)` the product. The invisible and look-alike
   characters are escapes in the sources (`'\x2011'` in C#, `"\u{2011}"` in the player): an
   editing tool given ` ` wrote the character itself, a line break inside a literal.
   **`∠ABC` is `angle(A, B, C)`** (2026-10-28): ∠ is another name
